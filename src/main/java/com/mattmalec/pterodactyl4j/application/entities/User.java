@@ -12,10 +12,15 @@ public interface User extends ISnowflake {
 	String getEmail();
 	String getFirstName();
 	String getLastName();
+	String getFullName();
 	String getLanguage();
 	Locale getLocale();
 	boolean isRootAdmin();
 	boolean has2FA();
+
+	@Override
+	String toString();
+
 
 
 }

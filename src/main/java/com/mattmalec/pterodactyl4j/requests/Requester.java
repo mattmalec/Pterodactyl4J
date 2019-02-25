@@ -2,7 +2,6 @@ package com.mattmalec.pterodactyl4j.requests;
 
 import com.mattmalec.pterodactyl4j.PteroAPI;
 import com.mattmalec.pterodactyl4j.exceptions.*;
-import okhttp3.Request;
 import okhttp3.*;
 import org.json.JSONObject;
 
@@ -14,6 +13,7 @@ public class Requester {
 	private Response response;
 	private OkHttpClient okHttpClient = new OkHttpClient();
 	private static final String PTERODACTYL_API_PREFIX = "%s/api/";
+	private String responseBody;
 
 	public Requester(PteroAPI api) {
 		this.api = api;
@@ -24,6 +24,7 @@ public class Requester {
 		if(api.getApplicationUrl() == null || api.getApplicationUrl().isEmpty())
 			throw new HttpException("No Pterodactyl URL was defined.");
 		Request.Builder builder = new Request.Builder();
+		builder.header("Content-Type", "application/json");
 		Method method = compiledRoute.getMethod();
 		switch(method) {
 			case GET: builder.get();
@@ -42,6 +43,7 @@ public class Requester {
 		builder.url(url);
 		try {
 			this.response = okHttpClient.newCall(builder.build()).execute();
+			this.responseBody = this.response.body().string();
 		} catch (IOException ex) {
 			throw new HttpException("Could not successfully execute a request.", ex.getCause());
 		}
@@ -62,14 +64,16 @@ public class Requester {
 			if(responseCode == 500) {
 				throw new ServerException("The server has encountered an Internal Server Error.");
 			}
+			if(responseCode == 422) {
+				throw new IllegalActionException("Pterodactyl4J has encountered a 422 error.", new JSONObject(responseBody));
+			}
 		}
-		throw new HttpException("Pterodactyl4J has encountered an unknown error.");
+		throw new HttpException("Pterodactyl4J has encountered a " + response.code() + " error.\n\n" + new JSONObject(responseBody).toString(4) + "\n");
 	}
 	public JSONObject toJSONObject() {
-		try {
-			return new JSONObject(this.response.body().string());
-		} catch (IOException e) {
-			throw new HttpException("No JSON body found.");
-		}
+		return new JSONObject(this.responseBody);
+	}
+	public String getResponseBody() {
+		return this.responseBody;
 	}
 }

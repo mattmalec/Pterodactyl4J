@@ -2,10 +2,11 @@ package com.mattmalec.pterodactyl4j;
 
 import com.mattmalec.pterodactyl4j.requests.Requester;
 
-public interface PteroAPI {
+public interface PteroBuilder {
 
 	String getToken();
-	Requester getRequester();
 	String getApplicationUrl();
+	PteroBuilder setToken(String token);
+	PteroBuilder setApplicationUrl(String applicationUrl);
 
 }

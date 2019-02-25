@@ -59,6 +59,11 @@ public class UserImpl implements User {
 	}
 
 	@Override
+	public String getFullName() {
+		return String.format("%s %s", getFirstName(), getLastName());
+	}
+
+	@Override
 	public String getLanguage() {
 		return json.getString("language");
 	}

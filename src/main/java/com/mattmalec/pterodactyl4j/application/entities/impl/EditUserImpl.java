@@ -1,0 +1,73 @@
+package com.mattmalec.pterodactyl4j.application.entities.impl;
+
+import com.mattmalec.pterodactyl4j.PteroAction;
+import com.mattmalec.pterodactyl4j.application.entities.User;
+import com.mattmalec.pterodactyl4j.application.managers.UserAction;
+import com.mattmalec.pterodactyl4j.requests.Requester;
+import com.mattmalec.pterodactyl4j.requests.Route;
+import org.json.JSONObject;
+
+public class EditUserImpl implements UserAction {
+
+    private Requester requester;
+
+    private String userName;
+    private String email;
+    private String firstName;
+    private String lastName;
+    private String password;
+    private User user;
+
+    public EditUserImpl(User user, Requester requester) {
+        this.user = user;
+        this.requester = requester;
+    }
+
+    @Override
+    public UserAction setUserName(String userName) {
+        this.userName = userName;
+        return this;
+    }
+
+    @Override
+    public UserAction setEmail(String email) {
+        this.email = email;
+        return this;
+    }
+
+    @Override
+    public UserAction setFirstName(String firstName) {
+        this.firstName = firstName;
+        return this;
+    }
+
+    @Override
+    public UserAction setLastName(String lastName) {
+        this.lastName = lastName;
+        return this;
+    }
+
+    @Override
+    public UserAction setPassword(String password) {
+        this.password = password;
+        return this;
+    }
+
+    @Override
+    public PteroAction<User> build() {
+        JSONObject json = new JSONObject();
+        json.put("username", this.userName);
+        json.put("email", this.email);
+        json.put("first_name", this.firstName);
+        json.put("last_name", this.lastName);
+        json.put("password", this.password);
+        return new PteroAction<User>() {
+            Route.CompiledRoute route = Route.Users.EDIT_USER.compile(user.getId()).withJSONdata(json);
+            JSONObject jsonObject = requester.request(route).toJSONObject();
+            @Override
+            public User execute() {
+                return new UserImpl(jsonObject);
+            }
+        };
+    }
+}
