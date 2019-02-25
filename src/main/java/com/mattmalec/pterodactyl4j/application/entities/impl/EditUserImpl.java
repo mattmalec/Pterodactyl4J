@@ -56,10 +56,22 @@ public class EditUserImpl implements UserAction {
     @Override
     public PteroAction<User> build() {
         JSONObject json = new JSONObject();
-        json.put("username", this.userName);
-        json.put("email", this.email);
-        json.put("first_name", this.firstName);
-        json.put("last_name", this.lastName);
+        if(this.userName == null)
+            json.put("username", this.user.getUserName());
+        else
+            json.put("username", this.userName);
+        if(this.email == null)
+            json.put("email", this.user.getEmail());
+        else
+            json.put("email", this.email);
+        if(this.firstName == null)
+        	json.put("first_name", this.user.getFirstName());
+        else
+        	json.put("first_name", this.firstName);
+        if(this.lastName == null)
+        	json.put("last_name", this.user.getLastName());
+        else
+        	json.put("last_name", this.lastName);
         json.put("password", this.password);
         return new PteroAction<User>() {
             Route.CompiledRoute route = Route.Users.EDIT_USER.compile(user.getId()).withJSONdata(json);

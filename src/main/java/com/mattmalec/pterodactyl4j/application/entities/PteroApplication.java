@@ -1,5 +1,6 @@
-package com.mattmalec.pterodactyl4j;
+package com.mattmalec.pterodactyl4j.application.entities;
 
+import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.application.entities.Node;
 import com.mattmalec.pterodactyl4j.application.entities.User;
 import com.mattmalec.pterodactyl4j.application.managers.UserManager;

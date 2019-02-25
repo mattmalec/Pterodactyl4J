@@ -1,12 +1,10 @@
-package com.mattmalec.pterodactyl4j.application;
+package com.mattmalec.pterodactyl4j.application.entities.impl;
 
 import com.mattmalec.pterodactyl4j.PteroAPI;
 import com.mattmalec.pterodactyl4j.PteroAction;
-import com.mattmalec.pterodactyl4j.PteroApplication;
 import com.mattmalec.pterodactyl4j.application.entities.Node;
+import com.mattmalec.pterodactyl4j.application.entities.PteroApplication;
 import com.mattmalec.pterodactyl4j.application.entities.User;
-import com.mattmalec.pterodactyl4j.application.entities.impl.UserImpl;
-import com.mattmalec.pterodactyl4j.application.entities.impl.UserManagerImpl;
 import com.mattmalec.pterodactyl4j.application.managers.UserManager;
 import com.mattmalec.pterodactyl4j.requests.Requester;
 import com.mattmalec.pterodactyl4j.requests.Route;

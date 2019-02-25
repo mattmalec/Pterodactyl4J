@@ -1,8 +1,8 @@
 package com.mattmalec.pterodactyl4j.application;
 
 import com.mattmalec.pterodactyl4j.PteroBuilder;
-import com.mattmalec.pterodactyl4j.PteroApplication;
-import com.mattmalec.pterodactyl4j.requests.Requester;
+import com.mattmalec.pterodactyl4j.application.entities.PteroApplication;
+import com.mattmalec.pterodactyl4j.application.entities.impl.PteroApplicationImpl;
 
 public class PteroApplicationBuilder implements PteroBuilder {
 

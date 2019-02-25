@@ -1,8 +1,8 @@
 package com.mattmalec.pterodactyl4j;
 
 import com.mattmalec.pterodactyl4j.application.PteroApplicationBuilder;
+import com.mattmalec.pterodactyl4j.application.entities.PteroApplication;
 import com.mattmalec.pterodactyl4j.application.entities.User;
-import com.mattmalec.pterodactyl4j.application.managers.UserAction;
 
 
 public class Main {
@@ -11,8 +11,10 @@ public class Main {
 		PteroApplication application = new PteroApplicationBuilder()
 				.setApplicationUrl("https://panel.explodingbush.net")
 				.setToken("wPdYseNq2hc3okrMx7eomgSAjXV117ozGnt8VJYTImDFqy23").build();
-		UserAction userAction = application.getUserManager().createUser();
-		User user = userAction.setUserName("mattisfat").setEmail("mmalec@4dproductions.org").setFirstName("Matt").setLastName("Is Fat").build().execute();
+		User user = application.retrieveUsersByUsername("mattisfat", true).execute().get(0);
+		application.getUserManager().deleteUser(user).execute();
+//		userAction.setLastName("Is Amazing").build().execute();
 		System.out.println(user.toString());
+
 	}
 }

@@ -12,7 +12,7 @@ public class IllegalActionException extends RuntimeException {
         String message = text + "\n\n";
         for(Object o : json.getJSONArray("errors")) {
             JSONObject obj = new JSONObject(o.toString());
-            message += "    - " + obj.getString("detail") + "\n";
+            message += "\t- " + obj.getString("detail") + "\n";
         }
         throw new IllegalActionException(message);
     }

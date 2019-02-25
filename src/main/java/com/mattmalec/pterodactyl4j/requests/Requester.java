@@ -29,11 +29,11 @@ public class Requester {
 		switch(method) {
 			case GET: builder.get();
 			break;
-			case POST: builder.post(RequestBody.create(MediaType.parse("application/json"), compiledRoute.getJSONData().toString().getBytes()));
+			case POST: builder.post(RequestBody.create(MediaType.parse("application/json"), compiledRoute.getJSONData() != null ? compiledRoute.getJSONData().toString().getBytes() : "".getBytes()));
 			break;
-			case PATCH: builder.patch(RequestBody.create(MediaType.parse("application/json"), compiledRoute.getJSONData().toString().getBytes()));
+			case PATCH: builder.patch(RequestBody.create(MediaType.parse("application/json"), compiledRoute.getJSONData() != null ? compiledRoute.getJSONData().toString().getBytes() : "".getBytes()));
 			break;
-			case DELETE: builder.delete(RequestBody.create(MediaType.parse("application/json"), compiledRoute.getJSONData().toString().getBytes()));
+			case DELETE: builder.delete(RequestBody.create(MediaType.parse("application/json"), compiledRoute.getJSONData() != null ? compiledRoute.getJSONData().toString().getBytes() : "".getBytes()));
 			break;
 		}
 		builder.addHeader("Accept", "Application/vnd.pterodactyl.v1+json");
