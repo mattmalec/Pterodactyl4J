@@ -2,6 +2,7 @@ package com.mattmalec.pterodactyl4j.application.entities.impl;
 
 import com.mattmalec.pterodactyl4j.PteroAPI;
 import com.mattmalec.pterodactyl4j.PteroAction;
+import com.mattmalec.pterodactyl4j.application.entities.Location;
 import com.mattmalec.pterodactyl4j.application.entities.Node;
 import com.mattmalec.pterodactyl4j.application.entities.PteroApplication;
 import com.mattmalec.pterodactyl4j.application.entities.User;
@@ -107,6 +108,27 @@ public class PteroApplicationImpl implements PteroApplication, PteroAPI {
 	}
 
 	@Override
+	public PteroAction<List<User>> retrieveUsersByEmail(String name, boolean caseSensetive) {
+		return new PteroAction<List<User>>() {
+			@Override
+			public List<User> execute() {
+				List<User> users = retrieveUsers().execute();
+				List<User> newUsers = new ArrayList<>();
+				for (User u : users) {
+					if (caseSensetive) {
+						if (u.getEmail().contains(name))
+							newUsers.add(u);
+					} else {
+						if (u.getEmail().toLowerCase().contains(name.toLowerCase()))
+							newUsers.add(u);
+					}
+				}
+				return Collections.unmodifiableList(newUsers);
+			}
+		};
+	}
+
+	@Override
 	public UserManager getUserManager() {
 		return new UserManagerImpl(this.requester);
 	}
@@ -128,6 +150,21 @@ public class PteroApplicationImpl implements PteroApplication, PteroAPI {
 
 	@Override
 	public PteroAction<List<Node>> retrieveNodesByName(String name, boolean caseSensetive) {
+		return null;
+	}
+
+	@Override
+	public PteroAction<Location> retrieveLocationById(String id) {
+		return null;
+	}
+
+	@Override
+	public PteroAction<Location> retrieveLocationById(long id) {
+		return null;
+	}
+
+	@Override
+	public PteroAction<List<Location>> retrieveLocationsByShortCode(String name, boolean caseSensetive) {
 		return null;
 	}
 }
