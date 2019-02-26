@@ -10,19 +10,21 @@ import com.mattmalec.pterodactyl4j.requests.Route;
 public class LocationManagerImpl implements LocationManager {
 
 	private Requester requester;
+	private PteroApplicationImpl impl;
 
-	public LocationManagerImpl(Requester requester) {
+	public LocationManagerImpl(PteroApplicationImpl impl, Requester requester) {
 		this.requester = requester;
+		this.impl = impl;
 	}
 
 	@Override
 	public LocationAction createLocation() {
-		return new CreateLocationImpl(this.requester);
+		return new CreateLocationImpl(this.impl, this.requester);
 	}
 
 	@Override
 	public LocationAction editLocation(Location location) {
-		return null;
+		return new EditLocationImpl(location, this.requester, this.impl);
 	}
 
 	@Override

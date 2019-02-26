@@ -1,6 +1,7 @@
 package com.mattmalec.pterodactyl4j.application.entities;
 
 import com.mattmalec.pterodactyl4j.PteroAction;
+import com.mattmalec.pterodactyl4j.application.managers.LocationManager;
 import com.mattmalec.pterodactyl4j.application.managers.UserManager;
 
 import java.util.List;
@@ -20,10 +21,10 @@ public interface PteroApplication {
 	PteroAction<List<Node>> retrieveNodesByName(String name, boolean caseSensetive);
 
 
+	PteroAction<List<Location>> retrieveLocations();
 	PteroAction<Location> retrieveLocationById(String id);
 	PteroAction<Location> retrieveLocationById(long id);
 	PteroAction<List<Location>> retrieveLocationsByShortCode(String name, boolean caseSensetive);
-
-
+	LocationManager getLocationManager();
 
 }

@@ -1,11 +1,13 @@
 package com.mattmalec.pterodactyl4j.application.entities;
 
-public interface Node {
+import com.mattmalec.pterodactyl4j.PteroAction;
+
+public interface Node extends ISnowflake {
 
 	boolean isPublic();
 	String getName();
 	String getDescription();
-	Location getLocation();
+	PteroAction<Location> retrieveLocation();
 	String getFQDN();
 	String getScheme();
 	boolean isBehindProxy();
@@ -20,5 +22,8 @@ public interface Node {
 	default long getDiskOverallocateLong() { return Long.parseLong(getDiskOverallocate()); }
 	String getUploadLimit();
 	default long getUploadLimitLong() { return Long.parseLong(getUploadLimit()); }
+	String getDaemonListenPort();
+	String getDaemonSFTPPort();
+	String getDaemonBase();
 
 }

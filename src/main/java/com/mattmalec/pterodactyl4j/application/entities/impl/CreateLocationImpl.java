@@ -15,8 +15,11 @@ public class CreateLocationImpl implements LocationAction {
 	private String shortCode;
 	private String description;
 
-	public CreateLocationImpl(Requester requester) {
+	private PteroApplicationImpl impl;
+
+	public CreateLocationImpl(PteroApplicationImpl impl, Requester requester) {
 		this.requester = requester;
+		this.impl = impl;
 	}
 
 	@Override
@@ -43,7 +46,7 @@ public class CreateLocationImpl implements LocationAction {
 			JSONObject jsonObject = requester.request(route).toJSONObject();
 			@Override
 			public Location execute() {
-				return new LocationImpl(jsonObject);
+				return new LocationImpl(jsonObject, impl);
 			}
 		};
 	}

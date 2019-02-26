@@ -14,9 +14,11 @@ import java.util.List;
 public class LocationImpl implements Location {
 
 	private JSONObject json;
+	private PteroApplicationImpl impl;
 
-	public LocationImpl(JSONObject json) {
+	public LocationImpl(JSONObject json, PteroApplicationImpl impl) {
 		this.json = json.getJSONObject("attributes");
+		this.impl = impl;
 	}
 
 	@Override
