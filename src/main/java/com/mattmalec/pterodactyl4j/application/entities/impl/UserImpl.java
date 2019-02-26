@@ -19,11 +19,6 @@ public class UserImpl implements User {
 	}
 
 	@Override
-	public String getId() {
-		return String.valueOf(getIdLong());
-	}
-
-	@Override
 	public long getIdLong() {
 		return json.getLong("id");
 	}
