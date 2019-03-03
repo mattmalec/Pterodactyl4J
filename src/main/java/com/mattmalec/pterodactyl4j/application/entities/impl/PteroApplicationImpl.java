@@ -6,7 +6,9 @@ import com.mattmalec.pterodactyl4j.application.entities.Location;
 import com.mattmalec.pterodactyl4j.application.entities.Node;
 import com.mattmalec.pterodactyl4j.application.entities.PteroApplication;
 import com.mattmalec.pterodactyl4j.application.entities.User;
+import com.mattmalec.pterodactyl4j.application.managers.AllocationManager;
 import com.mattmalec.pterodactyl4j.application.managers.LocationManager;
+import com.mattmalec.pterodactyl4j.application.managers.NodeManager;
 import com.mattmalec.pterodactyl4j.application.managers.UserManager;
 import com.mattmalec.pterodactyl4j.requests.Requester;
 import com.mattmalec.pterodactyl4j.requests.Route;
@@ -196,6 +198,16 @@ public class PteroApplicationImpl implements PteroApplication, PteroAPI {
 				return Collections.unmodifiableList(newNodes);
 			}
 		};
+	}
+
+	@Override
+	public NodeManager getNodeManager() {
+		return null;
+	}
+
+	@Override
+	public AllocationManager getAllocationManager() {
+		return null;
 	}
 
 	@Override
