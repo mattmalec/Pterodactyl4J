@@ -17,7 +17,7 @@ public class CreateLocationImpl implements LocationAction {
 
 	private PteroApplicationImpl impl;
 
-	public CreateLocationImpl(PteroApplicationImpl impl, Requester requester) {
+	CreateLocationImpl(PteroApplicationImpl impl, Requester requester) {
 		this.requester = requester;
 		this.impl = impl;
 	}
@@ -39,8 +39,8 @@ public class CreateLocationImpl implements LocationAction {
 		Checks.notBlank(this.shortCode, "Shortcode");
 		Checks.notBlank(this.description, "Description");
 		JSONObject json = new JSONObject();
-		json.put("username", this.shortCode);
-		json.put("email", this.description);
+		json.put("short", this.shortCode);
+		json.put("long", this.description);
 		return new PteroAction<Location>() {
 			Route.CompiledRoute route = Route.Locations.CREATE_LOCATION.compile().withJSONdata(json);
 			JSONObject jsonObject = requester.request(route).toJSONObject();

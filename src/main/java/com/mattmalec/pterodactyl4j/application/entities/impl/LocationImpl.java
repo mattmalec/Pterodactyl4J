@@ -1,5 +1,6 @@
 package com.mattmalec.pterodactyl4j.application.entities.impl;
 
+import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.application.entities.Location;
 import com.mattmalec.pterodactyl4j.application.entities.Node;
 import org.json.JSONObject;
@@ -9,6 +10,8 @@ import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class LocationImpl implements Location {
@@ -32,8 +35,20 @@ public class LocationImpl implements Location {
 	}
 
 	@Override
-	public List<Node> getNodes() {
-		return null;
+	public PteroAction<List<Node>> retrieveNodes() {
+		return new PteroAction<List<Node>>() {
+			@Override
+			public List<Node> execute() {
+				List<Node> nodes = impl.retrieveNodes().execute();
+				List<Node> newNodes = new ArrayList<>();
+				for(Node n : nodes) {
+					if(n.retrieveLocation().execute().getId().equals(getId())) {
+						newNodes.add(n);
+					}
+				}
+				return Collections.unmodifiableList(newNodes);
+			}
+		};
 	}
 
 	@Override
@@ -50,5 +65,10 @@ public class LocationImpl implements Location {
 	public OffsetDateTime getUpdatedDate() {
 		return LocalDateTime.parse(json.optString("updated_at"), DateTimeFormatter.ISO_LOCAL_DATE_TIME).atOffset(ZoneId.systemDefault().getRules().getOffset(Instant.now()));
 
+	}
+
+	@Override
+	public String toString() {
+		return json.toString(4);
 	}
 }
