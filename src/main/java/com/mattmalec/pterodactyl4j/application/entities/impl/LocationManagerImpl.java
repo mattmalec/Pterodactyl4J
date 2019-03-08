@@ -24,7 +24,7 @@ public class LocationManagerImpl implements LocationManager {
 
 	@Override
 	public LocationAction editLocation(Location location) {
-		return new EditLocationImpl(location, this.requester, this.impl);
+		return new EditLocationImpl(location, this.impl);
 	}
 
 	@Override

@@ -17,9 +17,9 @@ public class EditLocationImpl implements LocationAction {
 
     private Location location;
 
-    public EditLocationImpl(Location location, Requester requester, PteroApplicationImpl impl) {
+    public EditLocationImpl(Location location, PteroApplicationImpl impl) {
         this.location = location;
-        this.requester = requester;
+        this.requester = impl.getRequester();
         this.impl = impl;
     }
 

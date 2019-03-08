@@ -202,7 +202,7 @@ public class PteroApplicationImpl implements PteroApplication, PteroAPI {
 
 	@Override
 	public NodeManager getNodeManager() {
-		return null;
+		return new NodeManagerImpl(this);
 	}
 
 	@Override

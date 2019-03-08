@@ -6,18 +6,18 @@ import com.mattmalec.pterodactyl4j.application.entities.Node;
 import com.mattmalec.pterodactyl4j.application.managers.NodeAction;
 import com.mattmalec.pterodactyl4j.requests.Requester;
 import com.mattmalec.pterodactyl4j.requests.Route;
-import com.mattmalec.pterodactyl4j.utils.Checks;
 import org.json.JSONObject;
 
-public class CreateNodeImpl implements NodeAction {
+public class EditNodeImpl implements NodeAction {
 
 	private Requester requester;
+	private Node node;
 
 	private String name;
 	private Location location;
-	private boolean isPublic;
+	private Boolean isPublic;
 	private String fqdn;
-	private boolean isBehindProxy;
+	private Boolean isBehindProxy;
 	private String daemonBase;
 	private String memory;
 	private String memoryOverallocate;
@@ -25,14 +25,15 @@ public class CreateNodeImpl implements NodeAction {
 	private String diskSpaceOverallocate;
 	private String daemonSFTPPort;
 	private String daemonListenPort;
-	private boolean throttle;
-	private boolean secure;
+	private Boolean throttle;
+	private Boolean secure;
 
 	private PteroApplicationImpl impl;
 
-	CreateNodeImpl(PteroApplicationImpl impl, Requester requester) {
-		this.requester = requester;
+	EditNodeImpl(PteroApplicationImpl impl, Node node) {
+		this.requester = impl.getRequester();
 		this.impl = impl;
+		this.node = node;
 	}
 
 	@Override
@@ -121,31 +122,63 @@ public class CreateNodeImpl implements NodeAction {
 
 	@Override
 	public PteroAction<Node> build() {
-		Checks.notBlank(this.name, "Name");
-		Checks.notNull(this.location, "Location");
-		Checks.notBlank(this.fqdn, "FQDN");
-		Checks.notBlank(this.daemonBase, "Daemon Base");
-		Checks.notNumeric(this.memory, "Memory");
-		Checks.notNumeric(this.memoryOverallocate, "Memory Overallocate");
-		Checks.notNumeric(this.diskSpace, "Disk Space");
-		Checks.notNumeric(this.diskSpaceOverallocate, "Disk Space Overallocate");
-		Checks.notNumeric(this.daemonSFTPPort, "Daemon SFTP Port");
-		Checks.notNumeric(this.daemonListenPort, "Daemon Listen Port");
 		JSONObject json = new JSONObject();
-		json.put("name", this.name);
-		json.put("location_id", this.location.getId());
-		json.put("public", this.isPublic ? "1" : "0");
-		json.put("fqdn", this.fqdn);
-		json.put("scheme", this.secure ? "https" : "http");
-		json.put("behind_proxy", this.isBehindProxy ? "1" : "0");
-		json.put("daemon_base", this.daemonBase);
-		json.put("memory", Long.parseLong(this.memory));
-		json.put("memory_overallocate", Long.parseLong(this.memoryOverallocate));
-		json.put("disk", Long.parseLong(this.diskSpace));
-		json.put("disk_overallocate", Long.parseLong(this.diskSpaceOverallocate));
-		json.put("daemon_listen", this.daemonListenPort);
-		json.put("daemon_sftp", this.daemonSFTPPort);
-		json.put("throttle", new JSONObject().put("enabled", this.throttle));
+		if(this.name == null)
+			json.put("name", this.node.getName());
+		else
+			json.put("name", this.name);
+		if(this.location == null)
+			json.put("location_id", this.node.retrieveLocation().execute().getId());
+		else
+			json.put("location_id", this.location.getId());
+		if(this.isPublic == null)
+			json.put("public", this.node.isPublic() ? "1" : "0");
+		else
+			json.put("public", this.isPublic ? "1" : "0");
+		if(this.fqdn == null)
+			json.put("fqdn", this.node.getFQDN());
+		else
+			json.put("fqdn", this.fqdn);
+		if(this.secure == null)
+			json.put("scheme", this.node.getScheme());
+		else
+			json.put("scheme", this.secure ? "https" : "http");
+		if(this.isBehindProxy == null)
+			json.put("behind_proxy", this.node.isBehindProxy() ? "1" : "0");
+		else
+			json.put("behind_proxy", this.isBehindProxy ? "1" : "0");
+		if(this.daemonBase == null)
+			json.put("daemon_base", this.node.getDaemonBase());
+		else
+			json.put("daemon_base", this.daemonBase);
+		if(this.memory == null)
+			json.put("memory", this.node.getMemoryLong());
+		else
+			json.put("memory", Long.parseLong(this.memory));
+		if(this.memoryOverallocate == null)
+			json.put("memory_overallocate", this.node.getMemoryOverallocateLong());
+		else
+			json.put("memory_overallocate", Long.parseLong(this.memoryOverallocate));
+		if(this.diskSpace == null)
+			json.put("disk", this.node.getDiskLong());
+		else
+			json.put("disk", Long.parseLong(this.diskSpace));
+		if(this.diskSpaceOverallocate == null)
+			json.put("disk_overallocate", this.node.getDiskOverallocateLong());
+		else
+			json.put("disk_overallocate", Long.parseLong(this.diskSpaceOverallocate));
+		if(this.daemonListenPort == null)
+			json.put("daemon_listen", this.node.getDaemonListenPort());
+		else
+			json.put("daemon_listen", this.daemonListenPort);
+		if(this.daemonSFTPPort == null)
+			json.put("daemon_sftp", this.node.getDaemonSFTPPort());
+		else
+			json.put("daemon_sftp", this.daemonSFTPPort);
+		if(this.throttle == null)
+			json.put("throttle", new JSONObject().put("enabled", false));
+		else
+			json.put("throttle", new JSONObject().put("enabled", this.throttle));
 
 		return new PteroAction<Node>() {
 			Route.CompiledRoute route = Route.Nodes.CREATE_NODE.compile().withJSONdata(json);

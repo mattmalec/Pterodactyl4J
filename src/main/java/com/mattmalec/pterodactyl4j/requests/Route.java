@@ -194,7 +194,7 @@ public class Route {
 			return json;
 		}
 	}
-	private static int countMatches(final CharSequence seq, final char c) {
+	private static int countMatches(CharSequence seq, char c) {
 		int count = 0;
 		for (int i = 0; i < seq.length(); i++) {
 			if (seq.charAt(i) == c)
