@@ -53,9 +53,10 @@ public class PteroApplicationImpl implements PteroApplication, PteroAPI {
 	public PteroAction<User> retrieveUserById(long id) {
 		Route.CompiledRoute route = Route.Users.GET_USER.compile(Long.toUnsignedString(id));
 		return new PteroAction<User>() {
-			JSONObject jsonObject = requester.request(route).toJSONObject();
+
 			@Override
 			public User execute() {
+				JSONObject jsonObject = requester.request(route).toJSONObject();
 				return new UserImpl(jsonObject);
 			}
 		};
@@ -171,9 +172,9 @@ public class PteroApplicationImpl implements PteroApplication, PteroAPI {
 		PteroApplicationImpl impl = this;
 		Route.CompiledRoute route = Route.Nodes.GET_NODE.compile(Long.toUnsignedString(id));
 		return new PteroAction<Node>() {
-			JSONObject jsonObject = requester.request(route).toJSONObject();
 			@Override
 			public Node execute() {
+				JSONObject jsonObject = requester.request(route).toJSONObject();
 				return new NodeImpl(jsonObject, impl);
 			}
 		};
@@ -247,9 +248,9 @@ public class PteroApplicationImpl implements PteroApplication, PteroAPI {
 		PteroApplicationImpl impl = this;
 		Route.CompiledRoute route = Route.Locations.GET_LOCATION.compile(Long.toUnsignedString(id));
 		return new PteroAction<Location>() {
-			JSONObject jsonObject = requester.request(route).toJSONObject();
 			@Override
 			public Location execute() {
+				JSONObject jsonObject = requester.request(route).toJSONObject();
 				return new LocationImpl(jsonObject, impl);
 			}
 		};
