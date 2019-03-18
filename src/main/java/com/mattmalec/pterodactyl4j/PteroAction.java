@@ -33,6 +33,5 @@ public abstract class PteroAction<T> implements IPteroAction<T> {
 						e.printStackTrace();
 					}
 				});
-
 	}
 }

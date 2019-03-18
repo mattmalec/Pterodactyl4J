@@ -1,6 +1,7 @@
 package com.mattmalec.pterodactyl4j.application.entities;
 
 import com.mattmalec.pterodactyl4j.PteroAction;
+import com.mattmalec.pterodactyl4j.application.managers.AllocationManager;
 
 public interface Node extends ISnowflake {
 
@@ -8,6 +9,7 @@ public interface Node extends ISnowflake {
 	String getName();
 	String getDescription();
 	PteroAction<Location> retrieveLocation();
+	AllocationManager getAllocationManager();
 	String getFQDN();
 	String getScheme();
 	boolean isBehindProxy();

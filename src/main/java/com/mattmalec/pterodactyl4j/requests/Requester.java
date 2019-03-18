@@ -64,9 +64,6 @@ public class Requester {
 			if(responseCode == 500) {
 				throw new ServerException("The server has encountered an Internal Server Error.");
 			}
-			if(responseCode == 422) {
-				throw new IllegalActionException("Pterodactyl4J has encountered a 422 error.", new JSONObject(responseBody));
-			}
 		}
 		throw new HttpException("Pterodactyl4J has encountered a " + response.code() + " error.\n\n" + new JSONObject(responseBody).toString(4) + "\n");
 	}

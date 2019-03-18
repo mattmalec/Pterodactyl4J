@@ -3,6 +3,7 @@ package com.mattmalec.pterodactyl4j;
 import com.mattmalec.pterodactyl4j.application.PteroApplicationBuilder;
 import com.mattmalec.pterodactyl4j.application.entities.Node;
 import com.mattmalec.pterodactyl4j.application.entities.PteroApplication;
+import com.mattmalec.pterodactyl4j.application.managers.AllocationAction;
 
 
 public class Main {
@@ -11,8 +12,11 @@ public class Main {
 		PteroApplication application = new PteroApplicationBuilder()
 				.setApplicationUrl("https://panel.explodingbush.net")
 				.setToken("wPdYseNq2hc3okrMx7eomgSAjXV117ozGnt8VJYTImDFqy23").build();
-		Node node = application.retrieveNodeById(10).execute();
-		application.getNodeManager().deleteNode(node).execute();
+		Node node = application.retrieveNodeById(4).execute();
+		AllocationAction action = application.getAllocationManager().createAllocation(node);
+		action.setIP("1.1.1.1");
+		action.setPorts("10002");
+		action.build().execute();
 //		Location location = application.retrieveLocationsByShortCode("us.loc.main", false).execute().get(0);
 //		Node node = nodeAction
 //				.setName("Matts Test")

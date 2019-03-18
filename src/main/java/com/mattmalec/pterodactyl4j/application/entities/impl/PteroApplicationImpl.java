@@ -208,7 +208,7 @@ public class PteroApplicationImpl implements PteroApplication, PteroAPI {
 
 	@Override
 	public AllocationManager getAllocationManager() {
-		return null;
+		return new AllocationManagerImpl(this);
 	}
 
 	@Override

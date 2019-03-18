@@ -7,6 +7,6 @@ import com.mattmalec.pterodactyl4j.application.entities.Node;
 public interface AllocationManager {
 
     AllocationAction createAllocation(Node node);
-    PteroAction<Void> deleteAllocation(Allocation allocation);
+    PteroAction<Void> deleteAllocation(Node node, Allocation allocation);
 
 }

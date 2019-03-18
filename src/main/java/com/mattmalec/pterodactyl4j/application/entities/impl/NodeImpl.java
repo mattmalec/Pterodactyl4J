@@ -3,6 +3,7 @@ package com.mattmalec.pterodactyl4j.application.entities.impl;
 import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.application.entities.Location;
 import com.mattmalec.pterodactyl4j.application.entities.Node;
+import com.mattmalec.pterodactyl4j.application.managers.AllocationManager;
 import org.json.JSONObject;
 
 import java.time.Instant;
@@ -35,6 +36,11 @@ public class NodeImpl implements Node {
 	@Override
 	public String getDescription() {
 		return json.getString("description");
+	}
+
+	@Override
+	public AllocationManager getAllocationManager() {
+		return null;
 	}
 
 	@Override
