@@ -11,20 +11,22 @@ import com.mattmalec.pterodactyl4j.requests.Route;
 public class AllocationManagerImpl implements AllocationManager {
 
 	private PteroApplicationImpl impl;
+	private Node node;
 
-	public AllocationManagerImpl(PteroApplicationImpl impl) {
+	public AllocationManagerImpl(Node node, PteroApplicationImpl impl) {
 		this.impl = impl;
+		this.node = node;
 	}
 
-	public AllocationAction createAllocation(Node node) {
-		return new CreateAllocationImpl(this.impl, node);
+	public AllocationAction createAllocation() {
+		return new CreateAllocationImpl(this.impl, this.node);
 	}
 
 	public AllocationAction editAllocation(Allocation allocation) {
-		return null;
+		return new EditAllocationImpl(this.impl, this.node, allocation);
 	}
 
-	public PteroAction<Void> deleteAllocation(Node node, Allocation allocation) {
+	public PteroAction<Void> deleteAllocation(Allocation allocation) {
 		return new PteroAction<Void>() {
 			@Override
 			public Void execute() {
