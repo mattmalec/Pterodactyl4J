@@ -2,10 +2,7 @@ package com.mattmalec.pterodactyl4j.application.entities.impl;
 
 import com.mattmalec.pterodactyl4j.PteroAPI;
 import com.mattmalec.pterodactyl4j.PteroAction;
-import com.mattmalec.pterodactyl4j.application.entities.Location;
-import com.mattmalec.pterodactyl4j.application.entities.Node;
-import com.mattmalec.pterodactyl4j.application.entities.PteroApplication;
-import com.mattmalec.pterodactyl4j.application.entities.User;
+import com.mattmalec.pterodactyl4j.application.entities.*;
 import com.mattmalec.pterodactyl4j.application.managers.LocationManager;
 import com.mattmalec.pterodactyl4j.application.managers.NodeManager;
 import com.mattmalec.pterodactyl4j.application.managers.UserManager;
@@ -203,6 +200,120 @@ public class PteroApplicationImpl implements PteroApplication, PteroAPI {
 	@Override
 	public NodeManager getNodeManager() {
 		return new NodeManagerImpl(this);
+	}
+
+	@Override
+	public PteroAction<List<Egg>> retrieveEggsByNest(Nest nest) {
+		PteroApplicationImpl impl = this;
+		return new PteroAction<List<Egg>>() {
+			@Override
+			public List<Egg> execute() {
+				Route.CompiledRoute route = Route.Nests.GET_EGGS.compile(nest.getId(), "1");
+				JSONObject json = requester.request(route).toJSONObject();
+				long pages = json.getJSONObject("meta").getJSONObject("pagination").getLong("total_pages");
+				List<Egg> eggs = new ArrayList<>();
+				for (Object o : json.getJSONArray("data")) {
+					JSONObject egg = new JSONObject(o.toString());
+					eggs.add(new EggImpl(egg, impl));
+				}
+				for (int i = 1; i < pages; i++) {
+					Route.CompiledRoute nextRoute = Route.Nests.GET_EGGS.compile(nest.getId(), Long.toUnsignedString(pages));
+					JSONObject nextJson = requester.request(nextRoute).toJSONObject();
+					for (Object o : nextJson.getJSONArray("data")) {
+						JSONObject egg = new JSONObject(o.toString());
+						eggs.add(new EggImpl(egg, impl));
+					}
+				}
+				return Collections.unmodifiableList(eggs);
+			}
+		};
+	}
+
+	@Override
+	public PteroAction<Nest> retrieveNestById(String id) {
+		return retrieveNestById(Long.parseLong(id));
+	}
+
+	@Override
+	public PteroAction<Nest> retrieveNestById(long id) {
+		PteroApplicationImpl impl = this;
+		return new PteroAction<Nest>() {
+			Route.CompiledRoute route = Route.Nests.GET_NEST.compile(Long.toUnsignedString(id));
+			@Override
+			public Nest execute() {
+				JSONObject jsonObject = requester.request(route).toJSONObject();
+				return new NestImpl(jsonObject, impl);
+			}
+		};
+	}
+
+	@Override
+	public PteroAction<List<Nest>> retrieveNests() {
+		PteroApplicationImpl impl = this;
+		return new PteroAction<List<Nest>>() {
+			@Override
+			public List<Nest> execute() {
+				Route.CompiledRoute route = Route.Nests.LIST_NESTS.compile("1");
+				JSONObject json = requester.request(route).toJSONObject();
+				long pages = json.getJSONObject("meta").getJSONObject("pagination").getLong("total_pages");
+				List<Nest> nests = new ArrayList<>();
+				for (Object o : json.getJSONArray("data")) {
+					JSONObject nest = new JSONObject(o.toString());
+					nests.add(new NestImpl(nest, impl));
+				}
+				for (int i = 1; i < pages; i++) {
+					Route.CompiledRoute nextRoute = Route.Nests.LIST_NESTS.compile(Long.toUnsignedString(pages));
+					JSONObject nextJson = requester.request(nextRoute).toJSONObject();
+					for (Object o : nextJson.getJSONArray("data")) {
+						JSONObject nest = new JSONObject(o.toString());
+						nests.add(new NestImpl(nest, impl));
+					}
+				}
+				return Collections.unmodifiableList(nests);
+			}
+		};
+	}
+
+	@Override
+	public PteroAction<List<Nest>> retrieveNestsByName(String name, boolean caseSensetive) {
+		return new PteroAction<List<Nest>>() {
+			@Override
+			public List<Nest> execute() {
+				List<Nest> nests = retrieveNests().execute();
+				List<Nest> newNests = new ArrayList<>();
+				for (Nest n : nests) {
+					if (caseSensetive) {
+						if (n.getName().contains(name))
+							newNests.add(n);
+					} else {
+						if (n.getName().toLowerCase().contains(name.toLowerCase()))
+							newNests.add(n);
+					}
+				}
+				return Collections.unmodifiableList(newNests);
+			}
+		};
+	}
+
+	@Override
+	public PteroAction<List<Nest>> retrieveNestsByAuthor(String author, boolean caseSensetive) {
+		return new PteroAction<List<Nest>>() {
+			@Override
+			public List<Nest> execute() {
+				List<Nest> nests = retrieveNests().execute();
+				List<Nest> newNests = new ArrayList<>();
+				for (Nest n : nests) {
+					if (caseSensetive) {
+						if (n.getAuthor().contains(author))
+							newNests.add(n);
+					} else {
+						if (n.getAuthor().toLowerCase().contains(author.toLowerCase()))
+							newNests.add(n);
+					}
+				}
+				return Collections.unmodifiableList(newNests);
+			}
+		};
 	}
 
 	@Override

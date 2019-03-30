@@ -1,10 +1,10 @@
 package com.mattmalec.pterodactyl4j.application.entities;
 
-import java.time.OffsetDateTime;
+import com.mattmalec.pterodactyl4j.PteroAction;
 
 public interface Egg extends ISnowflake {
 
-	Nest getNest();
+	PteroAction<Nest> retrieveNest();
 	String getAuthor();
 	String getDescription();
 	String getDockerImage();
