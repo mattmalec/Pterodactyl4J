@@ -4,6 +4,8 @@ import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.application.entities.Location;
 import com.mattmalec.pterodactyl4j.application.entities.Node;
 import com.mattmalec.pterodactyl4j.application.managers.AllocationManager;
+import com.mattmalec.pterodactyl4j.application.managers.NodeAction;
+import com.mattmalec.pterodactyl4j.requests.Route;
 import org.json.JSONObject;
 
 import java.time.Instant;
@@ -138,5 +140,22 @@ public class NodeImpl implements Node {
 	@Override
 	public String toString() {
 		return json.toString(4);
+	}
+
+	@Override
+	public NodeAction edit() {
+		return new EditNodeImpl(impl, this);
+	}
+
+	@Override
+	public PteroAction<Void> delete() {
+		return new PteroAction<Void>() {
+			Route.CompiledRoute route = Route.Nodes.DELETE_NODE.compile(getId());
+			@Override
+			public Void execute() {
+				impl.getRequester().request(route);
+				return null;
+			}
+		};
 	}
 }

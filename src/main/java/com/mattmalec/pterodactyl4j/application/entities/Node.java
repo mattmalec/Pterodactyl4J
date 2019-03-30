@@ -2,6 +2,7 @@ package com.mattmalec.pterodactyl4j.application.entities;
 
 import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.application.managers.AllocationManager;
+import com.mattmalec.pterodactyl4j.application.managers.NodeAction;
 
 public interface Node extends ISnowflake {
 
@@ -27,5 +28,8 @@ public interface Node extends ISnowflake {
 	String getDaemonListenPort();
 	String getDaemonSFTPPort();
 	String getDaemonBase();
+
+	NodeAction edit();
+	PteroAction<Void> delete();
 
 }
