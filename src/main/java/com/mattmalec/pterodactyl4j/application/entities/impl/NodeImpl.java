@@ -42,7 +42,7 @@ public class NodeImpl implements Node {
 
 	@Override
 	public AllocationManager getAllocationManager() {
-		return null;
+		return new AllocationManagerImpl(this, impl);
 	}
 
 	@Override

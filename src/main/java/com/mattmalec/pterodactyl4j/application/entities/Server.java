@@ -1,7 +1,5 @@
 package com.mattmalec.pterodactyl4j.application.entities;
 
-import java.time.OffsetDateTime;
-
 public interface Server extends ISnowflake {
 
 	String getExternalId();
