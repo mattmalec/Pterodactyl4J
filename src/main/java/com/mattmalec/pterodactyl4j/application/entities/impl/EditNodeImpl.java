@@ -182,7 +182,7 @@ public class EditNodeImpl implements NodeAction {
 					json.put("throttle", new JSONObject().put("enabled", false));
 				else
 					json.put("throttle", new JSONObject().put("enabled", throttle));
-				Route.CompiledRoute route = Route.Nodes.CREATE_NODE.compile().withJSONdata(json);
+				Route.CompiledRoute route = Route.Nodes.EDIT_NODE.compile(node.getId()).withJSONdata(json);
 				JSONObject jsonObject = requester.request(route).toJSONObject();
 				return new NodeImpl(jsonObject, impl);
 			}

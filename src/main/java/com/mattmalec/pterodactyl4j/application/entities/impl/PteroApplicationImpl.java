@@ -1,6 +1,5 @@
 package com.mattmalec.pterodactyl4j.application.entities.impl;
 
-import com.mattmalec.pterodactyl4j.PteroAPI;
 import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.application.entities.*;
 import com.mattmalec.pterodactyl4j.application.managers.LocationManager;
@@ -15,31 +14,16 @@ import java.util.Collections;
 import java.util.List;
 
 
-public class PteroApplicationImpl implements PteroApplication, PteroAPI {
+public class PteroApplicationImpl implements PteroApplication {
 
-	private String token;
 	private Requester requester;
-	private String applicationUrl;
 
-	public PteroApplicationImpl(String applicationUrl, String token) {
-		this.token = token;
-		this.applicationUrl = applicationUrl;
-		this.requester = new Requester(this);
+	public PteroApplicationImpl(Requester requester) {
+		this.requester = requester;
 	}
 
-	@Override
-	public String getToken() {
-		return this.token;
-	}
-
-	@Override
 	public Requester getRequester() {
 		return this.requester;
-	}
-
-	@Override
-	public String getApplicationUrl() {
-		return this.applicationUrl;
 	}
 
 	public PteroAction<User> retrieveUserById(String id) {
@@ -268,16 +252,13 @@ public class PteroApplicationImpl implements PteroApplication, PteroAPI {
 
 	@Override
 	public PteroAction<Egg> retrieveEggById(String id) {
+		PteroApplicationImpl impl = this;
 		return new PteroAction<Egg>() {
 			@Override
 			public Egg execute() {
-				List<Egg> eggs = retrieveEggs().execute();
-				for(Egg egg : eggs) {
-					if(egg.getId().equals(id)) {
-						return egg;
-					}
-				}
-				return null;
+				Route.CompiledRoute route = Route.Nests.GET_EGG.compile(id);
+				JSONObject json = requester.request(route).toJSONObject();
+				return new EggImpl(json, impl);
 			}
 		};
 	}
@@ -546,7 +527,7 @@ public class PteroApplicationImpl implements PteroApplication, PteroAPI {
 	}
 
 	@Override
-	public PteroAction<List<Server>> retrieveServerByOwner(User user) {
+	public PteroAction<List<Server>> retrieveServersByOwner(User user) {
 		return new PteroAction<List<Server>>() {
 			@Override
 			public List<Server> execute() {

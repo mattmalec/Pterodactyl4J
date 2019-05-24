@@ -50,7 +50,7 @@ public interface PteroApplication {
 	PteroAction<Server> retrieveServerById(String id);
 	PteroAction<Server> retrieveServerById(long id);
 	PteroAction<List<Server>> retrieveServersByName(String name, boolean caseSensetive);
-	PteroAction<List<Server>> retrieveServerByOwner(User user);
+	PteroAction<List<Server>> retrieveServersByOwner(User user);
 
 
 }

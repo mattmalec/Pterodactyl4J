@@ -2,6 +2,8 @@ package com.mattmalec.pterodactyl4j.application.entities.impl;
 
 import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.application.entities.*;
+import com.mattmalec.pterodactyl4j.application.managers.ServerController;
+import com.mattmalec.pterodactyl4j.application.managers.ServerManager;
 import org.json.JSONObject;
 
 import java.time.Instant;
@@ -108,6 +110,16 @@ public class ServerImpl implements Server {
 				return impl.retrieveEggById(json.getLong("egg")).execute();
 			}
 		};
+	}
+
+	@Override
+	public ServerManager getManager() {
+		return new ServerManager(this, impl);
+	}
+
+	@Override
+	public ServerController getController() {
+		return new ServerController(this, impl);
 	}
 
 	@Override

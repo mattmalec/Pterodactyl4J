@@ -1,4 +1,4 @@
-package com.mattmalec.pterodactyl4j.application.entities;
+package com.mattmalec.pterodactyl4j;
 
 public enum DataType {
 

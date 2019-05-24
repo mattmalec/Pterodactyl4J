@@ -12,62 +12,73 @@ import static com.mattmalec.pterodactyl4j.requests.Method.*;
 public class Route {
 
 	private static final String APPLICATION_PREFIX = "application/";
+	private static final String CLIENT_PREFIX = "client/";
+
 
 	public static class Users {
 
-		public static final Route LIST_USERS = new Route(GET, APPLICATION_PREFIX + "users?page={page}", "page");
-		public static final Route GET_USER = new Route(GET, APPLICATION_PREFIX + "users/{user_id}", "user_id");
-		public static final Route CREATE_USER = new Route(POST, APPLICATION_PREFIX + "users");
-		public static final Route EDIT_USER = new Route(PATCH, APPLICATION_PREFIX + "users/{user_id}", "user_id");
-		public static final Route DELETE_USER = new Route(DELETE, APPLICATION_PREFIX + "users/{user_id}", "user_id");
+		public static final Route LIST_USERS  			= new Route(GET,    APPLICATION_PREFIX + "users?page={page}", "page");
+		public static final Route GET_USER    			= new Route(GET,    APPLICATION_PREFIX + "users/{user_id}", "user_id");
+		public static final Route CREATE_USER 			= new Route(POST,   APPLICATION_PREFIX + "users");
+		public static final Route EDIT_USER   			= new Route(PATCH,  APPLICATION_PREFIX + "users/{user_id}", "user_id");
+		public static final Route DELETE_USER 			= new Route(DELETE, APPLICATION_PREFIX + "users/{user_id}", "user_id");
 
 	}
 
 	public static class Nodes {
 
-		public static final Route LIST_NODES = new Route(GET, APPLICATION_PREFIX + "nodes?page={page}", "page");
-		public static final Route GET_NODE = new Route(GET, APPLICATION_PREFIX + "nodes/{node_id}", "node_id");
-		public static final Route CREATE_NODE = new Route(POST, APPLICATION_PREFIX + "nodes");
-		public static final Route EDIT_NODE = new Route(PATCH, APPLICATION_PREFIX + "nodes/{node_id}", "node_id");
-		public static final Route DELETE_NODE = new Route(DELETE, APPLICATION_PREFIX + "nodes/{node_id}", "node_id");
-		public static final Route LIST_ALLOCATIONS = new Route(GET, APPLICATION_PREFIX + "nodes/{node_id}/allocations?page={page}", "node_id", "page");
-		public static final Route CREATE_ALLOCATION = new Route(POST, APPLICATION_PREFIX + "nodes/{node_id}/allocations", "node_id");
-		public static final Route DELETE_ALLOCATION = new Route(DELETE, APPLICATION_PREFIX + "nodes/{node_id}/allocations/{allocation_id}", "node_id", "allocation_id");
+		public static final Route LIST_NODES        	= new Route(GET,    APPLICATION_PREFIX + "nodes?page={page}", "page");
+		public static final Route GET_NODE          	= new Route(GET,    APPLICATION_PREFIX + "nodes/{node_id}", "node_id");
+		public static final Route CREATE_NODE       	= new Route(POST,   APPLICATION_PREFIX + "nodes");
+		public static final Route EDIT_NODE         	= new Route(PATCH,  APPLICATION_PREFIX + "nodes/{node_id}", "node_id");
+		public static final Route DELETE_NODE       	= new Route(DELETE, APPLICATION_PREFIX + "nodes/{node_id}", "node_id");
+		public static final Route LIST_ALLOCATIONS  	= new Route(GET,    APPLICATION_PREFIX + "nodes/{node_id}/allocations?page={page}", "node_id", "page");
+		public static final Route CREATE_ALLOCATION 	= new Route(POST,   APPLICATION_PREFIX + "nodes/{node_id}/allocations", "node_id");
+		public static final Route DELETE_ALLOCATION		= new Route(DELETE, APPLICATION_PREFIX + "nodes/{node_id}/allocations/{allocation_id}", "node_id", "allocation_id");
 
 	}
 
 	public static class Locations {
 
-		public static final Route LIST_LOCATIONS = new Route(GET, APPLICATION_PREFIX + "locations?page={page}", "page");
-		public static final Route GET_LOCATION = new Route(GET, APPLICATION_PREFIX + "locations/{location_id}", "location_id");
-		public static final Route CREATE_LOCATION = new Route(POST, APPLICATION_PREFIX + "locations");
-		public static final Route EDIT_LOCATION = new Route(PATCH, APPLICATION_PREFIX + "locations");
-		public static final Route DELETE_LOCATION = new Route(DELETE, APPLICATION_PREFIX + "locations/{location_id}", "location_id");
+		public static final Route LIST_LOCATIONS  		= new Route(GET,    APPLICATION_PREFIX + "locations?page={page}", "page");
+		public static final Route GET_LOCATION    		= new Route(GET,    APPLICATION_PREFIX + "locations/{location_id}", "location_id");
+		public static final Route CREATE_LOCATION 		= new Route(POST,   APPLICATION_PREFIX + "locations");
+		public static final Route EDIT_LOCATION   		= new Route(PATCH,  APPLICATION_PREFIX + "locations");
+		public static final Route DELETE_LOCATION 		= new Route(DELETE, APPLICATION_PREFIX + "locations/{location_id}", "location_id");
 	}
 
 	public static class Servers {
 
-		public static final Route LIST_SERVERS = new Route(GET, APPLICATION_PREFIX + "servers?page={page}", "page");
-		public static final Route GET_SERVER = new Route(GET, APPLICATION_PREFIX + "servers/{server_id}", "server_id");
-		public static final Route UPDATE_SERVER_DETAILS = new Route(PATCH, APPLICATION_PREFIX + "servers/{server_id}/details", "server_id");
-		public static final Route UPDATE_SERVER_BUILD = new Route(PATCH, APPLICATION_PREFIX + "servers/{server_id}/build", "server_id");
-		public static final Route UPDATE_SERVER_STARTUP = new Route(PATCH, APPLICATION_PREFIX + "servers/{server_id}/startup", "server_id");
-		public static final Route CREATE_SERVER = new Route(POST, APPLICATION_PREFIX + "servers");
-		public static final Route SUSPEND_SERVER = new Route(POST, APPLICATION_PREFIX + "servers/{server_id}/suspend", "server_id");
-		public static final Route UNSUSPEND_SERVER = new Route(POST, APPLICATION_PREFIX + "servers/{server_id}/unsuspend", "server_id");
-		public static final Route REINSTALL_SERVER = new Route(POST, APPLICATION_PREFIX + "servers/{server_id}/reinstall", "server_id");
-		public static final Route REBUILD_SERVER = new Route(POST, APPLICATION_PREFIX + "servers/{server_id}/rebuild", "server_id");
-		public static final Route SAFE_DELETE_SERVER = new Route(DELETE, APPLICATION_PREFIX + "servers/{server_id}", "server_id");
-		public static final Route FORCE_DELETE_SERVER = new Route(DELETE, APPLICATION_PREFIX + "servers/{server_id}/force", "server_id");
+		public static final Route LIST_SERVERS 			= new Route(GET,    APPLICATION_PREFIX + "servers?page={page}", "page");
+		public static final Route GET_SERVER 			= new Route(GET,    APPLICATION_PREFIX + "servers/{server_id}", "server_id");
+		public static final Route UPDATE_SERVER_DETAILS = new Route(PATCH,  APPLICATION_PREFIX + "servers/{server_id}/details", "server_id");
+		public static final Route UPDATE_SERVER_BUILD   = new Route(PATCH,  APPLICATION_PREFIX + "servers/{server_id}/build", "server_id");
+		public static final Route UPDATE_SERVER_STARTUP = new Route(PATCH,  APPLICATION_PREFIX + "servers/{server_id}/startup", "server_id");
+		public static final Route CREATE_SERVER 		= new Route(POST,   APPLICATION_PREFIX + "servers");
+		public static final Route SUSPEND_SERVER 		= new Route(POST,   APPLICATION_PREFIX + "servers/{server_id}/suspend", "server_id");
+		public static final Route UNSUSPEND_SERVER 		= new Route(POST,   APPLICATION_PREFIX + "servers/{server_id}/unsuspend", "server_id");
+		public static final Route REINSTALL_SERVER 		= new Route(POST,   APPLICATION_PREFIX + "servers/{server_id}/reinstall", "server_id");
+		public static final Route REBUILD_SERVER 		= new Route(POST,   APPLICATION_PREFIX + "servers/{server_id}/rebuild", "server_id");
+		public static final Route SAFE_DELETE_SERVER 	= new Route(DELETE, APPLICATION_PREFIX + "servers/{server_id}", "server_id");
+		public static final Route FORCE_DELETE_SERVER   = new Route(DELETE, APPLICATION_PREFIX + "servers/{server_id}/force", "server_id");
 
 	}
 
 	public static class Nests {
 
-		public static final Route LIST_NESTS = new Route(GET, APPLICATION_PREFIX + "nests?page={page}", "page");
-		public static final Route GET_NEST = new Route(GET, APPLICATION_PREFIX + "nests/{nest_id}", "nest_id");
-		public static final Route GET_EGGS = new Route(GET, APPLICATION_PREFIX + "nests/{nest_id}/eggs", "nest_id");
-		public static final Route GET_EGG = new Route(GET, APPLICATION_PREFIX + "nests/{nest_id}/eggs/{egg_id}", "nest_id", "egg_id");
+		public static final Route LIST_NESTS 			= new Route(GET, 	APPLICATION_PREFIX + "nests?page={page}", "page");
+		public static final Route GET_NEST 				= new Route(GET, 	APPLICATION_PREFIX + "nests/{nest_id}", "nest_id");
+		public static final Route GET_EGGS 				= new Route(GET, 	APPLICATION_PREFIX + "nests/{nest_id}/eggs", "nest_id");
+		public static final Route GET_EGG 				= new Route(GET, 	APPLICATION_PREFIX + "nests/{nest_id}/eggs/{egg_id}", "nest_id", "egg_id");
+
+	}
+
+	public static class Client {
+
+		public static final Route GET_UTILIZATION 		= new Route(GET,  	CLIENT_PREFIX + "servers/{server_id}/utilization", "server_id");
+		public static final Route SEND_COMMAND 			= new Route(POST, 	CLIENT_PREFIX + "servers/{server_id}/command", "server_id");
+		public static final Route SET_POWER 			= new Route(POST, 	CLIENT_PREFIX + "servers/{server_id}/power", "server_id");
+		public static final Route LIST_SERVERS 			= new Route(GET,  	CLIENT_PREFIX);
 
 	}
 
