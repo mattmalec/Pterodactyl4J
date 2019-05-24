@@ -61,4 +61,9 @@ public class NestImpl implements Nest {
     public OffsetDateTime getUpdatedDate() {
         return LocalDateTime.parse(json.optString("updated_at"), DateTimeFormatter.ISO_LOCAL_DATE_TIME).atOffset(ZoneId.systemDefault().getRules().getOffset(Instant.now()));
     }
+
+    @Override
+    public String toString() {
+        return json.toString(4);
+    }
 }

@@ -22,6 +22,12 @@ public interface PteroApplication {
 	PteroAction<List<Node>> retrieveNodesByName(String name, boolean caseSensetive);
 	NodeManager getNodeManager();
 
+	PteroAction<Allocation> retrieveAllocationById(String id);
+	PteroAction<Allocation> retrieveAllocationById(long id);
+	PteroAction<List<Allocation>> retrieveAllocationsByNode(Node node);
+	PteroAction<List<Allocation>> retrieveAllocations();
+
+
 
 	PteroAction<List<Location>> retrieveLocations();
 	PteroAction<Location> retrieveLocationById(String id);
@@ -30,11 +36,21 @@ public interface PteroApplication {
 	LocationManager getLocationManager();
 
 	PteroAction<List<Egg>> retrieveEggsByNest(Nest nest);
+	PteroAction<List<Egg>> retrieveEggs();
+
+	PteroAction<Egg> retrieveEggById(String id);
+	PteroAction<Egg> retrieveEggById(long id);
 	PteroAction<Nest> retrieveNestById(String id);
 	PteroAction<Nest> retrieveNestById(long id);
 	PteroAction<List<Nest>> retrieveNests();
 	PteroAction<List<Nest>> retrieveNestsByAuthor(String author, boolean caseSensetive);
 	PteroAction<List<Nest>> retrieveNestsByName(String name, boolean caseSensetive);
+
+	PteroAction<List<Server>> retrieveServers();
+	PteroAction<Server> retrieveServerById(String id);
+	PteroAction<Server> retrieveServerById(long id);
+	PteroAction<List<Server>> retrieveServersByName(String name, boolean caseSensetive);
+	PteroAction<List<Server>> retrieveServerByOwner(User user);
 
 
 }

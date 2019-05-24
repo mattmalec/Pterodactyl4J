@@ -35,4 +35,9 @@ public class ScriptImpl implements Script {
     public String getExtends() {
         return json.getString("extends");
     }
+
+    @Override
+    public String toString() {
+        return json.toString(4);
+    }
 }

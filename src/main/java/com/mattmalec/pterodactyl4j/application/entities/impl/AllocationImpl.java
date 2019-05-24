@@ -10,7 +10,7 @@ public class AllocationImpl implements Allocation {
 	private JSONObject json;
 
 	public AllocationImpl(JSONObject json) {
-		this.json = json;
+		this.json = json.getJSONObject("attributes");
 	}
 
 	@Override
@@ -46,5 +46,10 @@ public class AllocationImpl implements Allocation {
 	@Override
 	public OffsetDateTime getUpdatedDate() {
 		return null;
+	}
+
+	@Override
+	public String toString() {
+		return json.toString(4);
 	}
 }

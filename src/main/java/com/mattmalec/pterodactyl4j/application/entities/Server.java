@@ -1,5 +1,7 @@
 package com.mattmalec.pterodactyl4j.application.entities;
 
+import com.mattmalec.pterodactyl4j.PteroAction;
+
 public interface Server extends ISnowflake {
 
 	String getExternalId();
@@ -10,11 +12,11 @@ public interface Server extends ISnowflake {
 	boolean isSuspended();
 	Limit getLimits();
 	FeatureLimit getFeatureLimits();
-	User getOwner();
-	Node getNode();
-	Allocation getAllocation();
-	Nest getNest();
-	Egg getEgg();
+	PteroAction<User> retrieveOwner();
+	PteroAction<Node> retrieveNode();
+	PteroAction<Allocation> retrieveAllocation();
+	PteroAction<Nest> retrieveNest();
+	PteroAction<Egg> retrieveEgg();
 	String getPack();
 	Container getContainer();
 
