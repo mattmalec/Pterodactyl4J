@@ -49,6 +49,11 @@ public class AllocationImpl implements Allocation {
 	}
 
 	@Override
+	public String getFullAddress() {
+		return getIP() + ":" + getPort();
+	}
+
+	@Override
 	public String toString() {
 		return json.toString(4);
 	}

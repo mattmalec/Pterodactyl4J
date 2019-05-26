@@ -7,6 +7,7 @@ import com.mattmalec.pterodactyl4j.application.entities.Egg;
 import com.mattmalec.pterodactyl4j.application.entities.Location;
 import com.mattmalec.pterodactyl4j.application.entities.User;
 import com.mattmalec.pterodactyl4j.application.managers.ServerAction;
+import com.mattmalec.pterodactyl4j.exceptions.IllegalActionException;
 import com.mattmalec.pterodactyl4j.requests.Route;
 import org.json.JSONObject;
 
@@ -173,6 +174,9 @@ public class CreateServerImpl implements ServerAction {
 		return new PteroAction<ApplicationServer>() {
 			@Override
 			public ApplicationServer execute() {
+				if(memory < 4) {
+					throw new IllegalActionException("The minimum memory limit is 4 MB.");
+				}
 				JSONObject featureLimits = new JSONObject()
 						.put("databases", databases)
 						.put("allocations", allocations);
