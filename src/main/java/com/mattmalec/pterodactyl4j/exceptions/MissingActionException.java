@@ -14,7 +14,6 @@ public class MissingActionException extends RuntimeException {
             JSONObject obj = new JSONObject(o.toString());
             message += "\t- " + obj.getString("detail") + " (Source: " + obj.getJSONObject("source").getString("field") + ")\n";
         }
-        System.out.println(json.toString(4));
         throw new MissingActionException(message);
     }
 
