@@ -1,5 +1,8 @@
 package com.mattmalec.pterodactyl4j;
 
+import com.mattmalec.pterodactyl4j.entities.PteroAPI;
+import com.mattmalec.pterodactyl4j.entities.impl.PteroAPIImpl;
+
 public class PteroBuilder {
 
     private String token;

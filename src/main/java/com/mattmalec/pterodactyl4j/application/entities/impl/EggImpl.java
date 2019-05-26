@@ -24,7 +24,7 @@ public class EggImpl implements Egg {
 
     @Override
     public PteroAction<Nest> retrieveNest() {
-        return impl.retrieveNestById(getId());
+        return impl.retrieveNestById(json.getLong("nest"));
     }
 
     @Override

@@ -60,7 +60,7 @@ public class Route {
 		public static final Route REINSTALL_SERVER 		= new Route(POST,   APPLICATION_PREFIX + "servers/{server_id}/reinstall", "server_id");
 		public static final Route REBUILD_SERVER 		= new Route(POST,   APPLICATION_PREFIX + "servers/{server_id}/rebuild", "server_id");
 		public static final Route SAFE_DELETE_SERVER 	= new Route(DELETE, APPLICATION_PREFIX + "servers/{server_id}", "server_id");
-		public static final Route FORCE_DELETE_SERVER   = new Route(DELETE, APPLICATION_PREFIX + "servers/{server_id}/force", "server_id");
+		public static final Route FORCE_DELETE_SERVER	= new Route(DELETE, APPLICATION_PREFIX + "servers/{server_id}/force", "server_id");
 
 	}
 
@@ -78,7 +78,8 @@ public class Route {
 		public static final Route GET_UTILIZATION 		= new Route(GET,  	CLIENT_PREFIX + "servers/{server_id}/utilization", "server_id");
 		public static final Route SEND_COMMAND 			= new Route(POST, 	CLIENT_PREFIX + "servers/{server_id}/command", "server_id");
 		public static final Route SET_POWER 			= new Route(POST, 	CLIENT_PREFIX + "servers/{server_id}/power", "server_id");
-		public static final Route LIST_SERVERS 			= new Route(GET,  	CLIENT_PREFIX);
+		public static final Route LIST_SERVERS 			= new Route(GET,  	CLIENT_PREFIX + "?page={page}", "page");
+		public static final Route GET_SERVER			= new Route(GET,	CLIENT_PREFIX + "servers/{server_id}", "server_id");
 
 	}
 

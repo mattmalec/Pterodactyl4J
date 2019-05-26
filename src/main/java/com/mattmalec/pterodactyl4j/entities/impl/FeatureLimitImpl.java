@@ -1,6 +1,6 @@
-package com.mattmalec.pterodactyl4j.application.entities.impl;
+package com.mattmalec.pterodactyl4j.entities.impl;
 
-import com.mattmalec.pterodactyl4j.application.entities.FeatureLimit;
+import com.mattmalec.pterodactyl4j.entities.FeatureLimit;
 import org.json.JSONObject;
 
 public class FeatureLimitImpl implements FeatureLimit {

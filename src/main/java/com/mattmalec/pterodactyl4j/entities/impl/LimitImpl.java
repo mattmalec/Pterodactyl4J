@@ -1,6 +1,6 @@
-package com.mattmalec.pterodactyl4j.application.entities.impl;
+package com.mattmalec.pterodactyl4j.entities.impl;
 
-import com.mattmalec.pterodactyl4j.application.entities.Limit;
+import com.mattmalec.pterodactyl4j.entities.Limit;
 import org.json.JSONObject;
 
 public class LimitImpl implements Limit {

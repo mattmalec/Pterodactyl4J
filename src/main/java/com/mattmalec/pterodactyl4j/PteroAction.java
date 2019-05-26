@@ -1,5 +1,7 @@
 package com.mattmalec.pterodactyl4j;
 
+import com.mattmalec.pterodactyl4j.entities.IPteroAction;
+
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 

@@ -1,16 +1,16 @@
 package com.mattmalec.pterodactyl4j.application.managers;
 
 import com.mattmalec.pterodactyl4j.PteroAction;
-import com.mattmalec.pterodactyl4j.application.entities.Server;
+import com.mattmalec.pterodactyl4j.application.entities.ApplicationServer;
 import com.mattmalec.pterodactyl4j.application.entities.impl.PteroApplicationImpl;
 import com.mattmalec.pterodactyl4j.requests.Route;
 
 public class ServerController {
 
-	private Server server;
+	private ApplicationServer server;
 	private PteroApplicationImpl impl;
 
-	public ServerController(Server server, PteroApplicationImpl impl) {
+	public ServerController(ApplicationServer server, PteroApplicationImpl impl) {
 		this.server = server;
 		this.impl = impl;
 	}

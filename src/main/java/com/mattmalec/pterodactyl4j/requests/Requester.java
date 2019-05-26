@@ -1,6 +1,6 @@
 package com.mattmalec.pterodactyl4j.requests;
 
-import com.mattmalec.pterodactyl4j.PteroAPI;
+import com.mattmalec.pterodactyl4j.entities.PteroAPI;
 import com.mattmalec.pterodactyl4j.exceptions.*;
 import okhttp3.*;
 import org.json.JSONObject;
@@ -59,6 +59,9 @@ public class Requester {
 			if(responseCode == 404) {
 				throw new NotFoundException("The requested entity was not found.");
 			}
+			if(responseCode == 422) {
+				throw new MissingActionException("The request is missing required fields.", toJSONObject());
+			}
 			if(responseCode == 429) {
 				throw new RateLimitedException("The request was rate limited.");
 			}
@@ -66,7 +69,7 @@ public class Requester {
 				throw new ServerException("The server has encountered an Internal Server Error.");
 			}
 		}
-		throw new HttpException("Pterodactyl4J has encountered a " + response.code() + " error.\n\n" + new JSONObject(responseBody).toString(4) + "\n");
+		throw new HttpException("Pterodactyl4J has encountered a " + response.code() + " error.", toJSONObject());
 	}
 	public JSONObject toJSONObject() {
 		return new JSONObject(this.responseBody);

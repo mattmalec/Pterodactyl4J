@@ -4,6 +4,7 @@ import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.application.entities.*;
 import com.mattmalec.pterodactyl4j.application.managers.LocationManager;
 import com.mattmalec.pterodactyl4j.application.managers.NodeManager;
+import com.mattmalec.pterodactyl4j.application.managers.ServerAction;
 import com.mattmalec.pterodactyl4j.application.managers.UserManager;
 import com.mattmalec.pterodactyl4j.requests.Requester;
 import com.mattmalec.pterodactyl4j.requests.Route;
@@ -37,7 +38,7 @@ public class PteroApplicationImpl implements PteroApplication {
 			@Override
 			public User execute() {
 				JSONObject jsonObject = requester.request(route).toJSONObject();
-				return new UserImpl(jsonObject);
+				return new UserImpl(jsonObject, requester);
 			}
 		};
 	}
@@ -53,14 +54,14 @@ public class PteroApplicationImpl implements PteroApplication {
 				List<User> users = new ArrayList<>();
 				for(Object o : json.getJSONArray("data")) {
 					JSONObject user = new JSONObject(o.toString());
-					users.add(new UserImpl(user));
+					users.add(new UserImpl(user, requester));
 				}
 				for(int i=1; i < pages; i++) {
 					Route.CompiledRoute nextRoute = Route.Users.LIST_USERS.compile(Long.toUnsignedString(pages));
 					JSONObject nextJson = requester.request(nextRoute).toJSONObject();
 					for(Object o : nextJson.getJSONArray("data")) {
 						JSONObject user = new JSONObject(o.toString());
-						users.add(new UserImpl(user));
+						users.add(new UserImpl(user, requester));
 					}
 				}
 				return Collections.unmodifiableList(users);
@@ -251,12 +252,12 @@ public class PteroApplicationImpl implements PteroApplication {
 	}
 
 	@Override
-	public PteroAction<Egg> retrieveEggById(String id) {
+	public PteroAction<Egg> retrieveEggById(Nest nest, String id) {
 		PteroApplicationImpl impl = this;
 		return new PteroAction<Egg>() {
 			@Override
 			public Egg execute() {
-				Route.CompiledRoute route = Route.Nests.GET_EGG.compile(id);
+				Route.CompiledRoute route = Route.Nests.GET_EGG.compile(nest.getId(), id);
 				JSONObject json = requester.request(route).toJSONObject();
 				return new EggImpl(json, impl);
 			}
@@ -264,8 +265,8 @@ public class PteroApplicationImpl implements PteroApplication {
 	}
 
 	@Override
-	public PteroAction<Egg> retrieveEggById(long id) {
-		return retrieveEggById(Long.toUnsignedString(id));
+	public PteroAction<Egg> retrieveEggById(Nest nest, long id) {
+		return retrieveEggById(nest, Long.toUnsignedString(id));
 	}
 
 
@@ -461,25 +462,25 @@ public class PteroApplicationImpl implements PteroApplication {
 	}
 
 	@Override
-	public PteroAction<List<Server>> retrieveServers() {
+	public PteroAction<List<ApplicationServer>> retrieveServers() {
 		PteroApplicationImpl impl = this;
-		return new PteroAction<List<Server>>() {
+		return new PteroAction<List<ApplicationServer>>() {
 			@Override
-			public List<Server> execute() {
+			public List<ApplicationServer> execute() {
 				Route.CompiledRoute route = Route.Servers.LIST_SERVERS.compile("1");
 				JSONObject json = requester.request(route).toJSONObject();
 				long pages = json.getJSONObject("meta").getJSONObject("pagination").getLong("total_pages");
-				List<Server> servers = new ArrayList<>();
+				List<ApplicationServer> servers = new ArrayList<>();
 				for(Object o : json.getJSONArray("data")) {
 					JSONObject server = new JSONObject(o.toString());
-					servers.add(new ServerImpl(impl, server));
+					servers.add(new ApplicationServerImpl(impl, server));
 				}
 				for(int i=1; i < pages; i++) {
 					Route.CompiledRoute nextRoute = Route.Servers.LIST_SERVERS.compile(Long.toUnsignedString(pages));
 					JSONObject nextJson = requester.request(nextRoute).toJSONObject();
 					for(Object o : nextJson.getJSONArray("data")) {
 						JSONObject server = new JSONObject(o.toString());
-						servers.add(new ServerImpl(impl, server));
+						servers.add(new ApplicationServerImpl(impl, server));
 					}
 				}
 				return Collections.unmodifiableList(servers);
@@ -488,31 +489,31 @@ public class PteroApplicationImpl implements PteroApplication {
 	}
 
 	@Override
-	public PteroAction<Server> retrieveServerById(String id) {
+	public PteroAction<ApplicationServer> retrieveServerById(String id) {
 		PteroApplicationImpl impl = this;
 		Route.CompiledRoute route = Route.Servers.GET_SERVER.compile(id);
-		return new PteroAction<Server>() {
+		return new PteroAction<ApplicationServer>() {
 			@Override
-			public Server execute() {
+			public ApplicationServer execute() {
 				JSONObject jsonObject = requester.request(route).toJSONObject();
-				return new ServerImpl(impl, jsonObject);
+				return new ApplicationServerImpl(impl, jsonObject);
 			}
 		};
 	}
 
 	@Override
-	public PteroAction<Server> retrieveServerById(long id) {
+	public PteroAction<ApplicationServer> retrieveServerById(long id) {
 		return retrieveServerById(Long.toUnsignedString(id));
 	}
 
 	@Override
-	public PteroAction<List<Server>> retrieveServersByName(String name, boolean caseSensetive) {
-		return new PteroAction<List<Server>>() {
+	public PteroAction<List<ApplicationServer>> retrieveServersByName(String name, boolean caseSensetive) {
+		return new PteroAction<List<ApplicationServer>>() {
 			@Override
-			public List<Server> execute() {
-				List<Server> servers = retrieveServers().execute();
-				List<Server> newServers = new ArrayList<>();
-				for (Server s : servers) {
+			public List<ApplicationServer> execute() {
+				List<ApplicationServer> servers = retrieveServers().execute();
+				List<ApplicationServer> newServers = new ArrayList<>();
+				for (ApplicationServer s : servers) {
 					if (caseSensetive) {
 						if (s.getName().contains(name))
 							newServers.add(s);
@@ -527,13 +528,13 @@ public class PteroApplicationImpl implements PteroApplication {
 	}
 
 	@Override
-	public PteroAction<List<Server>> retrieveServersByOwner(User user) {
-		return new PteroAction<List<Server>>() {
+	public PteroAction<List<ApplicationServer>> retrieveServersByOwner(User user) {
+		return new PteroAction<List<ApplicationServer>>() {
 			@Override
-			public List<Server> execute() {
-				List<Server> servers = retrieveServers().execute();
-				List<Server> newServers = new ArrayList<>();
-				for (Server s : servers) {
+			public List<ApplicationServer> execute() {
+				List<ApplicationServer> servers = retrieveServers().execute();
+				List<ApplicationServer> newServers = new ArrayList<>();
+				for (ApplicationServer s : servers) {
 					User owner = s.retrieveOwner().execute();
 					if (owner.getIdLong() == user.getIdLong()) {
 						newServers.add(s);
@@ -542,5 +543,10 @@ public class PteroApplicationImpl implements PteroApplication {
 				return Collections.unmodifiableList(newServers);
 			}
 		};
+	}
+
+	@Override
+	public ServerAction createServer() {
+		return new CreateServerImpl(this);
 	}
 }

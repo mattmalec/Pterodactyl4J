@@ -1,27 +1,15 @@
 package com.mattmalec.pterodactyl4j.application.entities;
 
-import com.mattmalec.pterodactyl4j.PteroAction;
-import com.mattmalec.pterodactyl4j.application.managers.ServerController;
-import com.mattmalec.pterodactyl4j.application.managers.ServerManager;
+import com.mattmalec.pterodactyl4j.entities.FeatureLimit;
+import com.mattmalec.pterodactyl4j.entities.Limit;
 
-public interface Server extends ISnowflake {
+public interface Server {
 
-	String getExternalId();
 	String getUUID();
 	String getIdentifier();
 	String getName();
 	String getDescription();
-	boolean isSuspended();
 	Limit getLimits();
 	FeatureLimit getFeatureLimits();
-	PteroAction<User> retrieveOwner();
-	PteroAction<Node> retrieveNode();
-	PteroAction<Allocation> retrieveAllocation();
-	PteroAction<Nest> retrieveNest();
-	PteroAction<Egg> retrieveEgg();
-	String getPack();
-	Container getContainer();
-	ServerManager getManager();
-	ServerController getController();
 
 }

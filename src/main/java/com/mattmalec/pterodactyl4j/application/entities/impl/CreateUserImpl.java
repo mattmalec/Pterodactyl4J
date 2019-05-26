@@ -69,7 +69,7 @@ public class CreateUserImpl implements UserAction {
             JSONObject jsonObject = requester.request(route).toJSONObject();
             @Override
             public User execute() {
-                return new UserImpl(jsonObject);
+                return new UserImpl(jsonObject, requester);
             }
         };
     }

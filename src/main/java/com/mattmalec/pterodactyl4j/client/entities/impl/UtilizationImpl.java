@@ -14,14 +14,16 @@ public class UtilizationImpl implements Utilization {
     private JSONObject json;
 
     public UtilizationImpl(JSONObject json) {
-        this.json = json;
+        this.json = json.getJSONObject("attributes");
     }
 
     @Override
     public UtilizationState getState() {
         switch(json.getString("state")) {
             case "on": return UtilizationState.ON;
+            case "starting": return UtilizationState.STARTING;
             case "off": return UtilizationState.OFF;
+            case "stopping": return UtilizationState.STOPPING;
             default: return UtilizationState.OFF;
         }
     }
@@ -63,5 +65,9 @@ public class UtilizationImpl implements Utilization {
     public String getMaxDisk() {
         return String.valueOf(json.getJSONObject("disk").getLong("limit"));
 
+    }
+    @Override
+    public String toString() {
+        return json.toString(4);
     }
 }

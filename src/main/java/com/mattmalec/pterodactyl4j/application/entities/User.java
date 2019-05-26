@@ -1,8 +1,9 @@
 package com.mattmalec.pterodactyl4j.application.entities;
 
-import java.time.OffsetDateTime;
+import com.mattmalec.pterodactyl4j.PteroAction;
+import com.mattmalec.pterodactyl4j.application.managers.UserAction;
+
 import java.util.Locale;
-import java.util.UUID;
 
 public interface User extends ISnowflake {
 
@@ -17,6 +18,8 @@ public interface User extends ISnowflake {
 	Locale getLocale();
 	boolean isRootAdmin();
 	boolean has2FA();
+	UserAction edit();
+	PteroAction<Void> delete();
 
 	@Override
 	String toString();

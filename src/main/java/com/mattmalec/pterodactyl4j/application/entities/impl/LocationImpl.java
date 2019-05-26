@@ -3,6 +3,8 @@ package com.mattmalec.pterodactyl4j.application.entities.impl;
 import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.application.entities.Location;
 import com.mattmalec.pterodactyl4j.application.entities.Node;
+import com.mattmalec.pterodactyl4j.application.managers.LocationAction;
+import com.mattmalec.pterodactyl4j.requests.Route;
 import org.json.JSONObject;
 
 import java.time.Instant;
@@ -65,6 +67,23 @@ public class LocationImpl implements Location {
 	public OffsetDateTime getUpdatedDate() {
 		return LocalDateTime.parse(json.optString("updated_at"), DateTimeFormatter.ISO_LOCAL_DATE_TIME).atOffset(ZoneId.systemDefault().getRules().getOffset(Instant.now()));
 
+	}
+
+	@Override
+	public LocationAction edit() {
+		return new EditLocationImpl(this, impl);
+	}
+
+	@Override
+	public PteroAction<Void> delete() {
+		return new PteroAction<Void>() {
+			Route.CompiledRoute route = Route.Locations.DELETE_LOCATION.compile(getId());
+			@Override
+			public Void execute() {
+				impl.getRequester().request(route);
+				return null;
+			}
+		};
 	}
 
 	@Override

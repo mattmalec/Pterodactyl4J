@@ -1,6 +1,10 @@
 package com.mattmalec.pterodactyl4j.application.entities.impl;
 
+import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.application.entities.User;
+import com.mattmalec.pterodactyl4j.application.managers.UserAction;
+import com.mattmalec.pterodactyl4j.requests.Requester;
+import com.mattmalec.pterodactyl4j.requests.Route;
 import org.json.JSONObject;
 
 import java.time.Instant;
@@ -13,9 +17,11 @@ import java.util.Locale;
 public class UserImpl implements User {
 
 	private JSONObject json;
+	private Requester requester;
 
-	public UserImpl(JSONObject json) {
+	public UserImpl(JSONObject json, Requester requester) {
 		this.json = json.getJSONObject("attributes");
+		this.requester = requester;
 	}
 
 	@Override
@@ -86,6 +92,23 @@ public class UserImpl implements User {
 	@Override
 	public OffsetDateTime getUpdatedDate() {
 		return LocalDateTime.parse(json.optString("updated_at"), DateTimeFormatter.ISO_LOCAL_DATE_TIME).atOffset(ZoneId.systemDefault().getRules().getOffset(Instant.now()));
+	}
+
+	@Override
+	public UserAction edit() {
+		return new EditUserImpl(this, requester);
+	}
+
+	@Override
+	public PteroAction<Void> delete() {
+		return new PteroAction<Void>() {
+			Route.CompiledRoute route = Route.Users.DELETE_USER.compile(getId());
+			@Override
+			public Void execute() {
+				requester.request(route);
+				return null;
+			}
+		};
 	}
 
 	@Override

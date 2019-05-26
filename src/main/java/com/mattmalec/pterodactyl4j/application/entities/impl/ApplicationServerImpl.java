@@ -4,6 +4,10 @@ import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.application.entities.*;
 import com.mattmalec.pterodactyl4j.application.managers.ServerController;
 import com.mattmalec.pterodactyl4j.application.managers.ServerManager;
+import com.mattmalec.pterodactyl4j.entities.FeatureLimit;
+import com.mattmalec.pterodactyl4j.entities.Limit;
+import com.mattmalec.pterodactyl4j.entities.impl.FeatureLimitImpl;
+import com.mattmalec.pterodactyl4j.entities.impl.LimitImpl;
 import org.json.JSONObject;
 
 import java.time.Instant;
@@ -12,12 +16,12 @@ import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
-public class ServerImpl implements Server {
+public class ApplicationServerImpl implements ApplicationServer {
 
 	private PteroApplicationImpl impl;
 	private JSONObject json;
 
-	public ServerImpl(PteroApplicationImpl impl, JSONObject json) {
+	public ApplicationServerImpl(PteroApplicationImpl impl, JSONObject json) {
 		this.impl = impl;
 		this.json = json.getJSONObject("attributes");
 	}
@@ -107,7 +111,8 @@ public class ServerImpl implements Server {
 		return new PteroAction<Egg>() {
 			@Override
 			public Egg execute() {
-				return impl.retrieveEggById(json.getLong("egg")).execute();
+
+				return impl.retrieveEggById(retrieveNest().execute(), json.getLong("egg")).execute();
 			}
 		};
 	}
