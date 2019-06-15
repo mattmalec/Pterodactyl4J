@@ -7,15 +7,12 @@ public class PteroBuilder {
 
     private String token;
     private String applicationUrl;
-    private AccountType accountType;
 
     public PteroBuilder(String applicationUrl, String token) {
         this.token = token;
         this.applicationUrl = applicationUrl;
     }
-    public PteroBuilder(AccountType accountType) {
-        this.accountType = accountType;
-    }
+    public PteroBuilder() {}
 
     public PteroBuilder setToken(String token) {
         this.token = token;
@@ -25,10 +22,6 @@ public class PteroBuilder {
 
     public PteroBuilder setApplicationUrl(String applicationUrl) {
         this.applicationUrl = applicationUrl;
-        return this;
-    }
-    public PteroBuilder setAccountType(AccountType accountType) {
-        this.accountType = accountType;
         return this;
     }
 
@@ -41,10 +34,6 @@ public class PteroBuilder {
         return this.applicationUrl;
     }
     public PteroAPI build() {
-        if(this.applicationUrl == null || this.applicationUrl.isEmpty())
-            throw new IllegalArgumentException("Application URL cannot be blank or null");
-        if(this.token == null || this.token.isEmpty())
-            throw new IllegalArgumentException("Authorization token cannot be blank or null");
-        return new PteroAPIImpl(this.applicationUrl, this.token, accountType);
+        return new PteroAPIImpl(this.applicationUrl, this.token);
     }
 }

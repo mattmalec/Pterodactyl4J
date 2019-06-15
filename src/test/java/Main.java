@@ -1,4 +1,3 @@
-import com.mattmalec.pterodactyl4j.AccountType;
 import com.mattmalec.pterodactyl4j.PteroBuilder;
 import com.mattmalec.pterodactyl4j.application.entities.PteroApplication;
 import com.mattmalec.pterodactyl4j.client.entities.PteroClient;
@@ -8,7 +7,7 @@ import com.mattmalec.pterodactyl4j.entities.PteroAPI;
 public class Main {
 
 	public static void main(String[] args) {
-		PteroAPI ptero = new PteroBuilder(AccountType.CLIENT)
+		PteroAPI ptero = new PteroBuilder()
 				.setApplicationUrl("https://panel.explodingbush.net")
 				.setToken("[redacted]")
 				.build();

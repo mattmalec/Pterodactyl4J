@@ -1,6 +1,5 @@
 package com.mattmalec.pterodactyl4j.entities.impl;
 
-import com.mattmalec.pterodactyl4j.AccountType;
 import com.mattmalec.pterodactyl4j.application.entities.PteroApplication;
 import com.mattmalec.pterodactyl4j.application.entities.impl.PteroApplicationImpl;
 import com.mattmalec.pterodactyl4j.client.entities.PteroClient;
@@ -16,17 +15,12 @@ public class PteroAPIImpl implements PteroAPI {
     private PteroApplicationImpl applicationImpl;
     private PteroClientImpl clientImpl;
 
-    public PteroAPIImpl(String applicationUrl, String token, AccountType accountType) {
+    public PteroAPIImpl(String applicationUrl, String token) {
         this.token = token;
         this.applicationUrl = applicationUrl;
         this.requester = new Requester(this);
-//        switch(accountType) {
-//            case APPLICATION:
-                this.applicationImpl = new PteroApplicationImpl(requester);
-//            break;
-//            case CLIENT:
-                this.clientImpl = new PteroClientImpl(requester);
-//        }
+        this.applicationImpl = new PteroApplicationImpl(requester);
+        this.clientImpl = new PteroClientImpl(requester);
     }
 
     @Override

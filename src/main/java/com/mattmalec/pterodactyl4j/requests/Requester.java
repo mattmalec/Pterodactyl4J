@@ -43,7 +43,6 @@ public class Requester {
 		builder.url(url);
 		try {
 			this.response = okHttpClient.newCall(builder.build()).execute();
-			Headers headers = this.response.headers();
 			this.responseBody = this.response.body().string();
 		} catch (IOException ex) {
 			throw new HttpException("Could not successfully execute a request.", ex.getCause());
@@ -73,8 +72,5 @@ public class Requester {
 	}
 	public JSONObject toJSONObject() {
 		return new JSONObject(this.responseBody);
-	}
-	public String getResponseBody() {
-		return this.responseBody;
 	}
 }
