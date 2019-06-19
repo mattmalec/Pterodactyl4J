@@ -64,8 +64,8 @@ public class ServerCreator
 }
 ```
 ## Download
-Latest Stable Version: [Bintray Release](https://bintray.com/mattmalec/KSoft4J/KSoft4J/1.0.6/link) <br>
-Latest Version: [ ![Download](https://api.bintray.com/packages/mattmalec/KSoft4J/KSoft4J/images/download.svg?version=1.0.6) ](https://bintray.com/mattmalec/KSoft4J/KSoft4J/1.0.6/link)
+Latest Stable Version: [Bintray Release](https://bintray.com/mattmalec/Pterodactyl4J/Pterodactyl4J/1.0/link) <br>
+Latest Version: [ ![Download](https://api.bintray.com/packages/mattmalec/Pterodactyl4J/Pterodactyl4J/images/download.svg?version=1.0) ](https://bintray.com/mattmalec/Pterodactyl4J/Pterodactyl4J/1.0/link)
 
 Be sure to replace the **VERSION** key below with the one of the versions shown above!
 
