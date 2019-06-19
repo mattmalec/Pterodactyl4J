@@ -1,7 +1,8 @@
 # Pterodactyl4J
 
 P4J strives to provide a clean and full wrapping of the Pterodactyl REST API for Java.
-P4J fully wraps the application and the client API for the Pterodactyl panel.
+<br />P4J fully wraps the application and the client API for the Pterodactyl panel.
+<br />**NOTE**: This is an unofficial wrapper. Do not expect the Pterodactyl community to provide support for this wrapper.
 
 ## Creating the PteroAPI object
 
