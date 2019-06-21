@@ -6,7 +6,7 @@ P4J strives to provide a clean and full wrapping of the Pterodactyl REST API for
 
 ## Creating the PteroAPI object
 
-Creating the PteroAPI Object is done via the PteroBuilder class. After setting the token and application URL via setters, the PteroAPI Object is then created by calling the `build()` method. When `build()` returns, the PteroAPI will be ready to go. With the PteroAPI Object, depending on which type of token you're using, you'll need to call `asClient()` or `sApplication()` as necessary. 
+Creating the PteroAPI Object is done via the PteroBuilder class. After setting the token and application URL via setters, the PteroAPI Object is then created by calling the `build()` method. When `build()` returns, the PteroAPI will be ready to go. With the PteroAPI Object, depending on which type of token you're using, you'll need to call `asClient()` or `asApplication()` as necessary. 
 
 **Example**:
 ```java
