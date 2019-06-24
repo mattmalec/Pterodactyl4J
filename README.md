@@ -103,7 +103,7 @@ The builds are distributed using JCenter through Bintray [Pterodactyl4J JCenter 
 ## Getting Help
 
 For general troubleshooting, you can view some troubleshooting steps in the examples (this will be soon moved to the wiki)
-<br>If you need help, please contact me directly on Discord, or just want to talk with the Pterodactyl community, you can join the [Pterodacty Discord server](https://discord.gg/pterodactyl)
+<br>If you need help, please contact me directly on Discord, or just want to talk with the Pterodactyl community, you can join the [Pterodactyl Discord server](https://discord.gg/pterodactyl)
 
 ## Documentation
 The docs will have everything you need to know in order to use the wrapper once finished of course.
