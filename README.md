@@ -45,7 +45,7 @@ public class ServerCreator
 		map.put("MAXPLAYERS", "10");
 		map.put("VERSION", "1.8.8");
 		map.put("TYPE", "vanilla");
-		ServerAction server = api.createServer().setName("My Server")
+		ServerAction action = api.createServer().setName("My Server")
 				.setDescription("Super awesome wrapper")
 				.setOwner(api.retrieveUserById("1").execute())
 				.setEgg(egg)
@@ -60,7 +60,8 @@ public class ServerCreator
 				.setPortRange(portRange)
 				.startOnCompletion(false)
 				.setEnvironment(map);
-				.build().executeAsync();
+				.build():
+                                ApplicationServer server = action.execute();
     }
 }
 ```
