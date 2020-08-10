@@ -16,8 +16,8 @@ public class Requester {
 	private String responseBody;
 
 	public Requester(PteroAPI api) {
-		this.api = api;
-	}
+        this.api = api;
+    }
 
 	public Requester request(Route.CompiledRoute compiledRoute) {
 		String url = String.format(PTERODACTYL_API_PREFIX, api.getApplicationUrl()) + compiledRoute.getCompiledRoute();

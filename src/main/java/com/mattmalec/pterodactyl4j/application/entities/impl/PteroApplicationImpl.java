@@ -57,7 +57,7 @@ public class PteroApplicationImpl implements PteroApplication {
 					users.add(new UserImpl(user, requester));
 				}
 				for(int i=1; i < pages; i++) {
-					Route.CompiledRoute nextRoute = Route.Users.LIST_USERS.compile(Long.toUnsignedString(pages));
+					Route.CompiledRoute nextRoute = Route.Users.LIST_USERS.compile(Long.toUnsignedString(i));
 					JSONObject nextJson = requester.request(nextRoute).toJSONObject();
 					for(Object o : nextJson.getJSONArray("data")) {
 						JSONObject user = new JSONObject(o.toString());
@@ -131,7 +131,7 @@ public class PteroApplicationImpl implements PteroApplication {
 					nodes.add(new NodeImpl(node, impl));
 				}
 				for(int i=1; i < pages; i++) {
-					Route.CompiledRoute nextRoute = Route.Nodes.LIST_NODES.compile(Long.toUnsignedString(pages));
+					Route.CompiledRoute nextRoute = Route.Nodes.LIST_NODES.compile(Long.toUnsignedString(i));
 					JSONObject nextJson = requester.request(nextRoute).toJSONObject();
 					for(Object o : nextJson.getJSONArray("data")) {
 						JSONObject node = new JSONObject(o.toString());
@@ -201,7 +201,7 @@ public class PteroApplicationImpl implements PteroApplication {
 					allocations.add(new AllocationImpl(allocation));
 				}
 				for (int i = 1; i < pages; i++) {
-					Route.CompiledRoute nextRoute = Route.Nodes.LIST_ALLOCATIONS.compile(node.getId(), Long.toUnsignedString(pages));
+					Route.CompiledRoute nextRoute = Route.Nodes.LIST_ALLOCATIONS.compile(node.getId(), Long.toUnsignedString(i));
 					JSONObject nextJson = requester.request(nextRoute).toJSONObject();
 					for (Object o : nextJson.getJSONArray("data")) {
 						JSONObject allocation = new JSONObject(o.toString());
@@ -336,7 +336,7 @@ public class PteroApplicationImpl implements PteroApplication {
 					nests.add(new NestImpl(nest, impl));
 				}
 				for (int i = 1; i < pages; i++) {
-					Route.CompiledRoute nextRoute = Route.Nests.LIST_NESTS.compile(Long.toUnsignedString(pages));
+					Route.CompiledRoute nextRoute = Route.Nests.LIST_NESTS.compile(Long.toUnsignedString(i));
 					JSONObject nextJson = requester.request(nextRoute).toJSONObject();
 					for (Object o : nextJson.getJSONArray("data")) {
 						JSONObject nest = new JSONObject(o.toString());
@@ -405,7 +405,7 @@ public class PteroApplicationImpl implements PteroApplication {
 					locations.add(new LocationImpl(location, impl));
 				}
 				for(int i=1; i < pages; i++) {
-					Route.CompiledRoute nextRoute = Route.Locations.LIST_LOCATIONS.compile(Long.toUnsignedString(pages));
+					Route.CompiledRoute nextRoute = Route.Locations.LIST_LOCATIONS.compile(Long.toUnsignedString(i));
 					JSONObject nextJson = requester.request(nextRoute).toJSONObject();
 					for(Object o : nextJson.getJSONArray("data")) {
 						JSONObject location = new JSONObject(o.toString());
@@ -476,7 +476,7 @@ public class PteroApplicationImpl implements PteroApplication {
 					servers.add(new ApplicationServerImpl(impl, server));
 				}
 				for(int i=1; i < pages; i++) {
-					Route.CompiledRoute nextRoute = Route.Servers.LIST_SERVERS.compile(Long.toUnsignedString(pages));
+					Route.CompiledRoute nextRoute = Route.Servers.LIST_SERVERS.compile(Long.toUnsignedString(i));
 					JSONObject nextJson = requester.request(nextRoute).toJSONObject();
 					for(Object o : nextJson.getJSONArray("data")) {
 						JSONObject server = new JSONObject(o.toString());

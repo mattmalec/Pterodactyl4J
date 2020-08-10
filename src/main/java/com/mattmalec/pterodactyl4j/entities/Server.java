@@ -1,7 +1,4 @@
-package com.mattmalec.pterodactyl4j.application.entities;
-
-import com.mattmalec.pterodactyl4j.entities.FeatureLimit;
-import com.mattmalec.pterodactyl4j.entities.Limit;
+package com.mattmalec.pterodactyl4j.entities;
 
 public interface Server {
 

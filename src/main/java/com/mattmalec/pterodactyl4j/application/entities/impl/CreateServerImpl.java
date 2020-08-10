@@ -36,6 +36,7 @@ public class CreateServerImpl implements ServerAction {
 	private Set<String> portRange;
 	private boolean useDedicatedIP;
 	private boolean startOnCompletion;
+	private boolean skipScripts;
 
 	private PteroApplicationImpl impl;
 
@@ -170,6 +171,12 @@ public class CreateServerImpl implements ServerAction {
 	}
 
 	@Override
+	public ServerAction skipScripts(boolean skip) {
+		this.skipScripts = skip;
+		return this;
+	}
+
+	@Override
 	public PteroAction<ApplicationServer> build() {
 		return new PteroAction<ApplicationServer>() {
 			@Override
@@ -187,7 +194,7 @@ public class CreateServerImpl implements ServerAction {
 						.put("io", io)
 						.put("cpu", cpu);
 				JSONObject env = new JSONObject();
-				if(environment != null) environment.forEach((key, value) -> env.put(key, value));
+				if(environment != null) environment.forEach(env::put);
 				List<Long> locationIds = new ArrayList<>();
 				locations.forEach(l -> locationIds.add(l.getIdLong()));
 				JSONObject deploy = new JSONObject()
@@ -200,13 +207,14 @@ public class CreateServerImpl implements ServerAction {
 						.put("user", owner.getId())
 						.put("nest", egg.retrieveNest().execute().getId())
 						.put("egg", egg.getId())
-						.put("docker_image", dockerImage)
+						.put("docker_image", dockerImage != null ? dockerImage : egg.getDockerImage())
 						.put("startup", startupCommand != null ? startupCommand : egg.getStartupCommand())
 						.put("limits", limits)
 						.put("feature_limits", featureLimits)
 						.put("environment", env)
 						.put("deploy", deploy)
-						.put("start_on_completion", startOnCompletion);
+						.put("start_on_completion", startOnCompletion)
+						.put("skip_scripts", skipScripts);
 				Route.CompiledRoute route = Route.Servers.CREATE_SERVER.compile().withJSONdata(obj);
 				JSONObject json = impl.getRequester().request(route).toJSONObject();
 				return new ApplicationServerImpl(impl, json);

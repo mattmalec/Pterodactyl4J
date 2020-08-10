@@ -9,7 +9,8 @@ public abstract class PteroAction<T> implements IPteroAction<T> {
 
 	@Override
 	public void executeAsync() {
-		this.executeAsync((result) -> {});
+		this.executeAsync((result) -> {
+		});
 	}
 
 	@Override

@@ -30,6 +30,7 @@ public interface ServerAction {
 	ServerAction setDedicatedIP(boolean dedicatedIP);
 	ServerAction setPortRange(Set<String> ports);
 	ServerAction startOnCompletion(boolean start);
+	ServerAction skipScripts(boolean skip);
 	PteroAction<ApplicationServer> build();
 
 }
