@@ -128,8 +128,8 @@ public class ApplicationServerImpl implements ApplicationServer {
 	}
 
 	@Override
-	public String getPack() {
-		return null;
+	public long getPack() {
+		return json.getLong("pack");
 	}
 
 	@Override

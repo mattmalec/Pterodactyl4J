@@ -27,6 +27,7 @@ public class CreateServerImpl implements ServerAction {
 	private long memory;
 	private long swap;
 	private long disk;
+	private long pack;
 	private long cpu = 0L;
 	private long io = 500L;
 	private long databases = 0L;
@@ -177,6 +178,12 @@ public class CreateServerImpl implements ServerAction {
 	}
 
 	@Override
+	public ServerAction setPack(long id) {
+		this.pack = id;
+		return this;
+	}
+
+	@Override
 	public PteroAction<ApplicationServer> build() {
 		return new PteroAction<ApplicationServer>() {
 			@Override
@@ -214,7 +221,8 @@ public class CreateServerImpl implements ServerAction {
 						.put("environment", env)
 						.put("deploy", deploy)
 						.put("start_on_completion", startOnCompletion)
-						.put("skip_scripts", skipScripts);
+						.put("skip_scripts", skipScripts)
+						.put("pack", pack);
 				Route.CompiledRoute route = Route.Servers.CREATE_SERVER.compile().withJSONdata(obj);
 				JSONObject json = impl.getRequester().request(route).toJSONObject();
 				return new ApplicationServerImpl(impl, json);
