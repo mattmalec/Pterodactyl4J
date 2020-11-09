@@ -31,6 +31,7 @@ public interface ServerAction {
 	ServerAction setPortRange(Set<String> ports);
 	ServerAction startOnCompletion(boolean start);
 	ServerAction skipScripts(boolean skip);
+	ServerAction setPack(long id);
 	PteroAction<ApplicationServer> build();
 
 }

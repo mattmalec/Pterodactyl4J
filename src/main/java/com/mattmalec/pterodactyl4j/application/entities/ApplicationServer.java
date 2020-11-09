@@ -14,7 +14,7 @@ public interface ApplicationServer extends Server, ISnowflake {
 	PteroAction<Allocation> retrieveAllocation();
 	PteroAction<Nest> retrieveNest();
 	PteroAction<Egg> retrieveEgg();
-	String getPack();
+	long getPack();
 	Container getContainer();
 	ServerManager getManager();
 	ServerController getController();
