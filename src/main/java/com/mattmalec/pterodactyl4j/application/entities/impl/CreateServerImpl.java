@@ -214,6 +214,7 @@ public class CreateServerImpl implements ServerAction {
 						.put("user", owner.getId())
 						.put("nest", egg.retrieveNest().execute().getId())
 						.put("egg", egg.getId())
+						.put("pack", pack)
 						.put("docker_image", dockerImage != null ? dockerImage : egg.getDockerImage())
 						.put("startup", startupCommand != null ? startupCommand : egg.getStartupCommand())
 						.put("limits", limits)
@@ -221,8 +222,7 @@ public class CreateServerImpl implements ServerAction {
 						.put("environment", env)
 						.put("deploy", deploy)
 						.put("start_on_completion", startOnCompletion)
-						.put("skip_scripts", skipScripts)
-						.put("pack", pack);
+						.put("skip_scripts", skipScripts);
 				Route.CompiledRoute route = Route.Servers.CREATE_SERVER.compile().withJSONdata(obj);
 				JSONObject json = impl.getRequester().request(route).toJSONObject();
 				return new ApplicationServerImpl(impl, json);
