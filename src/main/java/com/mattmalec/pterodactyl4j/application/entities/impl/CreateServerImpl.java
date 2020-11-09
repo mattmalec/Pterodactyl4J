@@ -5,7 +5,7 @@ import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationServer;
 import com.mattmalec.pterodactyl4j.application.entities.Egg;
 import com.mattmalec.pterodactyl4j.application.entities.Location;
-import com.mattmalec.pterodactyl4j.application.entities.User;
+import com.mattmalec.pterodactyl4j.application.entities.ApplicationUser;
 import com.mattmalec.pterodactyl4j.application.managers.ServerAction;
 import com.mattmalec.pterodactyl4j.exceptions.IllegalActionException;
 import com.mattmalec.pterodactyl4j.requests.Route;
@@ -20,7 +20,7 @@ public class CreateServerImpl implements ServerAction {
 
 	private String name;
 	private String description;
-	private User owner;
+	private ApplicationUser owner;
 	private Egg egg;
 	private String dockerImage;
 	private String startupCommand;
@@ -58,7 +58,7 @@ public class CreateServerImpl implements ServerAction {
 	}
 
 	@Override
-	public ServerAction setOwner(User owner) {
+	public ServerAction setOwner(ApplicationUser owner) {
 		this.owner = owner;
 		return this;
 	}

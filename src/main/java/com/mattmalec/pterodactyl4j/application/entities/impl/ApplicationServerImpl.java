@@ -67,10 +67,10 @@ public class ApplicationServerImpl implements ApplicationServer {
 	}
 
 	@Override
-	public PteroAction<User> retrieveOwner() {
-		return new PteroAction<User>() {
+	public PteroAction<ApplicationUser> retrieveOwner() {
+		return new PteroAction<ApplicationUser>() {
 			@Override
-			public User execute() {
+			public ApplicationUser execute() {
 				return impl.retrieveUserById(json.getLong("user")).execute();
 			}
 		};

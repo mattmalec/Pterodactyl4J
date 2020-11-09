@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface PteroClient {
 
+    PteroAction<Account> retrieveAccount();
     PteroAction<Void> setPower(ClientServer server, PowerAction powerAction);
     PteroAction<Void> sendCommand(ClientServer server, String command);
     PteroAction<Utilization> retrieveUtilization(ClientServer server);

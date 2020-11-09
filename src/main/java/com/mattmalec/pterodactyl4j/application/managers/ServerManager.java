@@ -35,7 +35,7 @@ public class ServerManager {
 		};
 	}
 
-	public PteroAction<ApplicationServer> setOwner(User user) {
+	public PteroAction<ApplicationServer> setOwner(ApplicationUser user) {
 		return new PteroAction<ApplicationServer>() {
 			@Override
 			public ApplicationServer execute() {

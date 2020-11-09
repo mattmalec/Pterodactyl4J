@@ -5,7 +5,7 @@ import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationServer;
 import com.mattmalec.pterodactyl4j.application.entities.Egg;
 import com.mattmalec.pterodactyl4j.application.entities.Location;
-import com.mattmalec.pterodactyl4j.application.entities.User;
+import com.mattmalec.pterodactyl4j.application.entities.ApplicationUser;
 
 import java.util.Map;
 import java.util.Set;
@@ -14,7 +14,7 @@ public interface ServerAction {
 
 	ServerAction setName(String name);
 	ServerAction setDescription(String description);
-	ServerAction setOwner(User owner);
+	ServerAction setOwner(ApplicationUser owner);
 	ServerAction setEgg(Egg egg);
 	ServerAction setDockerImage(String dockerImage);
 	ServerAction setStartupCommand(String command);

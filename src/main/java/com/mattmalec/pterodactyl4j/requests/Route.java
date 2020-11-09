@@ -83,6 +83,20 @@ public class Route {
 
 	}
 
+	public static class Accounts {
+
+		public static final Route GET_ACCOUNT			= new Route(GET,    CLIENT_PREFIX + "account");
+		public static final Route GET_2FA_CODE	   	    = new Route(GET,    CLIENT_PREFIX + "account/two-factor");
+		public static final Route ENABLE_2FA	   	    = new Route(POST,   CLIENT_PREFIX + "account/two-factor");
+		public static final Route DISABLE_2FA	   	    = new Route(DELETE, CLIENT_PREFIX + "account/two-factor");
+		public static final Route UPDATE_EMAIL			= new Route(PUT,    CLIENT_PREFIX + "account/email");
+		public static final Route UPDATE_PASSWORD    	= new Route(PUT,    CLIENT_PREFIX + "account/password");
+		public static final Route GET_API_KEYS    	    = new Route(GET,    CLIENT_PREFIX + "account/api-keys");
+		public static final Route CREATE_API_KEY    	= new Route(POST,   CLIENT_PREFIX + "account/api-keys");
+		public static final Route DELETE_API_KEY	   	= new Route(DELETE, CLIENT_PREFIX + "account/api-keys/{identifier}", "identifier");
+
+	}
+
 	private final Method method;
 	private final String route;
 	private final String compilableRoute;

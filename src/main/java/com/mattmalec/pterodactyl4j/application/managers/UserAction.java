@@ -2,7 +2,7 @@ package com.mattmalec.pterodactyl4j.application.managers;
 
 
 import com.mattmalec.pterodactyl4j.PteroAction;
-import com.mattmalec.pterodactyl4j.application.entities.User;
+import com.mattmalec.pterodactyl4j.application.entities.ApplicationUser;
 
 public interface UserAction {
 
@@ -11,6 +11,6 @@ public interface UserAction {
 	UserAction setFirstName(String firstName);
 	UserAction setLastName(String lastName);
 	UserAction setPassword(String password);
-	PteroAction<User> build();
+	PteroAction<ApplicationUser> build();
 
 }

@@ -27,41 +27,41 @@ public class PteroApplicationImpl implements PteroApplication {
 		return this.requester;
 	}
 
-	public PteroAction<User> retrieveUserById(String id) {
+	public PteroAction<ApplicationUser> retrieveUserById(String id) {
 		return retrieveUserById(Long.parseLong(id));
 	}
 
-	public PteroAction<User> retrieveUserById(long id) {
+	public PteroAction<ApplicationUser> retrieveUserById(long id) {
 		Route.CompiledRoute route = Route.Users.GET_USER.compile(Long.toUnsignedString(id));
-		return new PteroAction<User>() {
+		return new PteroAction<ApplicationUser>() {
 
 			@Override
-			public User execute() {
+			public ApplicationUser execute() {
 				JSONObject jsonObject = requester.request(route).toJSONObject();
-				return new UserImpl(jsonObject, requester);
+				return new ApplicationUserImpl(jsonObject, requester);
 			}
 		};
 	}
 
 	@Override
-	public PteroAction<List<User>> retrieveUsers() {
-		return new PteroAction<List<User>>() {
+	public PteroAction<List<ApplicationUser>> retrieveUsers() {
+		return new PteroAction<List<ApplicationUser>>() {
 			@Override
-			public List<User> execute() {
+			public List<ApplicationUser> execute() {
 				Route.CompiledRoute route = Route.Users.LIST_USERS.compile("1");
 				JSONObject json = requester.request(route).toJSONObject();
 				long pages = json.getJSONObject("meta").getJSONObject("pagination").getLong("total_pages");
-				List<User> users = new ArrayList<>();
+				List<ApplicationUser> users = new ArrayList<>();
 				for(Object o : json.getJSONArray("data")) {
 					JSONObject user = new JSONObject(o.toString());
-					users.add(new UserImpl(user, requester));
+					users.add(new ApplicationUserImpl(user, requester));
 				}
 				for(int i=1; i < pages; i++) {
 					Route.CompiledRoute nextRoute = Route.Users.LIST_USERS.compile(Long.toUnsignedString(i));
 					JSONObject nextJson = requester.request(nextRoute).toJSONObject();
 					for(Object o : nextJson.getJSONArray("data")) {
 						JSONObject user = new JSONObject(o.toString());
-						users.add(new UserImpl(user, requester));
+						users.add(new ApplicationUserImpl(user, requester));
 					}
 				}
 				return Collections.unmodifiableList(users);
@@ -70,13 +70,13 @@ public class PteroApplicationImpl implements PteroApplication {
 	}
 
 	@Override
-	public PteroAction<List<User>> retrieveUsersByUsername(String name, boolean caseSensetive) {
-		return new PteroAction<List<User>>() {
+	public PteroAction<List<ApplicationUser>> retrieveUsersByUsername(String name, boolean caseSensetive) {
+		return new PteroAction<List<ApplicationUser>>() {
 			@Override
-			public List<User> execute() {
-				List<User> users = retrieveUsers().execute();
-				List<User> newUsers = new ArrayList<>();
-				for (User u : users) {
+			public List<ApplicationUser> execute() {
+				List<ApplicationUser> users = retrieveUsers().execute();
+				List<ApplicationUser> newUsers = new ArrayList<>();
+				for (ApplicationUser u : users) {
 					if (caseSensetive) {
 						if (u.getUserName().contains(name))
 							newUsers.add(u);
@@ -91,13 +91,13 @@ public class PteroApplicationImpl implements PteroApplication {
 	}
 
 	@Override
-	public PteroAction<List<User>> retrieveUsersByEmail(String name, boolean caseSensetive) {
-		return new PteroAction<List<User>>() {
+	public PteroAction<List<ApplicationUser>> retrieveUsersByEmail(String name, boolean caseSensetive) {
+		return new PteroAction<List<ApplicationUser>>() {
 			@Override
-			public List<User> execute() {
-				List<User> users = retrieveUsers().execute();
-				List<User> newUsers = new ArrayList<>();
-				for (User u : users) {
+			public List<ApplicationUser> execute() {
+				List<ApplicationUser> users = retrieveUsers().execute();
+				List<ApplicationUser> newUsers = new ArrayList<>();
+				for (ApplicationUser u : users) {
 					if (caseSensetive) {
 						if (u.getEmail().contains(name))
 							newUsers.add(u);
@@ -528,14 +528,14 @@ public class PteroApplicationImpl implements PteroApplication {
 	}
 
 	@Override
-	public PteroAction<List<ApplicationServer>> retrieveServersByOwner(User user) {
+	public PteroAction<List<ApplicationServer>> retrieveServersByOwner(ApplicationUser user) {
 		return new PteroAction<List<ApplicationServer>>() {
 			@Override
 			public List<ApplicationServer> execute() {
 				List<ApplicationServer> servers = retrieveServers().execute();
 				List<ApplicationServer> newServers = new ArrayList<>();
 				for (ApplicationServer s : servers) {
-					User owner = s.retrieveOwner().execute();
+					ApplicationUser owner = s.retrieveOwner().execute();
 					if (owner.getIdLong() == user.getIdLong()) {
 						newServers.add(s);
 					}

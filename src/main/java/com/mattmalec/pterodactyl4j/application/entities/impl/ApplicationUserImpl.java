@@ -1,7 +1,7 @@
 package com.mattmalec.pterodactyl4j.application.entities.impl;
 
 import com.mattmalec.pterodactyl4j.PteroAction;
-import com.mattmalec.pterodactyl4j.application.entities.User;
+import com.mattmalec.pterodactyl4j.application.entities.ApplicationUser;
 import com.mattmalec.pterodactyl4j.application.managers.UserAction;
 import com.mattmalec.pterodactyl4j.requests.Requester;
 import com.mattmalec.pterodactyl4j.requests.Route;
@@ -12,14 +12,13 @@ import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 
-public class UserImpl implements User {
+public class ApplicationUserImpl implements ApplicationUser {
 
 	private JSONObject json;
 	private Requester requester;
 
-	public UserImpl(JSONObject json, Requester requester) {
+	public ApplicationUserImpl(JSONObject json, Requester requester) {
 		this.json = json.getJSONObject("attributes");
 		this.requester = requester;
 	}
@@ -60,18 +59,8 @@ public class UserImpl implements User {
 	}
 
 	@Override
-	public String getFullName() {
-		return String.format("%s %s", getFirstName(), getLastName());
-	}
-
-	@Override
 	public String getLanguage() {
 		return json.getString("language");
-	}
-
-	@Override
-	public Locale getLocale() {
-		return Locale.forLanguageTag(getLanguage());
 	}
 
 	@Override

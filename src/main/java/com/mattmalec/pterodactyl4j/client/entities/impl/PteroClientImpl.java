@@ -2,6 +2,7 @@ package com.mattmalec.pterodactyl4j.client.entities.impl;
 
 import com.mattmalec.pterodactyl4j.PowerAction;
 import com.mattmalec.pterodactyl4j.PteroAction;
+import com.mattmalec.pterodactyl4j.client.entities.Account;
 import com.mattmalec.pterodactyl4j.client.entities.ClientServer;
 import com.mattmalec.pterodactyl4j.client.entities.PteroClient;
 import com.mattmalec.pterodactyl4j.client.entities.Utilization;
@@ -19,6 +20,23 @@ public class PteroClientImpl implements PteroClient {
 
     public PteroClientImpl(Requester requester) {
         this.requester = requester;
+    }
+
+    public Requester getRequester() {
+        return requester;
+    }
+
+    @Override
+    public PteroAction<Account> retrieveAccount() {
+        PteroClientImpl impl = this;
+        return new PteroAction<Account>() {
+            @Override
+            public Account execute() {
+                Route.CompiledRoute route = Route.Accounts.GET_ACCOUNT.compile();
+                JSONObject json = requester.request(route).toJSONObject();
+                return new AccountImpl(json, impl);
+            }
+        };
     }
 
     @Override

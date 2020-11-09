@@ -9,7 +9,7 @@ public interface ApplicationServer extends Server, ISnowflake {
 
 	boolean isSuspended();
 	String getExternalId();
-	PteroAction<User> retrieveOwner();
+	PteroAction<ApplicationUser> retrieveOwner();
 	PteroAction<Node> retrieveNode();
 	PteroAction<Allocation> retrieveAllocation();
 	PteroAction<Nest> retrieveNest();

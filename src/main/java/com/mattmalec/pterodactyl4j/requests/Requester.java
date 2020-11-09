@@ -26,15 +26,18 @@ public class Requester {
 		Request.Builder builder = new Request.Builder();
 		builder.header("Content-Type", "application/json");
 		Method method = compiledRoute.getMethod();
+		RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), compiledRoute.getJSONData() != null ? compiledRoute.getJSONData().toString().getBytes() : "".getBytes());
 		switch(method) {
 			case GET: builder.get();
-			break;
-			case POST: builder.post(RequestBody.create(MediaType.parse("application/json"), compiledRoute.getJSONData() != null ? compiledRoute.getJSONData().toString().getBytes() : "".getBytes()));
-			break;
-			case PATCH: builder.patch(RequestBody.create(MediaType.parse("application/json"), compiledRoute.getJSONData() != null ? compiledRoute.getJSONData().toString().getBytes() : "".getBytes()));
-			break;
-			case DELETE: builder.delete(RequestBody.create(MediaType.parse("application/json"), compiledRoute.getJSONData() != null ? compiledRoute.getJSONData().toString().getBytes() : "".getBytes()));
-			break;
+				break;
+			case POST: builder.post(requestBody);
+				break;
+			case PATCH: builder.patch(requestBody);
+				break;
+			case PUT: builder.put(requestBody);
+				break;
+			case DELETE: builder.delete(requestBody);
+				break;
 		}
 		builder.addHeader("Accept", "Application/vnd.pterodactyl.v1+json");
 		if(api.getToken() == null || api.getToken().isEmpty())
