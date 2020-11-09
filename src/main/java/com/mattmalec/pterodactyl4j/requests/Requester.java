@@ -65,7 +65,7 @@ public class Requester {
 				throw new RateLimitedException("The request was rate limited.");
 			}
 			if(responseCode == 500) {
-				throw new ServerException("The server has encountered an Internal Server Error.");
+				throw new ServerException("The server has encountered an Internal Server Error. Route: " + url);
 			}
 		}
 		throw new HttpException("Pterodactyl4J has encountered a " + response.code() + " error.", toJSONObject());

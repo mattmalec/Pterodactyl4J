@@ -12,27 +12,27 @@ public class LimitImpl implements Limit {
     }
 
     @Override
-    public String getMemory() {
-        return Long.toUnsignedString(json.getLong("memory"));
+    public long getMemoryLong() {
+        return json.getLong("memory");
     }
 
     @Override
-    public String getSwap() {
-        return Long.toUnsignedString(json.getLong("swap"));
+    public long getSwapLong() {
+        return json.getLong("swap");
     }
 
     @Override
-    public String getDisk() {
-        return Long.toUnsignedString(json.getLong("disk"));
+    public long getDiskLong() {
+        return json.getLong("disk");
     }
 
     @Override
-    public String getIO() {
-        return Long.toUnsignedString(json.getLong("io"));
+    public long getIOLong() {
+        return json.getLong("io");
     }
 
     @Override
-    public String getCPU() {
-        return Long.toUnsignedString(json.getLong("cpu"));
+    public long getCPULong() {
+        return json.getLong("cpu");
     }
 }

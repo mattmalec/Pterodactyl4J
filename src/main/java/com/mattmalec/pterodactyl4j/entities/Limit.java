@@ -2,15 +2,25 @@ package com.mattmalec.pterodactyl4j.entities;
 
 public interface Limit {
 
-	String getMemory();
-	default long getMemoryLong() { return Long.parseLong(getMemory()); }
-	String getSwap();
-	default long getSwapLong() { return Long.parseLong(getSwap()); }
-	String getDisk();
-	default long getDiskLong() { return Long.parseLong(getDisk()); }
-	String getIO();
-	default long getIOLong() { return Long.parseLong(getIO()); }
-	String getCPU();
-	default long getCPULong() { return Long.parseLong(getCPU()); }
+	long getMemoryLong();
+	default String getMemory() {
+		return Long.toUnsignedString(getMemoryLong());
+	}
+	long getSwapLong();
+	default String getSwap() {
+		return Long.toUnsignedString(getSwapLong());
+	}
+	long getDiskLong();
+	default String getDisk() {
+		return Long.toUnsignedString(getDiskLong());
+	}
+	long getIOLong();
+	default String getIO() {
+		return Long.toUnsignedString(getIOLong());
+	}
+	long getCPULong();
+	default String getCPU() {
+		return Long.toUnsignedString(getCPULong());
+	}
 
 }

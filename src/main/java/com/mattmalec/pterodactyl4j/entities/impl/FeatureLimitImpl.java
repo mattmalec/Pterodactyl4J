@@ -12,12 +12,17 @@ public class FeatureLimitImpl implements FeatureLimit {
     }
 
     @Override
-    public String getDatabases() {
-        return Long.toUnsignedString(json.getLong("databases"));
+    public long getDatabasesLong() {
+        return json.getLong("databases");
     }
 
     @Override
-    public String getAllocations() {
-        return Long.toUnsignedString(json.getLong("allocations"));
+    public long getAllocationsLong() {
+        return json.getLong("allocations");
+    }
+
+    @Override
+    public long getBackupsLong() {
+        return json.getLong("backups");
     }
 }

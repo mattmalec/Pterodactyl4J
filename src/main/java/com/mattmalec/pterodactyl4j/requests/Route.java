@@ -75,7 +75,7 @@ public class Route {
 
 	public static class Client {
 
-		public static final Route GET_UTILIZATION 		= new Route(GET,  	CLIENT_PREFIX + "servers/{server_id}/utilization", "server_id");
+		public static final Route GET_UTILIZATION 		= new Route(GET,  	CLIENT_PREFIX + "servers/{server_id}/resources", "server_id");
 		public static final Route SEND_COMMAND 			= new Route(POST, 	CLIENT_PREFIX + "servers/{server_id}/command", "server_id");
 		public static final Route SET_POWER 			= new Route(POST, 	CLIENT_PREFIX + "servers/{server_id}/power", "server_id");
 		public static final Route LIST_SERVERS 			= new Route(GET,  	CLIENT_PREFIX + "?page={page}", "page");

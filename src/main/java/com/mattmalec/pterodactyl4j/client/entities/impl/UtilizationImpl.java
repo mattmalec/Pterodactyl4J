@@ -2,70 +2,53 @@ package com.mattmalec.pterodactyl4j.client.entities.impl;
 
 import com.mattmalec.pterodactyl4j.UtilizationState;
 import com.mattmalec.pterodactyl4j.client.entities.Utilization;
-import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class UtilizationImpl implements Utilization {
 
     private JSONObject json;
+    private JSONObject resources;
 
     public UtilizationImpl(JSONObject json) {
         this.json = json.getJSONObject("attributes");
+        this.resources = this.json.getJSONObject("resources");
     }
 
     @Override
     public UtilizationState getState() {
-        switch(json.getString("state")) {
-            case "on": return UtilizationState.ON;
-            case "starting": return UtilizationState.STARTING;
-            case "off": return UtilizationState.OFF;
-            case "stopping": return UtilizationState.STOPPING;
-            default: return UtilizationState.OFF;
-        }
+        return UtilizationState.of(json.getString("current_state"));
     }
 
     @Override
-    public String getCurrentMemory() {
-        return String.valueOf(json.getJSONObject("memory").getLong("current"));
+    public long getMemory() {
+        return resources.getLong("memory_bytes");
     }
 
     @Override
-    public String getMaxMemory() {
-        return String.valueOf(json.getJSONObject("memory").getLong("limit"));
+    public long getDisk() {
+        return resources.getLong("disk_bytes");
     }
 
     @Override
-    public String getCurrentCPU() {
-        return String.valueOf(json.getJSONObject("cpu").getLong("current"));
+    public double getCPU() {
+        return resources.getDouble("cpu_absolute");
     }
 
     @Override
-    public List<Double> getCurrentCores() {
-        JSONArray array = json.getJSONObject("cpu").getJSONArray("cores");
-        List<Double> cores = new ArrayList<>();
-        array.forEach(o -> cores.add(Double.parseDouble(o.toString())));
-        return Collections.unmodifiableList(cores);
+    public long getNetworkIngress() {
+        return resources.getLong("network_rx_bytes");
     }
 
     @Override
-    public String getMaxCPU() {
-        return String.valueOf(json.getJSONObject("cpu").getLong("limit"));
+    public long getNetworkEgress() {
+        return resources.getLong("network_tx_bytes");
     }
 
     @Override
-    public String getCurrentDisk() {
-        return String.valueOf(json.getJSONObject("disk").getLong("current"));
+    public boolean isSuspended() {
+        return json.getBoolean("is_suspended");
     }
 
-    @Override
-    public String getMaxDisk() {
-        return String.valueOf(json.getJSONObject("disk").getLong("limit"));
-
-    }
     @Override
     public String toString() {
         return json.toString(4);

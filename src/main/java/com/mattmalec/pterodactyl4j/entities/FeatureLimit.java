@@ -2,10 +2,13 @@ package com.mattmalec.pterodactyl4j.entities;
 
 public interface FeatureLimit {
 
-	String getDatabases();
-	default long getDatabasesLong() { return Long.parseLong(getDatabases()); }
-	String getAllocations();
-	default long getAllocationsLong() { return Long.parseLong(getAllocations()); }
+	long getDatabasesLong();
+	default String getDatabases() { return Long.toUnsignedString(getDatabasesLong()); }
 
+	long getAllocationsLong();
+	default String getAllocations() { return Long.toUnsignedString(getAllocationsLong()); }
+
+	long getBackupsLong();
+	default String getBackuos() { return Long.toUnsignedString(getBackupsLong()); }
 
 }

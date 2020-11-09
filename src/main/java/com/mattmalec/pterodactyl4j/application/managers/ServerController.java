@@ -26,7 +26,7 @@ public class ServerController {
 		};
 	}
 
-	public PteroAction<Void> unSuspend() {
+	public PteroAction<Void> unsuspend() {
 		return new PteroAction<Void>() {
 			@Override
 			public Void execute() {

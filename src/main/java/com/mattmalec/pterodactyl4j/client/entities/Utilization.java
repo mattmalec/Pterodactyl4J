@@ -1,20 +1,33 @@
 package com.mattmalec.pterodactyl4j.client.entities;
 
+import com.mattmalec.pterodactyl4j.DataType;
 import com.mattmalec.pterodactyl4j.UtilizationState;
-
-import java.util.List;
 
 public interface Utilization {
 
 	UtilizationState getState();
-	String getCurrentMemory();
-	String getMaxMemory();
 
-	String getCurrentCPU();
-	List<Double> getCurrentCores();
-	String getMaxCPU();
+	long getMemory();
+	default String getMemoryFormatted(DataType dataType) {
+		return String.format("%.2f %s", getMemory() / (dataType.getMbValue() * Math.pow(2, 20)), dataType.name());
+	}
+	long getDisk();
+	default String getDiskFormatted(DataType dataType) {
+		return String.format("%.2f %s", getDisk() / (dataType.getMbValue() * Math.pow(2, 20)), dataType.name());
+	}
 
-	String getCurrentDisk();
-	String getMaxDisk();
+	double getCPU();
+
+	long getNetworkIngress();
+	default String getNetworkIngressFormatted(DataType dataType) {
+		return String.format("%.2f %s", getNetworkIngress() / (dataType.getMbValue() * Math.pow(2, 20)), dataType.name());
+	}
+
+	long getNetworkEgress();
+	default String getNetworkEgressFormatted(DataType dataType) {
+		return String.format("%.2f %s", getNetworkEgress() / (dataType.getMbValue() * Math.pow(2, 20)), dataType.name());
+	}
+
+	boolean isSuspended();
 
 }
