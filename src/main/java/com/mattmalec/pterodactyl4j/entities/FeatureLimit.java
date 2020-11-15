@@ -9,6 +9,6 @@ public interface FeatureLimit {
 	default String getAllocations() { return Long.toUnsignedString(getAllocationsLong()); }
 
 	long getBackupsLong();
-	default String getBackuos() { return Long.toUnsignedString(getBackupsLong()); }
+	default String getBackups() { return Long.toUnsignedString(getBackupsLong()); }
 
 }
