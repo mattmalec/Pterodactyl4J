@@ -72,7 +72,7 @@ public class ServerCreator
 ```
 ## Download
 Latest Stable Version: [Bintray Release](https://bintray.com/mattmalec/Pterodactyl4J/Pterodactyl4J/1.1/link) <br>
-Latest Version: [ ![Download](https://api.bintray.com/packages/mattmalec/Pterodactyl4J/Pterodactyl4J/images/download.svg?version=2.BETA_3) ](https://bintray.com/mattmalec/Pterodactyl4J/Pterodactyl4J/2.BETA_3/link)
+Latest Version: [ ![Download](https://api.bintray.com/packages/mattmalec/Pterodactyl4J/Pterodactyl4J/images/download.svg?version=2.BETA_4) ](https://bintray.com/mattmalec/Pterodactyl4J/Pterodactyl4J/2.BETA_4/link)
 
 Be sure to replace the **VERSION** key below with the one of the versions shown above!
 
