@@ -80,6 +80,7 @@ public class Route {
 		public static final Route SET_POWER 			= new Route(POST, 	CLIENT_PREFIX + "servers/{server_id}/power", "server_id");
 		public static final Route LIST_SERVERS 			= new Route(GET,  	CLIENT_PREFIX + "?page={page}", "page");
 		public static final Route GET_SERVER			= new Route(GET,	CLIENT_PREFIX + "servers/{server_id}", "server_id");
+		public static final Route GET_WEBSOCKET			= new Route(GET,    CLIENT_PREFIX + "/servers/{server_id}/websocket", "server_id");
 
 	}
 

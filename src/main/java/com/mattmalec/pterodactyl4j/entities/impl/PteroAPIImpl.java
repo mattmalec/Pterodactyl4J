@@ -12,15 +12,11 @@ public class PteroAPIImpl implements PteroAPI {
     private String token;
     private String applicationUrl;
     private Requester requester;
-    private PteroApplicationImpl applicationImpl;
-    private PteroClientImpl clientImpl;
 
     public PteroAPIImpl(String applicationUrl, String token) {
         this.token = token;
         this.applicationUrl = applicationUrl;
         this.requester = new Requester(this);
-        this.applicationImpl = new PteroApplicationImpl(requester);
-        this.clientImpl = new PteroClientImpl(requester);
     }
 
     @Override
@@ -40,11 +36,11 @@ public class PteroAPIImpl implements PteroAPI {
 
     @Override
     public PteroApplication asApplication() {
-        return applicationImpl;
+        return new PteroApplicationImpl(requester);
     }
 
     @Override
     public PteroClient asClient() {
-        return clientImpl;
+        return new PteroClientImpl(requester);
     }
 }

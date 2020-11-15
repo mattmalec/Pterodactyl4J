@@ -4,13 +4,18 @@ P4J strives to provide a clean and full wrapping of the Pterodactyl REST API for
 <br />P4J fully wraps the application and the client API for the Pterodactyl panel.
 <br />**NOTE**: This is an unofficial wrapper. Do not expect the Pterodactyl community to provide support for this wrapper.
 
-## Creating the PteroAPI object
+## Creating the PteroApplication/PteroClient Object
 
-Creating the PteroAPI Object is done via the PteroBuilder class. After setting the token and application URL via setters, the PteroAPI Object is then created by calling the `build()` method. When `build()` returns, the PteroAPI will be ready to go. With the PteroAPI Object, depending on which type of token you're using, you'll need to call `asClient()` or `asApplication()` as necessary. 
+Creating the PteroApplication or PteroClient Object is done via the PteroBuilder class. After setting the token and application URL via setters, the PteroApplication or PteroClient Object is then created by calling the `buildApplication()` or `buildClient()` method as necessary. 
 
-**Example**:
+**Application Example**:
 ```java
-PteroAPI api = new PteroBuilder().setApplicationUrl("https://pterodactyl.app").setToken("abc123").build();
+PteroApplication api = new PteroBuilder().setApplicationUrl("https://pterodactyl.app").setToken("abc123").buildApplication();
+```
+
+**Client Example**:
+```java
+PteroClient api = new PteroBuilder().setApplicationUrl("https://pterodactyl.app").setToken("xyz321").buildClient();
 ```
 
 #### Examples:
@@ -22,7 +27,7 @@ public class UserReader
     public static void main(String[] args)
     {
     
-      PteroApplication api = new PteroBuilder().setApplicationUrl("https://pterodactyl.app").setToken("abc123").build().asApplication();
+      PteroApplication api = new PteroBuilder().setApplicationUrl("https://pterodactyl.app").setToken("abc123").buildApplication();
       api.retrieveUsers().executeAsync(users -> users.forEach(u -> System.out.println(u.getFullName())));
       
     }
@@ -66,8 +71,8 @@ public class ServerCreator
 }
 ```
 ## Download
-Latest Stable Version: [Bintray Release](https://bintray.com/mattmalec/Pterodactyl4J/Pterodactyl4J/2.BETA_2/link) <br>
-Latest Version: [ ![Download](https://api.bintray.com/packages/mattmalec/Pterodactyl4J/Pterodactyl4J/images/download.svg?version=2.BETA_2) ](https://bintray.com/mattmalec/Pterodactyl4J/Pterodactyl4J/2.BETA_2/link)
+Latest Stable Version: [Bintray Release](https://bintray.com/mattmalec/Pterodactyl4J/Pterodactyl4J/2.BETA_3/link) <br>
+Latest Version: [ ![Download](https://api.bintray.com/packages/mattmalec/Pterodactyl4J/Pterodactyl4J/images/download.svg?version=2.BETA_3) ](https://bintray.com/mattmalec/Pterodactyl4J/Pterodactyl4J/2.BETA_3/link)
 
 Be sure to replace the **VERSION** key below with the one of the versions shown above!
 
