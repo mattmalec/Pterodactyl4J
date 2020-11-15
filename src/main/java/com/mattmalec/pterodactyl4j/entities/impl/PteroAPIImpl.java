@@ -1,5 +1,9 @@
 package com.mattmalec.pterodactyl4j.entities.impl;
 
+import com.mattmalec.pterodactyl4j.application.entities.PteroApplication;
+import com.mattmalec.pterodactyl4j.application.entities.impl.PteroApplicationImpl;
+import com.mattmalec.pterodactyl4j.client.entities.PteroClient;
+import com.mattmalec.pterodactyl4j.client.entities.impl.PteroClientImpl;
 import com.mattmalec.pterodactyl4j.entities.PteroAPI;
 import com.mattmalec.pterodactyl4j.requests.Requester;
 
@@ -30,4 +34,13 @@ public class PteroAPIImpl implements PteroAPI {
         return this.applicationUrl;
     }
 
+    @Override
+    public PteroApplication asApplication() {
+        return new PteroApplicationImpl(requester);
+    }
+
+    @Override
+    public PteroClient asClient() {
+        return new PteroClientImpl(requester);
+    }
 }
