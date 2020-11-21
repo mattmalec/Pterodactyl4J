@@ -38,34 +38,33 @@ public class UserReader
 public class ServerCreator
 {
     public static void main(String[] args)
-    {
-		Nest nest = api.retrieveNestById("8").execute();
-		Location location = api.retrieveLocationById("1").execute();
-		Egg egg = api.retrieveEggById(nest, "27").execute();
-		Map<String, String> map = new HashMap<>();
-		Set<String> portRange = new HashSet<>();
-		portRange.add("25565");
-		map.put("SERVER_JARFILE", "server.jar");
-		map.put("MOTD", "Welcome to my Minecraft server");
-		map.put("MAXPLAYERS", "10");
-		map.put("VERSION", "1.8.8");
-		map.put("TYPE", "vanilla");
-		ServerAction action = api.createServer().setName("My Server")
-				.setDescription("Super awesome wrapper")
-				.setOwner(api.retrieveUserById("1").execute())
-				.setEgg(egg)
-				.setLocations(Collections.singleton(location))
-				.setAllocations(0L)
-				.setDatabases(0L)
-				.setCPU(0L)
-				.setDisk(3L, DataType.GB)
-				.setMemory(1L, DataType.GB)
-				.setDockerImage("quay.io/pterodactyl/core:java")
-				.setDedicatedIP(false)
-				.setPortRange(portRange)
-				.startOnCompletion(false)
-				.setEnvironment(map);
-				.build():
+    { 
+        Nest nest = api.retrieveNestById("8").execute();
+        Location location = api.retrieveLocationById("1").execute();
+        Egg egg = api.retrieveEggById(nest, "27").execute();
+        Map<String, String> map = new HashMap<>();
+        Set<String> portRange = new HashSet<>();
+        portRange.add("25565");
+        map.put("SERVER_JARFILE", "server.jar");
+        map.put("MOTD", "Welcome to my Minecraft server");
+        map.put("MAXPLAYERS", "10");
+        map.put("VERSION", "1.8.8");
+        map.put("TYPE", "vanilla");
+        ServerAction action = api.createServer().setName("My Server")
+        		.setDescription("Super awesome wrapper")
+        		.setOwner(api.retrieveUserById("1").execute())
+        		.setEgg(egg)
+        		.setLocations(Collections.singleton(location))
+        		.setAllocations(0L)
+        		.setDatabases(0L)
+        		.setCPU(0L)
+        		.setDisk(3L, DataType.GB)
+        		.setMemory(1L, DataType.GB)
+        		.setDockerImage("quay.io/pterodactyl/core:java")
+        		.setDedicatedIP(false)
+        		.setPortRange(portRange)
+        		.startOnCompletion(false)
+        		.setEnvironment(map).build();
         ApplicationServer server = action.execute();
     }
 }
