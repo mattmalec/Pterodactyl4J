@@ -39,17 +39,22 @@ public class ServerCreator
 {
     public static void main(String[] args)
     { 
+
         Nest nest = api.retrieveNestById("8").execute();
         Location location = api.retrieveLocationById("1").execute();
         Egg egg = api.retrieveEggById(nest, "27").execute();
+
         Map<String, String> map = new HashMap<>();
+
         Set<String> portRange = new HashSet<>();
         portRange.add("25565");
+
         map.put("SERVER_JARFILE", "server.jar");
         map.put("MOTD", "Welcome to my Minecraft server");
         map.put("MAXPLAYERS", "10");
         map.put("VERSION", "1.8.8");
         map.put("TYPE", "vanilla");
+
         ServerAction action = api.createServer().setName("My Server")
         		.setDescription("Super awesome wrapper")
         		.setOwner(api.retrieveUserById("1").execute())
@@ -66,6 +71,7 @@ public class ServerCreator
         		.startOnCompletion(false)
         		.setEnvironment(map).build();
         ApplicationServer server = action.execute();
+
     }
 }
 ```
@@ -75,43 +81,55 @@ public class MyApp extends ClientSocketListenerAdapter
 {
     public static void main(String[] args)
     {
+
         PteroClient api = new PteroBuilder().setApplicationUrl("https://pterodactyl.app").setToken("abc123").buildClient();
         // if there isn't another thread running, this won't execute. you'll need to grab the server synchronously
         api.retrieveServerByIdentifier("39f09a87").executeAsync(server -> server.getWebSocketBuilder().addEventListeners(new ServerListener()).build());
+    
     }
 
     @Override
     public void onAuthSuccess(AuthSuccessEvent event)
     {
+
         // if the server is running, this will trigger wings to send the entire console history from the current session
         event.getWebSocketManager().request(WebSocketManager.RequestAction.LOGS);
+    
     }
 
     @Override
     public void onOutput(OutputEvent event)
     {
+
         // this will output everything from the console
         System.out.println(event.getLine());
+
     }
 
     @Override
     public void onConsoleOutput(ConsoleOutputEvent event)
     {
+
         // this will output everything from the console related to the game
         System.out.println(event.getLine());
+
     }
 
     @Override
     public void onInstallOutput(InstallOutputEvent event)
     {
+
         // this will output everything from the console related to the egg install/docker
         System.out.println(event.getLine());
+    
     }
 
     @Override
     public void onStatsUpdate(StatsUpdateEvent event)
     {
+
         System.out.println(String.format("Memory Usage: %s/%s", event.getMemoryFormatted(DataType.MB), event.getMaxMemoryFormatted(DataType.MB)));
+
     }
 }
 ```
