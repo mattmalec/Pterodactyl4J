@@ -153,6 +153,22 @@ repositories {
 
 The builds are distributed using JCenter through Bintray [Pterodactyl4J JCenter Bintray](https://bintray.com/mattmalec/Pterodactyl4J/Pterodactyl4J/)
 
+### Logging Framework - SLF4J
+
+Pterodactyl4J uses [SLF4J](https://www.slf4j.org/) to log its WebSocket messages.
+
+That means you should add some SLF4J implementation to your build path in addition to P4J.
+If no implementation is found, the following message will be printed to the console when building the WebSocket:
+```
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+```
+
+P4J does **NOT** offer a fallback logger in place of SLF4J. You need an implementation to receive WebSocket log messages.
+
+The most popular implementations are [Log4j 2](https://logging.apache.org/log4j/2.x/) and [Logback](https://logback.qos.ch/)
+
 ## Getting Help
 
 For general troubleshooting, you can view some troubleshooting steps in the examples (this will be soon moved to the wiki)
@@ -179,3 +195,7 @@ All dependencies are managed automatically by Gradle.
    * Version: **20160810**
    * [Github](https://github.com/douglascrockford/JSON-java)
    * [JCenter Repository](https://bintray.com/bintray/jcenter/org.json%3Ajson/view)
+ * slf4j-api
+   * Version: **1.7.25**
+   * [Website](https://www.slf4j.org/)
+   * [JCenter Repository](https://bintray.com/bintray/jcenter/org.slf4j%3Aslf4j-api/view)
