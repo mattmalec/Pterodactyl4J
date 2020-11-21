@@ -66,13 +66,60 @@ public class ServerCreator
 				.startOnCompletion(false)
 				.setEnvironment(map);
 				.build():
-                                ApplicationServer server = action.execute();
+        ApplicationServer server = action.execute();
     }
 }
 ```
+**Reading live console output**:
+```java
+public class MyApp extends ClientSocketListenerAdapter
+{
+    public static void main(String[] args)
+    {
+        PteroClient api = new PteroBuilder().setApplicationUrl("https://pterodactyl.app").setToken("abc123").buildClient();
+        // if there isn't another thread running, this won't execute. you'll need to grab the server synchronously
+        api.retrieveServerByIdentifier("39f09a87").executeAsync(server -> server.getWebSocketBuilder().addEventListeners(new ServerListener()).build());
+    }
+
+    @Override
+    public void onAuthSuccess(AuthSuccessEvent event)
+    {
+        // if the server is running, this will trigger wings to send the entire console history from the current session
+        event.getWebSocketManager().request(WebSocketManager.RequestAction.LOGS);
+    }
+
+    @Override
+    public void onOutput(OutputEvent event)
+    {
+        // this will output everything from the console
+        System.out.println(event.getLine());
+    }
+
+    @Override
+    public void onConsoleOutput(ConsoleOutputEvent event)
+    {
+        // this will output everything from the console related to the game
+        System.out.println(event.getLine());
+    }
+
+    @Override
+    public void onInstallOutput(InstallOutputEvent event)
+    {
+        // this will output everything from the console related to the egg install/docker
+        System.out.println(event.getLine());
+    }
+
+    @Override
+    public void onStatsUpdate(StatsUpdateEvent event)
+    {
+        System.out.println(String.format("Memory Usage: %s/%s", event.getMemoryFormatted(DataType.MB), event.getMaxMemoryFormatted(DataType.MB)));
+    }
+}
+```
+
 ## Download
 Latest Stable Version: [Bintray Release](https://bintray.com/mattmalec/Pterodactyl4J/Pterodactyl4J/1.1/link) <br>
-Latest Version: [ ![Download](https://api.bintray.com/packages/mattmalec/Pterodactyl4J/Pterodactyl4J/images/download.svg?version=2.BETA_4) ](https://bintray.com/mattmalec/Pterodactyl4J/Pterodactyl4J/2.BETA_4/link)
+Latest Version: [ ![Download](https://api.bintray.com/packages/mattmalec/Pterodactyl4J/Pterodactyl4J/images/download.svg?version=2.BETA_5) ](https://bintray.com/mattmalec/Pterodactyl4J/Pterodactyl4J/2.BETA_5/link)
 
 Be sure to replace the **VERSION** key below with the one of the versions shown above!
 

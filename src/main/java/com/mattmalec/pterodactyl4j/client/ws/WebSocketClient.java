@@ -2,43 +2,59 @@ package com.mattmalec.pterodactyl4j.client.ws;
 
 import com.mattmalec.pterodactyl4j.client.entities.ClientServer;
 import com.mattmalec.pterodactyl4j.client.entities.impl.PteroClientImpl;
+import com.mattmalec.pterodactyl4j.client.managers.WebSocketManager;
+import com.mattmalec.pterodactyl4j.client.ws.events.connection.ConnectedEvent;
+import com.mattmalec.pterodactyl4j.client.ws.events.connection.DisconnectedEvent;
+import com.mattmalec.pterodactyl4j.client.ws.events.connection.DisconnectingEvent;
 import com.mattmalec.pterodactyl4j.client.ws.handle.*;
 import com.mattmalec.pterodactyl4j.requests.Route;
 import okhttp3.*;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.Future;
 
-public class WebSocketClient extends WebSocketListener {
+public class WebSocketClient extends WebSocketListener implements Runnable {
 
     private OkHttpClient webSocketClient = new OkHttpClient();
+
+    public static final Logger WEBSOCKET_LOG = LoggerFactory.getLogger(WebSocketClient.class);
 
     private WebSocket webSocket;
     private PteroClientImpl client;
     private ClientServer server;
+    private WebSocketManager manager;
     private boolean connected = false;
-    private volatile Future<?> keepAliveThread;
     private Map<String, ClientSocketHandler> handlers = new HashMap<>();
 
-    public WebSocketClient(PteroClientImpl client, ClientServer server) {
+    public WebSocketClient(PteroClientImpl client, ClientServer server, WebSocketManager manager) {
         this.client = client;
         this.server = server;
+        this.manager = manager;
         setupHandlers();
     }
 
-    private void setupHandlers() {
-        handlers.put("auth success", new AuthSuccessHandler(client, server));
-        handlers.put("status", new StatusHandler(client, server));
-        handlers.put("console output", new ConsoleOuputHandler(client, server));
-        handlers.put("stats", new StatsHandler(client, server));
-        handlers.put("token expiring", new TokenExpiringHandler(client, server, this));
-        handlers.put("token expired", new TokenExpiredHandler(client, server, this));
+    @Override
+    public void run() {
+        connect();
     }
 
-    protected void connect() {
+    private void setupHandlers() {
+        handlers.put("auth success", new AuthSuccessHandler(client, server, manager));
+        handlers.put("status", new StatusHandler(client, server, manager));
+        handlers.put("console output", new ConsoleOuputHandler(client, server, manager));
+        handlers.put("install output", new InstallOuputHandler(client, server, manager));
+        handlers.put("stats", new StatsHandler(client, server, manager));
+        handlers.put("token expiring", new TokenExpiringHandler(client, server, manager, this));
+        handlers.put("token expired", new TokenExpiredHandler(client, server, manager, this));
+        handlers.put("daemon error", new DaemonErrorHandler(client, server, manager));
+        handlers.put("jwt error", new JWTErrorHandler(client, server, manager, this));
+    }
+
+    public void connect() {
         if(connected)
             throw new IllegalStateException("Client already connected");
         Route.CompiledRoute route = Route.Client.GET_WEBSOCKET.compile(server.getIdentifier());
@@ -50,7 +66,22 @@ public class WebSocketClient extends WebSocketListener {
         webSocketClient.newWebSocket(req, this);
     }
 
-    protected boolean send(String message) {
+    public void shutdown() {
+        if (!connected)
+            throw new IllegalStateException("Client isn't connected to server websocket");
+
+        WEBSOCKET_LOG.info(String.format("Shutting down websocket for server %s", server.getIdentifier()));
+
+        webSocket.close(1000, "Client shutting down");
+    }
+
+    public boolean send(JSONObject json) {
+        return send(json.toString());
+    }
+
+    public boolean send(String message) {
+        if(!connected)
+            throw new IllegalStateException("Client isn't connected to server websocket");
         return webSocket.send(message);
     }
 
@@ -65,19 +96,19 @@ public class WebSocketClient extends WebSocketListener {
             return data.getString("token");
         });
 
-        webSocket.send(WebSocketAction.create(WebSocketAction.AUTH, t));
+        send(WebSocketAction.create(WebSocketAction.AUTH, t));
 
     }
 
     private void onEvent(JSONObject json) {
-        handleEvent(json.getString("event"), json.getJSONArray("args").optString(0));
+        if (json.has("args"))
+            handleEvent(json.getString("event"), json.getJSONArray("args").optString(0));
+        else handleEvent(json.getString("event"), null);
     }
 
     private void handleEvent(String event, String args) {
-
         ClientSocketHandler handler = getHandler(event);
         handler.handleInternally(args);
-
     }
 
     @SuppressWarnings("unchecked")
@@ -95,6 +126,8 @@ public class WebSocketClient extends WebSocketListener {
     public void onOpen(WebSocket webSocket, Response response) {
         connected = true;
         this.webSocket = webSocket;
+        WEBSOCKET_LOG.info(String.format("Connected to websocket for server %s", server.getIdentifier()));
+        manager.getEventManager().handle(new ConnectedEvent(client, server, manager, connected));
         sendAuthenticate(Optional.empty());
     }
 
@@ -106,18 +139,20 @@ public class WebSocketClient extends WebSocketListener {
 
     @Override
     public void onClosing(WebSocket webSocket, int code, String reason) {
+        connected = false;
+        manager.getEventManager().handle(new DisconnectingEvent(client, server, manager, connected, code));
 
     }
 
     @Override
     public void onClosed(WebSocket webSocket, int code, String reason) {
-
         connected = false;
-
+        manager.getEventManager().handle(new DisconnectedEvent(client, server, manager, connected, code));
     }
 
     @Override
     public void onFailure(WebSocket webSocket, Throwable t, Response response) {
-
+        connected = false;
+        WEBSOCKET_LOG.error(String.format("There was an error in the websocket for server %s", server.getIdentifier()), t);
     }
 }

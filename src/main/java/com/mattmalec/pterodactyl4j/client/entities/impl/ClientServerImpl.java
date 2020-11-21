@@ -2,6 +2,7 @@ package com.mattmalec.pterodactyl4j.client.entities.impl;
 
 import com.mattmalec.pterodactyl4j.client.entities.ClientServer;
 import com.mattmalec.pterodactyl4j.client.entities.SFTP;
+import com.mattmalec.pterodactyl4j.client.managers.WebSocketBuilder;
 import com.mattmalec.pterodactyl4j.entities.FeatureLimit;
 import com.mattmalec.pterodactyl4j.entities.Limit;
 import com.mattmalec.pterodactyl4j.entities.impl.FeatureLimitImpl;
@@ -16,9 +17,11 @@ import java.util.Set;
 public class ClientServerImpl implements ClientServer {
 
 	private JSONObject json;
+	private PteroClientImpl impl;
 
-	public ClientServerImpl(JSONObject json) {
+	public ClientServerImpl(JSONObject json, PteroClientImpl impl) {
 		this.json = json.getJSONObject("attributes");
+		this.impl = impl;
 	}
 
 	@Override
@@ -93,6 +96,11 @@ public class ClientServerImpl implements ClientServer {
 	@Override
 	public boolean isInstalling() {
 		return json.getBoolean("is_installing");
+	}
+
+	@Override
+	public WebSocketBuilder getWebSocketBuilder() {
+		return new WebSocketBuilder(impl, this);
 	}
 
 	@Override

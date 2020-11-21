@@ -79,6 +79,7 @@ public class PteroClientImpl implements PteroClient {
 
     @Override
     public PteroAction<List<ClientServer>> retrieveServers() {
+        PteroClientImpl impl = this;
         return new PteroAction<List<ClientServer>>() {
             @Override
             public List<ClientServer> execute() {
@@ -88,14 +89,14 @@ public class PteroClientImpl implements PteroClient {
                 List<ClientServer> servers = new ArrayList<>();
                 for (Object o : json.getJSONArray("data")) {
                     JSONObject server = new JSONObject(o.toString());
-                    servers.add(new ClientServerImpl(server));
+                    servers.add(new ClientServerImpl(server, impl));
                 }
                 for (int i = 1; i < pages; i++) {
                     Route.CompiledRoute nextRoute = Route.Client.LIST_SERVERS.compile(Long.toUnsignedString(pages));
                     JSONObject nextJson = requester.request(nextRoute).toJSONObject();
                     for (Object o : nextJson.getJSONArray("data")) {
                         JSONObject server = new JSONObject(o.toString());
-                        servers.add(new ClientServerImpl(server));
+                        servers.add(new ClientServerImpl(server, impl));
                     }
                 }
                 return Collections.unmodifiableList(servers);
@@ -105,12 +106,13 @@ public class PteroClientImpl implements PteroClient {
 
     @Override
     public PteroAction<ClientServer> retrieveServerByIdentifier(String identifier) {
+        PteroClientImpl impl = this;
         return new PteroAction<ClientServer>() {
             Route.CompiledRoute route = Route.Client.GET_SERVER.compile(identifier);
             @Override
             public ClientServer execute() {
                 JSONObject json = requester.request(route).toJSONObject();
-                return new ClientServerImpl(json);
+                return new ClientServerImpl(json, impl);
             }
         };
     }
