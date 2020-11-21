@@ -18,7 +18,7 @@ PteroApplication api = new PteroBuilder().setApplicationUrl("https://pterodactyl
 PteroClient api = new PteroBuilder().setApplicationUrl("https://pterodactyl.app").setToken("xyz321").buildClient();
 ```
 
-#### Examples:
+### Examples:
 
 **Reading all the users**:
 ```java
