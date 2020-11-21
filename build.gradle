@@ -113,7 +113,6 @@ bintray {
         implementation 'com.squareup.okhttp3:okhttp:3.11.0'
         implementation 'org.json:json:20160810'
         implementation 'org.slf4j:slf4j-api:1.7.25'
-        implementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
     }
 
 compileJava.options.encoding = 'UTF-8'
