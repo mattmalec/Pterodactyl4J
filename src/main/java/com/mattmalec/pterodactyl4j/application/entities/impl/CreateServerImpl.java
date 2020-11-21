@@ -32,6 +32,7 @@ public class CreateServerImpl implements ServerAction {
 	private long io = 500L;
 	private long databases = 0L;
 	private long allocations = 0L;
+	private long backups = 0L;
 	private Map<String, String> environment;
 	private Set<Location> locations;
 	private Set<String> portRange;
@@ -142,6 +143,12 @@ public class CreateServerImpl implements ServerAction {
 	}
 
 	@Override
+	public ServerAction setBackups(long amount) {
+		this.backups = amount;
+		return this;
+	}
+
+	@Override
 	public ServerAction setEnvironment(Map<String, String> environment) {
 		this.environment = environment;
 		return this;
@@ -193,7 +200,8 @@ public class CreateServerImpl implements ServerAction {
 				}
 				JSONObject featureLimits = new JSONObject()
 						.put("databases", databases)
-						.put("allocations", allocations);
+						.put("allocations", allocations)
+						.put("backups", backups);
 				JSONObject limits = new JSONObject()
 						.put("memory", memory)
 						.put("swap", swap)

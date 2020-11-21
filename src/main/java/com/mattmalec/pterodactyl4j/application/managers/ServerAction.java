@@ -25,6 +25,7 @@ public interface ServerAction {
 	ServerAction setCPU(long amount);
 	ServerAction setDatabases(long amount);
 	ServerAction setAllocations(long amount);
+	ServerAction setBackups(long amount);
 	ServerAction setEnvironment(Map<String, String> environment);
 	ServerAction setLocations(Set<Location> locations);
 	ServerAction setDedicatedIP(boolean dedicatedIP);
