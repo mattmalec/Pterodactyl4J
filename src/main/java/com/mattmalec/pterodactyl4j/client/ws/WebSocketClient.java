@@ -75,29 +75,26 @@ public class WebSocketClient extends WebSocketListener implements Runnable {
         webSocket.close(1000, "Client shutting down");
     }
 
-    public boolean send(JSONObject json) {
-        return send(json.toString());
-    }
-
     public boolean send(String message) {
         if(!connected)
             throw new IllegalStateException("Client isn't connected to server websocket");
         return webSocket.send(message);
     }
 
-    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-    public void sendAuthenticate(Optional<String> token) {
+    public void sendAuthenticate() {
+        sendAuthenticate(null);
+    }
+
+    public void sendAuthenticate(String token) {
         if(!connected)
             throw new IllegalStateException("Client isn't connected to server websocket");
-        String t = token.orElseGet(() -> {
+        String t = Optional.ofNullable(token).orElseGet(() -> {
             Route.CompiledRoute route = Route.Client.GET_WEBSOCKET.compile(server.getIdentifier());
             JSONObject json = client.getRequester().request(route).toJSONObject();
             JSONObject data = json.getJSONObject("data");
             return data.getString("token");
         });
-
         send(WebSocketAction.create(WebSocketAction.AUTH, t));
-
     }
 
     private void onEvent(JSONObject json) {
@@ -128,7 +125,7 @@ public class WebSocketClient extends WebSocketListener implements Runnable {
         this.webSocket = webSocket;
         WEBSOCKET_LOG.info(String.format("Connected to websocket for server %s", server.getIdentifier()));
         manager.getEventManager().handle(new ConnectedEvent(client, server, manager, connected));
-        sendAuthenticate(Optional.empty());
+        sendAuthenticate();
     }
 
     @Override

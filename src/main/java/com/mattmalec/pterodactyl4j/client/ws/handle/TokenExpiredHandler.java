@@ -18,6 +18,6 @@ public class TokenExpiredHandler extends ClientSocketHandler {
 
     @Override
     public void handleInternally(String content) {
-        webSocketClient.sendAuthenticate(Optional.empty());
+        webSocketClient.sendAuthenticate();
     }
 }

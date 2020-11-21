@@ -6,8 +6,6 @@ import com.mattmalec.pterodactyl4j.client.managers.WebSocketManager;
 import com.mattmalec.pterodactyl4j.client.ws.WebSocketClient;
 import com.mattmalec.pterodactyl4j.client.ws.events.error.JWTErrorEvent;
 
-import java.util.Optional;
-
 public class JWTErrorHandler extends ClientSocketHandler {
 
     private WebSocketClient webSocket;
@@ -20,7 +18,7 @@ public class JWTErrorHandler extends ClientSocketHandler {
     @Override
     public void handleInternally(String content) {
         if (content.equals("jwt: exp claim is invalid"))
-            webSocket.sendAuthenticate(Optional.empty());
+            webSocket.sendAuthenticate();
         getManager().getEventManager().handle(new JWTErrorEvent(getClient(), getServer(), getManager(), content));
     }
 }

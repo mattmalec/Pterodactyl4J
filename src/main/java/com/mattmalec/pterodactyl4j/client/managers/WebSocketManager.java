@@ -7,8 +7,6 @@ import com.mattmalec.pterodactyl4j.client.ws.WebSocketAction;
 import com.mattmalec.pterodactyl4j.client.ws.WebSocketClient;
 import com.mattmalec.pterodactyl4j.client.ws.hooks.IClientListenerManager;
 
-import java.util.Optional;
-
 public class WebSocketManager {
 
     private WebSocketClient client;
@@ -36,11 +34,11 @@ public class WebSocketManager {
 
 
     public void authenticate() {
-        client.sendAuthenticate(Optional.empty());
+        client.sendAuthenticate();
     }
 
     public void authenticate(String token) {
-        client.sendAuthenticate(Optional.ofNullable(token));
+        client.sendAuthenticate(token);
     }
 
     public void request(RequestAction action) {
