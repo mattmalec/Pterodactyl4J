@@ -60,12 +60,12 @@ public class LocationImpl implements Location {
 
 	@Override
 	public OffsetDateTime getCreationDate() {
-		return LocalDateTime.parse(json.optString("created_at"), DateTimeFormatter.ISO_LOCAL_DATE_TIME).atOffset(ZoneId.systemDefault().getRules().getOffset(Instant.now()));
+		return OffsetDateTime.parse(json.optString("created_at"));
 	}
 
 	@Override
 	public OffsetDateTime getUpdatedDate() {
-		return LocalDateTime.parse(json.optString("updated_at"), DateTimeFormatter.ISO_LOCAL_DATE_TIME).atOffset(ZoneId.systemDefault().getRules().getOffset(Instant.now()));
+		return OffsetDateTime.parse(json.optString("updated_at"));
 
 	}
 

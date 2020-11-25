@@ -10,11 +10,7 @@ import com.mattmalec.pterodactyl4j.entities.impl.FeatureLimitImpl;
 import com.mattmalec.pterodactyl4j.entities.impl.LimitImpl;
 import org.json.JSONObject;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 
 public class ApplicationServerImpl implements ApplicationServer {
 
@@ -146,12 +142,12 @@ public class ApplicationServerImpl implements ApplicationServer {
 	}
 	@Override
 	public OffsetDateTime getCreationDate() {
-		return LocalDateTime.parse(json.optString("created_at"), DateTimeFormatter.ISO_LOCAL_DATE_TIME).atOffset(ZoneId.systemDefault().getRules().getOffset(Instant.now()));
+		return OffsetDateTime.parse(json.optString("created_at"));
 	}
 
 	@Override
 	public OffsetDateTime getUpdatedDate() {
-		return LocalDateTime.parse(json.optString("updated_at"), DateTimeFormatter.ISO_LOCAL_DATE_TIME).atOffset(ZoneId.systemDefault().getRules().getOffset(Instant.now()));
+		return OffsetDateTime.parse(json.optString("updated_at"));
 	}
 
 	@Override
