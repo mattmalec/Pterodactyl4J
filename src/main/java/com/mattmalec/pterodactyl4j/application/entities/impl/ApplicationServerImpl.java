@@ -20,10 +20,12 @@ public class ApplicationServerImpl implements ApplicationServer {
 
 	private PteroApplicationImpl impl;
 	private JSONObject json;
+	private JSONObject relationships;
 
 	public ApplicationServerImpl(PteroApplicationImpl impl, JSONObject json) {
 		this.impl = impl;
 		this.json = json.getJSONObject("attributes");
+		this.relationships = json.getJSONObject("attributes").getJSONObject("relationships");
 	}
 
 	@Override

@@ -35,4 +35,10 @@ public class LimitImpl implements Limit {
     public long getCPULong() {
         return json.getLong("cpu");
     }
+
+    @Override
+    public String getThreads() {
+        return json.getString("threads");
+    }
+
 }

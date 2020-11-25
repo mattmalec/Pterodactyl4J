@@ -22,5 +22,6 @@ public interface Limit {
 	default String getCPU() {
 		return Long.toUnsignedString(getCPULong());
 	}
+	String getThreads();
 
 }

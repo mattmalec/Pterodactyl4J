@@ -84,7 +84,7 @@ public class MyApp extends ClientSocketListenerAdapter
 
         PteroClient api = new PteroBuilder().setApplicationUrl("https://pterodactyl.app").setToken("abc123").buildClient();
         // if there isn't another thread running, this won't execute. you'll need to grab the server synchronously
-        api.retrieveServerByIdentifier("39f09a87").executeAsync(server -> server.getWebSocketBuilder().addEventListeners(new ServerListener()).build());
+        api.retrieveServerByIdentifier("39f09a87").executeAsync(server -> server.getWebSocketBuilder().addEventListeners(new MyApp()).build());
     
     }
 
@@ -136,7 +136,7 @@ public class MyApp extends ClientSocketListenerAdapter
 
 ## Download
 Latest Stable Version: [Bintray Release](https://bintray.com/mattmalec/Pterodactyl4J/Pterodactyl4J/1.1/link) <br>
-Latest Version: [ ![Download](https://api.bintray.com/packages/mattmalec/Pterodactyl4J/Pterodactyl4J/images/download.svg?version=2.BETA_5) ](https://bintray.com/mattmalec/Pterodactyl4J/Pterodactyl4J/2.BETA_5/link)
+Latest Version: [ ![Download](https://api.bintray.com/packages/mattmalec/Pterodactyl4J/Pterodactyl4J/images/download.svg?version=2.BETA_6) ](https://bintray.com/mattmalec/Pterodactyl4J/Pterodactyl4J/2.BETA_6/link)
 
 Be sure to replace the **VERSION** key below with the one of the versions shown above!
 

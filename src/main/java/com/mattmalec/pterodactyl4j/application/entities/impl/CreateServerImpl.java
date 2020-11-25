@@ -30,8 +30,10 @@ public class CreateServerImpl implements ServerAction {
 	private long pack;
 	private long cpu = 0L;
 	private long io = 500L;
+	private String threads;
 	private long databases = 0L;
 	private long allocations = 0L;
+	private long backups = 0L;
 	private Map<String, String> environment;
 	private Set<Location> locations;
 	private Set<String> portRange;
@@ -124,6 +126,12 @@ public class CreateServerImpl implements ServerAction {
 	}
 
 	@Override
+	public ServerAction setThreads(String cores) {
+		this.threads = cores;
+		return this;
+	}
+
+	@Override
 	public ServerAction setCPU(long amount) {
 		this.cpu = amount;
 		return this;
@@ -138,6 +146,12 @@ public class CreateServerImpl implements ServerAction {
 	@Override
 	public ServerAction setAllocations(long amount) {
 		this.allocations = amount;
+		return this;
+	}
+
+	@Override
+	public ServerAction setBackups(long amount) {
+		this.backups = amount;
 		return this;
 	}
 
@@ -193,13 +207,15 @@ public class CreateServerImpl implements ServerAction {
 				}
 				JSONObject featureLimits = new JSONObject()
 						.put("databases", databases)
-						.put("allocations", allocations);
+						.put("allocations", allocations)
+						.put("backups", backups);
 				JSONObject limits = new JSONObject()
 						.put("memory", memory)
 						.put("swap", swap)
 						.put("disk", disk)
 						.put("io", io)
-						.put("cpu", cpu);
+						.put("cpu", cpu)
+						.put("threads", threads);
 				JSONObject env = new JSONObject();
 				if(environment != null) environment.forEach(env::put);
 				List<Long> locationIds = new ArrayList<>();

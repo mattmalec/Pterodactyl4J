@@ -70,15 +70,19 @@ public class ServerManager {
 			@Override
 			public ApplicationServer execute() {
 				JSONObject obj = new JSONObject()
-						.put("allocation", allocation.getId())
 						.put("memory", server.getLimits().getMemory())
 						.put("swap", server.getLimits().getSwap())
 						.put("io", server.getLimits().getIO())
 						.put("cpu", server.getLimits().getCPU())
-						.put("disk", server.getLimits().getDisk());
+						.put("disk", server.getLimits().getDisk())
+						.put("threads", server.getLimits().getThreads());
+				JSONObject allocations = new JSONObject()
+						.put("default", allocation.getId());
+				obj.put("allocation", allocations);
 				JSONObject featureLimits = new JSONObject()
 						.put("databases", server.getFeatureLimits().getDatabases())
-						.put("allocations", server.getFeatureLimits().getAllocations());
+						.put("allocations", server.getFeatureLimits().getAllocations())
+						.put("backups", server.getFeatureLimits().getBackups());
 				obj.put("feature_limits", featureLimits);
 				Route.CompiledRoute route = Route.Servers.UPDATE_SERVER_BUILD.compile(server.getId()).withJSONdata(obj);
 				JSONObject json = impl.getRequester().request(route).toJSONObject();
@@ -98,15 +102,19 @@ public class ServerManager {
 					default: trueAmount = amount * dataType.getMbValue();
 				}
 				JSONObject obj = new JSONObject()
-						.put("allocation", server.retrieveAllocation().execute().getId())
 						.put("memory", trueAmount)
 						.put("swap", server.getLimits().getSwap())
 						.put("io", server.getLimits().getIO())
 						.put("cpu", server.getLimits().getCPU())
-						.put("disk", server.getLimits().getDisk());
+						.put("disk", server.getLimits().getDisk())
+						.put("threads", server.getLimits().getThreads());
+				JSONObject allocations = new JSONObject()
+						.put("default", server.retrieveAllocation().execute().getId());
+				obj.put("allocation", allocations);
 				JSONObject featureLimits = new JSONObject()
 						.put("databases", server.getFeatureLimits().getDatabases())
-						.put("allocations", server.getFeatureLimits().getAllocations());
+						.put("allocations", server.getFeatureLimits().getAllocations())
+						.put("backups", server.getFeatureLimits().getBackups());
 				obj.put("feature_limits", featureLimits);
 				Route.CompiledRoute route = Route.Servers.UPDATE_SERVER_BUILD.compile(server.getId()).withJSONdata(obj);
 				JSONObject json = impl.getRequester().request(route).toJSONObject();
@@ -126,15 +134,19 @@ public class ServerManager {
 					default: trueAmount = amount * dataType.getMbValue();
 				}
 				JSONObject obj = new JSONObject()
-						.put("allocation", server.retrieveAllocation().execute().getId())
 						.put("memory", server.getLimits().getMemory())
 						.put("swap", trueAmount)
 						.put("io", server.getLimits().getIO())
 						.put("cpu", server.getLimits().getCPU())
-						.put("disk", server.getLimits().getDisk());
+						.put("disk", server.getLimits().getDisk())
+						.put("threads", server.getLimits().getThreads());
+				JSONObject allocations = new JSONObject()
+						.put("default", server.retrieveAllocation().execute().getId());
+				obj.put("allocation", allocations);
 				JSONObject featureLimits = new JSONObject()
 						.put("databases", server.getFeatureLimits().getDatabases())
-						.put("allocations", server.getFeatureLimits().getAllocations());
+						.put("allocations", server.getFeatureLimits().getAllocations())
+						.put("backups", server.getFeatureLimits().getBackups());
 				obj.put("feature_limits", featureLimits);
 				Route.CompiledRoute route = Route.Servers.UPDATE_SERVER_BUILD.compile(server.getId()).withJSONdata(obj);
 				JSONObject json = impl.getRequester().request(route).toJSONObject();
@@ -148,15 +160,19 @@ public class ServerManager {
 			@Override
 			public ApplicationServer execute() {
 				JSONObject obj = new JSONObject()
-						.put("allocation", server.retrieveAllocation().execute().getId())
 						.put("memory", server.getLimits().getMemory())
 						.put("swap", server.getLimits().getSwap())
 						.put("io", amount)
 						.put("cpu", server.getLimits().getCPU())
-						.put("disk", server.getLimits().getDisk());
+						.put("disk", server.getLimits().getDisk())
+						.put("threads", server.getLimits().getThreads());
+				JSONObject allocations = new JSONObject()
+						.put("default", server.retrieveAllocation().execute().getId());
+				obj.put("allocation", allocations);
 				JSONObject featureLimits = new JSONObject()
 						.put("databases", server.getFeatureLimits().getDatabases())
-						.put("allocations", server.getFeatureLimits().getAllocations());
+						.put("allocations", server.getFeatureLimits().getAllocations())
+						.put("backups", server.getFeatureLimits().getBackups());
 				obj.put("feature_limits", featureLimits);
 				Route.CompiledRoute route = Route.Servers.UPDATE_SERVER_BUILD.compile(server.getId()).withJSONdata(obj);
 				JSONObject json = impl.getRequester().request(route).toJSONObject();
@@ -170,15 +186,45 @@ public class ServerManager {
 			@Override
 			public ApplicationServer execute() {
 				JSONObject obj = new JSONObject()
-						.put("allocation", server.retrieveAllocation().execute().getId())
 						.put("memory", server.getLimits().getMemory())
 						.put("swap", server.getLimits().getSwap())
 						.put("io", server.getLimits().getIO())
 						.put("cpu", amount)
-						.put("disk", server.getLimits().getDisk());
+						.put("disk", server.getLimits().getDisk())
+						.put("threads", server.getLimits().getThreads());
+				JSONObject allocations = new JSONObject()
+						.put("default", server.retrieveAllocation().execute().getId());
+				obj.put("allocation", allocations);
 				JSONObject featureLimits = new JSONObject()
 						.put("databases", server.getFeatureLimits().getDatabases())
-						.put("allocations", server.getFeatureLimits().getAllocations());
+						.put("allocations", server.getFeatureLimits().getAllocations())
+						.put("backups", server.getFeatureLimits().getBackups());
+				obj.put("feature_limits", featureLimits);
+				Route.CompiledRoute route = Route.Servers.UPDATE_SERVER_BUILD.compile(server.getId()).withJSONdata(obj);
+				JSONObject json = impl.getRequester().request(route).toJSONObject();
+				return new ApplicationServerImpl(impl, json);
+			}
+		};
+	}
+
+	public PteroAction<ApplicationServer> setThreads(String cores) {
+		return new PteroAction<ApplicationServer>() {
+			@Override
+			public ApplicationServer execute() {
+				JSONObject obj = new JSONObject()
+						.put("memory", server.getLimits().getMemory())
+						.put("swap", server.getLimits().getSwap())
+						.put("io", server.getLimits().getIO())
+						.put("cpu", server.getLimits().getCPU())
+						.put("disk", server.getLimits().getDisk())
+						.put("threads", cores);
+				JSONObject allocations = new JSONObject()
+						.put("default", server.retrieveAllocation().execute().getId());
+				obj.put("allocation", allocations);
+				JSONObject featureLimits = new JSONObject()
+						.put("databases", server.getFeatureLimits().getDatabases())
+						.put("allocations", server.getFeatureLimits().getAllocations())
+						.put("backups", server.getFeatureLimits().getBackups());
 				obj.put("feature_limits", featureLimits);
 				Route.CompiledRoute route = Route.Servers.UPDATE_SERVER_BUILD.compile(server.getId()).withJSONdata(obj);
 				JSONObject json = impl.getRequester().request(route).toJSONObject();
@@ -198,15 +244,19 @@ public class ServerManager {
 					default: trueAmount = amount * dataType.getMbValue();
 				}
 				JSONObject obj = new JSONObject()
-						.put("allocation", server.retrieveAllocation().execute().getId())
 						.put("memory", server.getLimits().getMemory())
 						.put("swap", server.getLimits().getSwap())
 						.put("io", server.getLimits().getIO())
 						.put("cpu", server.getLimits().getCPU())
-						.put("disk", trueAmount);
+						.put("disk", trueAmount)
+						.put("threads", server.getLimits().getThreads());
+				JSONObject allocations = new JSONObject()
+						.put("default", server.retrieveAllocation().execute().getId());
+				obj.put("allocation", allocations);
 				JSONObject featureLimits = new JSONObject()
 						.put("databases", server.getFeatureLimits().getDatabases())
-						.put("allocations", server.getFeatureLimits().getAllocations());
+						.put("allocations", server.getFeatureLimits().getAllocations())
+						.put("backups", server.getFeatureLimits().getBackups());
 				obj.put("feature_limits", featureLimits);
 				Route.CompiledRoute route = Route.Servers.UPDATE_SERVER_BUILD.compile(server.getId()).withJSONdata(obj);
 				JSONObject json = impl.getRequester().request(route).toJSONObject();
@@ -220,15 +270,19 @@ public class ServerManager {
 			@Override
 			public ApplicationServer execute() {
 				JSONObject obj = new JSONObject()
-						.put("allocation", server.retrieveAllocation().execute().getId())
 						.put("memory", server.getLimits().getMemory())
 						.put("swap", server.getLimits().getSwap())
 						.put("io", server.getLimits().getIO())
 						.put("cpu", server.getLimits().getCPU())
-						.put("disk", server.getLimits().getDisk());
+						.put("disk", server.getLimits().getDisk())
+						.put("threads", server.getLimits().getThreads());
+				JSONObject allocations = new JSONObject()
+						.put("default", server.retrieveAllocation().execute().getId());
+				obj.put("allocation", allocations);
 				JSONObject featureLimits = new JSONObject()
 						.put("databases", amount)
-						.put("allocations", server.getFeatureLimits().getAllocations());
+						.put("allocations", server.getFeatureLimits().getAllocations())
+						.put("backups", server.getFeatureLimits().getBackups());
 				obj.put("feature_limits", featureLimits);
 				Route.CompiledRoute route = Route.Servers.UPDATE_SERVER_BUILD.compile(server.getId()).withJSONdata(obj);
 				JSONObject json = impl.getRequester().request(route).toJSONObject();
@@ -242,15 +296,19 @@ public class ServerManager {
 			@Override
 			public ApplicationServer execute() {
 				JSONObject obj = new JSONObject()
-						.put("allocation", server.retrieveAllocation().execute().getId())
 						.put("memory", server.getLimits().getMemory())
 						.put("swap", server.getLimits().getSwap())
 						.put("io", server.getLimits().getIO())
 						.put("cpu", server.getLimits().getCPU())
-						.put("disk", server.getLimits().getDisk());
+						.put("disk", server.getLimits().getDisk())
+						.put("threads", server.getLimits().getThreads());
+				JSONObject allocations = new JSONObject()
+						.put("default", server.retrieveAllocation().execute().getId());
+				obj.put("allocation", allocations);
 				JSONObject featureLimits = new JSONObject()
 						.put("databases", server.getFeatureLimits().getDatabases())
-						.put("allocations", amount);
+						.put("allocations", amount)
+						.put("backups", server.getFeatureLimits().getBackups());
 				obj.put("feature_limits", featureLimits);
 				Route.CompiledRoute route = Route.Servers.UPDATE_SERVER_BUILD.compile(server.getId()).withJSONdata(obj);
 				JSONObject json = impl.getRequester().request(route).toJSONObject();

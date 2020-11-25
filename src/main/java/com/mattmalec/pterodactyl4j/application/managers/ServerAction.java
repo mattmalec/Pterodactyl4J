@@ -23,8 +23,10 @@ public interface ServerAction {
 	ServerAction setDisk(long amount, DataType dataType);
 	ServerAction setIO(long amount);
 	ServerAction setCPU(long amount);
+	ServerAction setThreads(String cores);
 	ServerAction setDatabases(long amount);
 	ServerAction setAllocations(long amount);
+	ServerAction setBackups(long amount);
 	ServerAction setEnvironment(Map<String, String> environment);
 	ServerAction setLocations(Set<Location> locations);
 	ServerAction setDedicatedIP(boolean dedicatedIP);
