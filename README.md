@@ -188,8 +188,10 @@ The most popular implementations are [Log4j 2](https://logging.apache.org/log4j/
 
 ## Getting Help
 
-For general troubleshooting, you can view some troubleshooting steps in the examples (this will be soon moved to the wiki)
-<br>If you need help, please contact me directly on Discord, or just want to talk with the Pterodactyl community, you can join the [Pterodactyl Discord server](https://discord.gg/pterodactyl)
+For general troubleshooting, you can view some troubleshooting steps in the examples (this will be soon moved to the wiki).
+<br>If you need help, or just want to talk with myself and other developers, you can join the [Pterodactyl4J Discord server](https://discord.gg/7fAabrTJZW).
+
+Alternatively, if you need help outside of P4J, you can join the [Pterodactyl Discord server](https://discord.gg/pterodactyl).
 
 ## Documentation
 The docs will have everything you need to know in order to use the wrapper once finished of course.
