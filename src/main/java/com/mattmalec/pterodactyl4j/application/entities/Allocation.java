@@ -6,6 +6,7 @@ public interface Allocation extends ISnowflake {
 	String getFullAddress();
 	String getAlias();
 	String getPort();
+	String getNotes();
 	default long getPortLong() { return Long.parseLong(getPort()); }
 	boolean isAssigned();
 

@@ -1,6 +1,5 @@
 package com.mattmalec.pterodactyl4j.application.entities.impl;
 
-import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.application.entities.*;
 import com.mattmalec.pterodactyl4j.application.managers.ServerController;
 import com.mattmalec.pterodactyl4j.application.managers.ServerManager;
@@ -11,6 +10,9 @@ import com.mattmalec.pterodactyl4j.entities.impl.LimitImpl;
 import org.json.JSONObject;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class ApplicationServerImpl implements ApplicationServer {
 
@@ -65,54 +67,45 @@ public class ApplicationServerImpl implements ApplicationServer {
 	}
 
 	@Override
-	public PteroAction<ApplicationUser> retrieveOwner() {
-		return new PteroAction<ApplicationUser>() {
-			@Override
-			public ApplicationUser execute() {
-				return impl.retrieveUserById(json.getLong("user")).execute();
-			}
-		};
+	public ApplicationUser getOwner() {
+		return new ApplicationUserImpl(relationships.getJSONObject("user"), impl.getRequester());
 	}
 
 	@Override
-	public PteroAction<Node> retrieveNode() {
-		return new PteroAction<Node>() {
-			@Override
-			public Node execute() {
-				return impl.retrieveNodeById(json.getLong("node")).execute();
-			}
-		};
+	public Node getNode() {
+		return new NodeImpl(relationships.getJSONObject("node"), impl);
 	}
 
 	@Override
-	public PteroAction<Allocation> retrieveAllocation() {
-		return new PteroAction<Allocation>() {
-			@Override
-			public Allocation execute() {
-				return impl.retrieveAllocationById(json.getLong("allocation")).execute();
-			}
-		};
+	public List<Allocation> getAllocations() {
+		List<Allocation> allocations = new ArrayList<>();
+		JSONObject json = relationships.getJSONObject("allocations");
+		for(Object o : json.getJSONArray("data")) {
+			JSONObject allocation = new JSONObject(o.toString());
+			allocations.add(new AllocationImpl(allocation));
+		}
+		return Collections.unmodifiableList(allocations);
 	}
 
 	@Override
-	public PteroAction<Nest> retrieveNest() {
-		return new PteroAction<Nest>() {
-			@Override
-			public Nest execute() {
-				return impl.retrieveNestById(json.getLong("nest")).execute();
+	public Allocation getDefaultAllocation() {
+		List<Allocation> allocations = getAllocations();
+		for(Allocation a : allocations) {
+			if(a.getIdLong() == json.getLong("allocation")) {
+				return a;
 			}
-		};
+		}
+		return null;
 	}
 
 	@Override
-	public PteroAction<Egg> retrieveEgg() {
-		return new PteroAction<Egg>() {
-			@Override
-			public Egg execute() {
+	public Nest getNest() {
+		return new NestImpl(relationships.getJSONObject("nest"), impl);
+	}
 
-				return impl.retrieveEggById(retrieveNest().execute(), json.getLong("egg")).execute();
-			}
-		};
+	@Override
+	public Egg getEgg() {
+		return new EggImpl(relationships.getJSONObject("egg"), impl);
 	}
 
 	@Override

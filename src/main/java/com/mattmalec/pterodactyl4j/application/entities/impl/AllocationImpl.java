@@ -34,6 +34,11 @@ public class AllocationImpl implements Allocation {
 	}
 
 	@Override
+	public String getNotes() {
+		return json.getString("notes");
+	}
+
+	@Override
 	public long getIdLong() {
 		return json.getLong("id");
 	}

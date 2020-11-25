@@ -535,7 +535,7 @@ public class PteroApplicationImpl implements PteroApplication {
 				List<ApplicationServer> servers = retrieveServers().execute();
 				List<ApplicationServer> newServers = new ArrayList<>();
 				for (ApplicationServer s : servers) {
-					ApplicationUser owner = s.retrieveOwner().execute();
+					ApplicationUser owner = s.getOwner();
 					if (owner.getIdLong() == user.getIdLong()) {
 						newServers.add(s);
 					}
