@@ -45,6 +45,11 @@ public class AccountImpl implements Account {
     }
 
     @Override
+    public long getId() {
+        return json.getLong("id");
+    }
+
+    @Override
     public boolean isRootAdmin() {
         return json.getBoolean("admin");
     }
