@@ -2,10 +2,7 @@ package com.mattmalec.pterodactyl4j.application.entities.impl;
 
 import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.application.entities.*;
-import com.mattmalec.pterodactyl4j.application.managers.LocationManager;
-import com.mattmalec.pterodactyl4j.application.managers.NodeManager;
-import com.mattmalec.pterodactyl4j.application.managers.ServerAction;
-import com.mattmalec.pterodactyl4j.application.managers.UserManager;
+import com.mattmalec.pterodactyl4j.application.managers.*;
 import com.mattmalec.pterodactyl4j.requests.Requester;
 import com.mattmalec.pterodactyl4j.requests.Route;
 import org.json.JSONObject;
@@ -192,22 +189,7 @@ public class PteroApplicationImpl implements PteroApplication {
 		return new PteroAction<List<Allocation>>() {
 			@Override
 			public List<Allocation> execute() {
-				Route.CompiledRoute route = Route.Nodes.LIST_ALLOCATIONS.compile(node.getId(), "1");
-				JSONObject json = requester.request(route).toJSONObject();
-				long pages = json.getJSONObject("meta").getJSONObject("pagination").getLong("total_pages");
-				List<Allocation> allocations = new ArrayList<>();
-				for (Object o : json.getJSONArray("data")) {
-					JSONObject allocation = new JSONObject(o.toString());
-					allocations.add(new AllocationImpl(allocation));
-				}
-				for (int i = 1; i < pages; i++) {
-					Route.CompiledRoute nextRoute = Route.Nodes.LIST_ALLOCATIONS.compile(node.getId(), Long.toUnsignedString(i));
-					JSONObject nextJson = requester.request(nextRoute).toJSONObject();
-					for (Object o : nextJson.getJSONArray("data")) {
-						JSONObject allocation = new JSONObject(o.toString());
-						allocations.add(new AllocationImpl(allocation));
-					}
-				}
+				List<Allocation> allocations = node.getAllocations();
 				return Collections.unmodifiableList(allocations);
 			}
 		};
@@ -222,7 +204,7 @@ public class PteroApplicationImpl implements PteroApplication {
 				List<Allocation> allocations = new ArrayList<>();
 				List<Node> nodes = retrieveNodes().execute();
 				for(Node node : nodes) {
-					allocations.addAll(retrieveAllocationsByNode(node).execute());
+					allocations.addAll(node.getAllocations());
 				}
 				return Collections.unmodifiableList(allocations);
 			}
@@ -250,7 +232,6 @@ public class PteroApplicationImpl implements PteroApplication {
 	public PteroAction<Allocation> retrieveAllocationById(long id) {
 		return retrieveAllocationById(Long.toUnsignedString(id));
 	}
-
 	@Override
 	public PteroAction<Egg> retrieveEggById(Nest nest, String id) {
 		PteroApplicationImpl impl = this;
