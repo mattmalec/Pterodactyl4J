@@ -44,11 +44,10 @@ public class ServerCreator
         Location location = api.retrieveLocationById("1").execute();
         Egg egg = api.retrieveEggById(nest, "27").execute();
 
+        Set<Integer> portRange = new HashSet<>();
+        portRange.add(25565);
+
         Map<String, String> map = new HashMap<>();
-
-        Set<String> portRange = new HashSet<>();
-        portRange.add("25565");
-
         map.put("SERVER_JARFILE", "server.jar");
         map.put("MOTD", "Welcome to my Minecraft server");
         map.put("MAXPLAYERS", "10");
@@ -136,7 +135,7 @@ public class MyApp extends ClientSocketListenerAdapter
 
 ## Download
 Latest Stable Version: [Bintray Release](https://bintray.com/mattmalec/Pterodactyl4J/Pterodactyl4J/1.1/link) <br>
-Latest Version: [ ![Download](https://api.bintray.com/packages/mattmalec/Pterodactyl4J/Pterodactyl4J/images/download.svg?version=2.BETA_9) ](https://bintray.com/mattmalec/Pterodactyl4J/Pterodactyl4J/2.BETA_9/link)
+Latest Version: [ ![Download](https://api.bintray.com/packages/mattmalec/Pterodactyl4J/Pterodactyl4J/images/download.svg?version=2.BETA_10) ](https://bintray.com/mattmalec/Pterodactyl4J/Pterodactyl4J/2.BETA_10/link)
 
 Be sure to replace the **VERSION** key below with the one of the versions shown above!
 
