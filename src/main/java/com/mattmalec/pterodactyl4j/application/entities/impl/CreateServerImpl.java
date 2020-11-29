@@ -2,19 +2,17 @@ package com.mattmalec.pterodactyl4j.application.entities.impl;
 
 import com.mattmalec.pterodactyl4j.DataType;
 import com.mattmalec.pterodactyl4j.PteroAction;
-import com.mattmalec.pterodactyl4j.application.entities.ApplicationServer;
-import com.mattmalec.pterodactyl4j.application.entities.Egg;
-import com.mattmalec.pterodactyl4j.application.entities.Location;
-import com.mattmalec.pterodactyl4j.application.entities.ApplicationUser;
+import com.mattmalec.pterodactyl4j.application.entities.*;
 import com.mattmalec.pterodactyl4j.application.managers.ServerAction;
 import com.mattmalec.pterodactyl4j.exceptions.IllegalActionException;
 import com.mattmalec.pterodactyl4j.requests.Route;
+import com.mattmalec.pterodactyl4j.utils.Checks;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class CreateServerImpl implements ServerAction {
 
@@ -205,6 +203,8 @@ public class CreateServerImpl implements ServerAction {
 				if(memory < 4) {
 					throw new IllegalActionException("The minimum memory limit is 4 MB.");
 				}
+				Checks.notNull(owner, "Owner");
+				Checks.notNull(egg, "Egg and Nest");
 				JSONObject featureLimits = new JSONObject()
 						.put("databases", databases)
 						.put("allocations", allocations)
@@ -218,8 +218,7 @@ public class CreateServerImpl implements ServerAction {
 						.put("threads", threads);
 				JSONObject env = new JSONObject();
 				if(environment != null) environment.forEach(env::put);
-				List<Long> locationIds = new ArrayList<>();
-				locations.forEach(l -> locationIds.add(l.getIdLong()));
+				List<Long> locationIds = locations.stream().map(ISnowflake::getIdLong).collect(Collectors.toList());
 				JSONObject deploy = new JSONObject()
 						.put("locations", locationIds)
 						.put("dedicated_ip", useDedicatedIP)

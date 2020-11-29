@@ -54,7 +54,7 @@ public class Route {
 		public static final Route UPDATE_SERVER_DETAILS = new Route(PATCH,  APPLICATION_PREFIX + "servers/{server_id}/details", "server_id");
 		public static final Route UPDATE_SERVER_BUILD   = new Route(PATCH,  APPLICATION_PREFIX + "servers/{server_id}/build", "server_id");
 		public static final Route UPDATE_SERVER_STARTUP = new Route(PATCH,  APPLICATION_PREFIX + "servers/{server_id}/startup", "server_id");
-		public static final Route CREATE_SERVER 		= new Route(POST,   APPLICATION_PREFIX + "servers");
+		public static final Route CREATE_SERVER 		= new Route(POST,   APPLICATION_PREFIX + "servers?include=allocations,user,subusers,nest,egg,location,node,databases");
 		public static final Route SUSPEND_SERVER 		= new Route(POST,   APPLICATION_PREFIX + "servers/{server_id}/suspend", "server_id");
 		public static final Route UNSUSPEND_SERVER 		= new Route(POST,   APPLICATION_PREFIX + "servers/{server_id}/unsuspend", "server_id");
 		public static final Route REINSTALL_SERVER 		= new Route(POST,   APPLICATION_PREFIX + "servers/{server_id}/reinstall", "server_id");
