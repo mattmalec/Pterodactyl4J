@@ -30,7 +30,7 @@ public interface ServerAction {
 	ServerAction setEnvironment(Map<String, String> environment);
 	ServerAction setLocations(Set<Location> locations);
 	ServerAction setDedicatedIP(boolean dedicatedIP);
-	ServerAction setPortRange(Set<String> ports);
+	ServerAction setPortRange(Set<Integer> ports);
 	ServerAction startOnCompletion(boolean start);
 	ServerAction skipScripts(boolean skip);
 	ServerAction setPack(long id);

@@ -9,7 +9,6 @@ import com.mattmalec.pterodactyl4j.requests.Route;
 import com.mattmalec.pterodactyl4j.utils.Checks;
 import org.json.JSONObject;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -34,7 +33,7 @@ public class CreateServerImpl implements ServerAction {
 	private long backups = 0L;
 	private Map<String, String> environment;
 	private Set<Location> locations;
-	private Set<String> portRange;
+	private Set<Integer> portRange;
 	private boolean useDedicatedIP;
 	private boolean startOnCompletion;
 	private boolean skipScripts;
@@ -172,7 +171,7 @@ public class CreateServerImpl implements ServerAction {
 	}
 
 	@Override
-	public ServerAction setPortRange(Set<String> ports) {
+	public ServerAction setPortRange(Set<Integer> ports) {
 		this.portRange = ports;
 		return this;
 	}
@@ -218,11 +217,10 @@ public class CreateServerImpl implements ServerAction {
 						.put("threads", threads);
 				JSONObject env = new JSONObject();
 				if(environment != null) environment.forEach(env::put);
-				List<Long> locationIds = locations.stream().map(ISnowflake::getIdLong).collect(Collectors.toList());
 				JSONObject deploy = new JSONObject()
-						.put("locations", locationIds)
+						.put("locations", locations.stream().map(ISnowflake::getIdLong).collect(Collectors.toList()))
 						.put("dedicated_ip", useDedicatedIP)
-						.put("port_range", portRange);
+						.put("port_range", portRange.stream().map(Integer::toUnsignedString).collect(Collectors.toList()));
 				JSONObject obj = new JSONObject()
 						.put("name", name)
 						.put("description", description)
