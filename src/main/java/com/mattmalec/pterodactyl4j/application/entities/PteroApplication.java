@@ -1,10 +1,7 @@
 package com.mattmalec.pterodactyl4j.application.entities;
 
 import com.mattmalec.pterodactyl4j.PteroAction;
-import com.mattmalec.pterodactyl4j.application.managers.LocationManager;
-import com.mattmalec.pterodactyl4j.application.managers.NodeManager;
-import com.mattmalec.pterodactyl4j.application.managers.ServerAction;
-import com.mattmalec.pterodactyl4j.application.managers.UserManager;
+import com.mattmalec.pterodactyl4j.application.managers.*;
 
 import java.util.List;
 
@@ -25,7 +22,11 @@ public interface PteroApplication {
 
 	PteroAction<Allocation> retrieveAllocationById(String id);
 	PteroAction<Allocation> retrieveAllocationById(long id);
+
+	@Deprecated
+	// replaced with Node#getAllocations
 	PteroAction<List<Allocation>> retrieveAllocationsByNode(Node node);
+
 	PteroAction<List<Allocation>> retrieveAllocations();
 
 

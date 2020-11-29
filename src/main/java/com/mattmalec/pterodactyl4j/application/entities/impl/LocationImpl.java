@@ -7,11 +7,7 @@ import com.mattmalec.pterodactyl4j.application.managers.LocationAction;
 import com.mattmalec.pterodactyl4j.requests.Route;
 import org.json.JSONObject;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -44,7 +40,7 @@ public class LocationImpl implements Location {
 				List<Node> nodes = impl.retrieveNodes().execute();
 				List<Node> newNodes = new ArrayList<>();
 				for(Node n : nodes) {
-					if(n.retrieveLocation().execute().getId().equals(getId())) {
+					if(n.getLocation().getId().equals(getId())) {
 						newNodes.add(n);
 					}
 				}

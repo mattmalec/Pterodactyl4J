@@ -1,6 +1,8 @@
 package com.mattmalec.pterodactyl4j.application.entities.impl;
 
 import com.mattmalec.pterodactyl4j.PteroAction;
+import com.mattmalec.pterodactyl4j.application.entities.Allocation;
+import com.mattmalec.pterodactyl4j.application.entities.ApplicationServer;
 import com.mattmalec.pterodactyl4j.application.entities.Location;
 import com.mattmalec.pterodactyl4j.application.entities.Node;
 import com.mattmalec.pterodactyl4j.application.managers.AllocationManager;
@@ -8,20 +10,20 @@ import com.mattmalec.pterodactyl4j.application.managers.NodeAction;
 import com.mattmalec.pterodactyl4j.requests.Route;
 import org.json.JSONObject;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class NodeImpl implements Node {
 
 	private JSONObject json;
+	private JSONObject relationships;
 	private PteroApplicationImpl impl;
 
 	public NodeImpl(JSONObject json, PteroApplicationImpl impl) {
 		this.json = json.getJSONObject("attributes");
+		this.relationships = json.getJSONObject("attributes").getJSONObject("relationships");
 		this.impl = impl;
 	}
 
@@ -46,20 +48,8 @@ public class NodeImpl implements Node {
 	}
 
 	@Override
-	public PteroAction<Location> retrieveLocation() {
-		String locationId = Long.toUnsignedString(json.getLong("location_id"));
-		return new PteroAction<Location>() {
-			@Override
-			public Location execute() {
-				List<Location> locations = impl.retrieveLocations().execute();
-				for(Location l : locations) {
-					if(l.getId().equals(locationId)) {
-						return l;
-					}
-				}
-				return null;
-			}
-		};
+	public Location getLocation() {
+		return new LocationImpl(relationships.getJSONObject("location"), impl);
 	}
 
 	@Override
@@ -83,28 +73,38 @@ public class NodeImpl implements Node {
 	}
 
 	@Override
-	public String getMemory() {
-		return Long.toUnsignedString(json.getLong("memory"));
+	public long getMemoryLong() {
+		return json.getLong("memory");
 	}
 
 	@Override
-	public String getMemoryOverallocate() {
-		return Long.toUnsignedString(json.getLong("memory_overallocate"));
+	public long getMemoryOverallocateLong() {
+		return json.getLong("memory_overallocate");
 	}
 
 	@Override
-	public String getDisk() {
-		return Long.toUnsignedString(json.getLong("disk"));
+	public long getDiskLong() {
+		return json.getLong("disk");
 	}
 
 	@Override
-	public String getDiskOverallocate() {
-		return Long.toUnsignedString(json.getLong("disk_overallocate"));
+	public long getDiskOverallocateLong() {
+		return json.getLong("disk_overallocate");
 	}
 
 	@Override
-	public String getUploadLimit() {
-		return Long.toUnsignedString(json.getLong("upload_size"));
+	public long getUploadLimitLong() {
+		return json.getLong("upload_size");
+	}
+
+	@Override
+	public long getAllocatedMemoryLong() {
+		return json.getJSONObject("allocated_resources").getLong("memory");
+	}
+
+	@Override
+	public long getAllocatedDiskLong() {
+		return json.getJSONObject("allocated_resources").getLong("disk");
 	}
 
 	@Override
@@ -120,6 +120,28 @@ public class NodeImpl implements Node {
 	@Override
 	public String getDaemonBase() {
 		return json.getString("daemon_base");
+	}
+
+	@Override
+	public List<ApplicationServer> getServers() {
+		List<ApplicationServer> servers = new ArrayList<>();
+		JSONObject json = relationships.getJSONObject("servers");
+		for(Object o : json.getJSONArray("data")) {
+			JSONObject server = new JSONObject(o.toString());
+			servers.add(new ApplicationServerImpl(impl, server));
+		}
+		return Collections.unmodifiableList(servers);
+	}
+
+	@Override
+	public List<Allocation> getAllocations() {
+		List<Allocation> allocations = new ArrayList<>();
+		JSONObject json = relationships.getJSONObject("allocations");
+		for(Object o : json.getJSONArray("data")) {
+			JSONObject allocation = new JSONObject(o.toString());
+			allocations.add(new AllocationImpl(allocation));
+		}
+		return Collections.unmodifiableList(allocations);
 	}
 
 	@Override

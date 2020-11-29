@@ -27,9 +27,9 @@ public class Route {
 
 	public static class Nodes {
 
-		public static final Route LIST_NODES        	= new Route(GET,    APPLICATION_PREFIX + "nodes?page={page}", "page");
-		public static final Route GET_NODE          	= new Route(GET,    APPLICATION_PREFIX + "nodes/{node_id}", "node_id");
-		public static final Route CREATE_NODE       	= new Route(POST,   APPLICATION_PREFIX + "nodes");
+		public static final Route LIST_NODES        	= new Route(GET,    APPLICATION_PREFIX + "nodes?page={page}&include=location,servers,allocations", "page");
+		public static final Route GET_NODE          	= new Route(GET,    APPLICATION_PREFIX + "nodes/{node_id}?include=location,servers,allocations", "node_id");
+		public static final Route CREATE_NODE       	= new Route(POST,   APPLICATION_PREFIX + "nodes?include=location,servers,allocations");
 		public static final Route EDIT_NODE         	= new Route(PATCH,  APPLICATION_PREFIX + "nodes/{node_id}", "node_id");
 		public static final Route DELETE_NODE       	= new Route(DELETE, APPLICATION_PREFIX + "nodes/{node_id}", "node_id");
 		public static final Route LIST_ALLOCATIONS  	= new Route(GET,    APPLICATION_PREFIX + "nodes/{node_id}/allocations?page={page}", "node_id", "page");
