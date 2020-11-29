@@ -1,6 +1,6 @@
 package com.mattmalec.pterodactyl4j.application.entities;
 
-public interface Allocation extends ISnowflake {
+public interface Allocation {
 
 	String getIP();
 	String getFullAddress();
@@ -9,5 +9,7 @@ public interface Allocation extends ISnowflake {
 	String getNotes();
 	default long getPortLong() { return Long.parseLong(getPort()); }
 	boolean isAssigned();
+	long getIdLong();
+	default String getId() { return Long.toUnsignedString(getIdLong()); }
 
 }

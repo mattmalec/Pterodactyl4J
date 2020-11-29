@@ -3,8 +3,6 @@ package com.mattmalec.pterodactyl4j.application.entities.impl;
 import com.mattmalec.pterodactyl4j.application.entities.Allocation;
 import org.json.JSONObject;
 
-import java.time.OffsetDateTime;
-
 public class AllocationImpl implements Allocation {
 
 	private JSONObject json;
@@ -41,16 +39,6 @@ public class AllocationImpl implements Allocation {
 	@Override
 	public long getIdLong() {
 		return json.getLong("id");
-	}
-
-	@Override
-	public OffsetDateTime getCreationDate() {
-		return null;
-	}
-
-	@Override
-	public OffsetDateTime getUpdatedDate() {
-		return null;
 	}
 
 	@Override
