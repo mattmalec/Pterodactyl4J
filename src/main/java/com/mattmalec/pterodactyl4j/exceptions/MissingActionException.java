@@ -9,12 +9,12 @@ public class MissingActionException extends RuntimeException {
     }
 
     public MissingActionException(String text, JSONObject json) {
-        String message = text + "\n\n";
+        StringBuilder message = new StringBuilder(text + "\n\n");
         for(Object o : json.getJSONArray("errors")) {
             JSONObject obj = new JSONObject(o.toString());
-            message += "\t- " + obj.getString("detail") + " (Source: " + obj.getJSONObject("source").getString("field") + ")\n";
+            message.append("\t- ").append(obj.getString("detail")).append(" (Source: ").append(obj.getJSONObject("meta").getString("source_field")).append(")\n");
         }
-        throw new MissingActionException(message);
+        throw new MissingActionException(message.toString());
     }
 
     public MissingActionException(String message, Throwable cause) {
