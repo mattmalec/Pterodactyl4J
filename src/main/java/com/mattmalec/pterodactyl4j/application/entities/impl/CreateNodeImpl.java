@@ -11,7 +11,7 @@ import org.json.JSONObject;
 
 public class CreateNodeImpl implements NodeAction {
 
-	private Requester requester;
+	private final Requester requester;
 
 	private String name;
 	private Location location;
@@ -28,7 +28,7 @@ public class CreateNodeImpl implements NodeAction {
 	private boolean throttle;
 	private boolean secure;
 
-	private PteroApplicationImpl impl;
+	private final PteroApplicationImpl impl;
 
 	CreateNodeImpl(PteroApplicationImpl impl, Requester requester) {
 		this.requester = requester;

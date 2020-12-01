@@ -17,9 +17,9 @@ import java.util.List;
 
 public class NodeImpl implements Node {
 
-	private JSONObject json;
-	private JSONObject relationships;
-	private PteroApplicationImpl impl;
+	private final JSONObject json;
+	private final JSONObject relationships;
+	private final PteroApplicationImpl impl;
 
 	public NodeImpl(JSONObject json, PteroApplicationImpl impl) {
 		this.json = json.getJSONObject("attributes");

@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public class TokenExpiredHandler extends ClientSocketHandler {
 
-    private WebSocketClient webSocketClient;
+    private final WebSocketClient webSocketClient;
 
     public TokenExpiredHandler(PteroClientImpl client, ClientServer server, WebSocketManager manager, WebSocketClient webSocketClient) {
         super(client, server, manager);

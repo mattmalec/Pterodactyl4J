@@ -6,8 +6,8 @@ import org.json.JSONObject;
 
 public class AccountImpl implements Account {
 
-    private JSONObject json;
-    private PteroClientImpl impl;
+    private final JSONObject json;
+    private final PteroClientImpl impl;
 
     public AccountImpl(JSONObject json, PteroClientImpl impl) {
         this.json = json.getJSONObject("attributes");

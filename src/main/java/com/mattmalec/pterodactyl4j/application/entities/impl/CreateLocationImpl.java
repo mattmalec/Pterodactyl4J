@@ -10,12 +10,12 @@ import org.json.JSONObject;
 
 public class CreateLocationImpl implements LocationAction {
 
-	private Requester requester;
+	private final Requester requester;
 
 	private String shortCode;
 	private String description;
 
-	private PteroApplicationImpl impl;
+	private final PteroApplicationImpl impl;
 
 	CreateLocationImpl(PteroApplicationImpl impl, Requester requester) {
 		this.requester = requester;

@@ -6,7 +6,7 @@ import com.mattmalec.pterodactyl4j.client.managers.WebSocketManager;
 
 public class DisconnectingEvent extends ConnectionEvent {
 
-    private int closeCode;
+    private final int closeCode;
 
     public DisconnectingEvent(PteroClientImpl api, ClientServer server, WebSocketManager manager, boolean connected, int closeCode) {
         super(api, server, manager, connected);

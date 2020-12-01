@@ -9,9 +9,9 @@ import com.mattmalec.pterodactyl4j.requests.Requester;
 
 public class PteroAPIImpl implements PteroAPI {
 
-    private String token;
-    private String applicationUrl;
-    private Requester requester;
+    private final String token;
+    private final String applicationUrl;
+    private final Requester requester;
 
     public PteroAPIImpl(String applicationUrl, String token) {
         this.token = token;

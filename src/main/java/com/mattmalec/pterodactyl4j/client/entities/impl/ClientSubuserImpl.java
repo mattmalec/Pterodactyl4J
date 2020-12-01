@@ -10,7 +10,7 @@ import java.util.EnumSet;
 
 public class ClientSubuserImpl implements ClientSubuser {
 
-    private JSONObject json;
+    private final JSONObject json;
 
     public ClientSubuserImpl(JSONObject json) {
         this.json = json.getJSONObject("attributes");

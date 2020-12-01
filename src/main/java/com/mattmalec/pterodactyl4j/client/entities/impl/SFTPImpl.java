@@ -5,7 +5,7 @@ import org.json.JSONObject;
 
 public class SFTPImpl implements SFTP {
 
-    private JSONObject json;
+    private final JSONObject json;
 
     public SFTPImpl(JSONObject json) {
         this.json = json;

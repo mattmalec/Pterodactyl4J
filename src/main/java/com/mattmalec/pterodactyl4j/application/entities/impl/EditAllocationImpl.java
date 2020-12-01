@@ -17,10 +17,10 @@ public class EditAllocationImpl implements AllocationAction {
 
 	private String ip;
 	private String alias;
-	private Set<String> portSet = new HashSet<>();
-	private Node node;
-	private PteroApplicationImpl impl;
-	private Allocation allocation;
+	private final Set<String> portSet = new HashSet<>();
+	private final Node node;
+	private final PteroApplicationImpl impl;
+	private final Allocation allocation;
 
 	public EditAllocationImpl(PteroApplicationImpl impl, Node node, Allocation allocation) {
 		this.impl = impl;

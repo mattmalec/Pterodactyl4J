@@ -10,8 +10,8 @@ import org.json.JSONObject;
 
 public class EditNodeImpl implements NodeAction {
 
-	private Requester requester;
-	private Node node;
+	private final Requester requester;
+	private final Node node;
 
 	private String name;
 	private Location location;
@@ -28,7 +28,7 @@ public class EditNodeImpl implements NodeAction {
 	private Boolean throttle;
 	private Boolean secure;
 
-	private PteroApplicationImpl impl;
+	private final PteroApplicationImpl impl;
 
 	EditNodeImpl(PteroApplicationImpl impl, Node node) {
 		this.requester = impl.getRequester();

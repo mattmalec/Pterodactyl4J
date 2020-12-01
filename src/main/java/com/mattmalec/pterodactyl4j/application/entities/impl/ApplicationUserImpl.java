@@ -11,8 +11,8 @@ import java.time.OffsetDateTime;
 
 public class ApplicationUserImpl implements ApplicationUser {
 
-	private JSONObject json;
-	private Requester requester;
+	private final JSONObject json;
+	private final Requester requester;
 
 	public ApplicationUserImpl(JSONObject json, Requester requester) {
 		this.json = json.getJSONObject("attributes");

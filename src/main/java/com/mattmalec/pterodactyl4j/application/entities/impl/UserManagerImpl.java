@@ -9,7 +9,7 @@ import com.mattmalec.pterodactyl4j.requests.Route;
 
 public class UserManagerImpl implements UserManager {
 
-    private Requester requester;
+    private final Requester requester;
 
     public UserManagerImpl(Requester requester) {
         this.requester = requester;

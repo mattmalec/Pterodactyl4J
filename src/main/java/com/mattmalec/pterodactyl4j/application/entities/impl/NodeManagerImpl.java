@@ -8,7 +8,7 @@ import com.mattmalec.pterodactyl4j.requests.Route;
 
 public class NodeManagerImpl implements NodeManager {
 
-    private PteroApplicationImpl impl;
+    private final PteroApplicationImpl impl;
 
     public NodeManagerImpl(PteroApplicationImpl impl) {
         this.impl = impl;

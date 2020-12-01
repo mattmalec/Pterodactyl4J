@@ -53,8 +53,8 @@ public enum Permission {
 
     UNKNOWN("unknown", "Unknown Permission");
 
-    private String raw;
-    private String description;
+    private final String raw;
+    private final String description;
 
     public static final Permission[] ALL_PERMISSIONS = Permission.values();
 

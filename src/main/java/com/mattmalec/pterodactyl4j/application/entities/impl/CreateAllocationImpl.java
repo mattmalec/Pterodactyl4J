@@ -17,9 +17,9 @@ public class CreateAllocationImpl implements AllocationAction {
 
 	private String ip;
 	private String alias;
-	private Set<String> portSet = new HashSet<>();
-	private Node node;
-	private PteroApplicationImpl impl;
+	private final Set<String> portSet = new HashSet<>();
+	private final Node node;
+	private final PteroApplicationImpl impl;
 
 	public CreateAllocationImpl(PteroApplicationImpl impl, Node node) {
 		this.impl = impl;

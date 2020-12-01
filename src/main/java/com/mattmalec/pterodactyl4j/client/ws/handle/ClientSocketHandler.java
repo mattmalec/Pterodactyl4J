@@ -6,9 +6,9 @@ import com.mattmalec.pterodactyl4j.client.managers.WebSocketManager;
 
 public abstract class ClientSocketHandler {
 
-    private PteroClientImpl client;
-    private ClientServer server;
-    private WebSocketManager manager;
+    private final PteroClientImpl client;
+    private final ClientServer server;
+    private final WebSocketManager manager;
 
     public ClientSocketHandler(PteroClientImpl client, ClientServer server, WebSocketManager manager) {
         this.client = client;

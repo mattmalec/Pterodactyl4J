@@ -9,9 +9,9 @@ import com.mattmalec.pterodactyl4j.client.ws.hooks.IClientListenerManager;
 
 public class WebSocketManager {
 
-    private WebSocketClient client;
-    private IClientListenerManager eventManager;
-    private Thread thread;
+    private final WebSocketClient client;
+    private final IClientListenerManager eventManager;
+    private final Thread thread;
 
     public WebSocketManager(PteroClientImpl api, ClientServer server, IClientListenerManager eventManager) {
         this.eventManager = eventManager;

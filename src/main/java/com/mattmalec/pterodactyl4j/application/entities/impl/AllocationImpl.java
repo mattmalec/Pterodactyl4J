@@ -5,7 +5,7 @@ import org.json.JSONObject;
 
 public class AllocationImpl implements Allocation {
 
-	private JSONObject json;
+	private final JSONObject json;
 
 	public AllocationImpl(JSONObject json) {
 		this.json = json.getJSONObject("attributes");

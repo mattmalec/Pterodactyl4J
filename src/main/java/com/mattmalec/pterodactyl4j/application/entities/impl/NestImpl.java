@@ -14,8 +14,8 @@ import java.util.List;
 
 public class NestImpl implements Nest {
 
-    private JSONObject json;
-    private PteroApplicationImpl impl;
+    private final JSONObject json;
+    private final PteroApplicationImpl impl;
 
     public NestImpl(JSONObject json, PteroApplicationImpl impl) {
         this.json = json.getJSONObject("attributes");

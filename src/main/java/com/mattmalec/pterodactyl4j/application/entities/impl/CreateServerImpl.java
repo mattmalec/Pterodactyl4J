@@ -38,7 +38,7 @@ public class CreateServerImpl implements ServerAction {
 	private boolean startOnCompletion;
 	private boolean skipScripts;
 
-	private PteroApplicationImpl impl;
+	private final PteroApplicationImpl impl;
 
 	public CreateServerImpl(PteroApplicationImpl impl) {
 		this.impl = impl;

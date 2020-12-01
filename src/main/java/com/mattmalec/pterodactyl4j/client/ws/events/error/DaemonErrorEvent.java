@@ -7,7 +7,7 @@ import com.mattmalec.pterodactyl4j.client.ws.events.Event;
 
 public class DaemonErrorEvent extends Event {
 
-    private String message;
+    private final String message;
 
     public DaemonErrorEvent(PteroClientImpl api, ClientServer server, WebSocketManager manager, String message) {
         super(api, server, manager);

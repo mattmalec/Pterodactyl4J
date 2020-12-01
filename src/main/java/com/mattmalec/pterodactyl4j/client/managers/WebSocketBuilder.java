@@ -7,10 +7,10 @@ import com.mattmalec.pterodactyl4j.client.ws.hooks.InterfacedClientListenerManag
 
 public class WebSocketBuilder {
 
-    private IClientListenerManager eventManager = new InterfacedClientListenerManager();
+    private final IClientListenerManager eventManager = new InterfacedClientListenerManager();
 
-    private PteroClientImpl api;
-    private ClientServer server;
+    private final PteroClientImpl api;
+    private final ClientServer server;
 
     public WebSocketBuilder(PteroClientImpl api, ClientServer server) {
         this.api = api;

@@ -7,7 +7,7 @@ import com.mattmalec.pterodactyl4j.client.ws.events.Event;
 
 public abstract class ConnectionEvent extends Event {
 
-    private boolean connected;
+    private final boolean connected;
 
     public ConnectionEvent(PteroClientImpl api, ClientServer server, WebSocketManager manager, boolean connected) {
         super(api, server, manager);

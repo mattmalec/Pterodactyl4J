@@ -7,9 +7,9 @@ import com.mattmalec.pterodactyl4j.client.managers.WebSocketManager;
 
 public abstract class Event {
 
-    private PteroClientImpl api;
-    private ClientServer server;
-    private WebSocketManager manager;
+    private final PteroClientImpl api;
+    private final ClientServer server;
+    private final WebSocketManager manager;
 
     public Event(PteroClientImpl api, ClientServer server, WebSocketManager manager) {
         this.api = api;

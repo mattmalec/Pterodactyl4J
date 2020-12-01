@@ -8,7 +8,7 @@ import com.mattmalec.pterodactyl4j.client.ws.events.error.JWTErrorEvent;
 
 public class JWTErrorHandler extends ClientSocketHandler {
 
-    private WebSocketClient webSocket;
+    private final WebSocketClient webSocket;
 
     public JWTErrorHandler(PteroClientImpl client, ClientServer server, WebSocketManager manager, WebSocketClient webSocket) {
         super(client, server, manager);

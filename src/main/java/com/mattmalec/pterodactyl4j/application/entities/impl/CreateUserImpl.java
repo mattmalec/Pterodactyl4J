@@ -10,7 +10,7 @@ import org.json.JSONObject;
 
 public class CreateUserImpl implements UserAction {
 
-    private Requester requester;
+    private final Requester requester;
 
     private String userName;
     private String email;

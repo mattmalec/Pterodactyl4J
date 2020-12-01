@@ -9,9 +9,9 @@ import java.io.IOException;
 
 public class Requester {
 
-	private PteroAPI api;
+	private final PteroAPI api;
 	private Response response;
-	private OkHttpClient okHttpClient = new OkHttpClient();
+	private final OkHttpClient okHttpClient = new OkHttpClient();
 	private static final String PTERODACTYL_API_PREFIX = "%s/api/";
 	private String responseBody;
 

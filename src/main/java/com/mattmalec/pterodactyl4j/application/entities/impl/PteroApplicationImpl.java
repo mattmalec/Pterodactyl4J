@@ -14,7 +14,7 @@ import java.util.List;
 
 public class PteroApplicationImpl implements PteroApplication {
 
-	private Requester requester;
+	private final Requester requester;
 
 	public PteroApplicationImpl(Requester requester) {
 		this.requester = requester;

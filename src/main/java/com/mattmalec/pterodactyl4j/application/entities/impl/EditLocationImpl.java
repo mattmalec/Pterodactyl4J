@@ -9,13 +9,13 @@ import org.json.JSONObject;
 
 public class EditLocationImpl implements LocationAction {
 
-    private Requester requester;
+    private final Requester requester;
 
     private String shortCode;
     private String description;
-    private PteroApplicationImpl impl;
+    private final PteroApplicationImpl impl;
 
-    private Location location;
+    private final Location location;
 
     public EditLocationImpl(Location location, PteroApplicationImpl impl) {
         this.location = location;
