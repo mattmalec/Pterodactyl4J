@@ -11,20 +11,19 @@ public interface PteroApplication {
 	PteroAction<ApplicationUser> retrieveUserById(String id);
 	PteroAction<ApplicationUser> retrieveUserById(long id);
 	PteroAction<List<ApplicationUser>> retrieveUsersByUsername(String name, boolean caseSensetive);
-	PteroAction<List<ApplicationUser>> retrieveUsersByEmail(String name, boolean caseSensetive);
+	PteroAction<List<ApplicationUser>> retrieveUsersByEmail(String email, boolean caseSensetive);
 	UserManager getUserManager();
 
 	PteroAction<List<Node>> retrieveNodes();
 	PteroAction<Node> retrieveNodeById(String id);
 	PteroAction<Node> retrieveNodeById(long id);
 	PteroAction<List<Node>> retrieveNodesByName(String name, boolean caseSensetive);
+	PteroAction<List<Node>> retrieveNodesByLocation(Location location);
 	NodeManager getNodeManager();
 
 	PteroAction<Allocation> retrieveAllocationById(String id);
 	PteroAction<Allocation> retrieveAllocationById(long id);
 
-	@Deprecated
-	// replaced with Node#getAllocations
 	PteroAction<List<Allocation>> retrieveAllocationsByNode(Node node);
 
 	PteroAction<List<Allocation>> retrieveAllocations();
@@ -53,6 +52,8 @@ public interface PteroApplication {
 	PteroAction<ApplicationServer> retrieveServerById(long id);
 	PteroAction<List<ApplicationServer>> retrieveServersByName(String name, boolean caseSensetive);
 	PteroAction<List<ApplicationServer>> retrieveServersByOwner(ApplicationUser user);
+	PteroAction<List<ApplicationServer>> retrieveServersByNode(Node node);
+	PteroAction<List<ApplicationServer>> retrieveServersByLocation(Location location);
 	ServerAction createServer();
 
 

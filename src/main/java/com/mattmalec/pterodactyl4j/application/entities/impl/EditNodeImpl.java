@@ -131,7 +131,7 @@ public class EditNodeImpl implements NodeAction {
 				else
 					json.put("name", name);
 				if(location == null)
-					json.put("location_id", node.getLocation().getId());
+					json.put("location_id", node.getLocation().retrieve().execute().getId());
 				else
 					json.put("location_id", location.getId());
 				if(isPublic == null)

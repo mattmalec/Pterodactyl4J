@@ -7,6 +7,7 @@ import com.mattmalec.pterodactyl4j.application.entities.Egg;
 import com.mattmalec.pterodactyl4j.application.entities.Location;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationUser;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
@@ -29,8 +30,14 @@ public interface ServerAction {
 	ServerAction setBackups(long amount);
 	ServerAction setEnvironment(Map<String, String> environment);
 	ServerAction setLocations(Set<Location> locations);
+	default ServerAction setLocation(Location location) {
+		return setLocations(Collections.singleton(location));
+	}
 	ServerAction setDedicatedIP(boolean dedicatedIP);
 	ServerAction setPortRange(Set<Integer> ports);
+	default ServerAction setPort(int port) {
+		return setPortRange(Collections.singleton(port));
+	}
 	ServerAction startOnCompletion(boolean start);
 	ServerAction skipScripts(boolean skip);
 	ServerAction setPack(long id);

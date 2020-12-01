@@ -3,7 +3,9 @@ package com.mattmalec.pterodactyl4j.application.entities;
 import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.application.managers.UserAction;
 import com.mattmalec.pterodactyl4j.entities.User;
+import com.mattmalec.pterodactyl4j.utils.Relationed;
 
+import java.util.List;
 import java.util.Locale;
 
 public interface ApplicationUser extends User, ISnowflake {
@@ -21,6 +23,7 @@ public interface ApplicationUser extends User, ISnowflake {
 		return Locale.forLanguageTag(getLanguage());
 	}
 	boolean isRootAdmin();
+	Relationed<List<ApplicationServer>> getServers();
 	UserAction edit();
 	PteroAction<Void> delete();
 

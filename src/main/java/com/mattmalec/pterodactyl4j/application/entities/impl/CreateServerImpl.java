@@ -203,6 +203,8 @@ public class CreateServerImpl implements ServerAction {
 					throw new IllegalActionException("The minimum memory limit is 4 MB.");
 				}
 				Checks.notNull(owner, "Owner");
+				Checks.notNull(locations, "Locations");
+				Checks.notNull(portRange, "Port Range");
 				Checks.notNull(egg, "Egg and Nest");
 				JSONObject featureLimits = new JSONObject()
 						.put("databases", databases)
@@ -225,7 +227,7 @@ public class CreateServerImpl implements ServerAction {
 						.put("name", name)
 						.put("description", description)
 						.put("user", owner.getId())
-						.put("nest", egg.retrieveNest().execute().getId())
+						.put("nest", egg.getNest().get().orElseGet(() -> egg.getNest().retrieve().execute()).getId())
 						.put("egg", egg.getId())
 						.put("pack", pack)
 						.put("docker_image", dockerImage != null ? dockerImage : egg.getDockerImage())

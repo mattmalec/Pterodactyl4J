@@ -3,6 +3,7 @@ package com.mattmalec.pterodactyl4j.application.entities;
 import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.application.managers.AllocationManager;
 import com.mattmalec.pterodactyl4j.application.managers.NodeAction;
+import com.mattmalec.pterodactyl4j.utils.Relationed;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ public interface Node extends ISnowflake {
 	boolean isPublic();
 	String getName();
 	String getDescription();
-	Location getLocation();
+	Relationed<Location> getLocation();
 	AllocationManager getAllocationManager();
 	String getFQDN();
 	String getScheme();
@@ -34,8 +35,8 @@ public interface Node extends ISnowflake {
 	String getDaemonListenPort();
 	String getDaemonSFTPPort();
 	String getDaemonBase();
-	List<ApplicationServer> getServers();
-	List<Allocation> getAllocations();
+	Relationed<List<ApplicationServer>> getServers();
+	Relationed<List<Allocation>> getAllocations();
 
 	NodeAction edit();
 	PteroAction<Void> delete();

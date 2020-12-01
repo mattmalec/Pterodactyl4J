@@ -46,7 +46,7 @@ public class WebSocketManager {
     }
 
     public void setPower(PowerAction power) {
-        client.send(WebSocketAction.create(WebSocketAction.SET_STATE, power.name()));
+        client.send(WebSocketAction.create(WebSocketAction.SET_STATE, power.name().toLowerCase()));
     }
 
     public void sendCommand(String command) {

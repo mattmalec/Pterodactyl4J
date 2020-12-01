@@ -63,14 +63,13 @@ public class ServerController {
 		return new PteroAction<Void>() {
 			@Override
 			public Void execute() {
-				Route.CompiledRoute safeRoute = Route.Servers.SAFE_DELETE_SERVER.compile(server.getId());
-				Route.CompiledRoute forceRoute = Route.Servers.FORCE_DELETE_SERVER.compile(server.getId());
 				if(withForce) {
+					Route.CompiledRoute forceRoute = Route.Servers.FORCE_DELETE_SERVER.compile(server.getId());
 					impl.getRequester().request(forceRoute);
 				} else {
+					Route.CompiledRoute safeRoute = Route.Servers.SAFE_DELETE_SERVER.compile(server.getId());
 					impl.getRequester().request(safeRoute);
 				}
-
 				return null;
 			}
 		};
