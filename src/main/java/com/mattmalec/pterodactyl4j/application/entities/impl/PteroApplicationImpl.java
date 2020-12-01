@@ -2,7 +2,10 @@ package com.mattmalec.pterodactyl4j.application.entities.impl;
 
 import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.application.entities.*;
-import com.mattmalec.pterodactyl4j.application.managers.*;
+import com.mattmalec.pterodactyl4j.application.managers.LocationManager;
+import com.mattmalec.pterodactyl4j.application.managers.NodeManager;
+import com.mattmalec.pterodactyl4j.application.managers.ServerAction;
+import com.mattmalec.pterodactyl4j.application.managers.UserManager;
 import com.mattmalec.pterodactyl4j.requests.Requester;
 import com.mattmalec.pterodactyl4j.requests.Route;
 import org.json.JSONObject;
@@ -10,6 +13,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class PteroApplicationImpl implements PteroApplication {
@@ -516,7 +520,7 @@ public class PteroApplicationImpl implements PteroApplication {
 				List<ApplicationServer> servers = retrieveServers().execute();
 				List<ApplicationServer> newServers = new ArrayList<>();
 				for (ApplicationServer s : servers) {
-					ApplicationUser owner = s.getOwner();
+					ApplicationUser owner = s.getOwner().get().orElseGet(() -> s.getOwner().retrieve().execute());
 					if (owner.getIdLong() == user.getIdLong()) {
 						newServers.add(s);
 					}
