@@ -203,6 +203,8 @@ public class CreateServerImpl implements ServerAction {
 					throw new IllegalActionException("The minimum memory limit is 4 MB.");
 				}
 				Checks.notNull(owner, "Owner");
+				Checks.notNull(locations, "Locations");
+				Checks.notNull(portRange, "Port Range");
 				Checks.notNull(egg, "Egg and Nest");
 				JSONObject featureLimits = new JSONObject()
 						.put("databases", databases)
