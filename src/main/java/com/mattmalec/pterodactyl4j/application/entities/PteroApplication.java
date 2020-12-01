@@ -11,7 +11,7 @@ public interface PteroApplication {
 	PteroAction<ApplicationUser> retrieveUserById(String id);
 	PteroAction<ApplicationUser> retrieveUserById(long id);
 	PteroAction<List<ApplicationUser>> retrieveUsersByUsername(String name, boolean caseSensetive);
-	PteroAction<List<ApplicationUser>> retrieveUsersByEmail(String name, boolean caseSensetive);
+	PteroAction<List<ApplicationUser>> retrieveUsersByEmail(String email, boolean caseSensetive);
 	UserManager getUserManager();
 
 	PteroAction<List<Node>> retrieveNodes();

@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 public class PteroApplicationImpl implements PteroApplication {
@@ -78,38 +79,34 @@ public class PteroApplicationImpl implements PteroApplication {
 			@Override
 			public List<ApplicationUser> execute() {
 				List<ApplicationUser> users = retrieveUsers().execute();
-				List<ApplicationUser> newUsers = new ArrayList<>();
-				for (ApplicationUser u : users) {
-					if (caseSensetive) {
-						if (u.getUserName().contains(name))
-							newUsers.add(u);
-					} else {
-						if (u.getUserName().toLowerCase().contains(name.toLowerCase()))
-							newUsers.add(u);
-					}
+				Stream<ApplicationUser> newUsers = users.stream();
+
+				if(caseSensetive) {
+					newUsers = newUsers.filter(u -> u.getUserName().toLowerCase().contains(name.toLowerCase()));
+				} else {
+					newUsers = newUsers.filter(u -> u.getUserName().contains(name));
 				}
-				return Collections.unmodifiableList(newUsers);
+
+				return Collections.unmodifiableList(newUsers.collect(Collectors.toList()));
 			}
 		};
 	}
 
 	@Override
-	public PteroAction<List<ApplicationUser>> retrieveUsersByEmail(String name, boolean caseSensetive) {
+	public PteroAction<List<ApplicationUser>> retrieveUsersByEmail(String email, boolean caseSensetive) {
 		return new PteroAction<List<ApplicationUser>>() {
 			@Override
 			public List<ApplicationUser> execute() {
 				List<ApplicationUser> users = retrieveUsers().execute();
-				List<ApplicationUser> newUsers = new ArrayList<>();
-				for (ApplicationUser u : users) {
-					if (caseSensetive) {
-						if (u.getEmail().contains(name))
-							newUsers.add(u);
-					} else {
-						if (u.getEmail().toLowerCase().contains(name.toLowerCase()))
-							newUsers.add(u);
-					}
+				Stream<ApplicationUser> newUsers = users.stream();
+
+				if(caseSensetive) {
+					newUsers = newUsers.filter(u -> u.getEmail().toLowerCase().contains(email.toLowerCase()));
+				} else {
+					newUsers = newUsers.filter(u -> u.getEmail().contains(email));
 				}
-				return Collections.unmodifiableList(newUsers);
+
+				return Collections.unmodifiableList(newUsers.collect(Collectors.toList()));
 			}
 		};
 	}
@@ -170,17 +167,15 @@ public class PteroApplicationImpl implements PteroApplication {
 			@Override
 			public List<Node> execute() {
 				List<Node> nodes = retrieveNodes().execute();
-				List<Node> newNodes = new ArrayList<>();
-				for (Node n : nodes) {
-					if (caseSensetive) {
-						if (n.getName().contains(name))
-							newNodes.add(n);
-					} else {
-						if (n.getName().toLowerCase().contains(name.toLowerCase()))
-							newNodes.add(n);
-					}
+				Stream<Node> newNodes = nodes.stream();
+
+				if(caseSensetive) {
+					newNodes = newNodes.filter(n -> n.getName().toLowerCase().contains(name.toLowerCase()));
+				} else {
+					newNodes = newNodes.filter(n -> n.getName().contains(name));
 				}
-				return Collections.unmodifiableList(newNodes);
+
+				return Collections.unmodifiableList(newNodes.collect(Collectors.toList()));
 			}
 		};
 	}
@@ -369,17 +364,15 @@ public class PteroApplicationImpl implements PteroApplication {
 			@Override
 			public List<Nest> execute() {
 				List<Nest> nests = retrieveNests().execute();
-				List<Nest> newNests = new ArrayList<>();
-				for (Nest n : nests) {
-					if (caseSensetive) {
-						if (n.getName().contains(name))
-							newNests.add(n);
-					} else {
-						if (n.getName().toLowerCase().contains(name.toLowerCase()))
-							newNests.add(n);
-					}
+				Stream<Nest> newNests = nests.stream();
+
+				if(caseSensetive) {
+					newNests = newNests.filter(n -> n.getName().toLowerCase().contains(name.toLowerCase()));
+				} else {
+					newNests = newNests.filter(n -> n.getName().contains(name));
 				}
-				return Collections.unmodifiableList(newNests);
+
+				return Collections.unmodifiableList(newNests.collect(Collectors.toList()));
 			}
 		};
 	}
@@ -390,17 +383,15 @@ public class PteroApplicationImpl implements PteroApplication {
 			@Override
 			public List<Nest> execute() {
 				List<Nest> nests = retrieveNests().execute();
-				List<Nest> newNests = new ArrayList<>();
-				for (Nest n : nests) {
-					if (caseSensetive) {
-						if (n.getAuthor().contains(author))
-							newNests.add(n);
-					} else {
-						if (n.getAuthor().toLowerCase().contains(author.toLowerCase()))
-							newNests.add(n);
-					}
+				Stream<Nest> newNests = nests.stream();
+
+				if (caseSensetive) {
+					newNests = newNests.filter(n -> n.getAuthor().toLowerCase().contains(author.toLowerCase()));
+				} else {
+					newNests = newNests.filter(n -> n.getAuthor().contains(author));
 				}
-				return Collections.unmodifiableList(newNests);
+
+				return Collections.unmodifiableList(newNests.collect(Collectors.toList()));
 			}
 		};
 	}
@@ -456,17 +447,15 @@ public class PteroApplicationImpl implements PteroApplication {
 			@Override
 			public List<Location> execute() {
 				List<Location> locations = retrieveLocations().execute();
-				List<Location> newLocations = new ArrayList<>();
-				for (Location l : locations) {
-					if (caseSensetive) {
-						if (l.getShortCode().contains(name))
-							newLocations.add(l);
-					} else {
-						if (l.getShortCode().toLowerCase().contains(name.toLowerCase()))
-							newLocations.add(l);
-					}
+				Stream<Location> newLocations = locations.stream();
+
+				if(caseSensetive) {
+					newLocations = newLocations.filter(l -> l.getShortCode().toLowerCase().contains(name.toLowerCase()));
+				} else {
+					newLocations = newLocations.filter(l -> l.getShortCode().contains(name));
 				}
-				return Collections.unmodifiableList(newLocations);
+
+				return Collections.unmodifiableList(newLocations.collect(Collectors.toList()));
 			}
 		};
 	}
@@ -527,17 +516,15 @@ public class PteroApplicationImpl implements PteroApplication {
 			@Override
 			public List<ApplicationServer> execute() {
 				List<ApplicationServer> servers = retrieveServers().execute();
-				List<ApplicationServer> newServers = new ArrayList<>();
-				for (ApplicationServer s : servers) {
-					if (caseSensetive) {
-						if (s.getName().contains(name))
-							newServers.add(s);
-					} else {
-						if (s.getName().toLowerCase().contains(name.toLowerCase()))
-							newServers.add(s);
-					}
+				Stream<ApplicationServer> newServers = servers.stream();
+
+				if(caseSensetive) {
+					newServers = newServers.filter(s -> s.getName().toLowerCase().contains(name.toLowerCase()));
+				} else {
+					newServers = newServers.filter(s -> s.getName().contains(name));
 				}
-				return Collections.unmodifiableList(newServers);
+
+				return Collections.unmodifiableList(newServers.collect(Collectors.toList()));
 			}
 		};
 	}
@@ -548,13 +535,10 @@ public class PteroApplicationImpl implements PteroApplication {
 			@Override
 			public List<ApplicationServer> execute() {
 				List<ApplicationServer> servers = retrieveServers().execute();
-				List<ApplicationServer> newServers = new ArrayList<>();
-				for (ApplicationServer s : servers) {
-					ApplicationUser owner = s.getOwner().get().orElseGet(() -> s.getOwner().retrieve().execute());
-					if (owner.getIdLong() == user.getIdLong()) {
-						newServers.add(s);
-					}
-				}
+				List<ApplicationServer> newServers = servers.stream()
+						.filter(s -> s.getOwner().get()
+								.orElseGet(() -> s.getOwner().retrieve().execute()).getIdLong() == user.getIdLong())
+						.collect(Collectors.toList());
 				return Collections.unmodifiableList(newServers);
 			}
 		};
@@ -566,7 +550,10 @@ public class PteroApplicationImpl implements PteroApplication {
 			@Override
 			public List<ApplicationServer> execute() {
 				List<ApplicationServer> servers = retrieveServers().execute();
-				List<ApplicationServer> newServers = servers.stream().filter(s -> s.getNode().retrieve().execute().getIdLong() == node.getIdLong()).collect(Collectors.toList());
+				List<ApplicationServer> newServers = servers.stream()
+						.filter(s -> s.getNode().get()
+								.orElseGet(() -> s.getNode().retrieve().execute()).getIdLong() == node.getIdLong())
+						.collect(Collectors.toList());
 				return Collections.unmodifiableList(newServers);
 			}
 		};
