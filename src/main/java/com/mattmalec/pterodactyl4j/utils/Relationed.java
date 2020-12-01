@@ -10,4 +10,8 @@ public abstract class Relationed<T> {
 
     public abstract Optional<T> get();
 
+    public boolean isPresent() {
+        return get().isPresent();
+    }
+
 }
