@@ -10,12 +10,12 @@ Creating the PteroApplication or PteroClient Object is done via the PteroBuilder
 
 **Application Example**:
 ```java
-PteroApplication api = new PteroBuilder().setApplicationUrl("https://pterodactyl.app").setToken("abc123").buildApplication();
+PteroApplication api = PteroBuilder.application("https://pterodactyl.app", "abc123").build();
 ```
 
 **Client Example**:
 ```java
-PteroClient api = new PteroBuilder().setApplicationUrl("https://pterodactyl.app").setToken("xyz321").buildClient();
+PteroClient api = PteroBuilder.client("https://pterodactyl.app", "xyz123").build();
 ```
 
 ### Examples:
@@ -26,10 +26,8 @@ public class UserReader
 {
     public static void main(String[] args)
     {
-    
-      PteroApplication api = new PteroBuilder().setApplicationUrl("https://pterodactyl.app").setToken("abc123").buildApplication();
-      api.retrieveUsers().executeAsync(users -> users.forEach(u -> System.out.println(u.getFullName())));
-      
+        PteroApplication api = PteroBuilder.application("https://pterodactyl.app", "abc123").build();
+        api.retrieveUsers().executeAsync(users -> users.forEach(u -> System.out.println(u.getFullName())));
     }
 }
 ```
@@ -39,6 +37,7 @@ public class ServerCreator
 {
     public static void main(String[] args)
     { 
+        PteroApplication api = PteroBuilder.application("https://pterodactyl.app", "xyz123").build();
 
         Nest nest = api.retrieveNestById("8").execute();
         Location location = api.retrieveLocationById("1").execute();
@@ -54,23 +53,25 @@ public class ServerCreator
         map.put("VERSION", "1.8.8");
         map.put("TYPE", "vanilla");
 
-        ServerAction action = api.createServer().setName("My Server")
-        		.setDescription("Super awesome wrapper")
-        		.setOwner(api.retrieveUserById("1").execute())
-        		.setEgg(egg)
-        		.setLocations(Collections.singleton(location))
-        		.setAllocations(0L)
-        		.setDatabases(0L)
-        		.setCPU(0L)
-        		.setDisk(3L, DataType.GB)
-        		.setMemory(1L, DataType.GB)
-        		.setDockerImage("quay.io/pterodactyl/core:java")
-        		.setDedicatedIP(false)
-        		.setPortRange(portRange)
-        		.startOnCompletion(false)
-        		.setEnvironment(map).build();
-        ApplicationServer server = action.execute();
+        ServerAction action = api.createServer()
+                                 .setName("My Server")
+        		         .setDescription("Super awesome wrapper")
+        		         .setOwner(api.retrieveUserById("1").execute())
+        		         .setEgg(egg)
+        		         .setLocations(Collections.singleton(location))
+        		         .setAllocations(0L)
+        		         .setDatabases(0L)
+        		         .setCPU(0L)
+        		         .setDisk(3L, DataType.GB)
+        		         .setMemory(1L, DataType.GB)
+        		         .setDockerImage("quay.io/pterodactyl/core:java")
+        		         .setDedicatedIP(false)
+        		         .setPortRange(portRange)
+        		         .startOnCompletion(false)
+        		         .setEnvironment(map)
+                                 .build();
 
+        ApplicationServer server = action.execute();
     }
 }
 ```
@@ -80,27 +81,25 @@ public class MyApp extends ClientSocketListenerAdapter
 {
     public static void main(String[] args)
     {
+        PteroClient api = PteroBuilder.client("https://pterodactyl.app", "abc123").build();
 
-        PteroClient api = new PteroBuilder().setApplicationUrl("https://pterodactyl.app").setToken("abc123").buildClient();
-        // if there isn't another thread running, this won't execute. you'll need to grab the server synchronously
-        api.retrieveServerByIdentifier("39f09a87").executeAsync(server -> server.getWebSocketBuilder().addEventListeners(new MyApp()).build());
-    
+        // If there isn't another thread running, this won't execute. you'll need to grab the server synchronously
+        api.retrieveServerByIdentifier("39f09a87")
+           .executeAsync(server -> server.getWebSocketBuilder().addEventListeners(new MyApp()).build());
     }
 
     @Override
     public void onAuthSuccess(AuthSuccessEvent event)
     {
-
-        // if the server is running, this will trigger wings to send the entire console history from the current session
+        // If the server is running, this will trigger wings to send the entire console history from the current session
         event.getWebSocketManager().request(WebSocketManager.RequestAction.LOGS);
-    
     }
 
     @Override
     public void onOutput(OutputEvent event)
     {
 
-        // this will output everything from the console
+        // This will output everything from the console
         System.out.println(event.getLine());
 
     }
@@ -109,7 +108,7 @@ public class MyApp extends ClientSocketListenerAdapter
     public void onConsoleOutput(ConsoleOutputEvent event)
     {
 
-        // this will output everything from the console related to the game
+        // This will output everything from the console related to the game
         System.out.println(event.getLine());
 
     }
@@ -117,18 +116,14 @@ public class MyApp extends ClientSocketListenerAdapter
     @Override
     public void onInstallOutput(InstallOutputEvent event)
     {
-
-        // this will output everything from the console related to the egg install/docker
+        // This will output everything from the console related to the egg install/docker
         System.out.println(event.getLine());
-    
     }
 
     @Override
     public void onStatsUpdate(StatsUpdateEvent event)
     {
-
         System.out.println(String.format("Memory Usage: %s/%s", event.getMemoryFormatted(DataType.MB), event.getMaxMemoryFormatted(DataType.MB)));
-
     }
 }
 ```
