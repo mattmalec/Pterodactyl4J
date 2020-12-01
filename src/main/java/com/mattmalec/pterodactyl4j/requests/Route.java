@@ -17,8 +17,8 @@ public class Route {
 
 	public static class Users {
 
-		public static final Route LIST_USERS  			= new Route(GET,    APPLICATION_PREFIX + "users?page={page}", "page");
-		public static final Route GET_USER    			= new Route(GET,    APPLICATION_PREFIX + "users/{user_id}", "user_id");
+		public static final Route LIST_USERS  			= new Route(GET,    APPLICATION_PREFIX + "users?page={page}&include=servers", "page");
+		public static final Route GET_USER    			= new Route(GET,    APPLICATION_PREFIX + "users/{user_id}?include=servers", "user_id");
 		public static final Route CREATE_USER 			= new Route(POST,   APPLICATION_PREFIX + "users");
 		public static final Route EDIT_USER   			= new Route(PATCH,  APPLICATION_PREFIX + "users/{user_id}", "user_id");
 		public static final Route DELETE_USER 			= new Route(DELETE, APPLICATION_PREFIX + "users/{user_id}", "user_id");
@@ -32,7 +32,7 @@ public class Route {
 		public static final Route CREATE_NODE       	= new Route(POST,   APPLICATION_PREFIX + "nodes?include=location,servers,allocations");
 		public static final Route EDIT_NODE         	= new Route(PATCH,  APPLICATION_PREFIX + "nodes/{node_id}", "node_id");
 		public static final Route DELETE_NODE       	= new Route(DELETE, APPLICATION_PREFIX + "nodes/{node_id}", "node_id");
-		public static final Route LIST_ALLOCATIONS  	= new Route(GET,    APPLICATION_PREFIX + "nodes/{node_id}/allocations?page={page}", "node_id", "page");
+		public static final Route LIST_ALLOCATIONS  	= new Route(GET,    APPLICATION_PREFIX + "nodes/{node_id}/allocations?page={page}&include=server,node", "node_id", "page");
 		public static final Route CREATE_ALLOCATION 	= new Route(POST,   APPLICATION_PREFIX + "nodes/{node_id}/allocations", "node_id");
 		public static final Route DELETE_ALLOCATION		= new Route(DELETE, APPLICATION_PREFIX + "nodes/{node_id}/allocations/{allocation_id}", "node_id", "allocation_id");
 
@@ -40,8 +40,8 @@ public class Route {
 
 	public static class Locations {
 
-		public static final Route LIST_LOCATIONS  		= new Route(GET,    APPLICATION_PREFIX + "locations?page={page}", "page");
-		public static final Route GET_LOCATION    		= new Route(GET,    APPLICATION_PREFIX + "locations/{location_id}", "location_id");
+		public static final Route LIST_LOCATIONS  		= new Route(GET,    APPLICATION_PREFIX + "locations?page={page}&include=nodes,servers", "page");
+		public static final Route GET_LOCATION    		= new Route(GET,    APPLICATION_PREFIX + "locations/{location_id}?include=nodes,servers", "location_id");
 		public static final Route CREATE_LOCATION 		= new Route(POST,   APPLICATION_PREFIX + "locations");
 		public static final Route EDIT_LOCATION   		= new Route(PATCH,  APPLICATION_PREFIX + "locations");
 		public static final Route DELETE_LOCATION 		= new Route(DELETE, APPLICATION_PREFIX + "locations/{location_id}", "location_id");
@@ -66,10 +66,10 @@ public class Route {
 
 	public static class Nests {
 
-		public static final Route LIST_NESTS 			= new Route(GET, 	APPLICATION_PREFIX + "nests?page={page}", "page");
-		public static final Route GET_NEST 				= new Route(GET, 	APPLICATION_PREFIX + "nests/{nest_id}", "nest_id");
-		public static final Route GET_EGGS 				= new Route(GET, 	APPLICATION_PREFIX + "nests/{nest_id}/eggs", "nest_id");
-		public static final Route GET_EGG 				= new Route(GET, 	APPLICATION_PREFIX + "nests/{nest_id}/eggs/{egg_id}", "nest_id", "egg_id");
+		public static final Route LIST_NESTS 			= new Route(GET, 	APPLICATION_PREFIX + "nests?page={page}&include=servers,eggs", "page");
+		public static final Route GET_NEST 				= new Route(GET, 	APPLICATION_PREFIX + "nests/{nest_id}?include=servers,eggs", "nest_id");
+		public static final Route GET_EGGS 				= new Route(GET, 	APPLICATION_PREFIX + "nests/{nest_id}/eggs?include=variables,nest,servers", "nest_id");
+		public static final Route GET_EGG 				= new Route(GET, 	APPLICATION_PREFIX + "nests/{nest_id}/eggs/{egg_id}?include=variables,nest,servers", "nest_id", "egg_id");
 
 	}
 

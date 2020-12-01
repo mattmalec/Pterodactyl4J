@@ -3,14 +3,13 @@ package com.mattmalec.pterodactyl4j.application.entities.impl;
 import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationUser;
 import com.mattmalec.pterodactyl4j.application.managers.UserAction;
-import com.mattmalec.pterodactyl4j.requests.Requester;
 import com.mattmalec.pterodactyl4j.requests.Route;
 import com.mattmalec.pterodactyl4j.utils.Checks;
 import org.json.JSONObject;
 
 public class CreateUserImpl implements UserAction {
 
-    private Requester requester;
+    private PteroApplicationImpl impl;
 
     private String userName;
     private String email;
@@ -18,8 +17,8 @@ public class CreateUserImpl implements UserAction {
     private String lastName;
     private String password;
 
-    public CreateUserImpl(Requester requester) {
-        this.requester = requester;
+    public CreateUserImpl(PteroApplicationImpl impl) {
+        this.impl = impl;
     }
 
     @Override
@@ -66,10 +65,10 @@ public class CreateUserImpl implements UserAction {
         json.put("password", this.password);
         return new PteroAction<ApplicationUser>() {
             Route.CompiledRoute route = Route.Users.CREATE_USER.compile().withJSONdata(json);
-            JSONObject jsonObject = requester.request(route).toJSONObject();
+            JSONObject jsonObject = impl.getRequester().request(route).toJSONObject();
             @Override
             public ApplicationUser execute() {
-                return new ApplicationUserImpl(jsonObject, requester);
+                return new ApplicationUserImpl(jsonObject, impl);
             }
         };
     }

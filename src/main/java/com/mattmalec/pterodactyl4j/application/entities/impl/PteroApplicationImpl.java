@@ -33,19 +33,21 @@ public class PteroApplicationImpl implements PteroApplication {
 	}
 
 	public PteroAction<ApplicationUser> retrieveUserById(long id) {
+		PteroApplicationImpl impl = this;
 		Route.CompiledRoute route = Route.Users.GET_USER.compile(Long.toUnsignedString(id));
 		return new PteroAction<ApplicationUser>() {
 
 			@Override
 			public ApplicationUser execute() {
 				JSONObject jsonObject = requester.request(route).toJSONObject();
-				return new ApplicationUserImpl(jsonObject, requester);
+				return new ApplicationUserImpl(jsonObject, impl);
 			}
 		};
 	}
 
 	@Override
 	public PteroAction<List<ApplicationUser>> retrieveUsers() {
+		PteroApplicationImpl impl = this;
 		return new PteroAction<List<ApplicationUser>>() {
 			@Override
 			public List<ApplicationUser> execute() {
@@ -55,14 +57,14 @@ public class PteroApplicationImpl implements PteroApplication {
 				List<ApplicationUser> users = new ArrayList<>();
 				for(Object o : json.getJSONArray("data")) {
 					JSONObject user = new JSONObject(o.toString());
-					users.add(new ApplicationUserImpl(user, requester));
+					users.add(new ApplicationUserImpl(user, impl));
 				}
 				for(int i=1; i < pages; i++) {
 					Route.CompiledRoute nextRoute = Route.Users.LIST_USERS.compile(Long.toUnsignedString(i));
 					JSONObject nextJson = requester.request(nextRoute).toJSONObject();
 					for(Object o : nextJson.getJSONArray("data")) {
 						JSONObject user = new JSONObject(o.toString());
-						users.add(new ApplicationUserImpl(user, requester));
+						users.add(new ApplicationUserImpl(user, impl));
 					}
 				}
 				return Collections.unmodifiableList(users);
@@ -114,7 +116,7 @@ public class PteroApplicationImpl implements PteroApplication {
 
 	@Override
 	public UserManager getUserManager() {
-		return new UserManagerImpl(this.requester);
+		return new UserManagerImpl(this);
 	}
 
 	@Override
@@ -184,16 +186,44 @@ public class PteroApplicationImpl implements PteroApplication {
 	}
 
 	@Override
+	public PteroAction<List<Node>> retrieveNodesByLocation(Location location) {
+		return new PteroAction<List<Node>>() {
+			@Override
+			public List<Node> execute() {
+				List<Node> nodes = retrieveNodes().execute();
+				List<Node> newNodes = nodes.stream().filter(n -> n.getLocation().retrieve().execute().getIdLong() == location.getIdLong()).collect(Collectors.toList());
+				return Collections.unmodifiableList(newNodes);
+			}
+		};
+	}
+
+	@Override
 	public NodeManager getNodeManager() {
 		return new NodeManagerImpl(this);
 	}
 
 	@Override
 	public PteroAction<List<Allocation>> retrieveAllocationsByNode(Node node) {
+		PteroApplicationImpl impl = this;
 		return new PteroAction<List<Allocation>>() {
 			@Override
 			public List<Allocation> execute() {
-				List<Allocation> allocations = node.getAllocations();
+				Route.CompiledRoute route = Route.Nodes.LIST_ALLOCATIONS.compile(node.getId(), "1");
+				JSONObject json = requester.request(route).toJSONObject();
+				long pages = json.getJSONObject("meta").getJSONObject("pagination").getLong("total_pages");
+				List<Allocation> allocations = new ArrayList<>();
+				for (Object o : json.getJSONArray("data")) {
+					JSONObject allocation = new JSONObject(o.toString());
+					allocations.add(new AllocationImpl(allocation, impl));
+				}
+				for (int i = 1; i < pages; i++) {
+					Route.CompiledRoute nextRoute = Route.Nodes.LIST_ALLOCATIONS.compile(node.getId(), Long.toUnsignedString(i));
+					JSONObject nextJson = requester.request(nextRoute).toJSONObject();
+					for (Object o : nextJson.getJSONArray("data")) {
+						JSONObject allocation = new JSONObject(o.toString());
+						allocations.add(new AllocationImpl(allocation, impl));
+					}
+				}
 				return Collections.unmodifiableList(allocations);
 			}
 		};
@@ -208,7 +238,7 @@ public class PteroApplicationImpl implements PteroApplication {
 				List<Allocation> allocations = new ArrayList<>();
 				List<Node> nodes = retrieveNodes().execute();
 				for(Node node : nodes) {
-					allocations.addAll(node.getAllocations());
+					allocations.addAll(node.getAllocations().retrieve().execute());
 				}
 				return Collections.unmodifiableList(allocations);
 			}
@@ -263,7 +293,7 @@ public class PteroApplicationImpl implements PteroApplication {
 				List<Nest> nests = retrieveNests().execute();
 				List<Egg> eggs = new ArrayList<>();
 				for(Nest nest : nests) {
-					eggs.addAll(nest.retrieveEggs().execute());
+					eggs.addAll(nest.getEggs().get().orElseGet(() -> nest.getEggs().retrieve().execute()));
 				}
 				return Collections.unmodifiableList(eggs);
 			}
@@ -525,6 +555,33 @@ public class PteroApplicationImpl implements PteroApplication {
 						newServers.add(s);
 					}
 				}
+				return Collections.unmodifiableList(newServers);
+			}
+		};
+	}
+
+	@Override
+	public PteroAction<List<ApplicationServer>> retrieveServersByNode(Node node) {
+		return new PteroAction<List<ApplicationServer>>() {
+			@Override
+			public List<ApplicationServer> execute() {
+				List<ApplicationServer> servers = retrieveServers().execute();
+				List<ApplicationServer> newServers = servers.stream().filter(s -> s.getNode().retrieve().execute().getIdLong() == node.getIdLong()).collect(Collectors.toList());
+				return Collections.unmodifiableList(newServers);
+			}
+		};
+	}
+
+	@Override
+	public PteroAction<List<ApplicationServer>> retrieveServersByLocation(Location location) {
+		return new PteroAction<List<ApplicationServer>>() {
+			@Override
+			public List<ApplicationServer> execute() {
+				List<ApplicationServer> servers = retrieveServers().execute();
+				List<ApplicationServer> newServers = servers.stream()
+						.filter(s -> s.getNode().retrieve().execute().getLocation().get()
+								.orElseGet(() -> s.getNode().retrieve().execute().getLocation().retrieve().execute()).getIdLong() == location.getIdLong())
+						.collect(Collectors.toList());
 				return Collections.unmodifiableList(newServers);
 			}
 		};

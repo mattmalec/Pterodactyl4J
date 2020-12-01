@@ -227,7 +227,7 @@ public class CreateServerImpl implements ServerAction {
 						.put("name", name)
 						.put("description", description)
 						.put("user", owner.getId())
-						.put("nest", egg.retrieveNest().execute().getId())
+						.put("nest", egg.getNest().get().orElseGet(() -> egg.getNest().retrieve().execute()).getId())
 						.put("egg", egg.getId())
 						.put("pack", pack)
 						.put("docker_image", dockerImage != null ? dockerImage : egg.getDockerImage())

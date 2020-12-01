@@ -80,7 +80,7 @@ public class ApplicationServerImpl implements ApplicationServer {
 			@Override
 			public Optional<ApplicationUser> get() {
 				if(!json.has("relationships")) return Optional.empty();
-				return Optional.of(new ApplicationUserImpl(relationships.getJSONObject("user"), impl.getRequester()));
+				return Optional.of(new ApplicationUserImpl(relationships.getJSONObject("user"), impl));
 			}
 		};
 	}
@@ -108,7 +108,7 @@ public class ApplicationServerImpl implements ApplicationServer {
 		JSONObject json = relationships.getJSONObject("allocations");
 		for(Object o : json.getJSONArray("data")) {
 			JSONObject allocation = new JSONObject(o.toString());
-			allocations.add(new AllocationImpl(allocation));
+			allocations.add(new AllocationImpl(allocation, impl));
 		}
 		return Optional.of(Collections.unmodifiableList(allocations));
 	}

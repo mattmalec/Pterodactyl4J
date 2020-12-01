@@ -1,24 +1,27 @@
 package com.mattmalec.pterodactyl4j.application.entities.impl;
 
 import com.mattmalec.pterodactyl4j.PteroAction;
+import com.mattmalec.pterodactyl4j.application.entities.ApplicationServer;
 import com.mattmalec.pterodactyl4j.application.entities.Egg;
 import com.mattmalec.pterodactyl4j.application.entities.Nest;
+import com.mattmalec.pterodactyl4j.utils.Relationed;
 import org.json.JSONObject;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public class NestImpl implements Nest {
 
     private JSONObject json;
+    private JSONObject relationships;
     private PteroApplicationImpl impl;
 
     public NestImpl(JSONObject json, PteroApplicationImpl impl) {
         this.json = json.getJSONObject("attributes");
+        this.relationships = json.getJSONObject("attributes").optJSONObject("relationships");
         this.impl = impl;
     }
 
@@ -43,8 +46,38 @@ public class NestImpl implements Nest {
     }
 
     @Override
-    public PteroAction<List<Egg>> retrieveEggs() {
-        return impl.retrieveEggsByNest(this);
+    public Relationed<List<Egg>> getEggs() {
+        NestImpl nest = this;
+        return new Relationed<List<Egg>>() {
+            @Override
+            public PteroAction<List<Egg>> retrieve() {
+                return impl.retrieveEggsByNest(nest);
+            }
+
+            @Override
+            public Optional<List<Egg>> get() {
+                if(!json.has("relationships")) return Optional.empty();
+                List<Egg> eggs = new ArrayList<>();
+                JSONObject json = relationships.getJSONObject("eggs");
+                for(Object o : json.getJSONArray("data")) {
+                    JSONObject egg = new JSONObject(o.toString());
+                    eggs.add(new EggImpl(egg, impl));
+                }
+                return Optional.of(Collections.unmodifiableList(eggs));
+            }
+        };
+    }
+
+    @Override
+    public Optional<List<ApplicationServer>> getServers() {
+        if(!json.has("relationships")) return Optional.empty();
+        List<ApplicationServer> servers = new ArrayList<>();
+        JSONObject json = relationships.getJSONObject("servers");
+        for(Object o : json.getJSONArray("data")) {
+            JSONObject server = new JSONObject(o.toString());
+            servers.add(new ApplicationServerImpl(impl, server));
+        }
+        return Optional.of(Collections.unmodifiableList(servers));
     }
 
     @Override
