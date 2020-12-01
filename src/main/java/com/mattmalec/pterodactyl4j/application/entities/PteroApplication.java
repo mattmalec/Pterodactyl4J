@@ -24,8 +24,6 @@ public interface PteroApplication {
 	PteroAction<Allocation> retrieveAllocationById(String id);
 	PteroAction<Allocation> retrieveAllocationById(long id);
 
-	@Deprecated
-	// replaced with Node#getAllocations
 	PteroAction<List<Allocation>> retrieveAllocationsByNode(Node node);
 
 	PteroAction<List<Allocation>> retrieveAllocations();
