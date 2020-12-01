@@ -1,11 +1,29 @@
 package com.mattmalec.pterodactyl4j;
 
-import com.mattmalec.pterodactyl4j.entities.IPteroAction;
+import com.mattmalec.pterodactyl4j.entities.PteroAction;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
-public abstract class PteroAction<T> implements IPteroAction<T> {
+public class PteroActionImpl<T> implements PteroAction<T>
+{
+
+	private final Supplier<? extends T> execute;
+
+	public static <T> PteroActionImpl<T> onExecute(Supplier<? extends T> execute)
+	{
+		return new PteroActionImpl<>(execute);
+	}
+
+	private PteroActionImpl(Supplier<? extends T> execute) {
+		this.execute = execute;
+	}
+
+	@Override
+	public T execute() {
+		return execute.get();
+	}
 
 	@Override
 	public void executeAsync() {

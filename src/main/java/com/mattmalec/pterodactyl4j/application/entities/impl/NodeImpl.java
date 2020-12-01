@@ -1,12 +1,13 @@
 package com.mattmalec.pterodactyl4j.application.entities.impl;
 
-import com.mattmalec.pterodactyl4j.PteroAction;
+import com.mattmalec.pterodactyl4j.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.application.entities.Allocation;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationServer;
 import com.mattmalec.pterodactyl4j.application.entities.Location;
 import com.mattmalec.pterodactyl4j.application.entities.Node;
 import com.mattmalec.pterodactyl4j.application.managers.AllocationManager;
 import com.mattmalec.pterodactyl4j.application.managers.NodeAction;
+import com.mattmalec.pterodactyl4j.entities.PteroAction;
 import com.mattmalec.pterodactyl4j.requests.Route;
 import com.mattmalec.pterodactyl4j.utils.Relationed;
 import org.json.JSONObject;
@@ -210,13 +211,10 @@ public class NodeImpl implements Node {
 
 	@Override
 	public PteroAction<Void> delete() {
-		return new PteroAction<Void>() {
+		return PteroActionImpl.onExecute(() -> {
 			Route.CompiledRoute route = Route.Nodes.DELETE_NODE.compile(getId());
-			@Override
-			public Void execute() {
-				impl.getRequester().request(route);
-				return null;
-			}
-		};
+			impl.getRequester().request(route);
+			return null;
+		});
 	}
 }

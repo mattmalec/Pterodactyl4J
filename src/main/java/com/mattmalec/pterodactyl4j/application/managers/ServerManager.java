@@ -1,10 +1,14 @@
 package com.mattmalec.pterodactyl4j.application.managers;
 
 import com.mattmalec.pterodactyl4j.DataType;
-import com.mattmalec.pterodactyl4j.PteroAction;
-import com.mattmalec.pterodactyl4j.application.entities.*;
-import com.mattmalec.pterodactyl4j.application.entities.impl.PteroApplicationImpl;
+import com.mattmalec.pterodactyl4j.PteroActionImpl;
+import com.mattmalec.pterodactyl4j.application.entities.Allocation;
+import com.mattmalec.pterodactyl4j.application.entities.ApplicationServer;
+import com.mattmalec.pterodactyl4j.application.entities.ApplicationUser;
+import com.mattmalec.pterodactyl4j.application.entities.Egg;
 import com.mattmalec.pterodactyl4j.application.entities.impl.ApplicationServerImpl;
+import com.mattmalec.pterodactyl4j.application.entities.impl.PteroApplicationImpl;
+import com.mattmalec.pterodactyl4j.entities.PteroAction;
 import com.mattmalec.pterodactyl4j.requests.Route;
 import org.json.JSONObject;
 
@@ -21,9 +25,8 @@ public class ServerManager {
 	}
 
 	public PteroAction<ApplicationServer> setName(String name) {
-		return new PteroAction<ApplicationServer>() {
-			@Override
-			public ApplicationServer execute() {
+		return PteroActionImpl.onExecute(() ->
+        {
 				JSONObject obj = new JSONObject()
 						.put("name", name)
 						.put("description", server.getDescription())
@@ -31,14 +34,12 @@ public class ServerManager {
 				Route.CompiledRoute route = Route.Servers.UPDATE_SERVER_DETAILS.compile(server.getId()).withJSONdata(obj);
 				JSONObject json = impl.getRequester().request(route).toJSONObject();
 				return new ApplicationServerImpl(impl, json);
-			}
-		};
+        });
 	}
 
 	public PteroAction<ApplicationServer> setOwner(ApplicationUser user) {
-		return new PteroAction<ApplicationServer>() {
-			@Override
-			public ApplicationServer execute() {
+		return PteroActionImpl.onExecute(() ->
+        {
 				JSONObject obj = new JSONObject()
 						.put("name", server.getName())
 						.put("description", server.getDescription())
@@ -46,14 +47,12 @@ public class ServerManager {
 				Route.CompiledRoute route = Route.Servers.UPDATE_SERVER_DETAILS.compile(server.getId()).withJSONdata(obj);
 				JSONObject json = impl.getRequester().request(route).toJSONObject();
 				return new ApplicationServerImpl(impl, json);
-			}
-		};
+        });
 	}
 
 	public PteroAction<ApplicationServer> setDescription(String description) {
-		return new PteroAction<ApplicationServer>() {
-			@Override
-			public ApplicationServer execute() {
+		return PteroActionImpl.onExecute(() ->
+        {
 				JSONObject obj = new JSONObject()
 						.put("name", server.getName())
 						.put("description", description)
@@ -61,14 +60,12 @@ public class ServerManager {
 				Route.CompiledRoute route = Route.Servers.UPDATE_SERVER_DETAILS.compile(server.getId()).withJSONdata(obj);
 				JSONObject json = impl.getRequester().request(route).toJSONObject();
 				return new ApplicationServerImpl(impl, json);
-			}
-		};
+        });
 	}
 
 	public PteroAction<ApplicationServer> setAllocation(Allocation allocation) {
-		return new PteroAction<ApplicationServer>() {
-			@Override
-			public ApplicationServer execute() {
+		return PteroActionImpl.onExecute(() ->
+        {
 				JSONObject obj = new JSONObject()
 						.put("memory", server.getLimits().getMemory())
 						.put("swap", server.getLimits().getSwap())
@@ -87,14 +84,12 @@ public class ServerManager {
 				Route.CompiledRoute route = Route.Servers.UPDATE_SERVER_BUILD.compile(server.getId()).withJSONdata(obj);
 				JSONObject json = impl.getRequester().request(route).toJSONObject();
 				return new ApplicationServerImpl(impl, json);
-			}
-		};
+        });
 	}
 
 	public PteroAction<ApplicationServer> setMemory(long amount, DataType dataType) {
-		return new PteroAction<ApplicationServer>() {
-			@Override
-			public ApplicationServer execute() {
+		return PteroActionImpl.onExecute(() ->
+        {
 				long trueAmount;
 				switch(dataType) {
 					case MB: trueAmount = amount;
@@ -119,14 +114,12 @@ public class ServerManager {
 				Route.CompiledRoute route = Route.Servers.UPDATE_SERVER_BUILD.compile(server.getId()).withJSONdata(obj);
 				JSONObject json = impl.getRequester().request(route).toJSONObject();
 				return new ApplicationServerImpl(impl, json);
-			}
-		};
+        });
 	}
 
 	public PteroAction<ApplicationServer> setSwap(long amount, DataType dataType) {
-		return new PteroAction<ApplicationServer>() {
-			@Override
-			public ApplicationServer execute() {
+		return PteroActionImpl.onExecute(() ->
+        {
 				long trueAmount;
 				switch(dataType) {
 					case MB: trueAmount = amount;
@@ -151,14 +144,12 @@ public class ServerManager {
 				Route.CompiledRoute route = Route.Servers.UPDATE_SERVER_BUILD.compile(server.getId()).withJSONdata(obj);
 				JSONObject json = impl.getRequester().request(route).toJSONObject();
 				return new ApplicationServerImpl(impl, json);
-			}
-		};
+        });
 	}
 
 	public PteroAction<ApplicationServer> setIO(long amount) {
-		return new PteroAction<ApplicationServer>() {
-			@Override
-			public ApplicationServer execute() {
+		return PteroActionImpl.onExecute(() ->
+        {
 				JSONObject obj = new JSONObject()
 						.put("memory", server.getLimits().getMemory())
 						.put("swap", server.getLimits().getSwap())
@@ -177,14 +168,12 @@ public class ServerManager {
 				Route.CompiledRoute route = Route.Servers.UPDATE_SERVER_BUILD.compile(server.getId()).withJSONdata(obj);
 				JSONObject json = impl.getRequester().request(route).toJSONObject();
 				return new ApplicationServerImpl(impl, json);
-			}
-		};
+        });
 	}
 
 	public PteroAction<ApplicationServer> setCPU(long amount) {
-		return new PteroAction<ApplicationServer>() {
-			@Override
-			public ApplicationServer execute() {
+		return PteroActionImpl.onExecute(() ->
+        {
 				JSONObject obj = new JSONObject()
 						.put("memory", server.getLimits().getMemory())
 						.put("swap", server.getLimits().getSwap())
@@ -203,14 +192,12 @@ public class ServerManager {
 				Route.CompiledRoute route = Route.Servers.UPDATE_SERVER_BUILD.compile(server.getId()).withJSONdata(obj);
 				JSONObject json = impl.getRequester().request(route).toJSONObject();
 				return new ApplicationServerImpl(impl, json);
-			}
-		};
+        });
 	}
 
 	public PteroAction<ApplicationServer> setThreads(String cores) {
-		return new PteroAction<ApplicationServer>() {
-			@Override
-			public ApplicationServer execute() {
+		return PteroActionImpl.onExecute(() ->
+        {
 				JSONObject obj = new JSONObject()
 						.put("memory", server.getLimits().getMemory())
 						.put("swap", server.getLimits().getSwap())
@@ -229,14 +216,12 @@ public class ServerManager {
 				Route.CompiledRoute route = Route.Servers.UPDATE_SERVER_BUILD.compile(server.getId()).withJSONdata(obj);
 				JSONObject json = impl.getRequester().request(route).toJSONObject();
 				return new ApplicationServerImpl(impl, json);
-			}
-		};
+        });
 	}
 
 	public PteroAction<ApplicationServer> setDisk(long amount, DataType dataType) {
-		return new PteroAction<ApplicationServer>() {
-			@Override
-			public ApplicationServer execute() {
+		return PteroActionImpl.onExecute(() ->
+        {
 				long trueAmount;
 				switch(dataType) {
 					case MB: trueAmount = amount;
@@ -261,14 +246,12 @@ public class ServerManager {
 				Route.CompiledRoute route = Route.Servers.UPDATE_SERVER_BUILD.compile(server.getId()).withJSONdata(obj);
 				JSONObject json = impl.getRequester().request(route).toJSONObject();
 				return new ApplicationServerImpl(impl, json);
-			}
-		};
+        });
 	}
 
 	public PteroAction<ApplicationServer> setAllowedDatabases(int amount) {
-		return new PteroAction<ApplicationServer>() {
-			@Override
-			public ApplicationServer execute() {
+		return PteroActionImpl.onExecute(() ->
+        {
 				JSONObject obj = new JSONObject()
 						.put("memory", server.getLimits().getMemory())
 						.put("swap", server.getLimits().getSwap())
@@ -287,14 +270,12 @@ public class ServerManager {
 				Route.CompiledRoute route = Route.Servers.UPDATE_SERVER_BUILD.compile(server.getId()).withJSONdata(obj);
 				JSONObject json = impl.getRequester().request(route).toJSONObject();
 				return new ApplicationServerImpl(impl, json);
-			}
-		};
+        });
 	}
 
 	public PteroAction<ApplicationServer> setAllowedAllocations(int amount) {
-		return new PteroAction<ApplicationServer>() {
-			@Override
-			public ApplicationServer execute() {
+		return PteroActionImpl.onExecute(() ->
+        {
 				JSONObject obj = new JSONObject()
 						.put("memory", server.getLimits().getMemory())
 						.put("swap", server.getLimits().getSwap())
@@ -313,14 +294,12 @@ public class ServerManager {
 				Route.CompiledRoute route = Route.Servers.UPDATE_SERVER_BUILD.compile(server.getId()).withJSONdata(obj);
 				JSONObject json = impl.getRequester().request(route).toJSONObject();
 				return new ApplicationServerImpl(impl, json);
-			}
-		};
+        });
 	}
 
 	public PteroAction<Void> setStartupCommand(String command) {
-		return new PteroAction<Void>() {
-			@Override
-			public Void execute() {
+		return PteroActionImpl.onExecute(() ->
+        {
 				JSONObject obj = new JSONObject()
 						.put("startup", command)
 						.put("environment", server.getContainer().getEnvironment().keySet())
@@ -329,14 +308,12 @@ public class ServerManager {
 				Route.CompiledRoute route = Route.Servers.UPDATE_SERVER_STARTUP.compile(server.getId()).withJSONdata(obj);
 				impl.getRequester().request(route);
 				return null;
-			}
-		};
+        });
 	}
 
 	public PteroAction<Void> setEnvironment(Set<String> environment) {
-		return new PteroAction<Void>() {
-			@Override
-			public Void execute() {
+		return PteroActionImpl.onExecute(() ->
+        {
 				JSONObject obj = new JSONObject()
 						.put("startup", server.getContainer().getStartupCommand())
 						.put("environment", environment)
@@ -345,14 +322,12 @@ public class ServerManager {
 				Route.CompiledRoute route = Route.Servers.UPDATE_SERVER_STARTUP.compile(server.getId()).withJSONdata(obj);
 				impl.getRequester().request(route);
 				return null;
-			}
-		};
+        });
 	}
 
 	public PteroAction<Void> setEgg(Egg egg) {
-		return new PteroAction<Void>() {
-			@Override
-			public Void execute() {
+		return PteroActionImpl.onExecute(() ->
+        {
 				JSONObject obj = new JSONObject()
 						.put("startup", server.getContainer().getStartupCommand())
 						.put("environment",  server.getContainer().getEnvironment().keySet())
@@ -361,14 +336,12 @@ public class ServerManager {
 				Route.CompiledRoute route = Route.Servers.UPDATE_SERVER_STARTUP.compile(server.getId()).withJSONdata(obj);
 				impl.getRequester().request(route);
 				return null;
-			}
-		};
+        });
 	}
 
 	public PteroAction<Void> setImage(String dockerImage) {
-		return new PteroAction<Void>() {
-			@Override
-			public Void execute() {
+		return PteroActionImpl.onExecute(() ->
+        {
 				JSONObject obj = new JSONObject()
 						.put("startup", server.getContainer().getStartupCommand())
 						.put("environment",  server.getContainer().getEnvironment().keySet())
@@ -377,14 +350,12 @@ public class ServerManager {
 				Route.CompiledRoute route = Route.Servers.UPDATE_SERVER_STARTUP.compile(server.getId()).withJSONdata(obj);
 				impl.getRequester().request(route);
 				return null;
-			}
-		};
+        });
 	}
 
 	public PteroAction<Void> setSkipScripts(boolean skipScripts) {
-		return new PteroAction<Void>() {
-			@Override
-			public Void execute() {
+		return PteroActionImpl.onExecute(() ->
+        {
 				JSONObject obj = new JSONObject()
 						.put("startup", server.getContainer().getStartupCommand())
 						.put("environment",  server.getContainer().getEnvironment().keySet())
@@ -394,7 +365,6 @@ public class ServerManager {
 				Route.CompiledRoute route = Route.Servers.UPDATE_SERVER_STARTUP.compile(server.getId()).withJSONdata(obj);
 				impl.getRequester().request(route);
 				return null;
-			}
-		};
+        });
 	}
 }

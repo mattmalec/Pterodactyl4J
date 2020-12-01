@@ -1,8 +1,9 @@
 package com.mattmalec.pterodactyl4j.application.managers;
 
-import com.mattmalec.pterodactyl4j.PteroAction;
+import com.mattmalec.pterodactyl4j.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationServer;
 import com.mattmalec.pterodactyl4j.application.entities.impl.PteroApplicationImpl;
+import com.mattmalec.pterodactyl4j.entities.PteroAction;
 import com.mattmalec.pterodactyl4j.requests.Route;
 
 public class ServerController {
@@ -16,53 +17,44 @@ public class ServerController {
 	}
 
 	public PteroAction<Void> suspend() {
-		return new PteroAction<Void>() {
-			@Override
-			public Void execute() {
+		return PteroActionImpl.onExecute(() ->
+        {
 				Route.CompiledRoute route = Route.Servers.SUSPEND_SERVER.compile(server.getId());
 				impl.getRequester().request(route);
 				return null;
-			}
-		};
+        });
 	}
 
 	public PteroAction<Void> unsuspend() {
-		return new PteroAction<Void>() {
-			@Override
-			public Void execute() {
+		return PteroActionImpl.onExecute(() ->
+        {
 				Route.CompiledRoute route = Route.Servers.UNSUSPEND_SERVER.compile(server.getId());
 				impl.getRequester().request(route);
 				return null;
-			}
-		};
+        });
 	}
 
 	public PteroAction<Void> reinstall() {
-		return new PteroAction<Void>() {
-			@Override
-			public Void execute() {
+		return PteroActionImpl.onExecute(() ->
+        {
 				Route.CompiledRoute route = Route.Servers.REINSTALL_SERVER.compile(server.getId());
 				impl.getRequester().request(route);
 				return null;
-			}
-		};
+        });
 	}
 
 	public PteroAction<Void> rebuild() {
-		return new PteroAction<Void>() {
-			@Override
-			public Void execute() {
+		return PteroActionImpl.onExecute(() ->
+        {
 				Route.CompiledRoute route = Route.Servers.REBUILD_SERVER.compile(server.getId());
 				impl.getRequester().request(route);
 				return null;
-			}
-		};
+        });
 	}
 
 	public PteroAction<Void> delete(boolean withForce) {
-		return new PteroAction<Void>() {
-			@Override
-			public Void execute() {
+		return PteroActionImpl.onExecute(() ->
+        {
 				if(withForce) {
 					Route.CompiledRoute forceRoute = Route.Servers.FORCE_DELETE_SERVER.compile(server.getId());
 					impl.getRequester().request(forceRoute);
@@ -71,7 +63,6 @@ public class ServerController {
 					impl.getRequester().request(safeRoute);
 				}
 				return null;
-			}
-		};
+        });
 	}
 }

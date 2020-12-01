@@ -1,8 +1,8 @@
 package com.mattmalec.pterodactyl4j.application.managers;
 
 
-import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationUser;
+import com.mattmalec.pterodactyl4j.entities.PteroAction;
 
 public interface UserAction {
 

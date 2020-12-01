@@ -1,8 +1,9 @@
 package com.mattmalec.pterodactyl4j.application.entities.impl;
 
-import com.mattmalec.pterodactyl4j.PteroAction;
+import com.mattmalec.pterodactyl4j.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationUser;
 import com.mattmalec.pterodactyl4j.application.managers.UserAction;
+import com.mattmalec.pterodactyl4j.entities.PteroAction;
 import com.mattmalec.pterodactyl4j.requests.Route;
 import org.json.JSONObject;
 
@@ -72,13 +73,11 @@ public class EditUserImpl implements UserAction {
         else
         	json.put("last_name", this.lastName);
         json.put("password", this.password);
-        return new PteroAction<ApplicationUser>() {
+        return PteroActionImpl.onExecute(() -> {
             Route.CompiledRoute route = Route.Users.EDIT_USER.compile(user.getId()).withJSONdata(json);
             JSONObject jsonObject = impl.getRequester().request(route).toJSONObject();
-            @Override
-            public ApplicationUser execute() {
-                return new ApplicationUserImpl(jsonObject, impl);
-            }
-        };
+
+            return new ApplicationUserImpl(jsonObject, impl);
+        });
     }
 }

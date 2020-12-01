@@ -1,9 +1,10 @@
 package com.mattmalec.pterodactyl4j.application.entities.impl;
 
-import com.mattmalec.pterodactyl4j.PteroAction;
+import com.mattmalec.pterodactyl4j.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationUser;
 import com.mattmalec.pterodactyl4j.application.managers.UserAction;
 import com.mattmalec.pterodactyl4j.application.managers.UserManager;
+import com.mattmalec.pterodactyl4j.entities.PteroAction;
 import com.mattmalec.pterodactyl4j.requests.Route;
 
 public class UserManagerImpl implements UserManager {
@@ -26,13 +27,10 @@ public class UserManagerImpl implements UserManager {
 
     @Override
     public PteroAction<Void> deleteUser(ApplicationUser user) {
-        return new PteroAction<Void>() {
+        return PteroActionImpl.onExecute(() -> {
             Route.CompiledRoute route = Route.Users.DELETE_USER.compile(user.getId());
-            @Override
-            public Void execute() {
-                impl.getRequester().request(route);
-                return null;
-            }
-        };
+            impl.getRequester().request(route);
+            return null;
+        });
     }
 }
