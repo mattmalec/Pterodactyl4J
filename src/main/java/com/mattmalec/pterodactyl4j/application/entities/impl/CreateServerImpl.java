@@ -1,9 +1,10 @@
 package com.mattmalec.pterodactyl4j.application.entities.impl;
 
 import com.mattmalec.pterodactyl4j.DataType;
-import com.mattmalec.pterodactyl4j.PteroAction;
+import com.mattmalec.pterodactyl4j.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.application.entities.*;
 import com.mattmalec.pterodactyl4j.application.managers.ServerAction;
+import com.mattmalec.pterodactyl4j.entities.PteroAction;
 import com.mattmalec.pterodactyl4j.exceptions.IllegalActionException;
 import com.mattmalec.pterodactyl4j.requests.Route;
 import com.mattmalec.pterodactyl4j.utils.Checks;
@@ -196,52 +197,49 @@ public class CreateServerImpl implements ServerAction {
 
 	@Override
 	public PteroAction<ApplicationServer> build() {
-		return new PteroAction<ApplicationServer>() {
-			@Override
-			public ApplicationServer execute() {
-				if(memory < 4) {
-					throw new IllegalActionException("The minimum memory limit is 4 MB.");
-				}
-				Checks.notNull(owner, "Owner");
-				Checks.notNull(locations, "Locations");
-				Checks.notNull(portRange, "Port Range");
-				Checks.notNull(egg, "Egg and Nest");
-				JSONObject featureLimits = new JSONObject()
-						.put("databases", databases)
-						.put("allocations", allocations)
-						.put("backups", backups);
-				JSONObject limits = new JSONObject()
-						.put("memory", memory)
-						.put("swap", swap)
-						.put("disk", disk)
-						.put("io", io)
-						.put("cpu", cpu)
-						.put("threads", threads);
-				JSONObject env = new JSONObject();
-				if(environment != null) environment.forEach(env::put);
-				JSONObject deploy = new JSONObject()
-						.put("locations", locations.stream().map(ISnowflake::getIdLong).collect(Collectors.toList()))
-						.put("dedicated_ip", useDedicatedIP)
-						.put("port_range", portRange.stream().map(Integer::toUnsignedString).collect(Collectors.toList()));
-				JSONObject obj = new JSONObject()
-						.put("name", name)
-						.put("description", description)
-						.put("user", owner.getId())
-						.put("nest", egg.getNest().get().orElseGet(() -> egg.getNest().retrieve().execute()).getId())
-						.put("egg", egg.getId())
-						.put("pack", pack)
-						.put("docker_image", dockerImage != null ? dockerImage : egg.getDockerImage())
-						.put("startup", startupCommand != null ? startupCommand : egg.getStartupCommand())
-						.put("limits", limits)
-						.put("feature_limits", featureLimits)
-						.put("environment", env)
-						.put("deploy", deploy)
-						.put("start_on_completion", startOnCompletion)
-						.put("skip_scripts", skipScripts);
-				Route.CompiledRoute route = Route.Servers.CREATE_SERVER.compile().withJSONdata(obj);
-				JSONObject json = impl.getRequester().request(route).toJSONObject();
-				return new ApplicationServerImpl(impl, json);
+		return PteroActionImpl.onExecute(() -> {
+			if (memory < 4) {
+				throw new IllegalActionException("The minimum memory limit is 4 MB.");
 			}
-		};
+			Checks.notNull(owner, "Owner");
+			Checks.notNull(locations, "Locations");
+			Checks.notNull(portRange, "Port Range");
+			Checks.notNull(egg, "Egg and Nest");
+			JSONObject featureLimits = new JSONObject()
+					.put("databases", databases)
+					.put("allocations", allocations)
+					.put("backups", backups);
+			JSONObject limits = new JSONObject()
+					.put("memory", memory)
+					.put("swap", swap)
+					.put("disk", disk)
+					.put("io", io)
+					.put("cpu", cpu)
+					.put("threads", threads);
+			JSONObject env = new JSONObject();
+			if (environment != null) environment.forEach(env::put);
+			JSONObject deploy = new JSONObject()
+					.put("locations", locations.stream().map(ISnowflake::getIdLong).collect(Collectors.toList()))
+					.put("dedicated_ip", useDedicatedIP)
+					.put("port_range", portRange.stream().map(Integer::toUnsignedString).collect(Collectors.toList()));
+			JSONObject obj = new JSONObject()
+					.put("name", name)
+					.put("description", description)
+					.put("user", owner.getId())
+					.put("nest", egg.getNest().get().orElseGet(() -> egg.getNest().retrieve().execute()).getId())
+					.put("egg", egg.getId())
+					.put("pack", pack)
+					.put("docker_image", dockerImage != null ? dockerImage : egg.getDockerImage())
+					.put("startup", startupCommand != null ? startupCommand : egg.getStartupCommand())
+					.put("limits", limits)
+					.put("feature_limits", featureLimits)
+					.put("environment", env)
+					.put("deploy", deploy)
+					.put("start_on_completion", startOnCompletion)
+					.put("skip_scripts", skipScripts);
+			Route.CompiledRoute route = Route.Servers.CREATE_SERVER.compile().withJSONdata(obj);
+			JSONObject json = impl.getRequester().request(route).toJSONObject();
+			return new ApplicationServerImpl(impl, json);
+		});
 	}
 }

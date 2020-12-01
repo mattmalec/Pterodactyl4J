@@ -1,9 +1,10 @@
 package com.mattmalec.pterodactyl4j.application.entities.impl;
 
-import com.mattmalec.pterodactyl4j.PteroAction;
+import com.mattmalec.pterodactyl4j.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.application.entities.Location;
 import com.mattmalec.pterodactyl4j.application.entities.Node;
 import com.mattmalec.pterodactyl4j.application.managers.NodeAction;
+import com.mattmalec.pterodactyl4j.entities.PteroAction;
 import com.mattmalec.pterodactyl4j.requests.Requester;
 import com.mattmalec.pterodactyl4j.requests.Route;
 import com.mattmalec.pterodactyl4j.utils.Checks;
@@ -147,13 +148,11 @@ public class CreateNodeImpl implements NodeAction {
 		json.put("daemon_sftp", this.daemonSFTPPort);
 		json.put("throttle", new JSONObject().put("enabled", this.throttle));
 
-		return new PteroAction<Node>() {
+		return PteroActionImpl.onExecute(() -> {
 			Route.CompiledRoute route = Route.Nodes.CREATE_NODE.compile().withJSONdata(json);
-			@Override
-			public Node execute() {
-				JSONObject jsonObject = requester.request(route).toJSONObject();
-				return new NodeImpl(jsonObject, impl);
-			}
-		};
+
+			JSONObject jsonObject = requester.request(route).toJSONObject();
+			return new NodeImpl(jsonObject, impl);
+		});
 	}
 }

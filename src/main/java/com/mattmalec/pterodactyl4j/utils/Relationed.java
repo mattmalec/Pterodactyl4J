@@ -1,6 +1,6 @@
 package com.mattmalec.pterodactyl4j.utils;
 
-import com.mattmalec.pterodactyl4j.PteroAction;
+import com.mattmalec.pterodactyl4j.entities.PteroAction;
 
 import java.util.Optional;
 
