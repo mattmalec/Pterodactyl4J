@@ -98,19 +98,15 @@ public class MyApp extends ClientSocketListenerAdapter
     @Override
     public void onOutput(OutputEvent event)
     {
-
         // This will output everything from the console
         System.out.println(event.getLine());
-
     }
 
     @Override
     public void onConsoleOutput(ConsoleOutputEvent event)
     {
-
         // This will output everything from the console related to the game
         System.out.println(event.getLine());
-
     }
 
     @Override
