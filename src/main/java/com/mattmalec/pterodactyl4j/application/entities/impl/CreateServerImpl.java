@@ -198,7 +198,7 @@ public class CreateServerImpl implements ServerAction {
 	@Override
 	public PteroAction<ApplicationServer> build() {
 		return PteroActionImpl.onExecute(() -> {
-			if (memory < 4) {
+			if(memory < 4) {
 				throw new IllegalActionException("The minimum memory limit is 4 MB.");
 			}
 			Checks.notNull(owner, "Owner");
@@ -217,7 +217,7 @@ public class CreateServerImpl implements ServerAction {
 					.put("cpu", cpu)
 					.put("threads", threads);
 			JSONObject env = new JSONObject();
-			if (environment != null) environment.forEach(env::put);
+			if(environment != null) environment.forEach(env::put);
 			JSONObject deploy = new JSONObject()
 					.put("locations", locations.stream().map(ISnowflake::getIdLong).collect(Collectors.toList()))
 					.put("dedicated_ip", useDedicatedIP)

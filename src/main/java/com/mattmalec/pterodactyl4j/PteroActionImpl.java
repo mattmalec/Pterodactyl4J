@@ -6,11 +6,13 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class PteroActionImpl<T> implements PteroAction<T> {
+public class PteroActionImpl<T> implements PteroAction<T>
+{
 
 	private final Supplier<? extends T> execute;
 
-	public static <T> PteroActionImpl<T> onExecute(Supplier<? extends T> execute) {
+	public static <T> PteroActionImpl<T> onExecute(Supplier<? extends T> execute)
+	{
 		return new PteroActionImpl<>(execute);
 	}
 
