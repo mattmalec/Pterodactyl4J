@@ -10,12 +10,12 @@ Creating the PteroApplication or PteroClient Object is done via the PteroBuilder
 
 **Application Example**:
 ```java
-PteroApplication api = new PteroBuilder().setApplicationUrl("https://pterodactyl.app").setToken("abc123").buildApplication();
+PteroApplication api = PteroBuilder.createApplication("https://pterodactyl.app", "abc123");
 ```
 
 **Client Example**:
 ```java
-PteroClient api = new PteroBuilder().setApplicationUrl("https://pterodactyl.app").setToken("xyz321").buildClient();
+PteroClient api = PteroBuilder.createClient("https://pterodactyl.app", "xyz321");
 ```
 
 ### Examples:
@@ -27,7 +27,7 @@ public class UserReader
     public static void main(String[] args)
     {
     
-      PteroApplication api = new PteroBuilder().setApplicationUrl("https://pterodactyl.app").setToken("abc123").buildApplication();
+      PteroApplication api = PteroBuilder.createApplication("https://pterodactyl.app", "abc123");
       api.retrieveUsers().executeAsync(users -> users.forEach(u -> System.out.println(u.getFullName())));
       
     }
@@ -81,7 +81,7 @@ public class MyApp extends ClientSocketListenerAdapter
     public static void main(String[] args)
     {
 
-        PteroClient api = new PteroBuilder().setApplicationUrl("https://pterodactyl.app").setToken("abc123").buildClient();
+        PteroClient api = PteroBuilder.createClient("https://pterodactyl.app", "xyz321");
         // if there isn't another thread running, this won't execute. you'll need to grab the server synchronously
         api.retrieveServerByIdentifier("39f09a87").executeAsync(server -> server.getWebSocketBuilder().addEventListeners(new MyApp()).build());
     
