@@ -6,34 +6,44 @@ import com.mattmalec.pterodactyl4j.entities.impl.PteroAPIImpl;
 
 public class PteroBuilder {
 
-    private String token;
     private String applicationUrl;
+    private String token;
 
+    @Deprecated
     public PteroBuilder(String applicationUrl, String token) {
-        this.token = token;
         this.applicationUrl = applicationUrl;
+        this.token = token;
     }
+
+    @Deprecated
     public PteroBuilder() {}
 
-    public PteroBuilder setToken(String token) {
-        this.token = token;
-        return this;
+    public static PteroApplication createApplication(String url, String token) {
+        return new PteroAPIImpl(url, token).asApplication();
     }
 
+    public static PteroClient createClient(String url, String token) {
+        return new PteroAPIImpl(url, token).asClient();
+    }
 
     public PteroBuilder setApplicationUrl(String applicationUrl) {
         this.applicationUrl = applicationUrl;
         return this;
     }
 
-    public String getToken() {
-        return this.token;
+    public PteroBuilder setToken(String token) {
+        this.token = token;
+        return this;
     }
-
 
     public String getApplicationUrl() {
         return this.applicationUrl;
     }
+
+    public String getToken() {
+        return this.token;
+    }
+
     public PteroApplication buildApplication() {
         return new PteroAPIImpl(this.applicationUrl, this.token).asApplication();
     }
