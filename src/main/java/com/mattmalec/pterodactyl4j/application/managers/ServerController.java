@@ -48,17 +48,6 @@ public class ServerController {
 		};
 	}
 
-	public PteroAction<Void> rebuild() {
-		return new PteroAction<Void>() {
-			@Override
-			public Void execute() {
-				Route.CompiledRoute route = Route.Servers.REBUILD_SERVER.compile(server.getId());
-				impl.getRequester().request(route);
-				return null;
-			}
-		};
-	}
-
 	public PteroAction<Void> delete(boolean withForce) {
 		return new PteroAction<Void>() {
 			@Override

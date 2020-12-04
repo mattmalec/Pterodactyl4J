@@ -58,7 +58,6 @@ public class Route {
 		public static final Route SUSPEND_SERVER 		= new Route(POST,   APPLICATION_PREFIX + "servers/{server_id}/suspend", "server_id");
 		public static final Route UNSUSPEND_SERVER 		= new Route(POST,   APPLICATION_PREFIX + "servers/{server_id}/unsuspend", "server_id");
 		public static final Route REINSTALL_SERVER 		= new Route(POST,   APPLICATION_PREFIX + "servers/{server_id}/reinstall", "server_id");
-		public static final Route REBUILD_SERVER 		= new Route(POST,   APPLICATION_PREFIX + "servers/{server_id}/rebuild", "server_id");
 		public static final Route SAFE_DELETE_SERVER 	= new Route(DELETE, APPLICATION_PREFIX + "servers/{server_id}", "server_id");
 		public static final Route FORCE_DELETE_SERVER	= new Route(DELETE, APPLICATION_PREFIX + "servers/{server_id}/force", "server_id");
 
