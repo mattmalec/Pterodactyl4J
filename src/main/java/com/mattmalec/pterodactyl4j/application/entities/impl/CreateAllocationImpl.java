@@ -1,8 +1,9 @@
 package com.mattmalec.pterodactyl4j.application.entities.impl;
 
-import com.mattmalec.pterodactyl4j.PteroAction;
+import com.mattmalec.pterodactyl4j.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.application.entities.Node;
 import com.mattmalec.pterodactyl4j.application.managers.AllocationAction;
+import com.mattmalec.pterodactyl4j.entities.PteroAction;
 import com.mattmalec.pterodactyl4j.requests.Requester;
 import com.mattmalec.pterodactyl4j.requests.Route;
 import com.mattmalec.pterodactyl4j.utils.Checks;
@@ -78,14 +79,12 @@ public class CreateAllocationImpl implements AllocationAction {
 		JSONArray ports = new JSONArray();
 		for(String s : portSet) ports.put(s);
 		json.put("ports", ports);
-		return new PteroAction<Void>() {
-			@Override
-			public Void execute() {
-				Route.CompiledRoute route = Route.Nodes.CREATE_ALLOCATION.compile(node.getId()).withJSONdata(json);
-				Requester requester = impl.getRequester();
-				requester.request(route);
-				return null;
-			}
-		};
+
+		return PteroActionImpl.onExecute(() -> {
+			Route.CompiledRoute route = Route.Nodes.CREATE_ALLOCATION.compile(node.getId()).withJSONdata(json);
+			Requester requester = impl.getRequester();
+			requester.request(route);
+			return null;
+		});
 	}
 }

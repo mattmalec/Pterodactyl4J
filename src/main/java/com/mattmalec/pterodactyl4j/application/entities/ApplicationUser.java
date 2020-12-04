@@ -1,7 +1,7 @@
 package com.mattmalec.pterodactyl4j.application.entities;
 
-import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.application.managers.UserAction;
+import com.mattmalec.pterodactyl4j.entities.PteroAction;
 import com.mattmalec.pterodactyl4j.entities.User;
 import com.mattmalec.pterodactyl4j.utils.Relationed;
 

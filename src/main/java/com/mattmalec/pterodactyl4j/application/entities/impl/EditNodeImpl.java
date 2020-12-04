@@ -1,9 +1,10 @@
 package com.mattmalec.pterodactyl4j.application.entities.impl;
 
-import com.mattmalec.pterodactyl4j.PteroAction;
+import com.mattmalec.pterodactyl4j.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.application.entities.Location;
 import com.mattmalec.pterodactyl4j.application.entities.Node;
 import com.mattmalec.pterodactyl4j.application.managers.NodeAction;
+import com.mattmalec.pterodactyl4j.entities.PteroAction;
 import com.mattmalec.pterodactyl4j.requests.Requester;
 import com.mattmalec.pterodactyl4j.requests.Route;
 import org.json.JSONObject;
@@ -122,9 +123,7 @@ public class EditNodeImpl implements NodeAction {
 
 	@Override
 	public PteroAction<Node> build() {
-		return new PteroAction<Node>() {
-			@Override
-			public Node execute() {
+		return PteroActionImpl.onExecute(() -> {
 				JSONObject json = new JSONObject();
 				if(name == null)
 					json.put("name", node.getName());
@@ -185,7 +184,6 @@ public class EditNodeImpl implements NodeAction {
 				Route.CompiledRoute route = Route.Nodes.EDIT_NODE.compile(node.getId()).withJSONdata(json);
 				JSONObject jsonObject = requester.request(route).toJSONObject();
 				return new NodeImpl(jsonObject, impl);
-			}
-		};
+		});
 	}
 }

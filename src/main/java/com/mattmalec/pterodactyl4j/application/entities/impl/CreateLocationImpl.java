@@ -1,8 +1,9 @@
 package com.mattmalec.pterodactyl4j.application.entities.impl;
 
-import com.mattmalec.pterodactyl4j.PteroAction;
+import com.mattmalec.pterodactyl4j.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.application.entities.Location;
 import com.mattmalec.pterodactyl4j.application.managers.LocationAction;
+import com.mattmalec.pterodactyl4j.entities.PteroAction;
 import com.mattmalec.pterodactyl4j.requests.Requester;
 import com.mattmalec.pterodactyl4j.requests.Route;
 import com.mattmalec.pterodactyl4j.utils.Checks;
@@ -41,13 +42,12 @@ public class CreateLocationImpl implements LocationAction {
 		JSONObject json = new JSONObject();
 		json.put("short", this.shortCode);
 		json.put("long", this.description);
-		return new PteroAction<Location>() {
+
+		return PteroActionImpl.onExecute(() -> {
 			Route.CompiledRoute route = Route.Locations.CREATE_LOCATION.compile().withJSONdata(json);
 			JSONObject jsonObject = requester.request(route).toJSONObject();
-			@Override
-			public Location execute() {
-				return new LocationImpl(jsonObject, impl);
-			}
-		};
+
+			return new LocationImpl(jsonObject, impl);
+		});
 	}
 }

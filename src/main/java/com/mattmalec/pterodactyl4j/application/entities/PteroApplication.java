@@ -1,7 +1,10 @@
 package com.mattmalec.pterodactyl4j.application.entities;
 
-import com.mattmalec.pterodactyl4j.PteroAction;
-import com.mattmalec.pterodactyl4j.application.managers.*;
+import com.mattmalec.pterodactyl4j.application.managers.LocationManager;
+import com.mattmalec.pterodactyl4j.application.managers.NodeManager;
+import com.mattmalec.pterodactyl4j.application.managers.ServerAction;
+import com.mattmalec.pterodactyl4j.application.managers.UserManager;
+import com.mattmalec.pterodactyl4j.entities.PteroAction;
 
 import java.util.List;
 

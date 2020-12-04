@@ -1,9 +1,10 @@
 package com.mattmalec.pterodactyl4j.application.entities.impl;
 
-import com.mattmalec.pterodactyl4j.PteroAction;
+import com.mattmalec.pterodactyl4j.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.application.entities.Location;
 import com.mattmalec.pterodactyl4j.application.managers.LocationAction;
 import com.mattmalec.pterodactyl4j.application.managers.LocationManager;
+import com.mattmalec.pterodactyl4j.entities.PteroAction;
 import com.mattmalec.pterodactyl4j.requests.Requester;
 import com.mattmalec.pterodactyl4j.requests.Route;
 
@@ -29,13 +30,10 @@ public class LocationManagerImpl implements LocationManager {
 
 	@Override
 	public PteroAction<Void> deleteLocation(Location location) {
-		return new PteroAction<Void>() {
+		return PteroActionImpl.onExecute(() -> {
 			Route.CompiledRoute route = Route.Locations.DELETE_LOCATION.compile(location.getId());
-			@Override
-			public Void execute() {
-				requester.request(route);
-				return null;
-			}
-		};
+			requester.request(route);
+			return null;
+		});
 	}
 }

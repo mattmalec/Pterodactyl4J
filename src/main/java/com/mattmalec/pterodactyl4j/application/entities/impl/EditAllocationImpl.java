@@ -1,9 +1,10 @@
 package com.mattmalec.pterodactyl4j.application.entities.impl;
 
-import com.mattmalec.pterodactyl4j.PteroAction;
+import com.mattmalec.pterodactyl4j.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.application.entities.Allocation;
 import com.mattmalec.pterodactyl4j.application.entities.Node;
 import com.mattmalec.pterodactyl4j.application.managers.AllocationAction;
+import com.mattmalec.pterodactyl4j.entities.PteroAction;
 import com.mattmalec.pterodactyl4j.requests.Requester;
 import com.mattmalec.pterodactyl4j.requests.Route;
 import org.json.JSONArray;
@@ -85,16 +86,13 @@ public class EditAllocationImpl implements AllocationAction {
 		JSONArray ports = new JSONArray();
 		for(String s : portSet) ports.put(s);
 		json.put("ports", ports);
-		return new PteroAction<Void>() {
-			@Override
-			public Void execute() {
-				Requester requester = impl.getRequester();
-				Route.CompiledRoute deleteAllocation = Route.Nodes.DELETE_ALLOCATION.compile(allocation.getId());
-				requester.request(deleteAllocation);
-				Route.CompiledRoute createAllocation = Route.Nodes.CREATE_ALLOCATION.compile(node.getId()).withJSONdata(json);
-				requester.request(createAllocation);
-				return null;
-			}
-		};
+		return PteroActionImpl.onExecute(() -> {
+			Requester requester = impl.getRequester();
+			Route.CompiledRoute deleteAllocation = Route.Nodes.DELETE_ALLOCATION.compile(allocation.getId());
+			requester.request(deleteAllocation);
+			Route.CompiledRoute createAllocation = Route.Nodes.CREATE_ALLOCATION.compile(node.getId()).withJSONdata(json);
+			requester.request(createAllocation);
+			return null;
+		});
 	}
 }
