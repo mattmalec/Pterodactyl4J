@@ -102,7 +102,7 @@ public class LocationImpl implements Location {
 
 	@Override
 	public LocationAction edit() {
-		return new EditLocationImpl(this, impl);
+		return new EditLocationImpl(impl, this);
 	}
 
 	@Override

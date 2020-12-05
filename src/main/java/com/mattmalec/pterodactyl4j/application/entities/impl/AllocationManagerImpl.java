@@ -20,7 +20,7 @@ public class AllocationManagerImpl implements AllocationManager {
 	}
 
 	public AllocationAction createAllocation() {
-		return new CreateAllocationImpl(this.impl, this.node);
+		return new CreateAllocationImpl(this.node, this.impl);
 	}
 
 	public AllocationAction editAllocation(Allocation allocation) {

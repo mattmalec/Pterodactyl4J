@@ -17,7 +17,7 @@ public class NodeManagerImpl implements NodeManager {
 
     @Override
     public NodeAction createNode() {
-        return new CreateNodeImpl(impl, impl.getRequester());
+        return new CreateNodeImpl(impl);
     }
 
     @Override
