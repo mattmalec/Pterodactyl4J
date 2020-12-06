@@ -12,8 +12,6 @@ public interface Egg {
         String getDescription();
         String getEnvironmentVariable();
         String getDefaultValue();
-        boolean isUserViewable();
-        boolean isUserEditable();
         String getRules();
     }
 

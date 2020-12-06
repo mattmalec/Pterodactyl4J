@@ -77,8 +77,8 @@ public class Route {
 		public static final Route GET_UTILIZATION 		= new Route(GET,  	CLIENT_PREFIX + "servers/{server_id}/resources", "server_id");
 		public static final Route SEND_COMMAND 			= new Route(POST, 	CLIENT_PREFIX + "servers/{server_id}/command", "server_id");
 		public static final Route SET_POWER 			= new Route(POST, 	CLIENT_PREFIX + "servers/{server_id}/power", "server_id");
-		public static final Route LIST_SERVERS 			= new Route(GET,  	CLIENT_PREFIX + "?page={page}", "page");
-		public static final Route GET_SERVER			= new Route(GET,	CLIENT_PREFIX + "servers/{server_id}", "server_id");
+		public static final Route LIST_SERVERS 			= new Route(GET,  	CLIENT_PREFIX + "?page={page}&include=subusers,egg", "page");
+		public static final Route GET_SERVER			= new Route(GET,	CLIENT_PREFIX + "servers/{server_id}?include=subusers,egg", "server_id");
 		public static final Route GET_WEBSOCKET			= new Route(GET,    CLIENT_PREFIX + "servers/{server_id}/websocket", "server_id");
 
 	}
@@ -94,6 +94,16 @@ public class Route {
 		public static final Route GET_API_KEYS    	    = new Route(GET,    CLIENT_PREFIX + "account/api-keys");
 		public static final Route CREATE_API_KEY    	= new Route(POST,   CLIENT_PREFIX + "account/api-keys");
 		public static final Route DELETE_API_KEY	   	= new Route(DELETE, CLIENT_PREFIX + "account/api-keys/{identifier}", "identifier");
+
+	}
+
+	public static class Subusers {
+
+		public static final Route LIST_SUBUSERS 		= new Route(GET, CLIENT_PREFIX + "servers/{server_id}/users", "server_id");
+		public static final Route GET_SUBUSER 			= new Route(GET, CLIENT_PREFIX + "servers/{server_id}/users/{identifier}", "server_id", "identifier");
+		public static final Route CREATE_SUBUSER		= new Route(POST, CLIENT_PREFIX + "servers/{server_id}/users", "server_id");
+		public static final Route UPDATE_SUBUSER		= new Route(POST, CLIENT_PREFIX + "servers/{server_id}/users/{identifier}", "server_id", "identifier");
+		public static final Route DELETE_SUBUSER		= new Route(DELETE, CLIENT_PREFIX + "servers/{server_id}/users/{identifier}", "server_id", "identifier");
 
 	}
 

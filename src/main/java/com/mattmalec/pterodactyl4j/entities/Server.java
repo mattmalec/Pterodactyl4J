@@ -1,8 +1,10 @@
 package com.mattmalec.pterodactyl4j.entities;
 
+import java.util.UUID;
+
 public interface Server {
 
-	String getUUID();
+	UUID getUUID();
 	String getIdentifier();
 	String getName();
 	String getDescription();

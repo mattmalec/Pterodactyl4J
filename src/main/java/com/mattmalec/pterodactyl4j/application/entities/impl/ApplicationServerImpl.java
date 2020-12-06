@@ -12,10 +12,7 @@ import com.mattmalec.pterodactyl4j.utils.Relationed;
 import org.json.JSONObject;
 
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class ApplicationServerImpl implements ApplicationServer {
 
@@ -35,8 +32,8 @@ public class ApplicationServerImpl implements ApplicationServer {
 	}
 
 	@Override
-	public String getUUID() {
-		return json.getString("uuid");
+	public UUID getUUID() {
+		return UUID.fromString(json.getString("uuid"));
 	}
 
 	@Override

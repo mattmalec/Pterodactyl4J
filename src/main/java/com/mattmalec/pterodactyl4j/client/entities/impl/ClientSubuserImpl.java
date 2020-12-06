@@ -7,6 +7,7 @@ import org.json.JSONObject;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.UUID;
 
 public class ClientSubuserImpl implements ClientSubuser {
 
@@ -49,6 +50,11 @@ public class ClientSubuserImpl implements ClientSubuser {
     @Override
     public boolean hasPermission(Permission... permission) {
         return getPermissions().containsAll(Arrays.asList(permission));
+    }
+
+    @Override
+    public UUID getUUID() {
+        return UUID.fromString(json.getString("uuid"));
     }
 
     @Override

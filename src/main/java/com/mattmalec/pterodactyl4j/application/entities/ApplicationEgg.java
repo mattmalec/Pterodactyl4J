@@ -17,6 +17,9 @@ public interface ApplicationEgg extends Egg, ISnowflake {
 	String getStartupCommand();
 	Script getInstallScript();
 
-	interface EggVariable extends Egg.EggVariable, ISnowflake {}
+	interface EggVariable extends Egg.EggVariable, ISnowflake {
+		boolean isUserViewable();
+		boolean isUserEditable();
+	}
 
 }

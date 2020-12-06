@@ -1,7 +1,10 @@
 package com.mattmalec.pterodactyl4j.client.entities.impl;
 
+import com.mattmalec.pterodactyl4j.client.entities.ClientEgg;
 import com.mattmalec.pterodactyl4j.client.entities.ClientServer;
+import com.mattmalec.pterodactyl4j.client.entities.ClientSubuser;
 import com.mattmalec.pterodactyl4j.client.entities.SFTP;
+import com.mattmalec.pterodactyl4j.client.managers.SubuserManager;
 import com.mattmalec.pterodactyl4j.client.managers.WebSocketBuilder;
 import com.mattmalec.pterodactyl4j.entities.FeatureLimit;
 import com.mattmalec.pterodactyl4j.entities.Limit;
@@ -10,17 +13,17 @@ import com.mattmalec.pterodactyl4j.entities.impl.LimitImpl;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class ClientServerImpl implements ClientServer {
 
 	private JSONObject json;
+	private JSONObject relationships;
 	private PteroClientImpl impl;
 
 	public ClientServerImpl(JSONObject json, PteroClientImpl impl) {
 		this.json = json.getJSONObject("attributes");
+		this.relationships = json.getJSONObject("attributes").getJSONObject("relationships");
 		this.impl = impl;
 	}
 
@@ -30,10 +33,9 @@ public class ClientServerImpl implements ClientServer {
 	}
 
 	@Override
-	public String getUUID() {
-		return json.getString("uuid");
+	public UUID getUUID() {
+		return UUID.fromString(json.getString("uuid"));
 	}
-
 
 	@Override
 	public long getInternalIdLong() {
@@ -101,6 +103,34 @@ public class ClientServerImpl implements ClientServer {
 	@Override
 	public WebSocketBuilder getWebSocketBuilder() {
 		return new WebSocketBuilder(impl, this);
+	}
+
+
+	@Override
+	public List<ClientSubuser> getSubusers() {
+		List<ClientSubuser> subusers = new ArrayList<>();
+		JSONObject json = relationships.getJSONObject("subusers");
+		for(Object o : json.getJSONArray("data")) {
+			JSONObject subuser = new JSONObject(o.toString());
+			subusers.add(new ClientSubuserImpl(subuser));
+		}
+		return Collections.unmodifiableList(subusers);
+	}
+
+	@Override
+	public List<ClientEgg.EggVariable> getEggVariables() {
+		List<ClientEgg.EggVariable> variables = new ArrayList<>();
+		JSONObject json = relationships.getJSONObject("variables");
+		for(Object o : json.getJSONArray("data")) {
+			JSONObject variable = new JSONObject(o.toString());
+			variables.add(new ClientEggVariableImpl(variable));
+		}
+		return Collections.unmodifiableList(variables);
+	}
+
+	@Override
+	public SubuserManager getSubuserManager() {
+		return new SubuserManagerImpl(this, impl);
 	}
 
 	@Override
