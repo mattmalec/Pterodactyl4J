@@ -7,6 +7,7 @@ import com.mattmalec.pterodactyl4j.utils.Relationed;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 
 public interface ApplicationUser extends User, ISnowflake {
 
@@ -16,7 +17,7 @@ public interface ApplicationUser extends User, ISnowflake {
 		return String.format("%s %s", getFirstName(), getLastName());
 	}
 	String getExternalId();
-	String getUUID();
+	UUID getUUID();
 	boolean has2FA();
 	String getLanguage();
 	default Locale getLocale() {
