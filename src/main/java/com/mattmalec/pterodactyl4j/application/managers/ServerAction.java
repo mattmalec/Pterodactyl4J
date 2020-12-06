@@ -3,7 +3,7 @@ package com.mattmalec.pterodactyl4j.application.managers;
 import com.mattmalec.pterodactyl4j.DataType;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationServer;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationUser;
-import com.mattmalec.pterodactyl4j.application.entities.Egg;
+import com.mattmalec.pterodactyl4j.application.entities.ApplicationEgg;
 import com.mattmalec.pterodactyl4j.application.entities.Location;
 import com.mattmalec.pterodactyl4j.entities.PteroAction;
 
@@ -16,7 +16,7 @@ public interface ServerAction {
 	ServerAction setName(String name);
 	ServerAction setDescription(String description);
 	ServerAction setOwner(ApplicationUser owner);
-	ServerAction setEgg(Egg egg);
+	ServerAction setEgg(ApplicationEgg egg);
 	ServerAction setDockerImage(String dockerImage);
 	ServerAction setStartupCommand(String command);
 	ServerAction setMemory(long amount, DataType dataType);

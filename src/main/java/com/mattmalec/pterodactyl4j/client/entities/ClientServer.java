@@ -1,8 +1,10 @@
 package com.mattmalec.pterodactyl4j.client.entities;
 
 import com.mattmalec.pterodactyl4j.client.managers.WebSocketBuilder;
+import com.mattmalec.pterodactyl4j.entities.Egg;
 import com.mattmalec.pterodactyl4j.entities.Server;
 
+import java.util.List;
 import java.util.Set;
 
 public interface ClientServer extends Server {
@@ -17,5 +19,7 @@ public interface ClientServer extends Server {
 	boolean isSuspended();
 	boolean isInstalling();
 	WebSocketBuilder getWebSocketBuilder();
+	List<ClientSubuser> getSubusers();
+	List<Egg.EggVariable> getEggVariables();
 
 }

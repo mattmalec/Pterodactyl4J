@@ -1,15 +1,15 @@
 package com.mattmalec.pterodactyl4j.application.entities.impl;
 
-import com.mattmalec.pterodactyl4j.application.entities.Egg;
+import com.mattmalec.pterodactyl4j.application.entities.ApplicationEgg;
 import org.json.JSONObject;
 
 import java.time.OffsetDateTime;
 
-public class EggVariableImpl implements Egg.EggVariable {
+public class ApplicationEggVariableImpl implements ApplicationEgg.EggVariable {
 
     private JSONObject json;
 
-    public EggVariableImpl(JSONObject json) {
+    public ApplicationEggVariableImpl(JSONObject json) {
         this.json = json.getJSONObject("attributes");
     }
 

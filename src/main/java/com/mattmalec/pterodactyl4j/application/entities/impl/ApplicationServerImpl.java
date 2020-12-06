@@ -152,17 +152,17 @@ public class ApplicationServerImpl implements ApplicationServer {
 	}
 
 	@Override
-	public Relationed<Egg> getEgg() {
-		return new Relationed<Egg>() {
+	public Relationed<ApplicationEgg> getEgg() {
+		return new Relationed<ApplicationEgg>() {
 			@Override
-			public PteroAction<Egg> retrieve() {
+			public PteroAction<ApplicationEgg> retrieve() {
 				return impl.retrieveEggById(getNest().retrieve().execute(), json.getLong("egg"));
 			}
 
 			@Override
-			public Optional<Egg> get() {
+			public Optional<ApplicationEgg> get() {
 				if(!json.has("relationships")) return Optional.empty();
-				return Optional.of(new EggImpl(relationships.getJSONObject("egg"), impl));
+				return Optional.of(new ApplicationEggImpl(relationships.getJSONObject("egg"), impl));
 			}
 		};
 	}

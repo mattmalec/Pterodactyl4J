@@ -240,28 +240,28 @@ public class PteroApplicationImpl implements PteroApplication {
 		return retrieveAllocationById(Long.toUnsignedString(id));
 	}
 	@Override
-	public PteroAction<Egg> retrieveEggById(Nest nest, String id) {
+	public PteroAction<ApplicationEgg> retrieveEggById(Nest nest, String id) {
 		PteroApplicationImpl impl = this;
 		return PteroActionImpl.onExecute(() ->
         {
 				Route.CompiledRoute route = Route.Nests.GET_EGG.compile(nest.getId(), id);
 				JSONObject json = requester.request(route).toJSONObject();
-				return new EggImpl(json, impl);
+				return new ApplicationEggImpl(json, impl);
         });
 	}
 
 	@Override
-	public PteroAction<Egg> retrieveEggById(Nest nest, long id) {
+	public PteroAction<ApplicationEgg> retrieveEggById(Nest nest, long id) {
 		return retrieveEggById(nest, Long.toUnsignedString(id));
 	}
 
 
 	@Override
-	public PteroAction<List<Egg>> retrieveEggs() {
+	public PteroAction<List<ApplicationEgg>> retrieveEggs() {
 		return PteroActionImpl.onExecute(() ->
         {
 				List<Nest> nests = retrieveNests().execute();
-				List<Egg> eggs = new ArrayList<>();
+				List<ApplicationEgg> eggs = new ArrayList<>();
 				for(Nest nest : nests) {
 					eggs.addAll(nest.getEggs().get().orElseGet(() -> nest.getEggs().retrieve().execute()));
 				}
@@ -270,16 +270,16 @@ public class PteroApplicationImpl implements PteroApplication {
 	}
 
 	@Override
-	public PteroAction<List<Egg>> retrieveEggsByNest(Nest nest) {
+	public PteroAction<List<ApplicationEgg>> retrieveEggsByNest(Nest nest) {
 		PteroApplicationImpl impl = this;
 		return PteroActionImpl.onExecute(() ->
         {
 				Route.CompiledRoute route = Route.Nests.GET_EGGS.compile(nest.getId());
 				JSONObject json = requester.request(route).toJSONObject();
-				List<Egg> eggs = new ArrayList<>();
+				List<ApplicationEgg> eggs = new ArrayList<>();
 				for (Object o : json.getJSONArray("data")) {
 					JSONObject egg = new JSONObject(o.toString());
-					eggs.add(new EggImpl(egg, impl));
+					eggs.add(new ApplicationEggImpl(egg, impl));
 				}
 				return Collections.unmodifiableList(eggs);
         });

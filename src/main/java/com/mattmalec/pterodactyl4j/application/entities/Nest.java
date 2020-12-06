@@ -12,7 +12,7 @@ public interface Nest extends ISnowflake {
 	String getAuthor();
 	String getName();
 	String getDescription();
-	Relationed<List<Egg>> getEggs();
+	Relationed<List<ApplicationEgg>> getEggs();
 	Optional<List<ApplicationServer>> getServers();
 
 }

@@ -1,6 +1,6 @@
 package com.mattmalec.pterodactyl4j.application.entities.impl;
 
-import com.mattmalec.pterodactyl4j.application.entities.Egg;
+import com.mattmalec.pterodactyl4j.application.entities.ApplicationEgg;
 import com.mattmalec.pterodactyl4j.application.entities.Nest;
 import com.mattmalec.pterodactyl4j.application.entities.Script;
 import com.mattmalec.pterodactyl4j.entities.PteroAction;
@@ -8,18 +8,15 @@ import com.mattmalec.pterodactyl4j.utils.Relationed;
 import org.json.JSONObject;
 
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
-public class EggImpl implements Egg {
+public class ApplicationEggImpl implements ApplicationEgg {
 
     private JSONObject json;
     private JSONObject relationships;
     private PteroApplicationImpl impl;
 
-    public EggImpl(JSONObject json, PteroApplicationImpl impl) {
+    public ApplicationEggImpl(JSONObject json, PteroApplicationImpl impl) {
         this.json = json.getJSONObject("attributes");
         this.relationships = json.getJSONObject("attributes").optJSONObject("relationships");
         this.impl = impl;
@@ -48,7 +45,7 @@ public class EggImpl implements Egg {
         JSONObject json = relationships.getJSONObject("variables");
         for(Object o : json.getJSONArray("data")) {
             JSONObject variable = new JSONObject(o.toString());
-            variables.add(new EggVariableImpl(variable));
+            variables.add(new ApplicationEggVariableImpl(variable));
         }
         return Optional.of(Collections.unmodifiableList(variables));
     }
@@ -61,6 +58,11 @@ public class EggImpl implements Egg {
     @Override
     public String getName() {
         return json.getString("name");
+    }
+
+    @Override
+    public UUID getUUID() {
+        return UUID.fromString(json.getString("uuid"));
     }
 
     @Override

@@ -19,7 +19,7 @@ public class CreateServerImpl implements ServerAction {
 	private String name;
 	private String description;
 	private ApplicationUser owner;
-	private Egg egg;
+	private ApplicationEgg egg;
 	private String dockerImage;
 	private String startupCommand;
 	private long memory;
@@ -64,7 +64,7 @@ public class CreateServerImpl implements ServerAction {
 	}
 
 	@Override
-	public ServerAction setEgg(Egg egg) {
+	public ServerAction setEgg(ApplicationEgg egg) {
 		this.egg = egg;
 		return this;
 	}

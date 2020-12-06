@@ -39,11 +39,11 @@ public interface PteroApplication {
 	PteroAction<List<Location>> retrieveLocationsByShortCode(String name, boolean caseSensetive);
 	LocationManager getLocationManager();
 
-	PteroAction<List<Egg>> retrieveEggsByNest(Nest nest);
-	PteroAction<List<Egg>> retrieveEggs();
+	PteroAction<List<ApplicationEgg>> retrieveEggsByNest(Nest nest);
+	PteroAction<List<ApplicationEgg>> retrieveEggs();
 
-	PteroAction<Egg> retrieveEggById(Nest nest, String id);
-	PteroAction<Egg> retrieveEggById(Nest nest, long id);
+	PteroAction<ApplicationEgg> retrieveEggById(Nest nest, String id);
+	PteroAction<ApplicationEgg> retrieveEggById(Nest nest, long id);
 	PteroAction<Nest> retrieveNestById(String id);
 	PteroAction<Nest> retrieveNestById(long id);
 	PteroAction<List<Nest>> retrieveNests();

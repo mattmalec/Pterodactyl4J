@@ -17,7 +17,7 @@ public interface ApplicationServer extends Server, ISnowflake {
 	Optional<List<Allocation>> getAllocations();
 	Relationed<Allocation> getDefaultAllocation();
 	Relationed<Nest> getNest();
-	Relationed<Egg> getEgg();
+	Relationed<ApplicationEgg> getEgg();
 	long getPack();
 	Container getContainer();
 	ServerManager getManager();

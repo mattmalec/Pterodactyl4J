@@ -5,7 +5,7 @@ import com.mattmalec.pterodactyl4j.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.application.entities.Allocation;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationServer;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationUser;
-import com.mattmalec.pterodactyl4j.application.entities.Egg;
+import com.mattmalec.pterodactyl4j.application.entities.ApplicationEgg;
 import com.mattmalec.pterodactyl4j.application.entities.impl.ApplicationServerImpl;
 import com.mattmalec.pterodactyl4j.application.entities.impl.PteroApplicationImpl;
 import com.mattmalec.pterodactyl4j.entities.PteroAction;
@@ -325,7 +325,7 @@ public class ServerManager {
         });
 	}
 
-	public PteroAction<Void> setEgg(Egg egg) {
+	public PteroAction<Void> setEgg(ApplicationEgg egg) {
 		return PteroActionImpl.onExecute(() ->
         {
 				JSONObject obj = new JSONObject()
