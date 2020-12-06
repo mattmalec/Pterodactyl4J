@@ -1,6 +1,8 @@
 package com.mattmalec.pterodactyl4j.utils;
 
 
+import java.util.Collection;
+
 public class Checks {
 
     public static void notNull(Object o, String name) {
@@ -26,6 +28,11 @@ public class Checks {
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException(name + " must be a number!");
         }
-
+    }
+    public static void notEmpty(Collection<?> collection, String name) {
+        notNull(collection, name);
+        if(collection.isEmpty()) {
+            throw new IllegalArgumentException(name + " cannot be empty!");
+        }
     }
 }
