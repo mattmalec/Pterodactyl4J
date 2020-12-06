@@ -21,6 +21,6 @@ public interface ClientServer extends Server {
 	WebSocketBuilder getWebSocketBuilder();
 	List<ClientSubuser> getSubusers();
 	SubuserManager getSubuserManager();
-	List<ClientEgg.EggVariable> getEggVariables();
+	ClientEgg getEgg();
 
 }

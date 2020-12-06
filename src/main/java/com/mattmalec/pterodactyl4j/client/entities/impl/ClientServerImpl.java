@@ -118,14 +118,8 @@ public class ClientServerImpl implements ClientServer {
 	}
 
 	@Override
-	public List<ClientEgg.EggVariable> getEggVariables() {
-		List<ClientEgg.EggVariable> variables = new ArrayList<>();
-		JSONObject json = relationships.getJSONObject("variables");
-		for(Object o : json.getJSONArray("data")) {
-			JSONObject variable = new JSONObject(o.toString());
-			variables.add(new ClientEggVariableImpl(variable));
-		}
-		return Collections.unmodifiableList(variables);
+	public ClientEgg getEgg() {
+		return new ClientEggImpl(relationships.getJSONObject("egg"), relationships.getJSONObject("variables"));
 	}
 
 	@Override
