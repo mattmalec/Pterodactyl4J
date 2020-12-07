@@ -4,6 +4,7 @@ import com.mattmalec.pterodactyl4j.client.entities.ClientEgg;
 import com.mattmalec.pterodactyl4j.client.entities.ClientServer;
 import com.mattmalec.pterodactyl4j.client.entities.ClientSubuser;
 import com.mattmalec.pterodactyl4j.client.entities.SFTP;
+import com.mattmalec.pterodactyl4j.client.managers.ClientServerManager;
 import com.mattmalec.pterodactyl4j.client.managers.SubuserManager;
 import com.mattmalec.pterodactyl4j.client.managers.WebSocketBuilder;
 import com.mattmalec.pterodactyl4j.entities.FeatureLimit;
@@ -125,6 +126,11 @@ public class ClientServerImpl implements ClientServer {
 	@Override
 	public SubuserManager getSubuserManager() {
 		return new SubuserManagerImpl(this, impl);
+	}
+
+	@Override
+	public ClientServerManager getManager() {
+		return new ClientServerManager(this, impl);
 	}
 
 	@Override

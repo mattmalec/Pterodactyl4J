@@ -80,6 +80,8 @@ public class Route {
 		public static final Route LIST_SERVERS 			= new Route(GET,  	CLIENT_PREFIX + "?page={page}&include=subusers,egg", "page");
 		public static final Route GET_SERVER			= new Route(GET,	CLIENT_PREFIX + "servers/{server_id}?include=subusers,egg", "server_id");
 		public static final Route GET_WEBSOCKET			= new Route(GET,    CLIENT_PREFIX + "servers/{server_id}/websocket", "server_id");
+		public static final Route RENAME_SERVER			= new Route(POST, 	CLIENT_PREFIX + "servers/{server_id}/settings/rename", "server_id");
+		public static final Route REINSTALL_SERVER		= new Route(POST, 	CLIENT_PREFIX + "servers/{server_id}/settings/reinstall", "server_id");
 
 	}
 
@@ -99,10 +101,10 @@ public class Route {
 
 	public static class Subusers {
 
-		public static final Route LIST_SUBUSERS 		= new Route(GET, CLIENT_PREFIX + "servers/{server_id}/users", "server_id");
-		public static final Route GET_SUBUSER 			= new Route(GET, CLIENT_PREFIX + "servers/{server_id}/users/{identifier}", "server_id", "identifier");
-		public static final Route CREATE_SUBUSER		= new Route(POST, CLIENT_PREFIX + "servers/{server_id}/users", "server_id");
-		public static final Route UPDATE_SUBUSER		= new Route(POST, CLIENT_PREFIX + "servers/{server_id}/users/{identifier}", "server_id", "identifier");
+		public static final Route LIST_SUBUSERS 		= new Route(GET, 	CLIENT_PREFIX + "servers/{server_id}/users", "server_id");
+		public static final Route GET_SUBUSER 			= new Route(GET, 	CLIENT_PREFIX + "servers/{server_id}/users/{identifier}", "server_id", "identifier");
+		public static final Route CREATE_SUBUSER		= new Route(POST, 	CLIENT_PREFIX + "servers/{server_id}/users", "server_id");
+		public static final Route UPDATE_SUBUSER		= new Route(POST, 	CLIENT_PREFIX + "servers/{server_id}/users/{identifier}", "server_id", "identifier");
 		public static final Route DELETE_SUBUSER		= new Route(DELETE, CLIENT_PREFIX + "servers/{server_id}/users/{identifier}", "server_id", "identifier");
 
 	}

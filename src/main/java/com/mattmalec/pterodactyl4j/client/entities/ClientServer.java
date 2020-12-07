@@ -1,5 +1,6 @@
 package com.mattmalec.pterodactyl4j.client.entities;
 
+import com.mattmalec.pterodactyl4j.client.managers.ClientServerManager;
 import com.mattmalec.pterodactyl4j.client.managers.SubuserManager;
 import com.mattmalec.pterodactyl4j.client.managers.WebSocketBuilder;
 import com.mattmalec.pterodactyl4j.entities.Server;
@@ -22,5 +23,6 @@ public interface ClientServer extends Server {
 	List<ClientSubuser> getSubusers();
 	SubuserManager getSubuserManager();
 	ClientEgg getEgg();
+	ClientServerManager getManager();
 
 }
