@@ -14,6 +14,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class PteroClientImpl implements PteroClient {
 
@@ -84,7 +86,7 @@ public class PteroClientImpl implements PteroClient {
                     servers.add(new ClientServerImpl(server, impl));
                 }
                 for (int i = 1; i < pages; i++) {
-                    Route.CompiledRoute nextRoute = Route.Client.LIST_SERVERS.compile(Long.toUnsignedString(pages));
+                    Route.CompiledRoute nextRoute = Route.Client.LIST_SERVERS.compile(Long.toUnsignedString(i));
                     JSONObject nextJson = requester.request(nextRoute).toJSONObject();
                     for (Object o : nextJson.getJSONArray("data")) {
                         JSONObject server = new JSONObject(o.toString());
@@ -111,17 +113,15 @@ public class PteroClientImpl implements PteroClient {
         return PteroActionImpl.onExecute(() ->
         {
             List<ClientServer> servers = retrieveServers().execute();
-            List<ClientServer> newServers = new ArrayList<>();
-            for (ClientServer s : servers) {
-                if (caseSensetive) {
-                    if (s.getName().contains(name))
-                        newServers.add(s);
-                } else {
-                    if (s.getName().toLowerCase().contains(name.toLowerCase()))
-                        newServers.add(s);
-                }
+            Stream<ClientServer> newServers = servers.stream();
+
+            if(caseSensetive) {
+                newServers = newServers.filter(s -> s.getName().toLowerCase().contains(name.toLowerCase()));
+            } else {
+                newServers = newServers.filter(s -> s.getName().contains(name));
             }
-            return Collections.unmodifiableList(newServers);
+
+            return Collections.unmodifiableList(newServers.collect(Collectors.toList()));
         });
     }
 }
