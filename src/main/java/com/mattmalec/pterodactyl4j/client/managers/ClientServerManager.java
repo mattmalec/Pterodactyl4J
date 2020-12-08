@@ -23,7 +23,7 @@ public class ClientServerManager {
             JSONObject obj = new JSONObject()
                     .put("name", name);
             Route.CompiledRoute route = Route.Client.RENAME_SERVER.compile(server.getIdentifier()).withJSONdata(obj);
-            impl.getRequester().request(route).toJSONObject();
+            impl.getRequester().request(route);
             return null;
         });
     }
@@ -32,7 +32,7 @@ public class ClientServerManager {
         return PteroActionImpl.onExecute(() ->
         {
             Route.CompiledRoute route = Route.Client.REINSTALL_SERVER.compile(server.getIdentifier());
-            impl.getRequester().request(route).toJSONObject();
+            impl.getRequester().request(route);
             return null;
         });
     }
