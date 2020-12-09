@@ -1,16 +1,17 @@
 package com.mattmalec.pterodactyl4j.client.entities.impl;
 
-import com.mattmalec.pterodactyl4j.client.entities.ClientEgg;
-import com.mattmalec.pterodactyl4j.client.entities.ClientServer;
-import com.mattmalec.pterodactyl4j.client.entities.ClientSubuser;
-import com.mattmalec.pterodactyl4j.client.entities.SFTP;
+import com.mattmalec.pterodactyl4j.PteroActionImpl;
+import com.mattmalec.pterodactyl4j.client.entities.*;
+import com.mattmalec.pterodactyl4j.client.managers.BackupManager;
 import com.mattmalec.pterodactyl4j.client.managers.ClientServerManager;
 import com.mattmalec.pterodactyl4j.client.managers.SubuserManager;
 import com.mattmalec.pterodactyl4j.client.managers.WebSocketBuilder;
 import com.mattmalec.pterodactyl4j.entities.FeatureLimit;
 import com.mattmalec.pterodactyl4j.entities.Limit;
+import com.mattmalec.pterodactyl4j.entities.PteroAction;
 import com.mattmalec.pterodactyl4j.entities.impl.FeatureLimitImpl;
 import com.mattmalec.pterodactyl4j.entities.impl.LimitImpl;
+import com.mattmalec.pterodactyl4j.requests.Route;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -131,6 +132,34 @@ public class ClientServerImpl implements ClientServer {
 	@Override
 	public ClientServerManager getManager() {
 		return new ClientServerManager(this, impl);
+	}
+
+	@Override
+	public PteroAction<List<Backup>> retrieveBackups() {
+		return PteroActionImpl.onExecute(() -> {
+			Route.CompiledRoute route = Route.Backups.LIST_BACKUPS.compile(getIdentifier(), "1");
+			JSONObject json = impl.getRequester().request(route).toJSONObject();
+			long pages = json.getJSONObject("meta").getJSONObject("pagination").getLong("total_pages");
+			List<Backup> backups = new ArrayList<>();
+			for (Object o : json.getJSONArray("data")) {
+				JSONObject backup = new JSONObject(o.toString());
+				backups.add(new BackupImpl(backup, this));
+			}
+			for (int i = 1; i < pages; i++) {
+				Route.CompiledRoute nextRoute = Route.Backups.LIST_BACKUPS.compile(getIdentifier(), Long.toUnsignedString(i));
+				JSONObject nextJson = impl.getRequester().request(nextRoute).toJSONObject();
+				for (Object o : nextJson.getJSONArray("data")) {
+					JSONObject backup = new JSONObject(o.toString());
+					backups.add(new BackupImpl(backup, this));
+				}
+			}
+			return Collections.unmodifiableList(backups);
+		});
+	}
+
+	@Override
+	public BackupManager getBackupManager() {
+		return new BackupManagerImpl(this, impl);
 	}
 
 	@Override
