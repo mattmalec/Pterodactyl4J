@@ -42,7 +42,7 @@ public class CreateBackupImpl implements BackupAction {
         }
         JSONObject json = new JSONObject()
                 .put("name", name)
-                .put("ignored", files);
+                .put("ignored", files == null ? "" : files);
         return PteroActionImpl.onExecute(() -> {
             Route.CompiledRoute route = Route.Backups.CREATE_BACKUP.compile(server.getIdentifier()).withJSONdata(json);
             JSONObject obj = impl.getRequester().request(route).toJSONObject();
