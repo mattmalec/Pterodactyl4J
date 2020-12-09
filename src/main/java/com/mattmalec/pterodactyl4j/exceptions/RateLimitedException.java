@@ -2,15 +2,10 @@ package com.mattmalec.pterodactyl4j.exceptions;
 
 import org.json.JSONObject;
 
-public class RateLimitedException extends RuntimeException {
+public class RateLimitedException extends HttpException {
 
     public RateLimitedException(String text, JSONObject json) {
-        StringBuilder message = new StringBuilder(text + "\n\n");
-        for(Object o : json.getJSONArray("errors")) {
-            JSONObject obj = new JSONObject(o.toString());
-            message.append("\t- ").append(obj.getString("detail")).append("\n");
-        }
-        throw new RateLimitedException(message.toString());
+        super(text, json);
     }
 
     public RateLimitedException(String message) {
