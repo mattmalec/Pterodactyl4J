@@ -33,6 +33,10 @@ public interface ClientServer extends Server {
 	ClientEgg getEgg();
 	ClientServerManager getManager();
 	PteroAction<List<Backup>> retrieveBackups();
+	PteroAction<Backup> retrieveBackup(UUID uuid);
+	default PteroAction<Backup> retrieveBackup(String uuid) {
+		return retrieveBackup(UUID.fromString(uuid));
+	}
 	BackupManager getBackupManager();
 
 }

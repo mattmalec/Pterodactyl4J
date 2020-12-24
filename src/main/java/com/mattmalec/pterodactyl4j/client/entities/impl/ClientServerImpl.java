@@ -179,6 +179,15 @@ public class ClientServerImpl implements ClientServer {
 	}
 
 	@Override
+	public PteroAction<Backup> retrieveBackup(UUID uuid) {
+		return PteroActionImpl.onExecute(() -> {
+			Route.CompiledRoute route = Route.Backups.GET_BACKUP.compile(getIdentifier(), uuid.toString());
+			JSONObject json = impl.getRequester().request(route).toJSONObject();
+			return new BackupImpl(json, this);
+		});
+	}
+
+	@Override
 	public BackupManager getBackupManager() {
 		return new BackupManagerImpl(this, impl);
 	}
