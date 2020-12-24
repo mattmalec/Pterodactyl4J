@@ -12,6 +12,7 @@ import com.mattmalec.pterodactyl4j.entities.PteroAction;
 import com.mattmalec.pterodactyl4j.entities.impl.FeatureLimitImpl;
 import com.mattmalec.pterodactyl4j.entities.impl.LimitImpl;
 import com.mattmalec.pterodactyl4j.requests.Route;
+import com.mattmalec.pterodactyl4j.utils.Relationed;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -117,6 +118,26 @@ public class ClientServerImpl implements ClientServer {
 			subusers.add(new ClientSubuserImpl(subuser));
 		}
 		return Collections.unmodifiableList(subusers);
+	}
+
+	@Override
+	public Relationed<ClientSubuser> getSubuser(UUID uuid) {
+		return new Relationed<ClientSubuser>() {
+			@Override
+			public PteroAction<ClientSubuser> retrieve() {
+				return PteroActionImpl.onExecute(() -> {
+					Route.CompiledRoute route = Route.Subusers.GET_SUBUSER.compile(getIdentifier(), uuid.toString());
+					JSONObject json = impl.getRequester().request(route).toJSONObject();
+					return new ClientSubuserImpl(json);
+				});
+			}
+
+			@Override
+			public Optional<ClientSubuser> get() {
+				if(getSubusers().isEmpty()) return Optional.empty();
+				return getSubusers().stream().filter(u -> u.getUUID().equals(uuid)).findFirst();
+			}
+		};
 	}
 
 	@Override

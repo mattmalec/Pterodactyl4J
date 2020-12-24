@@ -6,9 +6,11 @@ import com.mattmalec.pterodactyl4j.client.managers.SubuserManager;
 import com.mattmalec.pterodactyl4j.client.managers.WebSocketBuilder;
 import com.mattmalec.pterodactyl4j.entities.PteroAction;
 import com.mattmalec.pterodactyl4j.entities.Server;
+import com.mattmalec.pterodactyl4j.utils.Relationed;
 
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 public interface ClientServer extends Server {
 
@@ -23,6 +25,10 @@ public interface ClientServer extends Server {
 	boolean isInstalling();
 	WebSocketBuilder getWebSocketBuilder();
 	List<ClientSubuser> getSubusers();
+	Relationed<ClientSubuser> getSubuser(UUID uuid);
+	default Relationed<ClientSubuser> getSubuser(String uuid) {
+		return getSubuser(UUID.fromString(uuid));
+	}
 	SubuserManager getSubuserManager();
 	ClientEgg getEgg();
 	ClientServerManager getManager();
