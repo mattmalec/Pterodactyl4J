@@ -27,7 +27,8 @@ public interface Schedule extends ISnowflake {
 
 		enum ScheduleAction {
 			POWER,
-			COMMAND
+			COMMAND,
+			BACKUP
 		}
 	}
 }

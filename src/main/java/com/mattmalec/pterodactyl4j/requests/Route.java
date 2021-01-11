@@ -119,6 +119,19 @@ public class Route {
 
 	}
 
+	public static class Schedules {
+
+		public static final Route LIST_SCHEDULES 		= new Route(GET, 	CLIENT_PREFIX + "servers/{server_id}/schedules?page={page}", "server_id", "page");
+		public static final Route GET_SCHEDULE			= new Route(GET,	CLIENT_PREFIX + "servers/{server_id}/schedules/{identifier}", "server_id", "identifier");
+		public static final Route CREATE_SCHEDULE		= new Route(POST, 	CLIENT_PREFIX + "servers/{server_id}/schedules", "server_id");
+		public static final Route UPDATE_SCHEDULE		= new Route(POST, 	CLIENT_PREFIX + "servers/{server_id}/schedules/{identifier}", "server_id", "identifier");
+		public static final Route DELETE_SCHEDULE		= new Route(DELETE, CLIENT_PREFIX + "servers/{server_id}/schedules/{identifier}", "server_id", "identifier");
+		public static final Route CREATE_TASK			= new Route(POST,	CLIENT_PREFIX + "servers/{server_id}/schedules/{identifier}/tasks", "server_id", "identifier");
+		public static final Route UPDATE_TASK			= new Route(POST,	CLIENT_PREFIX + "servers/{server_id}/schedules/{schedule_id}/tasks/{identifier}", "server_id", "schedule_id", "identifier");
+		public static final Route DELETE_TASK			= new Route(DELETE, CLIENT_PREFIX + "servers/{server_id}/schedules/{identifier}/tasks/{identifier}", "server_id", "schedule_id", "identifier");
+
+	}
+
 	private final Method method;
 	private final String route;
 	private final String compilableRoute;

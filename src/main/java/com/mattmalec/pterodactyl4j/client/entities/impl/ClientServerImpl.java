@@ -193,6 +193,38 @@ public class ClientServerImpl implements ClientServer {
 	}
 
 	@Override
+	public PteroAction<List<Schedule>> retrieveSchedules() {
+		return PteroActionImpl.onExecute(() -> {
+			Route.CompiledRoute route = Route.Schedules.LIST_SCHEDULES.compile(getIdentifier(), "1");
+			JSONObject json = impl.getRequester().request(route).toJSONObject();
+			long pages = json.getJSONObject("meta").getJSONObject("pagination").getLong("total_pages");
+			List<Schedule> schedules = new ArrayList<>();
+			for (Object o : json.getJSONArray("data")) {
+				JSONObject schedule = new JSONObject(o.toString());
+				schedules.add(new ScheduleImpl(schedule));
+			}
+			for (int i = 1; i < pages; i++) {
+				Route.CompiledRoute nextRoute = Route.Schedules.LIST_SCHEDULES.compile(getIdentifier(), Long.toUnsignedString(i));
+				JSONObject nextJson = impl.getRequester().request(nextRoute).toJSONObject();
+				for (Object o : nextJson.getJSONArray("data")) {
+					JSONObject schedule = new JSONObject(o.toString());
+					schedules.add(new ScheduleImpl(schedule));
+				}
+			}
+			return Collections.unmodifiableList(schedules);
+		});
+	}
+
+	@Override
+	public PteroAction<Schedule> retrieveSchedule(long id) {
+		return PteroActionImpl.onExecute(() -> {
+			Route.CompiledRoute route = Route.Schedules.GET_SCHEDULE.compile(getIdentifier(), Long.toUnsignedString(id));
+			JSONObject json = impl.getRequester().request(route).toJSONObject();
+			return new ScheduleImpl(json);
+		});
+	}
+
+	@Override
 	public String toString() {
 		return json.toString(4);
 	}

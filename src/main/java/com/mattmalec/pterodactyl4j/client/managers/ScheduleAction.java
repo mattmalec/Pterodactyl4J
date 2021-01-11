@@ -9,6 +9,7 @@ public interface ScheduleAction {
 	ScheduleAction setName(String name);
 	ScheduleAction setActive(boolean active);
 	ScheduleAction setCron(Cron cron);
+	ScheduleAction setCronExpression(String expression);
 	ScheduleAction setMinute(String minute);
 	ScheduleAction setHour(String hour);
 	ScheduleAction setDayOfWeek(String dayOfWeek);
