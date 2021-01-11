@@ -38,5 +38,10 @@ public interface ClientServer extends Server {
 		return retrieveBackup(UUID.fromString(uuid));
 	}
 	BackupManager getBackupManager();
+	PteroAction<List<Schedule>> retrieveSchedules();
+	PteroAction<Schedule> retrieveSchedule(long id);
+	default PteroAction<Schedule> retrieveSchedule(String id) {
+		return retrieveSchedule(Long.parseUnsignedLong(id));
+	}
 
 }

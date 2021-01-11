@@ -5,14 +5,19 @@ import com.mattmalec.pterodactyl4j.client.entities.Schedule;
 import org.json.JSONObject;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 public class ScheduleImpl implements Schedule {
 
 	private JSONObject json;
+	private JSONObject tasks;
 
 	public ScheduleImpl(JSONObject json) {
 		this.json = json.getJSONObject("attributes");
+		this.tasks = this.json.getJSONObject("relationships").getJSONObject("tasks");
 	}
 
 	@Override
@@ -59,5 +64,15 @@ public class ScheduleImpl implements Schedule {
 	@Override
 	public OffsetDateTime getNextRunDate() {
 		return OffsetDateTime.parse(json.getString("next_run_at"));
+	}
+
+	@Override
+	public List<ScheduleTask> getTasks() {
+		List<ScheduleTask> tasks = new ArrayList<>();
+		for(Object o : this.tasks.getJSONArray("data")) {
+			JSONObject task = new JSONObject(o.toString());
+			tasks.add(new ScheduleTaskImpl(task));
+		}
+		return Collections.unmodifiableList(tasks);
 	}
 }
