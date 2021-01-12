@@ -17,6 +17,7 @@ public class ScheduleManagerImpl implements ScheduleManager {
 		this.server = server;
 		this.impl = impl;
 	}
+
 	@Override
 	public ScheduleAction createSchedule() {
 		return new CreateScheduleImpl(server, impl);

@@ -2,6 +2,7 @@ package com.mattmalec.pterodactyl4j.client.entities.impl;
 
 import com.mattmalec.pterodactyl4j.PowerAction;
 import com.mattmalec.pterodactyl4j.client.entities.Schedule;
+import com.mattmalec.pterodactyl4j.entities.PteroAction;
 import org.json.JSONObject;
 
 import java.time.OffsetDateTime;
@@ -10,9 +11,11 @@ import java.util.Optional;
 public class ScheduleTaskImpl implements Schedule.ScheduleTask {
 
 	private JSONObject json;
+	private Schedule schedule;
 
-	public ScheduleTaskImpl(JSONObject json) {
+	public ScheduleTaskImpl(JSONObject json, Schedule schedule) {
 		this.json = json.getJSONObject("attributes");
+		this.schedule = schedule;
 	}
 
 	@Override
@@ -59,5 +62,10 @@ public class ScheduleTaskImpl implements Schedule.ScheduleTask {
 	@Override
 	public long getTimeOffset() {
 		return json.getLong("time_offset");
+	}
+
+	@Override
+	public PteroAction<Void> delete() {
+		return schedule.getTaskManager().deleteTask(this);
 	}
 }

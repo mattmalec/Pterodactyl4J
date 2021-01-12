@@ -9,10 +9,11 @@ public interface ScheduleTaskAction {
 	ScheduleTaskAction setAction(Schedule.ScheduleTask.ScheduleAction action);
 	ScheduleTaskAction setPowerPayload(PowerAction payload);
 	ScheduleTaskAction setPayload(String payload);
-	ScheduleTaskAction setTimeOffset(int seconds);
-	default ScheduleTaskAction setTimeOffset(String seconds) {
-		return setTimeOffset(Integer.parseUnsignedInt(seconds));
+	default ScheduleTaskAction setTimeOffset(int seconds) {
+		return setTimeOffset(Integer.toUnsignedString(seconds));
 	}
+	ScheduleTaskAction setTimeOffset(String seconds);
+
 	PteroAction<Schedule.ScheduleTask> build();
 
 }

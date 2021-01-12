@@ -1,9 +1,6 @@
 package com.mattmalec.pterodactyl4j.client.entities;
 
-import com.mattmalec.pterodactyl4j.client.managers.BackupManager;
-import com.mattmalec.pterodactyl4j.client.managers.ClientServerManager;
-import com.mattmalec.pterodactyl4j.client.managers.SubuserManager;
-import com.mattmalec.pterodactyl4j.client.managers.WebSocketBuilder;
+import com.mattmalec.pterodactyl4j.client.managers.*;
 import com.mattmalec.pterodactyl4j.entities.PteroAction;
 import com.mattmalec.pterodactyl4j.entities.Server;
 import com.mattmalec.pterodactyl4j.utils.Relationed;
@@ -43,5 +40,6 @@ public interface ClientServer extends Server {
 	default PteroAction<Schedule> retrieveSchedule(String id) {
 		return retrieveSchedule(Long.parseUnsignedLong(id));
 	}
+	ScheduleManager getScheduleManager();
 
 }

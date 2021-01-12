@@ -2,10 +2,7 @@ package com.mattmalec.pterodactyl4j.client.entities.impl;
 
 import com.mattmalec.pterodactyl4j.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.client.entities.*;
-import com.mattmalec.pterodactyl4j.client.managers.BackupManager;
-import com.mattmalec.pterodactyl4j.client.managers.ClientServerManager;
-import com.mattmalec.pterodactyl4j.client.managers.SubuserManager;
-import com.mattmalec.pterodactyl4j.client.managers.WebSocketBuilder;
+import com.mattmalec.pterodactyl4j.client.managers.*;
 import com.mattmalec.pterodactyl4j.entities.FeatureLimit;
 import com.mattmalec.pterodactyl4j.entities.Limit;
 import com.mattmalec.pterodactyl4j.entities.PteroAction;
@@ -201,14 +198,14 @@ public class ClientServerImpl implements ClientServer {
 			List<Schedule> schedules = new ArrayList<>();
 			for (Object o : json.getJSONArray("data")) {
 				JSONObject schedule = new JSONObject(o.toString());
-				schedules.add(new ScheduleImpl(schedule));
+				schedules.add(new ScheduleImpl(schedule, this, impl));
 			}
 			for (int i = 1; i < pages; i++) {
 				Route.CompiledRoute nextRoute = Route.Schedules.LIST_SCHEDULES.compile(getIdentifier(), Long.toUnsignedString(i));
 				JSONObject nextJson = impl.getRequester().request(nextRoute).toJSONObject();
 				for (Object o : nextJson.getJSONArray("data")) {
 					JSONObject schedule = new JSONObject(o.toString());
-					schedules.add(new ScheduleImpl(schedule));
+					schedules.add(new ScheduleImpl(schedule, this, impl));
 				}
 			}
 			return Collections.unmodifiableList(schedules);
@@ -220,9 +217,15 @@ public class ClientServerImpl implements ClientServer {
 		return PteroActionImpl.onExecute(() -> {
 			Route.CompiledRoute route = Route.Schedules.GET_SCHEDULE.compile(getIdentifier(), Long.toUnsignedString(id));
 			JSONObject json = impl.getRequester().request(route).toJSONObject();
-			return new ScheduleImpl(json);
+			return new ScheduleImpl(json, this, impl);
 		});
 	}
+
+	@Override
+	public ScheduleManager getScheduleManager() {
+		return new ScheduleManagerImpl(this, impl);
+	}
+
 
 	@Override
 	public String toString() {

@@ -2,6 +2,8 @@ package com.mattmalec.pterodactyl4j.client.entities;
 
 import com.mattmalec.pterodactyl4j.PowerAction;
 import com.mattmalec.pterodactyl4j.application.entities.ISnowflake;
+import com.mattmalec.pterodactyl4j.client.managers.ScheduleTaskManager;
+import com.mattmalec.pterodactyl4j.entities.PteroAction;
 
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -16,6 +18,8 @@ public interface Schedule extends ISnowflake {
 	Optional<OffsetDateTime> getLastRunDate();
 	OffsetDateTime getNextRunDate();
 	List<ScheduleTask> getTasks();
+	ScheduleTaskManager getTaskManager();
+	PteroAction<Void> delete();
 
 	interface ScheduleTask extends ISnowflake {
 		int getSequenceId();
@@ -24,6 +28,7 @@ public interface Schedule extends ISnowflake {
 		String getPayload();
 		boolean isQueued();
 		long getTimeOffset();
+		PteroAction<Void> delete();
 
 		enum ScheduleAction {
 			POWER,

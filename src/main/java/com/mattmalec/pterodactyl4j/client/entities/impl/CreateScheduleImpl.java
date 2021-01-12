@@ -89,7 +89,7 @@ public class CreateScheduleImpl implements ScheduleAction {
 		return PteroActionImpl.onExecute(() -> {
 			Route.CompiledRoute route = Route.Schedules.CREATE_SCHEDULE.compile(server.getUUID().toString()).withJSONdata(json);
 			JSONObject obj = impl.getRequester().request(route).toJSONObject();
-			return new ScheduleImpl(obj);
+			return new ScheduleImpl(obj, server, impl);
 		});
 	}
 }

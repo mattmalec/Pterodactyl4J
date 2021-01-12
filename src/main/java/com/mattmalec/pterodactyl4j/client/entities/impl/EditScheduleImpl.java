@@ -91,7 +91,7 @@ public class EditScheduleImpl implements ScheduleAction {
 		return PteroActionImpl.onExecute(() -> {
 			Route.CompiledRoute route = Route.Schedules.UPDATE_SCHEDULE.compile(server.getUUID().toString(), schedule.getId()).withJSONdata(json);
 			JSONObject obj = impl.getRequester().request(route).toJSONObject();
-			return new ScheduleImpl(obj);
+			return new ScheduleImpl(obj, server, impl);
 		});
 	}
 }

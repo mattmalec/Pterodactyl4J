@@ -1,7 +1,10 @@
 package com.mattmalec.pterodactyl4j.client.entities.impl;
 
+import com.mattmalec.pterodactyl4j.client.entities.ClientServer;
 import com.mattmalec.pterodactyl4j.client.entities.Cron;
 import com.mattmalec.pterodactyl4j.client.entities.Schedule;
+import com.mattmalec.pterodactyl4j.client.managers.ScheduleTaskManager;
+import com.mattmalec.pterodactyl4j.entities.PteroAction;
 import org.json.JSONObject;
 
 import java.time.OffsetDateTime;
@@ -15,9 +18,14 @@ public class ScheduleImpl implements Schedule {
 	private JSONObject json;
 	private JSONObject tasks;
 
-	public ScheduleImpl(JSONObject json) {
+	private ClientServer server;
+	private PteroClientImpl impl;
+
+	public ScheduleImpl(JSONObject json, ClientServer server, PteroClientImpl impl) {
 		this.json = json.getJSONObject("attributes");
 		this.tasks = this.json.getJSONObject("relationships").getJSONObject("tasks");
+		this.server = server;
+		this.impl = impl;
 	}
 
 	@Override
@@ -71,8 +79,18 @@ public class ScheduleImpl implements Schedule {
 		List<ScheduleTask> tasks = new ArrayList<>();
 		for(Object o : this.tasks.getJSONArray("data")) {
 			JSONObject task = new JSONObject(o.toString());
-			tasks.add(new ScheduleTaskImpl(task));
+			tasks.add(new ScheduleTaskImpl(task, this));
 		}
 		return Collections.unmodifiableList(tasks);
+	}
+
+	@Override
+	public ScheduleTaskManager getTaskManager() {
+		return new ScheduleTaskManagerImpl(server, this, impl);
+	}
+
+	@Override
+	public PteroAction<Void> delete() {
+		return server.getScheduleManager().delete(this);
 	}
 }
