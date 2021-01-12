@@ -68,4 +68,9 @@ public class ScheduleTaskImpl implements Schedule.ScheduleTask {
 	public PteroAction<Void> delete() {
 		return schedule.getTaskManager().deleteTask(this);
 	}
+
+	@Override
+	public String toString() {
+		return json.toString(4);
+	}
 }
