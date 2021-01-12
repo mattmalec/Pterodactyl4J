@@ -192,21 +192,12 @@ public class ClientServerImpl implements ClientServer {
 	@Override
 	public PteroAction<List<Schedule>> retrieveSchedules() {
 		return PteroActionImpl.onExecute(() -> {
-			Route.CompiledRoute route = Route.Schedules.LIST_SCHEDULES.compile(getIdentifier(), "1");
+			Route.CompiledRoute route = Route.Schedules.LIST_SCHEDULES.compile(getIdentifier());
 			JSONObject json = impl.getRequester().request(route).toJSONObject();
-			long pages = json.getJSONObject("meta").getJSONObject("pagination").getLong("total_pages");
 			List<Schedule> schedules = new ArrayList<>();
 			for (Object o : json.getJSONArray("data")) {
 				JSONObject schedule = new JSONObject(o.toString());
 				schedules.add(new ScheduleImpl(schedule, this, impl));
-			}
-			for (int i = 1; i < pages; i++) {
-				Route.CompiledRoute nextRoute = Route.Schedules.LIST_SCHEDULES.compile(getIdentifier(), Long.toUnsignedString(i));
-				JSONObject nextJson = impl.getRequester().request(nextRoute).toJSONObject();
-				for (Object o : nextJson.getJSONArray("data")) {
-					JSONObject schedule = new JSONObject(o.toString());
-					schedules.add(new ScheduleImpl(schedule, this, impl));
-				}
 			}
 			return Collections.unmodifiableList(schedules);
 		});

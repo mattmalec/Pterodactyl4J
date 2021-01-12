@@ -121,7 +121,7 @@ public class Route {
 
 	public static class Schedules {
 
-		public static final Route LIST_SCHEDULES 		= new Route(GET, 	CLIENT_PREFIX + "servers/{server_id}/schedules?page={page}", "server_id", "page");
+		public static final Route LIST_SCHEDULES 		= new Route(GET, 	CLIENT_PREFIX + "servers/{server_id}/schedules", "server_id");
 		public static final Route GET_SCHEDULE			= new Route(GET,	CLIENT_PREFIX + "servers/{server_id}/schedules/{identifier}", "server_id", "identifier");
 		public static final Route CREATE_SCHEDULE		= new Route(POST, 	CLIENT_PREFIX + "servers/{server_id}/schedules", "server_id");
 		public static final Route UPDATE_SCHEDULE		= new Route(POST, 	CLIENT_PREFIX + "servers/{server_id}/schedules/{identifier}", "server_id", "identifier");
