@@ -93,4 +93,9 @@ public class ScheduleImpl implements Schedule {
 	public PteroAction<Void> delete() {
 		return server.getScheduleManager().delete(this);
 	}
+
+	@Override
+	public String toString() {
+		return json.toString(4);
+	}
 }
