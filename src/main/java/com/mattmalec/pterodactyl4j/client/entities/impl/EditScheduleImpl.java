@@ -7,7 +7,6 @@ import com.mattmalec.pterodactyl4j.client.entities.Schedule;
 import com.mattmalec.pterodactyl4j.client.managers.ScheduleAction;
 import com.mattmalec.pterodactyl4j.entities.PteroAction;
 import com.mattmalec.pterodactyl4j.requests.Route;
-import com.mattmalec.pterodactyl4j.utils.Checks;
 import com.mattmalec.pterodactyl4j.utils.CronUtils;
 import org.json.JSONObject;
 
@@ -18,7 +17,7 @@ public class EditScheduleImpl implements ScheduleAction {
 	private PteroClientImpl impl;
 
 	private String name;
-	private boolean active;
+	private Boolean active;
 	private Cron cron;
 	private String minute;
 	private String hour;
@@ -80,14 +79,13 @@ public class EditScheduleImpl implements ScheduleAction {
 
 	@Override
 	public PteroAction<Schedule> build() {
-		Checks.notBlank(this.name, "Name");
 		JSONObject json = new JSONObject()
-				.put("name", name)
-				.put("is_active", active)
-				.put("minute", minute == null ? cron.getMinute() : minute)
-				.put("hour", hour == null ? cron.getHour() : hour)
-				.put("day_of_week", dayOfWeek == null ? cron.getDayOfWeek() : dayOfWeek)
-				.put("day_of_month", dayOfMonth == null ? cron.getDayOfMonth() : dayOfMonth);
+				.put("name", name == null ? schedule.getName() : name)
+				.put("is_active", active == null ? schedule.isActive() : active)
+				.put("minute", minute == null ? ((cron == null || cron.getMinute() == null) ? schedule.getCron().getMinute() : cron.getMinute()) : minute)
+				.put("hour", hour == null ? ((cron == null || cron.getHour() == null) ? schedule.getCron().getHour() : cron.getHour()) : hour)
+				.put("day_of_week", dayOfWeek == null ? ((cron == null || cron.getDayOfWeek() == null) ? schedule.getCron().getDayOfWeek() : cron.getDayOfWeek()) : dayOfWeek)
+				.put("day_of_month", dayOfMonth == null ? ((cron == null || cron.getDayOfMonth() == null) ? schedule.getCron().getDayOfMonth() : cron.getDayOfMonth()) : dayOfMonth);
 		return PteroActionImpl.onExecute(() -> {
 			Route.CompiledRoute route = Route.Schedules.UPDATE_SCHEDULE.compile(server.getUUID().toString(), schedule.getId()).withJSONdata(json);
 			JSONObject obj = impl.getRequester().request(route).toJSONObject();
