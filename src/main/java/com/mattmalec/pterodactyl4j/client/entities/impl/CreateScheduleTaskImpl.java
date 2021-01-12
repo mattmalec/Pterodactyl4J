@@ -56,7 +56,7 @@ public class CreateScheduleTaskImpl implements ScheduleTaskAction {
 			JSONObject json = new JSONObject()
 					.put("action", action.name().toLowerCase())
 					.put("payload", payload)
-					.put("time_offset", timeOffset);
+					.put("time_offset", timeOffset == null ? "0" : timeOffset);
 			Route.CompiledRoute route = Route.Schedules.CREATE_TASK.compile(server.getUUID().toString(), schedule.getId()).withJSONdata(json);
 			JSONObject obj = impl.getRequester().request(route).toJSONObject();
 			return new ScheduleTaskImpl(obj, schedule);
