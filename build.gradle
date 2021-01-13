@@ -4,6 +4,8 @@ plugins {
     id 'maven'
 }
 
+sourceCompatibility = 1.8
+
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
