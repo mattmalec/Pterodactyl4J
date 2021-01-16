@@ -4,12 +4,18 @@ import com.mattmalec.pterodactyl4j.client.ws.events.*;
 import com.mattmalec.pterodactyl4j.client.ws.events.connection.*;
 import com.mattmalec.pterodactyl4j.client.ws.events.error.DaemonErrorEvent;
 import com.mattmalec.pterodactyl4j.client.ws.events.error.JWTErrorEvent;
+import com.mattmalec.pterodactyl4j.client.ws.events.install.InstallCompletedEvent;
+import com.mattmalec.pterodactyl4j.client.ws.events.install.InstallEvent;
+import com.mattmalec.pterodactyl4j.client.ws.events.install.InstallStartedEvent;
 import com.mattmalec.pterodactyl4j.client.ws.events.output.ConsoleOutputEvent;
+import com.mattmalec.pterodactyl4j.client.ws.events.output.DaemonMessageEvent;
 import com.mattmalec.pterodactyl4j.client.ws.events.output.InstallOutputEvent;
 import com.mattmalec.pterodactyl4j.client.ws.events.output.OutputEvent;
 import com.mattmalec.pterodactyl4j.client.ws.events.token.TokenEvent;
 import com.mattmalec.pterodactyl4j.client.ws.events.token.TokenExpiredEvent;
 import com.mattmalec.pterodactyl4j.client.ws.events.token.TokenExpiringEvent;
+import com.mattmalec.pterodactyl4j.client.ws.events.transfer.TransferLogEvent;
+import com.mattmalec.pterodactyl4j.client.ws.events.transfer.TransferStatusEvent;
 
 public abstract class ClientSocketListenerAdapter implements ClientSocketListener {
 
@@ -20,6 +26,16 @@ public abstract class ClientSocketListenerAdapter implements ClientSocketListene
     public void onOutput(OutputEvent event) {}
     public void onConsoleOutput(ConsoleOutputEvent event) {}
     public void onInstallOutput(InstallOutputEvent event) {}
+    public void onDaemonMessage(DaemonMessageEvent event) {}
+
+    public void onInstallUpdate(InstallEvent event) {}
+    public void onInstallStarted(InstallStartedEvent event) {}
+    public void onInstallCompleted(InstallCompletedEvent event) {}
+
+    public void onTransferLog(TransferLogEvent event) {}
+    public void onTransferStatusUpdate(TransferStatusEvent event) {}
+
+    public void onBackupCompleted(BackupCompletedEvent event) {}
 
     public void onConnectionUpdate(ConnectionEvent event) {}
     public void onConnected(ConnectedEvent event) {}
@@ -48,8 +64,20 @@ public abstract class ClientSocketListenerAdapter implements ClientSocketListene
             onAuthSuccess((AuthSuccessEvent) event);
         else if (event instanceof ConsoleOutputEvent)
             onConsoleOutput((ConsoleOutputEvent) event);
-        else if(event instanceof InstallOutputEvent)
+        else if (event instanceof InstallOutputEvent)
             onInstallOutput((InstallOutputEvent) event);
+        else if (event instanceof DaemonMessageEvent)
+            onDaemonMessage((DaemonMessageEvent) event);
+        else if (event instanceof TransferLogEvent)
+            onTransferLog((TransferLogEvent) event);
+        else if (event instanceof TransferStatusEvent)
+            onTransferStatusUpdate((TransferStatusEvent) event);
+        else if (event instanceof BackupCompletedEvent)
+            onBackupCompleted((BackupCompletedEvent) event);
+        else if (event instanceof InstallStartedEvent)
+            onInstallStarted((InstallStartedEvent) event);
+        else if (event instanceof InstallCompletedEvent)
+            onInstallCompleted((InstallCompletedEvent) event);
         else if (event instanceof ConnectedEvent)
             onConnected((ConnectedEvent) event);
         else if (event instanceof DisconnectingEvent)
@@ -68,8 +96,11 @@ public abstract class ClientSocketListenerAdapter implements ClientSocketListene
             onTokenExpired((TokenExpiredEvent) event);
         }
 
-        if(event instanceof OutputEvent)
+        if (event instanceof OutputEvent)
             onOutput((OutputEvent) event);
+
+        if (event instanceof InstallEvent)
+            onInstallUpdate((InstallEvent) event);
 
         if (event instanceof ConnectionEvent)
             onConnectionUpdate((ConnectionEvent) event);
