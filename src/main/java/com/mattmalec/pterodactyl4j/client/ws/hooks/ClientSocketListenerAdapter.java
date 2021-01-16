@@ -1,10 +1,7 @@
 package com.mattmalec.pterodactyl4j.client.ws.hooks;
 
 import com.mattmalec.pterodactyl4j.client.ws.events.*;
-import com.mattmalec.pterodactyl4j.client.ws.events.connection.ConnectedEvent;
-import com.mattmalec.pterodactyl4j.client.ws.events.connection.ConnectionEvent;
-import com.mattmalec.pterodactyl4j.client.ws.events.connection.DisconnectedEvent;
-import com.mattmalec.pterodactyl4j.client.ws.events.connection.DisconnectingEvent;
+import com.mattmalec.pterodactyl4j.client.ws.events.connection.*;
 import com.mattmalec.pterodactyl4j.client.ws.events.error.DaemonErrorEvent;
 import com.mattmalec.pterodactyl4j.client.ws.events.error.JWTErrorEvent;
 import com.mattmalec.pterodactyl4j.client.ws.events.output.ConsoleOutputEvent;
@@ -28,6 +25,8 @@ public abstract class ClientSocketListenerAdapter implements ClientSocketListene
     public void onConnected(ConnectedEvent event) {}
     public void onDisconnecting(DisconnectingEvent event) {}
     public void onDisconnected(DisconnectedEvent event) {}
+    public void onFailure(FailureEvent event) {}
+
 
     public void onDaemonError(DaemonErrorEvent event) {}
     public void onJWTError(JWTErrorEvent event) {}
@@ -57,6 +56,8 @@ public abstract class ClientSocketListenerAdapter implements ClientSocketListene
             onDisconnecting((DisconnectingEvent) event);
         else if (event instanceof DisconnectedEvent)
             onDisconnected((DisconnectedEvent) event);
+        else if (event instanceof FailureEvent)
+            onFailure((FailureEvent) event);
         else if (event instanceof DaemonErrorEvent)
             onDaemonError((DaemonErrorEvent) event);
         else if (event instanceof JWTErrorEvent)

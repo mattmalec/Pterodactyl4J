@@ -6,6 +6,7 @@ import com.mattmalec.pterodactyl4j.client.managers.WebSocketManager;
 import com.mattmalec.pterodactyl4j.client.ws.events.connection.ConnectedEvent;
 import com.mattmalec.pterodactyl4j.client.ws.events.connection.DisconnectedEvent;
 import com.mattmalec.pterodactyl4j.client.ws.events.connection.DisconnectingEvent;
+import com.mattmalec.pterodactyl4j.client.ws.events.connection.FailureEvent;
 import com.mattmalec.pterodactyl4j.client.ws.handle.*;
 import com.mattmalec.pterodactyl4j.requests.Route;
 import okhttp3.*;
@@ -151,5 +152,6 @@ public class WebSocketClient extends WebSocketListener implements Runnable {
     public void onFailure(WebSocket webSocket, Throwable t, Response response) {
         connected = false;
         WEBSOCKET_LOG.error(String.format("There was an error in the websocket for server %s", server.getIdentifier()), t);
+        manager.getEventManager().handle(new FailureEvent(client, server, manager, connected, t));
     }
 }
