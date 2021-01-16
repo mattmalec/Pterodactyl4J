@@ -152,6 +152,6 @@ public class WebSocketClient extends WebSocketListener implements Runnable {
     public void onFailure(WebSocket webSocket, Throwable t, Response response) {
         connected = false;
         WEBSOCKET_LOG.error(String.format("There was an error in the websocket for server %s", server.getIdentifier()), t);
-        manager.getEventManager().handle(new FailureEvent(client, server, manager, connected, t));
+        manager.getEventManager().handle(new FailureEvent(client, server, manager, connected, response, t));
     }
 }
