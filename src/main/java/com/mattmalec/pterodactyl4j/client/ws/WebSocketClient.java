@@ -47,8 +47,14 @@ public class WebSocketClient extends WebSocketListener implements Runnable {
         handlers.put("auth success", new AuthSuccessHandler(client, server, manager));
         handlers.put("status", new StatusHandler(client, server, manager));
         handlers.put("console output", new ConsoleOuputHandler(client, server, manager));
+        handlers.put("daemon message", new DaemonMessageHandler(client, server, manager));
+        handlers.put("install started", new InstallStartedHandler(client, server, manager));
         handlers.put("install output", new InstallOuputHandler(client, server, manager));
+        handlers.put("install completed", new InstallCompletedHandler(client, server, manager));
         handlers.put("stats", new StatsHandler(client, server, manager));
+        handlers.put("transfer logs", new TransferLogHandler(client, server, manager));
+        handlers.put("transfer status", new TransferStatusHandler(client, server, manager));
+        handlers.put("backup completed", new BackupCompletedHandler(client, server, manager));
         handlers.put("token expiring", new TokenExpiringHandler(client, server, manager, this));
         handlers.put("token expired", new TokenExpiredHandler(client, server, manager, this));
         handlers.put("daemon error", new DaemonErrorHandler(client, server, manager));
