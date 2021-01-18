@@ -91,6 +91,14 @@ public class ApplicationEggImpl implements ApplicationEgg {
     }
 
     @Override
+    public Optional<Map<String, String>> getDefaultVariableMap() {
+        if(!getVariables().isPresent()) return Optional.empty();
+        Map<String, String> variableMap = new HashMap<>();
+        getVariables().get().forEach(var -> variableMap.put(var.getEnvironmentVariable(), var.getDefaultValue()));
+        return Optional.of(Collections.unmodifiableMap(variableMap));
+    }
+
+    @Override
     public long getIdLong() {
         return json.getLong("id");
     }

@@ -4,12 +4,14 @@ import com.mattmalec.pterodactyl4j.entities.Egg;
 import com.mattmalec.pterodactyl4j.utils.Relationed;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface ApplicationEgg extends Egg, ISnowflake {
 
 	Relationed<Nest> getNest();
 	Optional<List<EggVariable>> getVariables();
+	Optional<Map<String, String>> getDefaultVariableMap();
 	String getAuthor();
 	String getDescription();
 	String getDockerImage();
