@@ -11,6 +11,7 @@ import com.mattmalec.pterodactyl4j.utils.Checks;
 import org.json.JSONObject;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -45,6 +46,7 @@ public class CreateServerImpl implements ServerAction {
 
 	public CreateServerImpl(PteroApplicationImpl impl) {
 		this.impl = impl;
+		this.environment = new HashMap<>();
 	}
 
 	@Override
@@ -207,6 +209,7 @@ public class CreateServerImpl implements ServerAction {
 			Checks.notNull(owner, "Owner");
 			Checks.notNull(locations, "Locations");
 			Checks.notNull(egg, "Egg and Nest");
+			egg.getDefaultVariableMap().get().forEach((k, v) -> environment.putIfAbsent(k, v));
 			JSONObject featureLimits = new JSONObject()
 					.put("databases", databases)
 					.put("allocations", allocations == 0 && additionalAllocations != null ? additionalAllocations.size() + 1 : allocations)
