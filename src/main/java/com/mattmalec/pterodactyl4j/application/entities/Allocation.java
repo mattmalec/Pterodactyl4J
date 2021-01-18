@@ -11,7 +11,11 @@ public interface Allocation {
 	String getAlias();
 	String getPort();
 	String getNotes();
-	default long getPortLong() { return Long.parseLong(getPort()); }
+	@Deprecated
+	default long getPortLong() {
+		return Long.parseUnsignedLong(getPort());
+	}
+	default int getPortInt() { return Integer.parseInt(getPort()); }
 	boolean isAssigned();
 	long getIdLong();
 	default String getId() { return Long.toUnsignedString(getIdLong()); }
