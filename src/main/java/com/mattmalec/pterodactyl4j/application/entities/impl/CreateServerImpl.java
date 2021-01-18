@@ -209,7 +209,9 @@ public class CreateServerImpl implements ServerAction {
 			Checks.notNull(owner, "Owner");
 			Checks.notNull(locations, "Locations");
 			Checks.notNull(egg, "Egg and Nest");
-			egg.getDefaultVariableMap().get().forEach((k, v) -> environment.putIfAbsent(k, v));
+			Nest nest = egg.getNest().get().orElseGet(() -> egg.getNest().retrieve().execute());
+			egg.getDefaultVariableMap().orElseGet(() ->
+					impl.retrieveEggById(nest, egg.getId()).execute().getDefaultVariableMap().get()).forEach((k, v) -> environment.putIfAbsent(k, v));
 			JSONObject featureLimits = new JSONObject()
 					.put("databases", databases)
 					.put("allocations", allocations == 0 && additionalAllocations != null ? additionalAllocations.size() + 1 : allocations)
@@ -232,7 +234,7 @@ public class CreateServerImpl implements ServerAction {
 					.put("name", name)
 					.put("description", description)
 					.put("user", owner.getId())
-					.put("nest", egg.getNest().get().orElseGet(() -> egg.getNest().retrieve().execute()).getId())
+					.put("nest", nest.getId())
 					.put("egg", egg.getId())
 					.put("docker_image", dockerImage != null ? dockerImage : egg.getDockerImage())
 					.put("startup", startupCommand != null ? startupCommand : egg.getStartupCommand())
