@@ -37,6 +37,10 @@ public interface Node extends ISnowflake {
 	String getDaemonBase();
 	Relationed<List<ApplicationServer>> getServers();
 	Relationed<List<Allocation>> getAllocations();
+	Relationed<List<Allocation>> getAllocationsByPort(int port);
+	default Relationed<List<Allocation>> getAllocationsByPort(String port) {
+		return getAllocationsByPort(Integer.parseUnsignedInt(port));
+	}
 
 	NodeAction edit();
 	PteroAction<Void> delete();

@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class NodeImpl implements Node {
 
@@ -180,6 +181,29 @@ public class NodeImpl implements Node {
 					allocations.add(new AllocationImpl(allocation, impl));
 				}
 				return Optional.of(Collections.unmodifiableList(allocations));
+			}
+		};
+	}
+
+	@Override
+	public Relationed<List<Allocation>> getAllocationsByPort(int port) {
+		NodeImpl node = this;
+		return new Relationed<List<Allocation>>() {
+			@Override
+			public PteroAction<List<Allocation>> retrieve() {
+				return PteroActionImpl.onExecute(() -> impl.retrieveAllocationsByNode(node).execute().stream().filter(a -> a.getPortInt() == port).collect(Collectors.toList()));
+			}
+
+			@Override
+			public Optional<List<Allocation>> get() {
+				if(!json.has("relationships")) return Optional.empty();
+				List<Allocation> allocations = new ArrayList<>();
+				JSONObject json = relationships.getJSONObject("allocations");
+				for(Object o : json.getJSONArray("data")) {
+					JSONObject allocation = new JSONObject(o.toString());
+					allocations.add(new AllocationImpl(allocation, impl));
+				}
+				return Optional.of(Collections.unmodifiableList(allocations.stream().filter(a -> a.getPortInt() == port).collect(Collectors.toList())));
 			}
 		};
 	}
