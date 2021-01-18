@@ -10,6 +10,7 @@ import com.mattmalec.pterodactyl4j.requests.Route;
 import com.mattmalec.pterodactyl4j.utils.Checks;
 import org.json.JSONObject;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -25,7 +26,6 @@ public class CreateServerImpl implements ServerAction {
 	private long memory;
 	private long swap;
 	private long disk;
-	private long pack;
 	private long cpu = 0L;
 	private long io = 500L;
 	private String threads;
@@ -38,6 +38,8 @@ public class CreateServerImpl implements ServerAction {
 	private boolean useDedicatedIP;
 	private boolean startOnCompletion;
 	private boolean skipScripts;
+	private Allocation defaultAllocation;
+	private Collection<Allocation> additionalAllocations;
 
 	private PteroApplicationImpl impl;
 
@@ -190,8 +192,9 @@ public class CreateServerImpl implements ServerAction {
 	}
 
 	@Override
-	public ServerAction setPack(long id) {
-		this.pack = id;
+	public ServerAction setAllocations(Allocation defaultAllocation, Collection<Allocation> additionalAllocations) {
+		this.defaultAllocation = defaultAllocation;
+		this.additionalAllocations = additionalAllocations;
 		return this;
 	}
 
@@ -203,11 +206,10 @@ public class CreateServerImpl implements ServerAction {
 			}
 			Checks.notNull(owner, "Owner");
 			Checks.notNull(locations, "Locations");
-			Checks.notNull(portRange, "Port Range");
 			Checks.notNull(egg, "Egg and Nest");
 			JSONObject featureLimits = new JSONObject()
 					.put("databases", databases)
-					.put("allocations", allocations)
+					.put("allocations", allocations == 0 && additionalAllocations != null ? additionalAllocations.size() + 1 : allocations)
 					.put("backups", backups);
 			JSONObject limits = new JSONObject()
 					.put("memory", memory)
@@ -216,27 +218,29 @@ public class CreateServerImpl implements ServerAction {
 					.put("io", io)
 					.put("cpu", cpu)
 					.put("threads", threads);
-			JSONObject env = new JSONObject();
-			if(environment != null) environment.forEach(env::put);
+			JSONObject allocation = new JSONObject()
+					.put("default", defaultAllocation.getIdLong())
+					.put("additional", additionalAllocations.stream().map(Allocation::getIdLong).collect(Collectors.toList()));
 			JSONObject deploy = new JSONObject()
 					.put("locations", locations.stream().map(ISnowflake::getIdLong).collect(Collectors.toList()))
 					.put("dedicated_ip", useDedicatedIP)
-					.put("port_range", portRange.stream().map(Integer::toUnsignedString).collect(Collectors.toList()));
+					.put("port_range", portRange != null ? portRange.stream().map(Integer::toUnsignedString).collect(Collectors.toList()) : null);
 			JSONObject obj = new JSONObject()
 					.put("name", name)
 					.put("description", description)
 					.put("user", owner.getId())
 					.put("nest", egg.getNest().get().orElseGet(() -> egg.getNest().retrieve().execute()).getId())
 					.put("egg", egg.getId())
-					.put("pack", pack)
 					.put("docker_image", dockerImage != null ? dockerImage : egg.getDockerImage())
 					.put("startup", startupCommand != null ? startupCommand : egg.getStartupCommand())
 					.put("limits", limits)
 					.put("feature_limits", featureLimits)
-					.put("environment", env)
+					.put("environment", environment)
 					.put("deploy", deploy)
+					.put("allocation", allocation)
 					.put("start_on_completion", startOnCompletion)
 					.put("skip_scripts", skipScripts);
+			System.out.println(obj.toString(4));
 			Route.CompiledRoute route = Route.Servers.CREATE_SERVER.compile().withJSONdata(obj);
 			JSONObject json = impl.getRequester().request(route).toJSONObject();
 			return new ApplicationServerImpl(impl, json);

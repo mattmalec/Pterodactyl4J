@@ -1,15 +1,10 @@
 package com.mattmalec.pterodactyl4j.application.managers;
 
 import com.mattmalec.pterodactyl4j.DataType;
-import com.mattmalec.pterodactyl4j.application.entities.ApplicationServer;
-import com.mattmalec.pterodactyl4j.application.entities.ApplicationUser;
-import com.mattmalec.pterodactyl4j.application.entities.ApplicationEgg;
-import com.mattmalec.pterodactyl4j.application.entities.Location;
+import com.mattmalec.pterodactyl4j.application.entities.*;
 import com.mattmalec.pterodactyl4j.entities.PteroAction;
 
-import java.util.Collections;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public interface ServerAction {
 
@@ -38,9 +33,15 @@ public interface ServerAction {
 	default ServerAction setPort(int port) {
 		return setPortRange(Collections.singleton(port));
 	}
+	default ServerAction setAllocations(Allocation defaultAllocation, Allocation... additionalAllocations) {
+		return setAllocations(defaultAllocation, Arrays.asList(additionalAllocations));
+	}
+	default ServerAction setAllocation(Allocation defaultAllocation) {
+		return setAllocations(defaultAllocation);
+	}
+	ServerAction setAllocations(Allocation defaultAllocation, Collection<Allocation> additionalAllocations);
 	ServerAction startOnCompletion(boolean start);
 	ServerAction skipScripts(boolean skip);
-	ServerAction setPack(long id);
 	PteroAction<ApplicationServer> build();
 
 }
