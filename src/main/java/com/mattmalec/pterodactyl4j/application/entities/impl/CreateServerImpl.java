@@ -207,7 +207,6 @@ public class CreateServerImpl implements ServerAction {
 				throw new IllegalActionException("The minimum memory limit is 4 MB.");
 			}
 			Checks.notNull(owner, "Owner");
-			Checks.notNull(locations, "Locations");
 			Checks.notNull(egg, "Egg and Nest");
 			Nest nest = egg.getNest().get().orElseGet(() -> egg.getNest().retrieve().execute());
 			egg.getDefaultVariableMap().orElseGet(() ->
@@ -224,10 +223,10 @@ public class CreateServerImpl implements ServerAction {
 					.put("cpu", cpu)
 					.put("threads", threads);
 			JSONObject allocation = new JSONObject()
-					.put("default", defaultAllocation.getIdLong())
-					.put("additional", additionalAllocations.stream().map(Allocation::getIdLong).collect(Collectors.toList()));
+					.put("default", defaultAllocation != null ? defaultAllocation.getIdLong() : null)
+					.put("additional", (additionalAllocations != null && additionalAllocations.size() != 0) ? additionalAllocations.stream().map(Allocation::getIdLong).collect(Collectors.toList()) : null);
 			JSONObject deploy = new JSONObject()
-					.put("locations", locations.stream().map(ISnowflake::getIdLong).collect(Collectors.toList()))
+					.put("locations", locations != null ? locations.stream().map(ISnowflake::getIdLong).collect(Collectors.toList()) : null)
 					.put("dedicated_ip", useDedicatedIP)
 					.put("port_range", portRange != null ? portRange.stream().map(Integer::toUnsignedString).collect(Collectors.toList()) : null);
 			JSONObject obj = new JSONObject()
@@ -241,11 +240,10 @@ public class CreateServerImpl implements ServerAction {
 					.put("limits", limits)
 					.put("feature_limits", featureLimits)
 					.put("environment", environment)
-					.put("deploy", deploy)
+					.put("deploy", (locations != null || portRange != null) ? deploy : null)
 					.put("allocation", allocation)
 					.put("start_on_completion", startOnCompletion)
 					.put("skip_scripts", skipScripts);
-			System.out.println(obj.toString(4));
 			Route.CompiledRoute route = Route.Servers.CREATE_SERVER.compile().withJSONdata(obj);
 			JSONObject json = impl.getRequester().request(route).toJSONObject();
 			return new ApplicationServerImpl(impl, json);
