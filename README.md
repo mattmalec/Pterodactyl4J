@@ -40,33 +40,27 @@ public class ServerCreator
     public static void main(String[] args)
     { 
 
-        Nest nest = api.retrieveNestById("8").execute();
+        Nest nest = api.retrieveNestById("1").execute();
         Location location = api.retrieveLocationById("1").execute();
-        Egg egg = api.retrieveEggById(nest, "27").execute();
-
-        Set<Integer> portRange = new HashSet<>();
-        portRange.add(25565);
+        Egg egg = api.retrieveEggById(nest, "3").execute();
 
         Map<String, String> map = new HashMap<>();
         map.put("SERVER_JARFILE", "server.jar");
-        map.put("MOTD", "Welcome to my Minecraft server");
-        map.put("MAXPLAYERS", "10");
         map.put("VERSION", "1.8.8");
-        map.put("TYPE", "vanilla");
 
-        ServerAction action = api.createServer().setName("My Server")
+        ServerAction action = api.createServer()
+                .setName("My Server")
         		.setDescription("Super awesome wrapper")
         		.setOwner(api.retrieveUserById("1").execute())
         		.setEgg(egg)
-        		.setLocations(Collections.singleton(location))
-        		.setAllocations(0L)
+        		.setLocation(location)
+        		.setAllocations(1L)
         		.setDatabases(0L)
         		.setCPU(0L)
         		.setDisk(3L, DataType.GB)
         		.setMemory(1L, DataType.GB)
         		.setDockerImage("quay.io/pterodactyl/core:java")
-        		.setDedicatedIP(false)
-        		.setPortRange(portRange)
+        		.setPort(25565)
         		.startOnCompletion(false)
         		.setEnvironment(map).build();
         ApplicationServer server = action.execute();
