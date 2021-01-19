@@ -17,7 +17,7 @@ public class Route {
 
 	public static class Users {
 
-		public static final Route LIST_USERS  			= new Route(GET,    APPLICATION_PREFIX + "users?page={page}&include=servers", "page");
+		public static final Route LIST_USERS  			= new Route(GET,    APPLICATION_PREFIX + "users?page={page}&include=servers");
 		public static final Route GET_USER    			= new Route(GET,    APPLICATION_PREFIX + "users/{user_id}?include=servers", "user_id");
 		public static final Route CREATE_USER 			= new Route(POST,   APPLICATION_PREFIX + "users");
 		public static final Route EDIT_USER   			= new Route(PATCH,  APPLICATION_PREFIX + "users/{user_id}", "user_id");
@@ -27,20 +27,20 @@ public class Route {
 
 	public static class Nodes {
 
-		public static final Route LIST_NODES        	= new Route(GET,    APPLICATION_PREFIX + "nodes?page={page}&include=location,servers,allocations", "page");
+		public static final Route LIST_NODES        	= new Route(GET,    APPLICATION_PREFIX + "nodes?page={page}&include=location,servers,allocations");
 		public static final Route GET_NODE          	= new Route(GET,    APPLICATION_PREFIX + "nodes/{node_id}?include=location,servers,allocations", "node_id");
 		public static final Route CREATE_NODE       	= new Route(POST,   APPLICATION_PREFIX + "nodes?include=location,servers,allocations");
 		public static final Route EDIT_NODE         	= new Route(PATCH,  APPLICATION_PREFIX + "nodes/{node_id}", "node_id");
 		public static final Route DELETE_NODE       	= new Route(DELETE, APPLICATION_PREFIX + "nodes/{node_id}", "node_id");
-		public static final Route LIST_ALLOCATIONS  	= new Route(GET,    APPLICATION_PREFIX + "nodes/{node_id}/allocations?page={page}&include=server,node", "node_id", "page");
+		public static final Route LIST_ALLOCATIONS  	= new Route(GET,    APPLICATION_PREFIX + "nodes/{node_id}/allocations?page={page}&include=server,node", "node_id");
 		public static final Route CREATE_ALLOCATION 	= new Route(POST,   APPLICATION_PREFIX + "nodes/{node_id}/allocations", "node_id");
-		public static final Route DELETE_ALLOCATION		= new Route(DELETE, APPLICATION_PREFIX + "nodes/{node_id}/allocations/{allocation_id}", "node_id", "allocation_id");
+		public static final Route DELETE_ALLOCATION		= new Route(DELETE, APPLICATION_PREFIX + "nodes/{node_id}/allocations/{allocation_id}", "node_id");
 
 	}
 
 	public static class Locations {
 
-		public static final Route LIST_LOCATIONS  		= new Route(GET,    APPLICATION_PREFIX + "locations?page={page}&include=nodes,servers", "page");
+		public static final Route LIST_LOCATIONS  		= new Route(GET,    APPLICATION_PREFIX + "locations?page={page}&include=nodes,servers");
 		public static final Route GET_LOCATION    		= new Route(GET,    APPLICATION_PREFIX + "locations/{location_id}?include=nodes,servers", "location_id");
 		public static final Route CREATE_LOCATION 		= new Route(POST,   APPLICATION_PREFIX + "locations");
 		public static final Route EDIT_LOCATION   		= new Route(PATCH,  APPLICATION_PREFIX + "locations");
@@ -49,7 +49,7 @@ public class Route {
 
 	public static class Servers {
 
-		public static final Route LIST_SERVERS 			= new Route(GET,    APPLICATION_PREFIX + "servers?page={page}&include=allocations,user,subusers,nest,egg,location,node,databases", "page");
+		public static final Route LIST_SERVERS 			= new Route(GET,    APPLICATION_PREFIX + "servers?page={page}&include=allocations,user,subusers,nest,egg,location,node,databases");
 		public static final Route GET_SERVER 			= new Route(GET,    APPLICATION_PREFIX + "servers/{server_id}?include=allocations,user,subusers,nest,egg,location,node,databases", "server_id");
 		public static final Route UPDATE_SERVER_DETAILS = new Route(PATCH,  APPLICATION_PREFIX + "servers/{server_id}/details", "server_id");
 		public static final Route UPDATE_SERVER_BUILD   = new Route(PATCH,  APPLICATION_PREFIX + "servers/{server_id}/build", "server_id");
@@ -65,10 +65,10 @@ public class Route {
 
 	public static class Nests {
 
-		public static final Route LIST_NESTS 			= new Route(GET, 	APPLICATION_PREFIX + "nests?page={page}&include=servers,eggs", "page");
+		public static final Route LIST_NESTS 			= new Route(GET, 	APPLICATION_PREFIX + "nests?page={page}&include=servers,eggs");
 		public static final Route GET_NEST 				= new Route(GET, 	APPLICATION_PREFIX + "nests/{nest_id}?include=servers,eggs", "nest_id");
 		public static final Route GET_EGGS 				= new Route(GET, 	APPLICATION_PREFIX + "nests/{nest_id}/eggs?include=variables,nest,servers", "nest_id");
-		public static final Route GET_EGG 				= new Route(GET, 	APPLICATION_PREFIX + "nests/{nest_id}/eggs/{egg_id}?include=variables,nest,servers", "nest_id", "egg_id");
+		public static final Route GET_EGG 				= new Route(GET, 	APPLICATION_PREFIX + "nests/{nest_id}/eggs/{egg_id}?include=variables,nest,servers", "nest_id");
 
 	}
 
@@ -77,7 +77,7 @@ public class Route {
 		public static final Route GET_UTILIZATION 		= new Route(GET,  	CLIENT_PREFIX + "servers/{server_id}/resources", "server_id");
 		public static final Route SEND_COMMAND 			= new Route(POST, 	CLIENT_PREFIX + "servers/{server_id}/command", "server_id");
 		public static final Route SET_POWER 			= new Route(POST, 	CLIENT_PREFIX + "servers/{server_id}/power", "server_id");
-		public static final Route LIST_SERVERS 			= new Route(GET,  	CLIENT_PREFIX + "?page={page}&include=subusers,egg", "page");
+		public static final Route LIST_SERVERS 			= new Route(GET,  	CLIENT_PREFIX + "?page={page}&include=subusers,egg");
 		public static final Route GET_SERVER			= new Route(GET,	CLIENT_PREFIX + "servers/{server_id}?include=subusers,egg", "server_id");
 		public static final Route GET_WEBSOCKET			= new Route(GET,    CLIENT_PREFIX + "servers/{server_id}/websocket", "server_id");
 		public static final Route RENAME_SERVER			= new Route(POST, 	CLIENT_PREFIX + "servers/{server_id}/settings/rename", "server_id");
@@ -102,33 +102,33 @@ public class Route {
 	public static class Subusers {
 
 		public static final Route LIST_SUBUSERS 		= new Route(GET, 	CLIENT_PREFIX + "servers/{server_id}/users", "server_id");
-		public static final Route GET_SUBUSER 			= new Route(GET, 	CLIENT_PREFIX + "servers/{server_id}/users/{identifier}", "server_id", "identifier");
+		public static final Route GET_SUBUSER 			= new Route(GET, 	CLIENT_PREFIX + "servers/{server_id}/users/{identifier}", "server_id");
 		public static final Route CREATE_SUBUSER		= new Route(POST, 	CLIENT_PREFIX + "servers/{server_id}/users", "server_id");
-		public static final Route UPDATE_SUBUSER		= new Route(POST, 	CLIENT_PREFIX + "servers/{server_id}/users/{identifier}", "server_id", "identifier");
-		public static final Route DELETE_SUBUSER		= new Route(DELETE, CLIENT_PREFIX + "servers/{server_id}/users/{identifier}", "server_id", "identifier");
+		public static final Route UPDATE_SUBUSER		= new Route(POST, 	CLIENT_PREFIX + "servers/{server_id}/users/{identifier}", "server_id");
+		public static final Route DELETE_SUBUSER		= new Route(DELETE, CLIENT_PREFIX + "servers/{server_id}/users/{identifier}", "server_id");
 
 	}
 
 	public static class Backups {
 
-		public static final Route LIST_BACKUPS 			= new Route(GET, 	CLIENT_PREFIX + "servers/{server_id}/backups?page={page}", "server_id", "page");
-		public static final Route GET_BACKUP 			= new Route(GET, 	CLIENT_PREFIX + "servers/{server_id}/backups/{identifier}", "server_id", "identifier");
-		public static final Route DOWNLOAD_BACKUP		= new Route(GET, 	CLIENT_PREFIX + "servers/{server_id}/backups/{identifier}/download", "server_id", "identifier");
+		public static final Route LIST_BACKUPS 			= new Route(GET, 	CLIENT_PREFIX + "servers/{server_id}/backups?page={page}", "server_id");
+		public static final Route GET_BACKUP 			= new Route(GET, 	CLIENT_PREFIX + "servers/{server_id}/backups/{identifier}", "server_id");
+		public static final Route DOWNLOAD_BACKUP		= new Route(GET, 	CLIENT_PREFIX + "servers/{server_id}/backups/{identifier}/download", "server_id");
 		public static final Route CREATE_BACKUP			= new Route(POST, 	CLIENT_PREFIX + "servers/{server_id}/backups", "server_id");
-		public static final Route DELETE_BACKUP			= new Route(DELETE, CLIENT_PREFIX + "servers/{server_id}/backups/{identifier}", "server_id", "identifier");
+		public static final Route DELETE_BACKUP			= new Route(DELETE, CLIENT_PREFIX + "servers/{server_id}/backups/{identifier}", "server_id");
 
 	}
 
 	public static class Schedules {
 
 		public static final Route LIST_SCHEDULES 		= new Route(GET, 	CLIENT_PREFIX + "servers/{server_id}/schedules", "server_id");
-		public static final Route GET_SCHEDULE			= new Route(GET,	CLIENT_PREFIX + "servers/{server_id}/schedules/{identifier}", "server_id", "identifier");
+		public static final Route GET_SCHEDULE			= new Route(GET,	CLIENT_PREFIX + "servers/{server_id}/schedules/{identifier}", "server_id");
 		public static final Route CREATE_SCHEDULE		= new Route(POST, 	CLIENT_PREFIX + "servers/{server_id}/schedules", "server_id");
-		public static final Route UPDATE_SCHEDULE		= new Route(POST, 	CLIENT_PREFIX + "servers/{server_id}/schedules/{identifier}", "server_id", "identifier");
-		public static final Route DELETE_SCHEDULE		= new Route(DELETE, CLIENT_PREFIX + "servers/{server_id}/schedules/{identifier}", "server_id", "identifier");
-		public static final Route CREATE_TASK			= new Route(POST,	CLIENT_PREFIX + "servers/{server_id}/schedules/{identifier}/tasks", "server_id", "identifier");
-		public static final Route UPDATE_TASK			= new Route(POST,	CLIENT_PREFIX + "servers/{server_id}/schedules/{schedule_id}/tasks/{identifier}", "server_id", "schedule_id", "identifier");
-		public static final Route DELETE_TASK			= new Route(DELETE, CLIENT_PREFIX + "servers/{server_id}/schedules/{identifier}/tasks/{identifier}", "server_id", "schedule_id", "identifier");
+		public static final Route UPDATE_SCHEDULE		= new Route(POST, 	CLIENT_PREFIX + "servers/{server_id}/schedules/{identifier}", "server_id");
+		public static final Route DELETE_SCHEDULE		= new Route(DELETE, CLIENT_PREFIX + "servers/{server_id}/schedules/{identifier}", "server_id");
+		public static final Route CREATE_TASK			= new Route(POST,	CLIENT_PREFIX + "servers/{server_id}/schedules/{identifier}/tasks", "server_id");
+		public static final Route UPDATE_TASK			= new Route(POST,	CLIENT_PREFIX + "servers/{server_id}/schedules/{schedule_id}/tasks/{identifier}", "server_id", "schedule_id");
+		public static final Route DELETE_TASK			= new Route(DELETE, CLIENT_PREFIX + "servers/{server_id}/schedules/{schedule_id}/tasks/{identifier}", "server_id", "schedule_id");
 
 	}
 
@@ -220,7 +220,7 @@ public class Route {
 		return new CompiledRoute(this, compiledRatelimitRoute, compilableRoute, null);
 	}
 
-	public class CompiledRoute {
+	public static class CompiledRoute {
 		private final Route baseRoute;
 		private final String ratelimitRoute;
 		private final String compiledRoute;
