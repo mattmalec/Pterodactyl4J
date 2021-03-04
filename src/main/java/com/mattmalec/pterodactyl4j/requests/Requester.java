@@ -20,11 +20,12 @@ public class Requester {
     }
 
 	public Requester request(Route.CompiledRoute compiledRoute) {
-		String url = String.format(PTERODACTYL_API_PREFIX, api.getApplicationUrl()) + compiledRoute.getCompiledRoute();
 		if(api.getApplicationUrl() == null || api.getApplicationUrl().isEmpty())
 			throw new HttpException("No Pterodactyl URL was defined.");
-		if(api.getApplicationUrl().endsWith("/"))
-			url = api.getApplicationUrl().substring(0, api.getApplicationUrl().length() - 1);
+		String applicationUrl = api.getApplicationUrl();
+		if(applicationUrl.endsWith("/"))
+			applicationUrl = applicationUrl.substring(0, applicationUrl.length() - 1);
+		String url = String.format(PTERODACTYL_API_PREFIX, applicationUrl) + compiledRoute.getCompiledRoute();
 		Request.Builder builder = new Request.Builder();
 		builder.header("Content-Type", "application/json");
 		Method method = compiledRoute.getMethod();
