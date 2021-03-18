@@ -1,3 +1,9 @@
+[version]: https://api.bintray.com/packages/mattmalec/Pterodactyl4J/Pterodactyl4J/images/download.svg
+[download]: https://bintray.com/mattmalec/Pterodactyl4J/Pterodactyl4J/_latestVersion
+[discord-shield]: https://discord.com/api/guilds/780230961035608064/widget.png
+[discord-invite]: https://discord.gg/7fAabrTJZW
+[ ![version][] ][download]
+[ ![discord-shield][] ][discord-invite]
 # Pterodactyl4J
 
 P4J strives to provide a clean and full wrapping of the Pterodactyl REST API for Java.
@@ -182,7 +188,7 @@ The most popular implementations are [Log4j 2](https://logging.apache.org/log4j/
 ## Getting Help
 
 For general troubleshooting, you can view some troubleshooting steps in the examples (this will be soon moved to the wiki).
-<br>If you need help, or just want to talk with myself and other developers, you can join the [Pterodactyl4J Discord server](https://discord.gg/7fAabrTJZW).
+<br>If you need help, or just want to talk with myself and other developers, you can join the [Pterodactyl4J Discord server][discord-invite].
 
 Alternatively, if you need help outside of P4J, you can join the [Pterodactyl Discord server](https://discord.gg/pterodactyl).
 
