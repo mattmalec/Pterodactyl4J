@@ -42,7 +42,7 @@ public class ServerCreator
 
         Nest nest = api.retrieveNestById("1").execute();
         Location location = api.retrieveLocationById("1").execute();
-        Egg egg = api.retrieveEggById(nest, "3").execute();
+        ApplicationEgg egg = api.retrieveEggById(nest, "3").execute();
 
         Map<String, String> map = new HashMap<>();
         map.put("SERVER_JARFILE", "server.jar");
