@@ -62,8 +62,8 @@ public class ServerCreator
         		.setDockerImage("quay.io/pterodactyl/core:java")
         		.setPort(25565)
         		.startOnCompletion(false)
-        		.setEnvironment(map).build();
-        ApplicationServer server = action.execute();
+        		.setEnvironment(map);
+        ApplicationServer server = action.build().execute();
 
     }
 }
