@@ -23,7 +23,7 @@ public interface ServerAction {
 	ServerAction setDatabases(long amount);
 	ServerAction setAllocations(long amount);
 	ServerAction setBackups(long amount);
-	ServerAction setEnvironment(Map<String, String> environment);
+	ServerAction setEnvironment(Map<String, Object> environment);
 	ServerAction setLocations(Set<Location> locations);
 	default ServerAction setLocation(Location location) {
 		return setLocations(Collections.singleton(location));

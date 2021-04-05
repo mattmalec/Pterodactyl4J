@@ -7,6 +7,6 @@ public interface Container {
 	String getStartupCommand();
 	String getImage();
 	boolean isInstalled();
-	Map<String, String> getEnvironment();
+	Map<String, Object> getEnvironment();
 
 }

@@ -31,10 +31,10 @@ public class ContainerImpl implements Container {
     }
 
     @Override
-    public Map<String, String> getEnvironment() {
+    public Map<String, Object> getEnvironment() {
         JSONObject environment = json.getJSONObject("environment");
-        HashMap<String, String> environmentMap = new HashMap<>();
-        environment.keys().forEachRemaining(s -> environmentMap.putIfAbsent(s, environment.getString(s)));
+        HashMap<String, Object> environmentMap = new HashMap<>();
+        environment.keys().forEachRemaining(s -> environmentMap.putIfAbsent(s, environment.get(s)));
         return Collections.unmodifiableMap(environmentMap);
     }
 }

@@ -33,7 +33,7 @@ public class CreateServerImpl implements ServerAction {
 	private long databases = 0L;
 	private long allocations = 0L;
 	private long backups = 0L;
-	private Map<String, String> environment;
+	private Map<String, Object> environment;
 	private Set<Location> locations;
 	private Set<Integer> portRange;
 	private boolean useDedicatedIP;
@@ -158,7 +158,7 @@ public class CreateServerImpl implements ServerAction {
 	}
 
 	@Override
-	public ServerAction setEnvironment(Map<String, String> environment) {
+	public ServerAction setEnvironment(Map<String, Object> environment) {
 		this.environment = environment;
 		return this;
 	}
