@@ -34,6 +34,15 @@ public class BackupManagerImpl implements BackupManager {
     }
 
     @Override
+    public PteroAction<Void> restoreBackup(Backup backup) {
+        return PteroActionImpl.onExecute(() -> {
+            Route.CompiledRoute route = Route.Backups.RESTORE_BACKUP.compile(server.getIdentifier(), backup.getUUID().toString());
+            impl.getRequester().request(route);
+            return null;
+        });
+    }
+
+    @Override
     public PteroAction<Void> deleteBackup(Backup backup) {
         return PteroActionImpl.onExecute(() -> {
             Route.CompiledRoute route = Route.Backups.DELETE_BACKUP.compile(server.getIdentifier(), backup.getUUID().toString());
@@ -41,4 +50,6 @@ public class BackupManagerImpl implements BackupManager {
             return null;
         });
     }
+
+
 }

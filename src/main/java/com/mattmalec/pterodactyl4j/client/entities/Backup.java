@@ -21,6 +21,7 @@ public interface Backup {
     PteroAction<String> getDownloadUrl();
     OffsetDateTime getTimeCompleted();
     OffsetDateTime getTimeCreated();
+    PteroAction<Void> restore();
     PteroAction<Void> delete();
 
 }

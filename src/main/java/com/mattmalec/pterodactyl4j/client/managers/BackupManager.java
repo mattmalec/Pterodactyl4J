@@ -7,6 +7,7 @@ public interface BackupManager {
 
     BackupAction createBackup();
     PteroAction<String> getDownloadUrl(Backup backup);
+    PteroAction<Void> restoreBackup(Backup backup);
     PteroAction<Void> deleteBackup(Backup backup);
 
 }

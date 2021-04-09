@@ -66,6 +66,11 @@ public class BackupImpl implements Backup {
     }
 
     @Override
+    public PteroAction<Void> restore() {
+        return server.getBackupManager().restoreBackup(this);
+    }
+
+    @Override
     public PteroAction<Void> delete() {
         return server.getBackupManager().deleteBackup(this);
     }
