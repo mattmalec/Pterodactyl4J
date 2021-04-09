@@ -18,7 +18,7 @@ public interface Backup {
         return String.format("%.2f %s", getSize() / (dataType.getMbValue() * Math.pow(2, 20)), dataType.name());
     }
     List<String> getIgnoredFiles();
-    PteroAction<String> getDownloadUrl();
+    PteroAction<String> retrieveDownloadUrl();
     OffsetDateTime getTimeCompleted();
     OffsetDateTime getTimeCreated();
     PteroAction<Void> restore();

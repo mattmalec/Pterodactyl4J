@@ -25,7 +25,7 @@ public class BackupManagerImpl implements BackupManager {
     }
 
     @Override
-    public PteroAction<String> getDownloadUrl(Backup backup) {
+    public PteroAction<String> retrieveDownloadUrl(Backup backup) {
         return PteroActionImpl.onExecute(() -> {
             Route.CompiledRoute route = Route.Backups.DOWNLOAD_BACKUP.compile(server.getIdentifier(), backup.getUUID().toString());
             JSONObject json = impl.getRequester().request(route).toJSONObject();

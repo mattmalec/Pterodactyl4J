@@ -51,8 +51,8 @@ public class BackupImpl implements Backup {
     }
 
     @Override
-    public PteroAction<String> getDownloadUrl() {
-        return server.getBackupManager().getDownloadUrl(this);
+    public PteroAction<String> retrieveDownloadUrl() {
+        return server.getBackupManager().retrieveDownloadUrl(this);
     }
 
     @Override

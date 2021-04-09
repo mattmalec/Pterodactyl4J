@@ -6,7 +6,7 @@ import com.mattmalec.pterodactyl4j.entities.PteroAction;
 public interface BackupManager {
 
     BackupAction createBackup();
-    PteroAction<String> getDownloadUrl(Backup backup);
+    PteroAction<String> retrieveDownloadUrl(Backup backup);
     PteroAction<Void> restoreBackup(Backup backup);
     PteroAction<Void> deleteBackup(Backup backup);
 
