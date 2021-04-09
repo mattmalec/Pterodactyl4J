@@ -1,6 +1,5 @@
 plugins {
     id 'java'
-    id 'com.jfrog.bintray' version '1.8.4'
     id 'maven'
 }
 
@@ -11,61 +10,15 @@ properties.load(project.rootProject.file('local.properties').newDataInputStream(
 
 version properties.getProperty("version")
 
-ext {
-    bintrayRepo = 'Pterodactyl4J'
-    bintrayName = 'Pterodactyl4J'
-
-    publishedGroupId = 'com.mattmalec.Pterodactyl4J'
-    libraryName = 'Pterodactyl4J'
-    artifact = 'Pterodactyl4J'
-
-    libraryDescription = 'An unofficial Java wrapper for the Pterodactyl panel'
-
-    siteUrl = 'https://github.com/mattmalec/Pterodactyl4J'
-    gitUrl = 'https://github.com/mattmalec/Pterodactyl4J.git'
-
-    libraryVersion = properties.getProperty("version")
-
-    developerId = 'mattmalec'
-    developerName = 'Matt Malec'
-    developerEmail = 'matt@mattmalec.com'
-
-    licenseName = 'GNU General Public License v3.0'
-    licenseUrl = 'https://www.gnu.org/licenses/gpl-3.0.txt'
-    allLicenses = ["AGPL-V3"]
-}
-group = publishedGroupId
-version = libraryVersion
-
-install {
-    repositories.mavenInstaller {
-        pom.project {
-            packaging 'aar'
-            groupId publishedGroupId
-            artifactId artifact
-
-            name libraryName
-            description libraryDescription
-            url siteUrl
-
-            licenses {
-                license {
-                    name licenseName
-                    url licenseUrl
-                }
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: "https://repo.mattmalec.com/repository/releases") {
+                authentication(userName: properties.getProperty("username"), password: properties.getProperty("password"))
             }
-            developers {
-                developer {
-                    id developerId
-                    name developerName
-                    email developerEmail
-                }
-            }
-            scm {
-                connection gitUrl
-                developerConnection gitUrl
-                url siteUrl
-            }
+            pom.version = version
+            pom.artifactId = "Pterodactyl4J"
+            pom.groupId = "com.mattmalec"
         }
     }
 }
@@ -85,37 +38,16 @@ artifacts {
     archives sourcesJar
 }
 
-bintray {
-    user = properties.getProperty("user")
-    key = properties.getProperty("apikey")
-
-    configurations = ['archives']
-    pkg {
-        repo = bintrayRepo
-        name = bintrayName
-        desc = libraryDescription
-        websiteUrl = siteUrl
-        vcsUrl = gitUrl
-        licenses = allLicenses
-        dryRun = false
-        publish = true
-        override = false
-        publicDownloadNumbers = true
-        version {
-            desc = libraryDescription
-        }
-    }
+repositories {
+    mavenCentral()
+    jcenter()
 }
-    repositories {
-        mavenCentral()
-        jcenter()
-    }
 
-    dependencies {
-        implementation 'com.squareup.okhttp3:okhttp:3.11.0'
-        implementation 'org.json:json:20160810'
-        implementation 'org.slf4j:slf4j-api:1.7.25'
-    }
+dependencies {
+    implementation 'com.squareup.okhttp3:okhttp:3.11.0'
+    implementation 'org.json:json:20160810'
+    implementation 'org.slf4j:slf4j-api:1.7.25'
+}
 
 compileJava.options.encoding = 'UTF-8'
 
