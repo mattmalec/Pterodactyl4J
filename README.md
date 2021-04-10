@@ -1,5 +1,5 @@
-[version]: https://api.bintray.com/packages/mattmalec/Pterodactyl4J/Pterodactyl4J/images/download.svg
-[download]: https://bintray.com/mattmalec/Pterodactyl4J/Pterodactyl4J/_latestVersion
+[version]: https://shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Frepo.mattmalec.com%2Frepository%2Freleases%2Fcom%2Fmattmalec%2FPterodactyl4J%2Fmaven-metadata.xml&color=informational&label=Download
+[download]: #download
 [discord-shield]: https://discord.com/api/guilds/780230961035608064/widget.png
 [discord-invite]: https://discord.gg/7fAabrTJZW
 [ ![version][] ][download]
@@ -134,24 +134,22 @@ public class MyApp extends ClientSocketListenerAdapter
 ```
 
 ## Download
-Latest Stable Version: [Bintray Release](https://bintray.com/mattmalec/Pterodactyl4J/Pterodactyl4J/1.1/link) <br>
-Latest Version: [ ![Download](https://api.bintray.com/packages/mattmalec/Pterodactyl4J/Pterodactyl4J/images/download.svg?version=2.BETA_36) ](https://bintray.com/mattmalec/Pterodactyl4J/Pterodactyl4J/2.BETA_36/link)
+Latest Version: [ ![version][] ][download]
 
 Be sure to replace the **VERSION** key below with the one of the versions shown above!
 
 **Maven**
 ```xml
 <dependency>
-    <groupId>com.mattmalec.Pterodactyl4J</groupId>
+    <groupId>com.mattmalec</groupId>
     <artifactId>Pterodactyl4J</artifactId>
     <version>VERSION</version>
 </dependency>
 ```
 ```xml
 <repository>
-    <id>jcenter</id>
-    <name>jcenter-bintray</name>
-    <url>http://jcenter.bintray.com</url>
+    <id>mattmalec-repo</id>
+    <url>https://repo.mattmalec.com/repository</url>
 </repository>
 
 ```
@@ -159,15 +157,17 @@ Be sure to replace the **VERSION** key below with the one of the versions shown 
 **Gradle**
 ```gradle
 dependencies {
-    compile 'com.mattmalec.Pterodactyl4J:Pterodactyl4J:VERSION'
+    implementation 'com.mattmalec:Pterodactyl4J:VERSION'
 }
 
 repositories {
-    jcenter()
+    maven {
+      url = 'https://repo.mattmalec.com/repository/releases'
+    }
 }
 ```
 
-The builds are distributed using JCenter through Bintray [Pterodactyl4J JCenter Bintray](https://bintray.com/mattmalec/Pterodactyl4J/Pterodactyl4J/)
+The builds are distributed using a Nexus instance
 
 ### Logging Framework - SLF4J
 
