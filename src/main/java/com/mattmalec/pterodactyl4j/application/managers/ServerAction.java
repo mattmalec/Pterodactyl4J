@@ -1,6 +1,7 @@
 package com.mattmalec.pterodactyl4j.application.managers;
 
 import com.mattmalec.pterodactyl4j.DataType;
+import com.mattmalec.pterodactyl4j.EnvironmentValue;
 import com.mattmalec.pterodactyl4j.application.entities.*;
 import com.mattmalec.pterodactyl4j.entities.PteroAction;
 
@@ -23,7 +24,7 @@ public interface ServerAction {
 	ServerAction setDatabases(long amount);
 	ServerAction setAllocations(long amount);
 	ServerAction setBackups(long amount);
-	ServerAction setEnvironment(Map<String, String> environment);
+	ServerAction setEnvironment(Map<String, EnvironmentValue<?>> environment);
 	ServerAction setLocations(Set<Location> locations);
 	default ServerAction setLocation(Location location) {
 		return setLocations(Collections.singleton(location));

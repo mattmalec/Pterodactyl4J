@@ -1,6 +1,7 @@
 package com.mattmalec.pterodactyl4j.application.entities.impl;
 
 import com.mattmalec.pterodactyl4j.DataType;
+import com.mattmalec.pterodactyl4j.EnvironmentValue;
 import com.mattmalec.pterodactyl4j.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.application.entities.*;
 import com.mattmalec.pterodactyl4j.application.managers.ServerAction;
@@ -33,7 +34,7 @@ public class CreateServerImpl implements ServerAction {
 	private long databases = 0L;
 	private long allocations = 0L;
 	private long backups = 0L;
-	private Map<String, String> environment;
+	private Map<String, EnvironmentValue<?>> environment;
 	private Set<Location> locations;
 	private Set<Integer> portRange;
 	private boolean useDedicatedIP;
@@ -158,7 +159,7 @@ public class CreateServerImpl implements ServerAction {
 	}
 
 	@Override
-	public ServerAction setEnvironment(Map<String, String> environment) {
+	public ServerAction setEnvironment(Map<String, EnvironmentValue<?>> environment) {
 		this.environment = environment;
 		return this;
 	}
@@ -209,8 +210,11 @@ public class CreateServerImpl implements ServerAction {
 			Checks.notNull(owner, "Owner");
 			Checks.notNull(egg, "Egg and Nest");
 			Nest nest = egg.getNest().get().orElseGet(() -> egg.getNest().retrieve().execute());
+			Map<String, Object> env = new HashMap<>();
+			environment.forEach((k, v) -> env.put(k, v.get().orElse(null)));
 			egg.getDefaultVariableMap().orElseGet(() ->
-					impl.retrieveEggById(nest, egg.getId()).execute().getDefaultVariableMap().get()).forEach((k, v) -> environment.putIfAbsent(k, v));
+					impl.retrieveEggById(nest, egg.getId()).execute().getDefaultVariableMap().get())
+					.forEach((k, v) -> env.putIfAbsent(k, v.get().orElse(null)));
 			JSONObject featureLimits = new JSONObject()
 					.put("databases", databases)
 					.put("allocations", allocations == 0 && additionalAllocations != null ? additionalAllocations.size() + 1 : allocations)
@@ -224,7 +228,8 @@ public class CreateServerImpl implements ServerAction {
 					.put("threads", threads);
 			JSONObject allocation = new JSONObject()
 					.put("default", defaultAllocation != null ? defaultAllocation.getIdLong() : null)
-					.put("additional", (additionalAllocations != null && additionalAllocations.size() != 0) ? additionalAllocations.stream().map(Allocation::getIdLong).collect(Collectors.toList()) : null);
+					.put("additional", (additionalAllocations != null && additionalAllocations.size() != 0) ?
+							additionalAllocations.stream().map(Allocation::getIdLong).collect(Collectors.toList()) : null);
 			JSONObject deploy = new JSONObject()
 					.put("locations", locations != null ? locations.stream().map(ISnowflake::getIdLong).collect(Collectors.toList()) : null)
 					.put("dedicated_ip", useDedicatedIP)
@@ -239,7 +244,7 @@ public class CreateServerImpl implements ServerAction {
 					.put("startup", startupCommand != null ? startupCommand : egg.getStartupCommand())
 					.put("limits", limits)
 					.put("feature_limits", featureLimits)
-					.put("environment", environment)
+					.put("environment", env)
 					.put("deploy", (locations != null || portRange != null) ? deploy : null)
 					.put("allocation", allocation)
 					.put("start_on_completion", startOnCompletion)
