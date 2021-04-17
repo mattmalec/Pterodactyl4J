@@ -57,24 +57,22 @@ public class Requester {
 			return this;
 		} else {
 			int responseCode = this.response.code();
+			switch (responseCode) {
+				case 403:
+					throw new LoginException("The provided token is either incorrect or does not have access to process this request.");
+				case 404:
+					throw new NotFoundException("The requested entity was not found.");
+				case 422:
+					throw new MissingActionException("The request is missing required fields.", toJSONObject());
+				case 429:
+					throw new RateLimitedException("The request was rate limited.", toJSONObject());
+				case 500:
+					throw new ServerException("The server has encountered an Internal Server Error. Route: " + url);
+				default:
+					throw new HttpException("Pterodactyl4J has encountered a " + response.code() + " error.", toJSONObject());
 
-			if(responseCode == 403) {
-				throw new LoginException("The provided token is either incorrect or does not have access to process this request.");
-			}
-			if(responseCode == 404) {
-				throw new NotFoundException("The requested entity was not found.");
-			}
-			if(responseCode == 422) {
-				throw new MissingActionException("The request is missing required fields.", toJSONObject());
-			}
-			if(responseCode == 429) {
-				throw new RateLimitedException("The request was rate limited.", toJSONObject());
-			}
-			if(responseCode == 500) {
-				throw new ServerException("The server has encountered an Internal Server Error. Route: " + url);
 			}
 		}
-		throw new HttpException("Pterodactyl4J has encountered a " + response.code() + " error.", toJSONObject());
 	}
 	public JSONObject toJSONObject() {
 		return new JSONObject(this.responseBody);
