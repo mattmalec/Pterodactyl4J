@@ -29,7 +29,8 @@ public class Requester {
 		Request.Builder builder = new Request.Builder();
 		builder.header("Content-Type", "application/json");
 		Method method = compiledRoute.getMethod();
-		RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), compiledRoute.getJSONData() != null ? compiledRoute.getJSONData().toString().getBytes() : "".getBytes());
+		RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), compiledRoute.getJSONData() != null ?
+				compiledRoute.getJSONData().toString().getBytes() : new byte[0]);
 		switch(method) {
 			case GET: builder.get();
 				break;
