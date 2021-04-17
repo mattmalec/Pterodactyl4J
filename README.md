@@ -149,7 +149,7 @@ Be sure to replace the **VERSION** key below with the one of the versions shown 
 ```xml
 <repository>
     <id>mattmalec-repo</id>
-    <url>https://repo.mattmalec.com/repository</url>
+    <url>https://repo.mattmalec.com/repository/releases</url>
 </repository>
 
 ```
