@@ -1,5 +1,6 @@
 package com.mattmalec.pterodactyl4j.application.entities.impl;
 
+import com.mattmalec.pterodactyl4j.EnvironmentValue;
 import com.mattmalec.pterodactyl4j.application.entities.Container;
 import org.json.JSONObject;
 
@@ -31,10 +32,10 @@ public class ContainerImpl implements Container {
     }
 
     @Override
-    public Map<String, String> getEnvironment() {
+    public Map<String, EnvironmentValue<?>> getEnvironment() {
         JSONObject environment = json.getJSONObject("environment");
-        HashMap<String, String> environmentMap = new HashMap<>();
-        environment.keys().forEachRemaining(s -> environmentMap.putIfAbsent(s, environment.getString(s)));
+        Map<String, EnvironmentValue<?>> environmentMap = new HashMap<>();
+        environment.keys().forEachRemaining(s -> environmentMap.putIfAbsent(s, EnvironmentValue.of(environment.get(s))));
         return Collections.unmodifiableMap(environmentMap);
     }
 }
