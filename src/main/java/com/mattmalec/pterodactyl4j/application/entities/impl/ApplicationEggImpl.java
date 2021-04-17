@@ -1,5 +1,6 @@
 package com.mattmalec.pterodactyl4j.application.entities.impl;
 
+import com.mattmalec.pterodactyl4j.EnvironmentValue;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationEgg;
 import com.mattmalec.pterodactyl4j.application.entities.Nest;
 import com.mattmalec.pterodactyl4j.application.entities.Script;
@@ -91,9 +92,9 @@ public class ApplicationEggImpl implements ApplicationEgg {
     }
 
     @Override
-    public Optional<Map<String, String>> getDefaultVariableMap() {
+    public Optional<Map<String, EnvironmentValue<?>>> getDefaultVariableMap() {
         if(!getVariables().isPresent()) return Optional.empty();
-        Map<String, String> variableMap = new HashMap<>();
+        Map<String, EnvironmentValue<?>> variableMap = new HashMap<>();
         getVariables().get().forEach(var -> variableMap.put(var.getEnvironmentVariable(), var.getDefaultValue()));
         return Optional.of(Collections.unmodifiableMap(variableMap));
     }

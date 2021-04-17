@@ -1,5 +1,7 @@
 package com.mattmalec.pterodactyl4j.entities;
 
+import com.mattmalec.pterodactyl4j.EnvironmentValue;
+
 import java.util.UUID;
 
 public interface Egg {
@@ -11,7 +13,7 @@ public interface Egg {
         String getName();
         String getDescription();
         String getEnvironmentVariable();
-        String getDefaultValue();
+        EnvironmentValue<?> getDefaultValue();
         String getRules();
     }
 

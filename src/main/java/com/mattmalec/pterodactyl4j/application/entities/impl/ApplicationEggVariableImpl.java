@@ -1,5 +1,6 @@
 package com.mattmalec.pterodactyl4j.application.entities.impl;
 
+import com.mattmalec.pterodactyl4j.EnvironmentValue;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationEgg;
 import org.json.JSONObject;
 
@@ -29,8 +30,8 @@ public class ApplicationEggVariableImpl implements ApplicationEgg.EggVariable {
     }
 
     @Override
-    public String getDefaultValue() {
-        return json.getString("default_value");
+    public EnvironmentValue<?> getDefaultValue() {
+        return EnvironmentValue.of(json.get("default_value"));
     }
 
     @Override

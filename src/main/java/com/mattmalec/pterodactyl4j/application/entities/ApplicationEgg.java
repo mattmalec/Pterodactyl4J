@@ -1,5 +1,6 @@
 package com.mattmalec.pterodactyl4j.application.entities;
 
+import com.mattmalec.pterodactyl4j.EnvironmentValue;
 import com.mattmalec.pterodactyl4j.entities.Egg;
 import com.mattmalec.pterodactyl4j.utils.Relationed;
 
@@ -11,7 +12,7 @@ public interface ApplicationEgg extends Egg, ISnowflake {
 
 	Relationed<Nest> getNest();
 	Optional<List<EggVariable>> getVariables();
-	Optional<Map<String, String>> getDefaultVariableMap();
+	Optional<Map<String, EnvironmentValue<?>>> getDefaultVariableMap();
 	String getAuthor();
 	String getDescription();
 	String getDockerImage();

@@ -1,5 +1,6 @@
 package com.mattmalec.pterodactyl4j.client.entities.impl;
 
+import com.mattmalec.pterodactyl4j.EnvironmentValue;
 import com.mattmalec.pterodactyl4j.client.entities.ClientEgg;
 import org.json.JSONObject;
 
@@ -27,8 +28,8 @@ public class ClientEggVariableImpl implements ClientEgg.EggVariable {
     }
 
     @Override
-    public String getDefaultValue() {
-        return json.getString("default_value");
+    public EnvironmentValue<?> getDefaultValue() {
+        return EnvironmentValue.of(json.get("default_value"));
     }
 
     @Override
