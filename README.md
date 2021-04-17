@@ -50,9 +50,9 @@ public class ServerCreator
         Location location = api.retrieveLocationById("1").execute();
         ApplicationEgg egg = api.retrieveEggById(nest, "3").execute();
 
-        Map<String, String> map = new HashMap<>();
-        map.put("SERVER_JARFILE", "server.jar");
-        map.put("VERSION", "1.8.8");
+        Map<String, EnvironmentValue<?>> map = new HashMap<>();
+        map.put("SERVER_JARFILE", EnvironmentValue.ofString("server.jar"));
+        map.put("VERSION", EnvironmentValue.ofString("1.8.8"));
 
         ServerAction action = api.createServer()
                 .setName("My Server")
@@ -127,7 +127,7 @@ public class MyApp extends ClientSocketListenerAdapter
     public void onStatsUpdate(StatsUpdateEvent event)
     {
 
-        System.out.println(String.format("Memory Usage: %s/%s", event.getMemoryFormatted(DataType.MB), event.getMaxMemoryFormatted(DataType.MB)));
+        System.out.println(String.format("Memory U2sage: %s/%s", event.getMemoryFormatted(DataType.MB), event.getMaxMemoryFormatted(DataType.MB)));
 
     }
 }
