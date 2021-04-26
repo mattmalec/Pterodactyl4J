@@ -77,9 +77,9 @@ public class PteroApplicationImpl implements PteroApplication {
 				Stream<ApplicationUser> newUsers = users.stream();
 
 				if(caseSensetive) {
-					newUsers = newUsers.filter(u -> u.getUserName().toLowerCase().contains(name.toLowerCase()));
-				} else {
 					newUsers = newUsers.filter(u -> u.getUserName().contains(name));
+				} else {
+					newUsers = newUsers.filter(u -> u.getUserName().toLowerCase().contains(name.toLowerCase()));
 				}
 
 				return Collections.unmodifiableList(newUsers.collect(Collectors.toList()));
@@ -94,9 +94,9 @@ public class PteroApplicationImpl implements PteroApplication {
 				Stream<ApplicationUser> newUsers = users.stream();
 
 				if(caseSensetive) {
-					newUsers = newUsers.filter(u -> u.getEmail().toLowerCase().contains(email.toLowerCase()));
-				} else {
 					newUsers = newUsers.filter(u -> u.getEmail().contains(email));
+				} else {
+					newUsers = newUsers.filter(u -> u.getEmail().toLowerCase().contains(email.toLowerCase()));
 				}
 
 				return Collections.unmodifiableList(newUsers.collect(Collectors.toList()));
@@ -157,9 +157,9 @@ public class PteroApplicationImpl implements PteroApplication {
 				Stream<Node> newNodes = nodes.stream();
 
 				if(caseSensetive) {
-					newNodes = newNodes.filter(n -> n.getName().toLowerCase().contains(name.toLowerCase()));
-				} else {
 					newNodes = newNodes.filter(n -> n.getName().contains(name));
+				} else {
+					newNodes = newNodes.filter(n -> n.getName().toLowerCase().contains(name.toLowerCase()));
 				}
 
 				return Collections.unmodifiableList(newNodes.collect(Collectors.toList()));
@@ -333,9 +333,9 @@ public class PteroApplicationImpl implements PteroApplication {
 				Stream<Nest> newNests = nests.stream();
 
 				if(caseSensetive) {
-					newNests = newNests.filter(n -> n.getName().toLowerCase().contains(name.toLowerCase()));
-				} else {
 					newNests = newNests.filter(n -> n.getName().contains(name));
+				} else {
+					newNests = newNests.filter(n -> n.getName().toLowerCase().contains(name.toLowerCase()));
 				}
 
 				return Collections.unmodifiableList(newNests.collect(Collectors.toList()));
@@ -350,9 +350,9 @@ public class PteroApplicationImpl implements PteroApplication {
 				Stream<Nest> newNests = nests.stream();
 
 				if (caseSensetive) {
-					newNests = newNests.filter(n -> n.getAuthor().toLowerCase().contains(author.toLowerCase()));
-				} else {
 					newNests = newNests.filter(n -> n.getAuthor().contains(author));
+				} else {
+					newNests = newNests.filter(n -> n.getAuthor().toLowerCase().contains(author.toLowerCase()));
 				}
 
 				return Collections.unmodifiableList(newNests.collect(Collectors.toList()));
@@ -408,9 +408,9 @@ public class PteroApplicationImpl implements PteroApplication {
 				Stream<Location> newLocations = locations.stream();
 
 				if(caseSensetive) {
-					newLocations = newLocations.filter(l -> l.getShortCode().toLowerCase().contains(name.toLowerCase()));
-				} else {
 					newLocations = newLocations.filter(l -> l.getShortCode().contains(name));
+				} else {
+					newLocations = newLocations.filter(l -> l.getShortCode().toLowerCase().contains(name.toLowerCase()));
 				}
 
 				return Collections.unmodifiableList(newLocations.collect(Collectors.toList()));
@@ -471,9 +471,9 @@ public class PteroApplicationImpl implements PteroApplication {
 				Stream<ApplicationServer> newServers = servers.stream();
 
 				if(caseSensetive) {
-					newServers = newServers.filter(s -> s.getName().toLowerCase().contains(name.toLowerCase()));
-				} else {
 					newServers = newServers.filter(s -> s.getName().contains(name));
+				} else {
+					newServers = newServers.filter(s -> s.getName().toLowerCase().contains(name.toLowerCase()));
 				}
 
 				return Collections.unmodifiableList(newServers.collect(Collectors.toList()));
