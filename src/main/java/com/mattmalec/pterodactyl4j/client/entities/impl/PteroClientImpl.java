@@ -85,7 +85,7 @@ public class PteroClientImpl implements PteroClient {
                     JSONObject server = new JSONObject(o.toString());
                     servers.add(new ClientServerImpl(server, impl));
                 }
-                for (int i = 1; i < pages; i++) {
+                for (int i = 2; i <= pages; i++) {
                     Route.CompiledRoute nextRoute = Route.Client.LIST_SERVERS.compile(Long.toUnsignedString(i));
                     JSONObject nextJson = requester.request(nextRoute).toJSONObject();
                     for (Object o : nextJson.getJSONArray("data")) {

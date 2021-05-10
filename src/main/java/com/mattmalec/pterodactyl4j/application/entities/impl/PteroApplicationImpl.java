@@ -194,7 +194,7 @@ public class PteroApplicationImpl implements PteroApplication {
 					JSONObject allocation = new JSONObject(o.toString());
 					allocations.add(new AllocationImpl(allocation, impl));
 				}
-				for (int i = 1; i < pages; i++) {
+				for (int i = 2; i <= pages; i++) {
 					Route.CompiledRoute nextRoute = Route.Nodes.LIST_ALLOCATIONS.compile(node.getId(), Long.toUnsignedString(i));
 					JSONObject nextJson = requester.request(nextRoute).toJSONObject();
 					for (Object o : nextJson.getJSONArray("data")) {
@@ -313,7 +313,7 @@ public class PteroApplicationImpl implements PteroApplication {
 					JSONObject nest = new JSONObject(o.toString());
 					nests.add(new NestImpl(nest, impl));
 				}
-				for (int i = 1; i < pages; i++) {
+				for (int i = 2; i <= pages; i++) {
 					Route.CompiledRoute nextRoute = Route.Nests.LIST_NESTS.compile(Long.toUnsignedString(i));
 					JSONObject nextJson = requester.request(nextRoute).toJSONObject();
 					for (Object o : nextJson.getJSONArray("data")) {

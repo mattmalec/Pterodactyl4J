@@ -163,7 +163,7 @@ public class ClientServerImpl implements ClientServer {
 				JSONObject backup = new JSONObject(o.toString());
 				backups.add(new BackupImpl(backup, this));
 			}
-			for (int i = 1; i < pages; i++) {
+			for (int i = 2; i <= pages; i++) {
 				Route.CompiledRoute nextRoute = Route.Backups.LIST_BACKUPS.compile(getIdentifier(), Long.toUnsignedString(i));
 				JSONObject nextJson = impl.getRequester().request(nextRoute).toJSONObject();
 				for (Object o : nextJson.getJSONArray("data")) {
