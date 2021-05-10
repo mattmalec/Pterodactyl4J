@@ -59,6 +59,7 @@ public class NestImpl implements Nest {
                 if(!json.has("relationships")) return Optional.empty();
                 List<ApplicationEgg> eggs = new ArrayList<>();
                 JSONObject json = relationships.getJSONObject("eggs");
+                if(json.isNull("attributes")) return Optional.empty();
                 for(Object o : json.getJSONArray("data")) {
                     JSONObject egg = new JSONObject(o.toString());
                     eggs.add(new ApplicationEggImpl(egg, impl));
@@ -73,6 +74,7 @@ public class NestImpl implements Nest {
         if(!json.has("relationships")) return Optional.empty();
         List<ApplicationServer> servers = new ArrayList<>();
         JSONObject json = relationships.getJSONObject("servers");
+        if(json.isNull("attributes")) return Optional.empty();
         for(Object o : json.getJSONArray("data")) {
             JSONObject server = new JSONObject(o.toString());
             servers.add(new ApplicationServerImpl(impl, server));
