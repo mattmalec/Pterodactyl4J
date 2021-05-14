@@ -58,15 +58,15 @@ public enum Permission {
 
     public static final Permission[] ALL_PERMISSIONS = Permission.values();
 
-    public static final Permission[] CONTROL_PERMISSIONS = new Permission[] { CONTROL_CONSOLE, CONTROL_START, CONTROL_STOP, CONTROL_RESTART };
-    public static final Permission[] DATABASE_PERMISSIONS = new Permission[] { DATABASE_READ, DATABASE_CREATE, DATABASE_UPDATE, DATABASE_DELETE, DATABASE_VIEW_PASSWORD };
-    public static final Permission[] SCHEDULE_PERMISSIONS = new Permission[] { SCHEDULE_READ, SCHEDULE_CREATE, SCHEDULE_UPDATE, SCHEDULE_DELETE };
-    public static final Permission[] USER_PERMISSIONS = new Permission[] { USER_READ, USER_CREATE, USER_UPDATE, USER_DELETE };
-    public static final Permission[] BACKUP_PERMISSIONS = new Permission[] { BACKUP_READ, BACKUP_CREATE, BACKUP_UPDATE, BACKUP_DELETE, BACKUP_DOWNLOAD };
+    public static final Permission[] CONTROL_PERMISSIONS    = new Permission[] { CONTROL_CONSOLE, CONTROL_START, CONTROL_STOP, CONTROL_RESTART };
+    public static final Permission[] DATABASE_PERMISSIONS   = new Permission[] { DATABASE_READ, DATABASE_CREATE, DATABASE_UPDATE, DATABASE_DELETE, DATABASE_VIEW_PASSWORD };
+    public static final Permission[] SCHEDULE_PERMISSIONS   = new Permission[] { SCHEDULE_READ, SCHEDULE_CREATE, SCHEDULE_UPDATE, SCHEDULE_DELETE };
+    public static final Permission[] USER_PERMISSIONS       = new Permission[] { USER_READ, USER_CREATE, USER_UPDATE, USER_DELETE };
+    public static final Permission[] BACKUP_PERMISSIONS     = new Permission[] { BACKUP_READ, BACKUP_CREATE, BACKUP_UPDATE, BACKUP_DELETE, BACKUP_DOWNLOAD };
     public static final Permission[] ALLOCATION_PERMISSIONS = new Permission[] { ALLOCATION_READ, ALLOCATION_CREATE, ALLOCATION_UPDATE, ALLOCATION_DELETE };
-    public static final Permission[] FILE_PERMISSIONS = new Permission[] { FILE_READ, FILE_READ_CONTENT, FILE_CREATE, FILE_UPDATE, FILE_DELETE, FILE_ARCHIVE, FILE_SFTP };
-    public static final Permission[] STARTUP_PERMISSIONS = new Permission[] { STARTUP_READ, STARTUP_UPDATE };
-    public static final Permission[] SETTINGS_PERMISSIONS = new Permission[] { SETTINGS_RENAME, SETTINGS_REINSTALL };
+    public static final Permission[] FILE_PERMISSIONS       = new Permission[] { FILE_READ, FILE_READ_CONTENT, FILE_CREATE, FILE_UPDATE, FILE_DELETE, FILE_ARCHIVE, FILE_SFTP };
+    public static final Permission[] STARTUP_PERMISSIONS    = new Permission[] { STARTUP_READ, STARTUP_UPDATE };
+    public static final Permission[] SETTINGS_PERMISSIONS   = new Permission[] { SETTINGS_RENAME, SETTINGS_REINSTALL };
 
 
     Permission(String raw, String description) {
