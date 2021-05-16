@@ -28,7 +28,7 @@ public class ContainerImpl implements Container {
 
     @Override
     public boolean isInstalled() {
-        return json.getBoolean("installed");
+        return json.getInt("installed") != 0;
     }
 
     @Override
