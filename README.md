@@ -54,7 +54,7 @@ public class ServerCreator
         map.put("SERVER_JARFILE", EnvironmentValue.ofString("server.jar"));
         map.put("VERSION", EnvironmentValue.ofString("1.8.8"));
 
-        ServerAction action = api.createServer()
+        PteroAction<ApplicationServer> action = api.createServer()
                 .setName("My Server")
         		.setDescription("Super awesome wrapper")
         		.setOwner(api.retrieveUserById("1").execute())
@@ -69,7 +69,7 @@ public class ServerCreator
         		.setPort(25565)
         		.startOnCompletion(false)
         		.setEnvironment(map);
-        ApplicationServer server = action.build().execute();
+        ApplicationServer server = action.execute();
 
     }
 }
