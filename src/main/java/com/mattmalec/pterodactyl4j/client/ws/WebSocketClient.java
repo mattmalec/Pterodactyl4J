@@ -1,5 +1,6 @@
 package com.mattmalec.pterodactyl4j.client.ws;
 
+import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.client.entities.ClientServer;
 import com.mattmalec.pterodactyl4j.client.entities.impl.PteroClientImpl;
 import com.mattmalec.pterodactyl4j.client.managers.WebSocketManager;
@@ -20,7 +21,7 @@ import java.util.Optional;
 
 public class WebSocketClient extends WebSocketListener implements Runnable {
 
-    private OkHttpClient webSocketClient = new OkHttpClient();
+    private OkHttpClient webSocketClient;
 
     public static final Logger WEBSOCKET_LOG = LoggerFactory.getLogger(WebSocketClient.class);
 
@@ -35,6 +36,7 @@ public class WebSocketClient extends WebSocketListener implements Runnable {
         this.client = client;
         this.server = server;
         this.manager = manager;
+        this.webSocketClient = client.getPteroApi().getWebSocketClient();
         setupHandlers();
     }
 
@@ -64,11 +66,9 @@ public class WebSocketClient extends WebSocketListener implements Runnable {
     public void connect() {
         if(connected)
             throw new IllegalStateException("Client already connected");
-        Route.CompiledRoute route = Route.Client.GET_WEBSOCKET.compile(server.getIdentifier());
-        JSONObject json = client.getRequester().request(route).toJSONObject();
-        JSONObject data = json.getJSONObject("data");
-        String url = data.getString("socket");
-
+        String url = new PteroActionImpl<String>(client.getPteroApi(),
+                Route.Client.GET_WEBSOCKET.compile(server.getIdentifier()),
+                (response, request) -> response.getObject().getJSONObject("data").getString("socket")).execute();
         Request req = new Request.Builder().url(url).build();
         webSocketClient.newWebSocket(req, this);
     }
@@ -95,12 +95,9 @@ public class WebSocketClient extends WebSocketListener implements Runnable {
     public void sendAuthenticate(String token) {
         if(!connected)
             throw new IllegalStateException("Client isn't connected to server websocket");
-        String t = Optional.ofNullable(token).orElseGet(() -> {
-            Route.CompiledRoute route = Route.Client.GET_WEBSOCKET.compile(server.getIdentifier());
-            JSONObject json = client.getRequester().request(route).toJSONObject();
-            JSONObject data = json.getJSONObject("data");
-            return data.getString("token");
-        });
+        String t = Optional.ofNullable(token).orElseGet(() -> new PteroActionImpl<String>(client.getPteroApi(),
+                Route.Client.GET_WEBSOCKET.compile(server.getIdentifier()),
+                (response, request) -> response.getObject().getJSONObject("data").getString("token")).execute());
         send(WebSocketAction.create(WebSocketAction.AUTH, t));
     }
 
@@ -119,8 +116,7 @@ public class WebSocketClient extends WebSocketListener implements Runnable {
     public <T extends ClientSocketHandler> T getHandler(String type) {
         try {
             return (T) handlers.get(type);
-        }
-        catch (ClassCastException e) {
+        } catch (ClassCastException e) {
             throw new IllegalStateException(e);
         }
     }
@@ -130,7 +126,7 @@ public class WebSocketClient extends WebSocketListener implements Runnable {
     public void onOpen(WebSocket webSocket, Response response) {
         connected = true;
         this.webSocket = webSocket;
-        WEBSOCKET_LOG.info(String.format("Connected to websocket for server %s", server.getIdentifier()));
+        WEBSOCKET_LOG.info("Connected to websocket for server {}", server.getIdentifier());
         manager.getEventManager().handle(new ConnectedEvent(client, server, manager, connected));
         sendAuthenticate();
     }
