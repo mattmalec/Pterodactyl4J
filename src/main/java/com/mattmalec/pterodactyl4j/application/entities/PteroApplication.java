@@ -1,17 +1,17 @@
 package com.mattmalec.pterodactyl4j.application.entities;
 
+import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.application.managers.LocationManager;
 import com.mattmalec.pterodactyl4j.application.managers.NodeManager;
-import com.mattmalec.pterodactyl4j.application.managers.ServerAction;
+import com.mattmalec.pterodactyl4j.application.managers.ServerCreationAction;
 import com.mattmalec.pterodactyl4j.application.managers.UserManager;
-import com.mattmalec.pterodactyl4j.entities.PteroAction;
 
 import java.util.List;
 
 /**
  * The core of PteroApplication. All parts of the the PteroApplication API can be accessed starting from this class.
  *
- * @see com.mattmalec.pterodactyl4j.PteroBuilder
+ * @see com.mattmalec.pterodactyl4j.PteroBuilder PteroBuilder
  */
 public interface PteroApplication {
 
@@ -19,7 +19,7 @@ public interface PteroApplication {
 	 * Retrieves all of the ApplicationUsers from the Pterodactyl instance
 	 * <br>This requires an <b>Application API key</b> with the <b>Users</b> permission with <b>Read</b> access.
 	 *
-	 * @return {@link com.mattmalec.pterodactyl4j.entities.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationUser ApplicationUsers}
+	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationUser ApplicationUsers}
 	 */
 	PteroAction<List<ApplicationUser>> retrieveUsers();
 
@@ -36,7 +36,7 @@ public interface PteroApplication {
 	 * @throws com.mattmalec.pterodactyl4j.exceptions.NotFoundException
 	 * 		   If the user cannot be found
 	 *
-	 * @return {@link com.mattmalec.pterodactyl4j.entities.PteroAction PteroAction} - Type {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationUser ApplicationUsers}
+	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationUser ApplicationUsers}
 	 */
 	PteroAction<ApplicationUser> retrieveUserById(String id);
 
@@ -53,9 +53,11 @@ public interface PteroApplication {
 	 * @throws com.mattmalec.pterodactyl4j.exceptions.NotFoundException
 	 * 		   If the user cannot be found
 	 *
-	 * @return {@link com.mattmalec.pterodactyl4j.entities.PteroAction PteroAction} - Type {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationUser ApplicationUsers}
+	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationUser ApplicationUsers}
 	 */
-	PteroAction<ApplicationUser> retrieveUserById(long id);
+	default PteroAction<ApplicationUser> retrieveUserById(long id) {
+		return retrieveUserById(Long.toUnsignedString(id));
+	}
 
 	/**
 	 * Retrieves ApplicationUsers matching the provided username from Pterodactyl instance
@@ -72,7 +74,7 @@ public interface PteroApplication {
 	 * @throws com.mattmalec.pterodactyl4j.exceptions.NotFoundException
 	 * 		   If the user cannot be found
 	 *
-	 * @return {@link com.mattmalec.pterodactyl4j.entities.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationUser ApplicationUsers}
+	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationUser ApplicationUsers}
 	 */
 	PteroAction<List<ApplicationUser>> retrieveUsersByUsername(String name, boolean caseSensetive);
 
@@ -91,7 +93,7 @@ public interface PteroApplication {
 	 * @throws com.mattmalec.pterodactyl4j.exceptions.NotFoundException
 	 * 		   If the user cannot be found
 	 *
-	 * @return {@link com.mattmalec.pterodactyl4j.entities.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationUser ApplicationUsers}
+	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationUser ApplicationUsers}
 	 */
 	PteroAction<List<ApplicationUser>> retrieveUsersByEmail(String email, boolean caseSensetive);
 
@@ -110,7 +112,7 @@ public interface PteroApplication {
 	 * @throws com.mattmalec.pterodactyl4j.exceptions.LoginException
 	 *         If the API key is incorrect or doesn't have the required permissions
 	 *
-	 * @return {@link com.mattmalec.pterodactyl4j.entities.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.Node Nodes}
+	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.Node Nodes}
 	 */
 	PteroAction<List<Node>> retrieveNodes();
 
@@ -127,7 +129,7 @@ public interface PteroApplication {
 	 * @throws com.mattmalec.pterodactyl4j.exceptions.NotFoundException
 	 * 		   If the node cannot be found
 	 *
-	 * @return {@link com.mattmalec.pterodactyl4j.entities.PteroAction PteroAction} - Type {@link com.mattmalec.pterodactyl4j.application.entities.Node Node}
+	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link com.mattmalec.pterodactyl4j.application.entities.Node Node}
 	 */
 	PteroAction<Node> retrieveNodeById(String id);
 
@@ -144,9 +146,11 @@ public interface PteroApplication {
 	 * @throws com.mattmalec.pterodactyl4j.exceptions.NotFoundException
 	 * 		   If the node cannot be found
 	 *
-	 * @return {@link com.mattmalec.pterodactyl4j.entities.PteroAction PteroAction} - Type {@link com.mattmalec.pterodactyl4j.application.entities.Node Node}
+	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link com.mattmalec.pterodactyl4j.application.entities.Node Node}
 	 */
-	PteroAction<Node> retrieveNodeById(long id);
+	default PteroAction<Node> retrieveNodeById(long id) {
+		return retrieveNodeById(Long.toUnsignedString(id));
+	}
 
 	/**
 	 * Retrieves Nodes matching the provided name from Pterodactyl instance
@@ -160,7 +164,7 @@ public interface PteroApplication {
 	 * @throws com.mattmalec.pterodactyl4j.exceptions.LoginException
 	 *         If the API key is incorrect or doesn't have the required permissions
 	 *
-	 * @return {@link com.mattmalec.pterodactyl4j.entities.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.Node Nodes}
+	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.Node Nodes}
 	 */
 	PteroAction<List<Node>> retrieveNodesByName(String name, boolean caseSensetive);
 
@@ -177,7 +181,7 @@ public interface PteroApplication {
 	 * @throws com.mattmalec.pterodactyl4j.exceptions.NotFoundException
 	 * 		   If the user cannot be found
 	 *
-	 * @return {@link com.mattmalec.pterodactyl4j.entities.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.Node Nodes}
+	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.Node Nodes}
 	 */
 	PteroAction<List<Node>> retrieveNodesByLocation(Location location);
 
@@ -202,7 +206,7 @@ public interface PteroApplication {
 	 * @throws com.mattmalec.pterodactyl4j.exceptions.NotFoundException
 	 * 		   If the allocation cannot be found
 	 *
-	 * @return {@link com.mattmalec.pterodactyl4j.entities.PteroAction PteroAction} - Type {@link com.mattmalec.pterodactyl4j.application.entities.Allocation Allocation}
+	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link com.mattmalec.pterodactyl4j.application.entities.Allocation Allocation}
 	 */
 	PteroAction<Allocation> retrieveAllocationById(String id);
 
@@ -219,9 +223,11 @@ public interface PteroApplication {
 	 * @throws com.mattmalec.pterodactyl4j.exceptions.NotFoundException
 	 * 		   If the allocation cannot be found
 	 *
-	 * @return {@link com.mattmalec.pterodactyl4j.entities.PteroAction PteroAction} - Type {@link com.mattmalec.pterodactyl4j.application.entities.Allocation Allocation}
+	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link com.mattmalec.pterodactyl4j.application.entities.Allocation Allocation}
 	 */
-	PteroAction<Allocation> retrieveAllocationById(long id);
+	default PteroAction<Allocation> retrieveAllocationById(long id) {
+		return retrieveAllocationById(Long.toUnsignedString(id));
+	}
 
 	/**
 	 * Retrieves Allocations from the provided {@link com.mattmalec.pterodactyl4j.application.entities.Node Node} from Pterodactyl instance
@@ -233,7 +239,7 @@ public interface PteroApplication {
 	 * @throws com.mattmalec.pterodactyl4j.exceptions.LoginException
 	 *         If the API key is incorrect or doesn't have the required permissions
 	 *
-	 * @return {@link com.mattmalec.pterodactyl4j.entities.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.Allocation Allocations}
+	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.Allocation Allocations}
 	 */
 	PteroAction<List<Allocation>> retrieveAllocationsByNode(Node node);
 
@@ -244,7 +250,7 @@ public interface PteroApplication {
 	 * @throws com.mattmalec.pterodactyl4j.exceptions.LoginException
 	 *         If the API key is incorrect or doesn't have the required permissions
 	 *
-	 * @return {@link com.mattmalec.pterodactyl4j.entities.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.Allocation Allocations}
+	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.Allocation Allocations}
 	 */
 	PteroAction<List<Allocation>> retrieveAllocations();
 
@@ -255,7 +261,7 @@ public interface PteroApplication {
 	 * @throws com.mattmalec.pterodactyl4j.exceptions.LoginException
 	 *         If the API key is incorrect or doesn't have the required permissions
 	 *
-	 * @return {@link com.mattmalec.pterodactyl4j.entities.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.Location Locations}
+	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.Location Locations}
 	 */
 	PteroAction<List<Location>> retrieveLocations();
 
@@ -272,7 +278,7 @@ public interface PteroApplication {
 	 * @throws com.mattmalec.pterodactyl4j.exceptions.NotFoundException
 	 * 		   If the location cannot be found
 	 *
-	 * @return {@link com.mattmalec.pterodactyl4j.entities.PteroAction PteroAction} - Type {@link com.mattmalec.pterodactyl4j.application.entities.Location Location}
+	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link com.mattmalec.pterodactyl4j.application.entities.Location Location}
 	 */
 	PteroAction<Location> retrieveLocationById(String id);
 
@@ -289,9 +295,11 @@ public interface PteroApplication {
 	 * @throws com.mattmalec.pterodactyl4j.exceptions.NotFoundException
 	 * 		   If the location cannot be found
 	 *
-	 * @return {@link com.mattmalec.pterodactyl4j.entities.PteroAction PteroAction} - Type {@link com.mattmalec.pterodactyl4j.application.entities.Location Location}
+	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link com.mattmalec.pterodactyl4j.application.entities.Location Location}
 	 */
-	PteroAction<Location> retrieveLocationById(long id);
+	default PteroAction<Location> retrieveLocationById(long id) {
+		return retrieveLocationById(Long.toUnsignedString(id));
+	}
 
 	/**
 	 * Retrieves Locations matching the provided short code from Pterodactyl instance
@@ -306,7 +314,7 @@ public interface PteroApplication {
 	 * @throws com.mattmalec.pterodactyl4j.exceptions.LoginException
 	 *         If the API key is incorrect or doesn't have the required permissions
 	 *
-	 * @return {@link com.mattmalec.pterodactyl4j.entities.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.Location Locations}
+	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.Location Locations}
 	 */
 	PteroAction<List<Location>> retrieveLocationsByShortCode(String name, boolean caseSensetive);
 
@@ -328,7 +336,7 @@ public interface PteroApplication {
 	 * @throws com.mattmalec.pterodactyl4j.exceptions.LoginException
 	 *         If the API key is incorrect or doesn't have the required permissions
 	 *
-	 * @return {@link com.mattmalec.pterodactyl4j.entities.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationEgg ApplicationEggs}
+	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationEgg ApplicationEggs}
 	 */
 	PteroAction<List<ApplicationEgg>> retrieveEggsByNest(Nest nest);
 
@@ -340,7 +348,7 @@ public interface PteroApplication {
 	 * @throws com.mattmalec.pterodactyl4j.exceptions.LoginException
 	 *         If the API key is incorrect or doesn't have the required permissions
 	 *
-	 * @return {@link com.mattmalec.pterodactyl4j.entities.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationEgg ApplicationEggs}
+	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationEgg ApplicationEggs}
 	 */
 	PteroAction<List<ApplicationEgg>> retrieveEggs();
 
@@ -360,7 +368,7 @@ public interface PteroApplication {
 	 * @throws com.mattmalec.pterodactyl4j.exceptions.NotFoundException
 	 * 		   If the egg cannot be found
 	 *
-	 * @return {@link com.mattmalec.pterodactyl4j.entities.PteroAction PteroAction} - Type {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationEgg ApplicationEgg}
+	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationEgg ApplicationEgg}
 	 */
 	PteroAction<ApplicationEgg> retrieveEggById(Nest nest, String id);
 
@@ -380,9 +388,11 @@ public interface PteroApplication {
 	 * @throws com.mattmalec.pterodactyl4j.exceptions.NotFoundException
 	 * 		   If the egg cannot be found
 	 *
-	 * @return {@link com.mattmalec.pterodactyl4j.entities.PteroAction PteroAction} - Type {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationEgg ApplicationEgg}
+	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationEgg ApplicationEgg}
 	 */
-	PteroAction<ApplicationEgg> retrieveEggById(Nest nest, long id);
+	default PteroAction<ApplicationEgg> retrieveEggById(Nest nest, long id) {
+		return retrieveEggById(nest, Long.toUnsignedString(id));
+	}
 
 	/**
 	 * Retrieves an individual Nest represented by the provided id from Pterodactyl instance
@@ -397,7 +407,7 @@ public interface PteroApplication {
 	 * @throws com.mattmalec.pterodactyl4j.exceptions.NotFoundException
 	 * 		   If the egg cannot be found
 	 *
-	 * @return {@link com.mattmalec.pterodactyl4j.entities.PteroAction PteroAction} - Type {@link com.mattmalec.pterodactyl4j.application.entities.Nest Nest}
+	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link com.mattmalec.pterodactyl4j.application.entities.Nest Nest}
 	 */
 	PteroAction<Nest> retrieveNestById(String id);
 
@@ -414,9 +424,11 @@ public interface PteroApplication {
 	 * @throws com.mattmalec.pterodactyl4j.exceptions.NotFoundException
 	 * 		   If the egg cannot be found
 	 *
-	 * @return {@link com.mattmalec.pterodactyl4j.entities.PteroAction PteroAction} - Type {@link com.mattmalec.pterodactyl4j.application.entities.Nest Nest}
+	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link com.mattmalec.pterodactyl4j.application.entities.Nest Nest}
 	 */
-	PteroAction<Nest> retrieveNestById(long id);
+	default PteroAction<Nest> retrieveNestById(long id) {
+		return retrieveNestById(Long.toUnsignedString(id));
+	}
 
 	/**
 	 * Retrieves all of the Nests from the Pterodactyl instance
@@ -426,7 +438,7 @@ public interface PteroApplication {
 	 * @throws com.mattmalec.pterodactyl4j.exceptions.LoginException
 	 *         If the API key is incorrect or doesn't have the required permissions
 	 *
-	 * @return {@link com.mattmalec.pterodactyl4j.entities.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationEgg ApplicationEggs}
+	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationEgg ApplicationEggs}
 	 */
 	PteroAction<List<Nest>> retrieveNests();
 
@@ -442,7 +454,7 @@ public interface PteroApplication {
 	 * @throws com.mattmalec.pterodactyl4j.exceptions.LoginException
 	 *         If the API key is incorrect or doesn't have the required permissions
 	 *
-	 * @return {@link com.mattmalec.pterodactyl4j.entities.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.Nest Nests}
+	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.Nest Nests}
 	 */
 	PteroAction<List<Nest>> retrieveNestsByAuthor(String author, boolean caseSensetive);
 
@@ -458,7 +470,7 @@ public interface PteroApplication {
 	 * @throws com.mattmalec.pterodactyl4j.exceptions.LoginException
 	 *         If the API key is incorrect or doesn't have the required permissions
 	 *
-	 * @return {@link com.mattmalec.pterodactyl4j.entities.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.Nest Nests}
+	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.Nest Nests}
 	 */
 	PteroAction<List<Nest>> retrieveNestsByName(String name, boolean caseSensetive);
 
@@ -469,7 +481,7 @@ public interface PteroApplication {
 	 * @throws com.mattmalec.pterodactyl4j.exceptions.LoginException
 	 *         If the API key is incorrect or doesn't have the required permissions
 	 *
-	 * @return {@link com.mattmalec.pterodactyl4j.entities.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServers}
+	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServers}
 	 */
 	PteroAction<List<ApplicationServer>> retrieveServers();
 
@@ -486,7 +498,7 @@ public interface PteroApplication {
 	 * @throws com.mattmalec.pterodactyl4j.exceptions.NotFoundException
 	 * 		   If the server cannot be found
 	 *
-	 * @return {@link com.mattmalec.pterodactyl4j.entities.PteroAction PteroAction} - Type {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer}
+	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer}
 	 */
 	PteroAction<ApplicationServer> retrieveServerById(String id);
 
@@ -503,9 +515,11 @@ public interface PteroApplication {
 	 * @throws com.mattmalec.pterodactyl4j.exceptions.NotFoundException
 	 * 		   If the server cannot be found
 	 *
-	 * @return {@link com.mattmalec.pterodactyl4j.entities.PteroAction PteroAction} - Type {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer}
+	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer}
 	 */
-	PteroAction<ApplicationServer> retrieveServerById(long id);
+	default PteroAction<ApplicationServer> retrieveServerById(long id) {
+		return retrieveServerById(Long.toUnsignedString(id));
+	}
 
 	/**
 	 * Retrieves ApplicationServers matching the provided name from Pterodactyl instance
@@ -519,7 +533,7 @@ public interface PteroApplication {
 	 * @throws com.mattmalec.pterodactyl4j.exceptions.LoginException
 	 *         If the API key is incorrect or doesn't have the required permissions
 	 *
-	 * @return {@link com.mattmalec.pterodactyl4j.entities.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServers}
+	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServers}
 	 */
 	PteroAction<List<ApplicationServer>> retrieveServersByName(String name, boolean caseSensetive);
 
@@ -533,7 +547,7 @@ public interface PteroApplication {
 	 * @throws com.mattmalec.pterodactyl4j.exceptions.LoginException
 	 *         If the API key is incorrect or doesn't have the required permissions
 	 *
-	 * @return {@link com.mattmalec.pterodactyl4j.entities.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServers}
+	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServers}
 	 */
 	PteroAction<List<ApplicationServer>> retrieveServersByOwner(ApplicationUser user);
 
@@ -547,7 +561,7 @@ public interface PteroApplication {
 	 * @throws com.mattmalec.pterodactyl4j.exceptions.LoginException
 	 *         If the API key is incorrect or doesn't have the required permissions
 	 *
-	 * @return {@link com.mattmalec.pterodactyl4j.entities.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServers}
+	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServers}
 	 */
 	PteroAction<List<ApplicationServer>> retrieveServersByNode(Node node);
 
@@ -561,18 +575,18 @@ public interface PteroApplication {
 	 * @throws com.mattmalec.pterodactyl4j.exceptions.LoginException
 	 *         If the API key is incorrect or doesn't have the required permissions
 	 *
-	 * @return {@link com.mattmalec.pterodactyl4j.entities.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServers}
+	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServers}
 	 */
 	PteroAction<List<ApplicationServer>> retrieveServersByLocation(Location location);
 
 	/**
-	 * Returns a {@link com.mattmalec.pterodactyl4j.application.managers.ServerAction ServerAction}, used to create servers on the Pterodactyl instance
-	 * <br>Executing the {@link ServerAction#build()} method requires an <b>Application API key</b> with the <b>Locations</b>, <b>Nests</b> and <b>Nodes</b> with <b>Read</b> access
+	 * Returns a {@link ServerCreationAction ServerAction}, used to create servers on the Pterodactyl instance
+	 * <br>Executing the {@link ServerCreationAction#build()} method requires an <b>Application API key</b> with the <b>Locations</b>, <b>Nests</b> and <b>Nodes</b> with <b>Read</b> access
 	 * and <b>Servers</b> and <b>Users</b> permission with <b>Read & Write</b> access.
 	 *
 	 * @return The ServerAction used to create servers
 	 */
-	ServerAction createServer();
+	ServerCreationAction createServer();
 
 
 }

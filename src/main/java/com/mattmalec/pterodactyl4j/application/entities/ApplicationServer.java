@@ -22,8 +22,8 @@ import java.util.Optional;
 public interface ApplicationServer extends Server, ISnowflake {
 
 	/**
-	 * Returns whether or not this ApplicationServer is suspsneded
-	 * The server suspension state can be controlled using {@link ServerController#suspend()} and {@link ServerController#unsuspend()}.
+	 * Returns whether or not this ApplicationServer is currently in a suspended state
+	 * <p> The server suspension state can be controlled using {@link ServerController#suspend()} and {@link ServerController#unsuspend()}.
 	 *
 	 * @return True - if this ApplicationServer is suspended
 	 */
@@ -56,10 +56,33 @@ public interface ApplicationServer extends Server, ISnowflake {
 	 * @return {@link java.util.Optional Optional} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.Allocation Allocations}
 	 */
 	Optional<List<Allocation>> getAllocations();
+
+	/**
+	 * The main allocation for the ApplicationServer
+	 *
+	 * @return {@link com.mattmalec.pterodactyl4j.utils.Relationed Relationed} - Type {@link com.mattmalec.pterodactyl4j.application.entities.Allocation Allocation}
+	 */
 	Relationed<Allocation> getDefaultAllocation();
+
+	/**
+	 * The Nest the ApplicationServer is using
+	 *
+	 * @return {@link com.mattmalec.pterodactyl4j.utils.Relationed Relationed} - Type {@link com.mattmalec.pterodactyl4j.application.entities.Nest Nest}
+	 */
 	Relationed<Nest> getNest();
+
+	/**
+	 * The Egg the ApplicationServer is using
+	 *
+	 * @return {@link com.mattmalec.pterodactyl4j.utils.Relationed Relationed} - Type {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationEgg ApplicationEgg}
+	 */
 	Relationed<ApplicationEgg> getEgg();
-	long getPack();
+
+	/**
+	 * The Egg the ApplicationServer is using
+	 *
+	 * @return {@link com.mattmalec.pterodactyl4j.utils.Relationed Relationed} - Type {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationEgg ApplicationEgg}
+	 */
 	Container getContainer();
 	ServerManager getManager();
 	ServerController getController();

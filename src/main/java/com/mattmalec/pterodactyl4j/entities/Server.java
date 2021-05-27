@@ -9,21 +9,21 @@ import java.util.UUID;
 public interface Server {
 
 	/**
-	 * The UUID of the {@link com.mattmalec.pterodactyl4j.entities.Server Server}.
+	 * The UUID of the Server.
 	 *
 	 * @return Never-null {@link java.util.UUID} containing the Servers's UUID.
 	 */
 	UUID getUUID();
 
 	/**
-	 * The short identifier of the {@link com.mattmalec.pterodactyl4j.entities.Server Server}.
+	 * The short identifier of the Server.
 	 *
 	 * @return Never-null String containing the Servers's identifier.
 	 */
 	String getIdentifier();
 
 	/**
-	 * The human readable name of the {@link com.mattmalec.pterodactyl4j.entities.Server Server}.
+	 * The human readable name of the Server.
 	 * <p>
 	 * This value can be modified using {@link com.mattmalec.pterodactyl4j.application.managers.ServerManager#setName(String) ServerManager.setName(String)}.
 	 *
@@ -32,16 +32,16 @@ public interface Server {
 	String getName();
 
 	/**
-	 * The description of the {@link com.mattmalec.pterodactyl4j.entities.Server Server}.
+	 * The description of the Server
 	 * <p>
-	 * This value can be modified using {@link com.mattmalec.pterodactyl4j.application.managers.ServerManager#setDescription(String)}.
+	 * This value can be modified using {@link com.mattmalec.pterodactyl4j.application.managers.ServerManager#setDescription(String) ServerManager#setDescription(String)}.
 	 *
 	 * @return Never-null String containing the Servers's description.
 	 */
 	String getDescription();
 
 	/**
-	 * The server resource limits of the {@link com.mattmalec.pterodactyl4j.entities.Server Server}.
+	 * The server resource limits of the Server.
 	 * <p>
 	 * These values can be modified using the {@link com.mattmalec.pterodactyl4j.application.managers.ServerManager ServerManager}.
 	 *
@@ -50,7 +50,7 @@ public interface Server {
 	Limit getLimits();
 
 	/**
-	 * The feature limits of the {@link com.mattmalec.pterodactyl4j.entities.Server Server}.
+	 * The feature limits of the Server.
 	 * <p>
 	 * These values can be modified using the {@link com.mattmalec.pterodactyl4j.application.managers.ServerManager ServerManager}.
 	 *
