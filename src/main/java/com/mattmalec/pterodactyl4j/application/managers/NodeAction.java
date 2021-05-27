@@ -1,10 +1,10 @@
 package com.mattmalec.pterodactyl4j.application.managers;
 
+import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.application.entities.Location;
 import com.mattmalec.pterodactyl4j.application.entities.Node;
-import com.mattmalec.pterodactyl4j.entities.PteroAction;
 
-public interface NodeAction {
+public interface NodeAction extends PteroAction<Node> {
 
 	NodeAction setName(String name);
 	NodeAction setLocation(Location location);
@@ -24,7 +24,5 @@ public interface NodeAction {
 	NodeAction setDaemonListenPort(String port);
 	NodeAction setThrottle(boolean throttle);
 	NodeAction setScheme(boolean secure);
-
-	PteroAction<Node> build();
 
 }

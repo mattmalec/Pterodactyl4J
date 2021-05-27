@@ -1,8 +1,8 @@
 package com.mattmalec.pterodactyl4j.client.entities.impl;
 
+import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.client.entities.Backup;
 import com.mattmalec.pterodactyl4j.client.entities.ClientServer;
-import com.mattmalec.pterodactyl4j.entities.PteroAction;
 import org.json.JSONObject;
 
 import java.time.OffsetDateTime;

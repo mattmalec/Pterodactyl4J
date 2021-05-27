@@ -1,11 +1,12 @@
 package com.mattmalec.pterodactyl4j.application.entities;
 
+import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.application.managers.AllocationManager;
 import com.mattmalec.pterodactyl4j.application.managers.NodeAction;
-import com.mattmalec.pterodactyl4j.entities.PteroAction;
 import com.mattmalec.pterodactyl4j.utils.Relationed;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface Node extends ISnowflake {
 
@@ -44,5 +45,32 @@ public interface Node extends ISnowflake {
 
 	NodeAction edit();
 	PteroAction<Void> delete();
+
+	interface Configuration {
+		boolean isDebug();
+		UUID getUUID();
+		String getTokenId();
+		String getToken();
+		APIConfiguration getAPI();
+		SystemConfiguration getSystem();
+		List<String> getAllowedMounts();
+		String getRemote();
+	}
+
+	interface APIConfiguration {
+		String getHost();
+		int getPort();
+		boolean isSSLEnabled();
+		String getSSLCertPath();
+		String getSSLKeyPath();
+		int getUploadLimit();
+	}
+
+	interface SystemConfiguration {
+		String getDataPath();
+		int getSFTPPort();
+	}
+
+
 
 }

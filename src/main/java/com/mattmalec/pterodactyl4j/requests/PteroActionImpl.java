@@ -1,22 +1,21 @@
-package com.mattmalec.pterodactyl4j;
+package com.mattmalec.pterodactyl4j.requests;
 
-import com.mattmalec.pterodactyl4j.requests.*;
+import com.mattmalec.pterodactyl4j.PteroAction;
+import com.mattmalec.pterodactyl4j.entities.PteroAPI;
+import com.mattmalec.pterodactyl4j.exceptions.HttpException;
 import okhttp3.RequestBody;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.CompletionException;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class PteroActionImpl<T> implements PteroAction<T> {
 
-    private final ExecutorService executor = Executors.newSingleThreadExecutor();
-
-    private Requester requester;
+    private PteroAPI api;
     private Route.CompiledRoute route;
     private RequestBody data;
 
@@ -28,50 +27,64 @@ public class PteroActionImpl<T> implements PteroAction<T> {
         return new PteroActionImpl<>(supplier);
     }
 
-    public static <T> PteroActionImpl<T> onRequestExecute(Requester requester, Route.CompiledRoute route) {
-        return new PteroActionImpl<>(requester, route);
+    public static <T> PteroActionImpl<T> onRequestExecute(PteroAPI api, Route.CompiledRoute route) {
+        return new PteroActionImpl<>(api, route);
     }
 
-    public static <T> PteroActionImpl<T> onRequestExecute(Requester requester, Route.CompiledRoute route, RequestBody data) {
-        return new PteroActionImpl<>(requester, route, data);
+    public static <T> PteroActionImpl<T> onRequestExecute(PteroAPI api, Route.CompiledRoute route, RequestBody data) {
+        return new PteroActionImpl<>(api, route, data);
     }
 
-    public static <T> PteroActionImpl<T> onRequestExecute(Requester requester, Route.CompiledRoute route, BiFunction<Response, Request<T>, T> handler) {
-        return new PteroActionImpl<>(requester, route, handler);
+    public static <T> PteroActionImpl<T> onRequestExecute(PteroAPI api, Route.CompiledRoute route, BiFunction<Response, Request<T>, T> handler) {
+        return new PteroActionImpl<>(api, route, handler);
     }
 
     public PteroActionImpl(Supplier<? extends T> supplier) {
         this.supplier = supplier;
     }
 
-    public PteroActionImpl(Requester requester, Route.CompiledRoute route) {
-        this(requester, route, null, null);
+    public PteroActionImpl(PteroAPI api) {
+        this(api, null);
     }
 
-    public PteroActionImpl(Requester requester, Route.CompiledRoute route, RequestBody data) {
-        this(requester, route, data, null);
+    public PteroActionImpl(PteroAPI api, Route.CompiledRoute route) {
+        this(api, route, null, null);
     }
 
-    public PteroActionImpl(Requester requester, Route.CompiledRoute route, BiFunction<Response, Request<T>, T> handler) {
-        this(requester, route, null, handler);
+    public PteroActionImpl(PteroAPI api, Route.CompiledRoute route, RequestBody data) {
+        this(api, route, data, null);
     }
 
-    public PteroActionImpl(Requester requester, Route.CompiledRoute route, RequestBody data, BiFunction<Response, Request<T>, T> handler) {
-        this.requester = requester;
+    public PteroActionImpl(PteroAPI api, Route.CompiledRoute route, BiFunction<Response, Request<T>, T> handler) {
+        this(api, route, null, handler);
+    }
+
+    public PteroActionImpl(PteroAPI api, Route.CompiledRoute route, RequestBody data, BiFunction<Response, Request<T>, T> handler) {
+        this.api = api;
         this.route = route;
         this.data = data;
         this.handler = handler;
     }
 
-    private static final Consumer<Object> DEFAULT_SUCCESS = o -> {};
-    private static final Consumer<? super Throwable> DEFAULT_FAILURE = t -> System.err.printf("Action execute returned failure: %s%n", t.getMessage());
+    public static final Consumer<Object> DEFAULT_SUCCESS = o -> {};
+    public static final Consumer<? super Throwable> DEFAULT_FAILURE = t -> System.err.printf("Action execute returned failure: %s%n", t.getMessage());
 
     @Override
-    public T execute() {
+    public T execute(boolean shouldQueue) {
         if (supplier == null) {
             Route.CompiledRoute route = finalizeRoute();
             RequestBody data = finalizeData();
-            return new RequestFuture<>(this, route, data, true).join();
+            try {
+                return new RequestFuture<>(this, route, data, shouldQueue).join();
+            } catch (CompletionException ex) {
+                if (ex.getCause() != null) {
+                    Throwable cause = ex.getCause();
+                    if (cause instanceof HttpException) {
+                        throw (HttpException) cause.fillInStackTrace();
+                    }
+                }
+                throw ex;
+            }
         } else
             return supplier.get();
     }
@@ -88,14 +101,20 @@ public class PteroActionImpl<T> implements PteroAction<T> {
             // the fact that i have to do this is bullshit
             Consumer<? super T> finalizedSuccess = success;
             Consumer<? super Throwable> finalizedFailure = failure;
-            finalizeDataAsync(data -> requester.request(new Request<>(this, finalizedSuccess, finalizedFailure, route, data, true)));
+
+//            finalizedFailure.accept(new HttpException("fuck", "you"));
+
+            api.getActionPool().submit(() -> {
+                RequestBody data = finalizeData();
+                api.getRequester().request(new Request<>(this, finalizedSuccess, finalizedFailure, route, data, true));
+            });
         } else
-            CompletableFuture.supplyAsync(supplier, executor)
+            CompletableFuture.supplyAsync(supplier, api.getSupplierPool())
                     .thenAcceptAsync(success);
     }
 
-    public Requester getRequester() {
-        return requester;
+    public PteroAPI getApi() {
+        return api;
     }
 
     public void handleResponse(Response response, Request<T> request) {
@@ -108,10 +127,6 @@ public class PteroActionImpl<T> implements PteroAction<T> {
         if(response.isEmpty())
             request.onSuccess(null);
         else request.onSuccess(handler.apply(response, request));
-    }
-
-    protected void finalizeDataAsync(Consumer<RequestBody> body) {
-        body.accept(finalizeData());
     }
 
     protected RequestBody finalizeData() {

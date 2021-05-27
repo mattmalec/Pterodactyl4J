@@ -1,11 +1,11 @@
 package com.mattmalec.pterodactyl4j.application.entities.impl;
 
+import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.application.entities.*;
 import com.mattmalec.pterodactyl4j.application.managers.ServerController;
 import com.mattmalec.pterodactyl4j.application.managers.ServerManager;
 import com.mattmalec.pterodactyl4j.entities.FeatureLimit;
 import com.mattmalec.pterodactyl4j.entities.Limit;
-import com.mattmalec.pterodactyl4j.entities.PteroAction;
 import com.mattmalec.pterodactyl4j.entities.impl.FeatureLimitImpl;
 import com.mattmalec.pterodactyl4j.entities.impl.LimitImpl;
 import com.mattmalec.pterodactyl4j.utils.Relationed;
@@ -172,11 +172,6 @@ public class ApplicationServerImpl implements ApplicationServer {
 	@Override
 	public ServerController getController() {
 		return new ServerController(this, impl);
-	}
-
-	@Override
-	public long getPack() {
-		return json.getLong("pack");
 	}
 
 	@Override

@@ -1,13 +1,12 @@
 package com.mattmalec.pterodactyl4j.client.entities.impl;
 
-import com.mattmalec.pterodactyl4j.PteroActionImpl;
+import com.mattmalec.pterodactyl4j.PteroAction;
+import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.client.entities.Backup;
 import com.mattmalec.pterodactyl4j.client.entities.ClientServer;
 import com.mattmalec.pterodactyl4j.client.managers.BackupAction;
 import com.mattmalec.pterodactyl4j.client.managers.BackupManager;
-import com.mattmalec.pterodactyl4j.entities.PteroAction;
 import com.mattmalec.pterodactyl4j.requests.Route;
-import org.json.JSONObject;
 
 public class BackupManagerImpl implements BackupManager {
 
@@ -26,30 +25,20 @@ public class BackupManagerImpl implements BackupManager {
 
     @Override
     public PteroAction<String> retrieveDownloadUrl(Backup backup) {
-        return PteroActionImpl.onExecute(() -> {
-            Route.CompiledRoute route = Route.Backups.DOWNLOAD_BACKUP.compile(server.getIdentifier(), backup.getUUID().toString());
-            JSONObject json = impl.getRequester().request(route).toJSONObject();
-            return json.getJSONObject("attributes").getString("url");
-        });
+        return new PteroActionImpl<>(impl.getPteroApi(),
+                Route.Backups.DOWNLOAD_BACKUP.compile(server.getIdentifier(), backup.getUUID().toString()),
+                (response, request) -> response.getObject().getJSONObject("attributes").getString("url"));
     }
 
     @Override
     public PteroAction<Void> restoreBackup(Backup backup) {
-        return PteroActionImpl.onExecute(() -> {
-            Route.CompiledRoute route = Route.Backups.RESTORE_BACKUP.compile(server.getIdentifier(), backup.getUUID().toString());
-            impl.getRequester().request(route);
-            return null;
-        });
+        return PteroActionImpl.onRequestExecute(impl.getPteroApi(),
+                Route.Backups.RESTORE_BACKUP.compile(server.getIdentifier(), backup.getUUID().toString()));
     }
 
     @Override
     public PteroAction<Void> deleteBackup(Backup backup) {
-        return PteroActionImpl.onExecute(() -> {
-            Route.CompiledRoute route = Route.Backups.DELETE_BACKUP.compile(server.getIdentifier(), backup.getUUID().toString());
-            impl.getRequester().request(route);
-            return null;
-        });
+        return PteroActionImpl.onRequestExecute(impl.getPteroApi(),
+                Route.Backups.DELETE_BACKUP.compile(server.getIdentifier(), backup.getUUID().toString()));
     }
-
-
 }

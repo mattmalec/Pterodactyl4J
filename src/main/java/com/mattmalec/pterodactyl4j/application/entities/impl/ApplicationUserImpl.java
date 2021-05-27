@@ -1,10 +1,10 @@
 package com.mattmalec.pterodactyl4j.application.entities.impl;
 
-import com.mattmalec.pterodactyl4j.PteroActionImpl;
+import com.mattmalec.pterodactyl4j.PteroAction;
+import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationServer;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationUser;
 import com.mattmalec.pterodactyl4j.application.managers.UserAction;
-import com.mattmalec.pterodactyl4j.entities.PteroAction;
 import com.mattmalec.pterodactyl4j.requests.Route;
 import com.mattmalec.pterodactyl4j.utils.Relationed;
 import org.json.JSONObject;
@@ -114,13 +114,7 @@ public class ApplicationUserImpl implements ApplicationUser {
 
 	@Override
 	public PteroAction<Void> delete() {
-		Route.CompiledRoute route = Route.Users.DELETE_USER.compile(getId());
-
-		return PteroActionImpl.onExecute(() ->
-		{
-			impl.getRequester().request(route);
-			return null;
-		});
+		return PteroActionImpl.onRequestExecute(impl.getPteroApi(), Route.Users.DELETE_USER.compile(getId()));
 	}
 
 	@Override

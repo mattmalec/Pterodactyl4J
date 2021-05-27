@@ -1,11 +1,11 @@
 package com.mattmalec.pterodactyl4j.client.entities.impl;
 
-import com.mattmalec.pterodactyl4j.PteroActionImpl;
+import com.mattmalec.pterodactyl4j.PteroAction;
+import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.client.entities.ClientServer;
 import com.mattmalec.pterodactyl4j.client.entities.Schedule;
 import com.mattmalec.pterodactyl4j.client.managers.ScheduleTaskAction;
 import com.mattmalec.pterodactyl4j.client.managers.ScheduleTaskManager;
-import com.mattmalec.pterodactyl4j.entities.PteroAction;
 import com.mattmalec.pterodactyl4j.requests.Route;
 
 public class ScheduleTaskManagerImpl implements ScheduleTaskManager {
@@ -32,10 +32,7 @@ public class ScheduleTaskManagerImpl implements ScheduleTaskManager {
 
 	@Override
 	public PteroAction<Void> deleteTask(Schedule.ScheduleTask task) {
-		return PteroActionImpl.onExecute(() -> {
-			Route.CompiledRoute route = Route.Schedules.DELETE_TASK.compile(server.getUUID().toString(), schedule.getId(), task.getId());
-			impl.getRequester().request(route);
-			return null;
-		});
+		return PteroActionImpl.onRequestExecute(impl.getPteroApi(),
+				Route.Schedules.DELETE_TASK.compile(server.getUUID().toString(), schedule.getId(), task.getId()));
 	}
 }

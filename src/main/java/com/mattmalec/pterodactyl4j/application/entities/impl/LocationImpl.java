@@ -1,11 +1,11 @@
 package com.mattmalec.pterodactyl4j.application.entities.impl;
 
-import com.mattmalec.pterodactyl4j.PteroActionImpl;
+import com.mattmalec.pterodactyl4j.PteroAction;
+import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationServer;
 import com.mattmalec.pterodactyl4j.application.entities.Location;
 import com.mattmalec.pterodactyl4j.application.entities.Node;
 import com.mattmalec.pterodactyl4j.application.managers.LocationAction;
-import com.mattmalec.pterodactyl4j.entities.PteroAction;
 import com.mattmalec.pterodactyl4j.requests.Route;
 import com.mattmalec.pterodactyl4j.utils.Relationed;
 import org.json.JSONObject;
@@ -107,11 +107,7 @@ public class LocationImpl implements Location {
 
 	@Override
 	public PteroAction<Void> delete() {
-		return PteroActionImpl.onExecute(() -> {
-			Route.CompiledRoute route = Route.Locations.DELETE_LOCATION.compile(getId());
-			impl.getRequester().request(route);
-			return null;
-		});
+		return PteroActionImpl.onRequestExecute(impl.getPteroApi(), Route.Locations.DELETE_LOCATION.compile(getId()));
 	}
 
 	@Override

@@ -1,8 +1,8 @@
 package com.mattmalec.pterodactyl4j.application.managers;
 
-import com.mattmalec.pterodactyl4j.entities.PteroAction;
+import com.mattmalec.pterodactyl4j.PteroAction;
 
-public interface AllocationAction {
+public interface AllocationAction extends PteroAction<Void> {
 
     AllocationAction setIP(String ip);
     AllocationAction setAlias(String alias);
@@ -11,6 +11,5 @@ public interface AllocationAction {
     AllocationAction addPort(String port);
     AllocationAction removePort(String port);
     AllocationAction removePorts(String... ports);
-    PteroAction<Void> build();
 
 }

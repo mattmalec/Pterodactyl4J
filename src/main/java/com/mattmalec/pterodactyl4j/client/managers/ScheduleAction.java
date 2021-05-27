@@ -1,10 +1,10 @@
 package com.mattmalec.pterodactyl4j.client.managers;
 
+import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.client.entities.Cron;
 import com.mattmalec.pterodactyl4j.client.entities.Schedule;
-import com.mattmalec.pterodactyl4j.entities.PteroAction;
 
-public interface ScheduleAction {
+public interface ScheduleAction extends PteroAction<Schedule> {
 
 	ScheduleAction setName(String name);
 	ScheduleAction setActive(boolean active);
@@ -14,6 +14,5 @@ public interface ScheduleAction {
 	ScheduleAction setHour(String hour);
 	ScheduleAction setDayOfWeek(String dayOfWeek);
 	ScheduleAction setDayOfMonth(String dayOfMonth);
-	PteroAction<Schedule> build();
 
 }

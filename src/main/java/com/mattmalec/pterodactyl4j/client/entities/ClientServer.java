@@ -1,7 +1,7 @@
 package com.mattmalec.pterodactyl4j.client.entities;
 
+import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.client.managers.*;
-import com.mattmalec.pterodactyl4j.entities.PteroAction;
 import com.mattmalec.pterodactyl4j.entities.Server;
 import com.mattmalec.pterodactyl4j.utils.Relationed;
 
@@ -36,10 +36,10 @@ public interface ClientServer extends Server {
 	}
 	BackupManager getBackupManager();
 	PteroAction<List<Schedule>> retrieveSchedules();
-	PteroAction<Schedule> retrieveSchedule(long id);
-	default PteroAction<Schedule> retrieveSchedule(String id) {
-		return retrieveSchedule(Long.parseUnsignedLong(id));
+	default PteroAction<Schedule> retrieveSchedule(long id) {
+		return retrieveSchedule(Long.toUnsignedString(id));
 	}
+	PteroAction<Schedule> retrieveSchedule(String id);
 	ScheduleManager getScheduleManager();
 
 }

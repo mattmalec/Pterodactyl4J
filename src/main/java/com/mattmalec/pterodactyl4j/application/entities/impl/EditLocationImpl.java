@@ -1,58 +1,25 @@
 package com.mattmalec.pterodactyl4j.application.entities.impl;
 
-import com.mattmalec.pterodactyl4j.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.application.entities.Location;
-import com.mattmalec.pterodactyl4j.application.managers.LocationAction;
-import com.mattmalec.pterodactyl4j.entities.PteroAction;
-import com.mattmalec.pterodactyl4j.requests.Requester;
 import com.mattmalec.pterodactyl4j.requests.Route;
+import com.mattmalec.pterodactyl4j.requests.action.LocationActionImpl;
+import okhttp3.RequestBody;
 import org.json.JSONObject;
 
-public class EditLocationImpl implements LocationAction {
-
-    private Requester requester;
-
-    private String shortCode;
-    private String description;
-    private PteroApplicationImpl impl;
+public class EditLocationImpl extends LocationActionImpl {
 
     private Location location;
 
-    public EditLocationImpl(Location location, PteroApplicationImpl impl) {
+    EditLocationImpl(Location location, PteroApplicationImpl impl) {
+        super(impl, Route.Locations.EDIT_LOCATION.compile(location.getId()));
         this.location = location;
-        this.requester = impl.getRequester();
-        this.impl = impl;
     }
 
     @Override
-    public LocationAction setShortCode(String shortCode) {
-        this.shortCode = shortCode;
-        return this;
-    }
-
-    @Override
-    public LocationAction setDescription(String description) {
-        this.description = description;
-        return this;
-    }
-
-    @Override
-    public PteroAction<Location> build() {
+    protected RequestBody finalizeData() {
         JSONObject json = new JSONObject();
-        if(this.shortCode == null)
-            json.put("shortcode", this.location.getShortCode());
-        else
-            json.put("shortcode", this.shortCode);
-        if(this.description == null)
-            json.put("description", this.location.getDescription());
-        else
-            json.put("description", this.description);
-        return PteroActionImpl.onExecute(() ->
-        {
-            Route.CompiledRoute route = Route.Locations.EDIT_LOCATION.compile(location.getId()).withJSONdata(json);
-            JSONObject jsonObject = requester.request(route).toJSONObject();
-
-            return new LocationImpl(jsonObject, impl);
-        });
+        json.put("shortcode", shortCode == null ? location.getShortCode() : shortCode);
+        json.put("description", description == null ? location.getDescription() : description);
+        return getRequestBody(json);
     }
 }

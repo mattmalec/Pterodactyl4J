@@ -1,7 +1,7 @@
 package com.mattmalec.pterodactyl4j.client.managers;
 
+import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.client.entities.ClientSubuser;
-import com.mattmalec.pterodactyl4j.entities.PteroAction;
 
 public interface SubuserManager {
 

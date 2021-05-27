@@ -1,10 +1,10 @@
 package com.mattmalec.pterodactyl4j.client.managers;
 
 import com.mattmalec.pterodactyl4j.PowerAction;
+import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.client.entities.Schedule;
-import com.mattmalec.pterodactyl4j.entities.PteroAction;
 
-public interface ScheduleTaskAction {
+public interface ScheduleTaskAction extends PteroAction<Schedule.ScheduleTask> {
 
 	ScheduleTaskAction setAction(Schedule.ScheduleTask.ScheduleAction action);
 	ScheduleTaskAction setPowerPayload(PowerAction payload);
@@ -13,7 +13,5 @@ public interface ScheduleTaskAction {
 		return setTimeOffset(Integer.toUnsignedString(seconds));
 	}
 	ScheduleTaskAction setTimeOffset(String seconds);
-
-	PteroAction<Schedule.ScheduleTask> build();
 
 }

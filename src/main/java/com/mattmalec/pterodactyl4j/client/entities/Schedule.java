@@ -1,9 +1,9 @@
 package com.mattmalec.pterodactyl4j.client.entities;
 
 import com.mattmalec.pterodactyl4j.PowerAction;
+import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.application.entities.ISnowflake;
 import com.mattmalec.pterodactyl4j.client.managers.ScheduleTaskManager;
-import com.mattmalec.pterodactyl4j.entities.PteroAction;
 
 import java.time.OffsetDateTime;
 import java.util.List;

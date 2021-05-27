@@ -1,7 +1,7 @@
 package com.mattmalec.pterodactyl4j.client.entities;
 
 import com.mattmalec.pterodactyl4j.PowerAction;
-import com.mattmalec.pterodactyl4j.entities.PteroAction;
+import com.mattmalec.pterodactyl4j.PteroAction;
 
 import java.util.List;
 

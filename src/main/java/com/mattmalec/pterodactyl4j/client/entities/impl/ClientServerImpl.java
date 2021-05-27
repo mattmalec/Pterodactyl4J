@@ -1,11 +1,11 @@
 package com.mattmalec.pterodactyl4j.client.entities.impl;
 
-import com.mattmalec.pterodactyl4j.PteroActionImpl;
+import com.mattmalec.pterodactyl4j.PteroAction;
+import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.client.entities.*;
 import com.mattmalec.pterodactyl4j.client.managers.*;
 import com.mattmalec.pterodactyl4j.entities.FeatureLimit;
 import com.mattmalec.pterodactyl4j.entities.Limit;
-import com.mattmalec.pterodactyl4j.entities.PteroAction;
 import com.mattmalec.pterodactyl4j.entities.impl.FeatureLimitImpl;
 import com.mattmalec.pterodactyl4j.entities.impl.LimitImpl;
 import com.mattmalec.pterodactyl4j.requests.Route;
@@ -122,11 +122,9 @@ public class ClientServerImpl implements ClientServer {
 		return new Relationed<ClientSubuser>() {
 			@Override
 			public PteroAction<ClientSubuser> retrieve() {
-				return PteroActionImpl.onExecute(() -> {
-					Route.CompiledRoute route = Route.Subusers.GET_SUBUSER.compile(getIdentifier(), uuid.toString());
-					JSONObject json = impl.getRequester().request(route).toJSONObject();
-					return new ClientSubuserImpl(json);
-				});
+				return PteroActionImpl.onRequestExecute(impl.getPteroApi(),
+						Route.Subusers.GET_SUBUSER.compile(getIdentifier(), uuid.toString()),
+						(response, request) -> new ClientSubuserImpl(response.getObject()));
 			}
 
 			@Override
@@ -155,17 +153,19 @@ public class ClientServerImpl implements ClientServer {
 	@Override
 	public PteroAction<List<Backup>> retrieveBackups() {
 		return PteroActionImpl.onExecute(() -> {
-			Route.CompiledRoute route = Route.Backups.LIST_BACKUPS.compile(getIdentifier(), "1");
-			JSONObject json = impl.getRequester().request(route).toJSONObject();
-			long pages = json.getJSONObject("meta").getJSONObject("pagination").getLong("total_pages");
 			List<Backup> backups = new ArrayList<>();
+			JSONObject json = new PteroActionImpl<JSONObject>(impl.getPteroApi(),
+					Route.Backups.LIST_BACKUPS.compile(getIdentifier(), "1"),
+					(response, request) -> response.getObject()).execute();
+			long pages = json.getJSONObject("meta").getJSONObject("pagination").getLong("total_pages");
 			for (Object o : json.getJSONArray("data")) {
 				JSONObject backup = new JSONObject(o.toString());
 				backups.add(new BackupImpl(backup, this));
 			}
 			for (int i = 2; i <= pages; i++) {
-				Route.CompiledRoute nextRoute = Route.Backups.LIST_BACKUPS.compile(getIdentifier(), Long.toUnsignedString(i));
-				JSONObject nextJson = impl.getRequester().request(nextRoute).toJSONObject();
+				JSONObject nextJson = new PteroActionImpl<JSONObject>(impl.getPteroApi(),
+						Route.Backups.LIST_BACKUPS.compile(getIdentifier(), Long.toUnsignedString(i)),
+						(response, request) -> response.getObject()).execute();
 				for (Object o : nextJson.getJSONArray("data")) {
 					JSONObject backup = new JSONObject(o.toString());
 					backups.add(new BackupImpl(backup, this));
@@ -177,11 +177,9 @@ public class ClientServerImpl implements ClientServer {
 
 	@Override
 	public PteroAction<Backup> retrieveBackup(UUID uuid) {
-		return PteroActionImpl.onExecute(() -> {
-			Route.CompiledRoute route = Route.Backups.GET_BACKUP.compile(getIdentifier(), uuid.toString());
-			JSONObject json = impl.getRequester().request(route).toJSONObject();
-			return new BackupImpl(json, this);
-		});
+		return PteroActionImpl.onRequestExecute(impl.getPteroApi(),
+				Route.Backups.GET_BACKUP.compile(getIdentifier(), uuid.toString()),
+				(response, request) -> new BackupImpl(response.getObject(), this));
 	}
 
 	@Override
@@ -191,25 +189,23 @@ public class ClientServerImpl implements ClientServer {
 
 	@Override
 	public PteroAction<List<Schedule>> retrieveSchedules() {
-		return PteroActionImpl.onExecute(() -> {
-			Route.CompiledRoute route = Route.Schedules.LIST_SCHEDULES.compile(getIdentifier());
-			JSONObject json = impl.getRequester().request(route).toJSONObject();
-			List<Schedule> schedules = new ArrayList<>();
-			for (Object o : json.getJSONArray("data")) {
-				JSONObject schedule = new JSONObject(o.toString());
-				schedules.add(new ScheduleImpl(schedule, this, impl));
-			}
-			return Collections.unmodifiableList(schedules);
-		});
+		return PteroActionImpl.onRequestExecute(impl.getPteroApi(),
+				Route.Schedules.LIST_SCHEDULES.compile(getIdentifier()), (response, request) -> {
+					JSONObject json = response.getObject();
+					List<Schedule> schedules = new ArrayList<>();
+					for (Object o : json.getJSONArray("data")) {
+						JSONObject schedule = new JSONObject(o.toString());
+						schedules.add(new ScheduleImpl(schedule, this, impl));
+					}
+					return Collections.unmodifiableList(schedules);
+				});
 	}
 
 	@Override
-	public PteroAction<Schedule> retrieveSchedule(long id) {
-		return PteroActionImpl.onExecute(() -> {
-			Route.CompiledRoute route = Route.Schedules.GET_SCHEDULE.compile(getIdentifier(), Long.toUnsignedString(id));
-			JSONObject json = impl.getRequester().request(route).toJSONObject();
-			return new ScheduleImpl(json, this, impl);
-		});
+	public PteroAction<Schedule> retrieveSchedule(String id) {
+		return PteroActionImpl.onRequestExecute(impl.getPteroApi(),
+				Route.Schedules.GET_SCHEDULE.compile(getIdentifier(), id),
+				(response, request) -> new ScheduleImpl(response.getObject(), this, impl));
 	}
 
 	@Override

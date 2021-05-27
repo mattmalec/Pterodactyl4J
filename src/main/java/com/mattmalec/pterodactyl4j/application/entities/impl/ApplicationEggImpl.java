@@ -1,10 +1,10 @@
 package com.mattmalec.pterodactyl4j.application.entities.impl;
 
 import com.mattmalec.pterodactyl4j.EnvironmentValue;
+import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationEgg;
 import com.mattmalec.pterodactyl4j.application.entities.Nest;
 import com.mattmalec.pterodactyl4j.application.entities.Script;
-import com.mattmalec.pterodactyl4j.entities.PteroAction;
 import com.mattmalec.pterodactyl4j.utils.Relationed;
 import org.json.JSONObject;
 

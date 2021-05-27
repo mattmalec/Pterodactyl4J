@@ -1,83 +1,28 @@
 package com.mattmalec.pterodactyl4j.application.entities.impl;
 
-import com.mattmalec.pterodactyl4j.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationUser;
-import com.mattmalec.pterodactyl4j.application.managers.UserAction;
-import com.mattmalec.pterodactyl4j.entities.PteroAction;
 import com.mattmalec.pterodactyl4j.requests.Route;
+import com.mattmalec.pterodactyl4j.requests.action.UserActionImpl;
+import okhttp3.RequestBody;
 import org.json.JSONObject;
 
-public class EditUserImpl implements UserAction {
+public class EditUserImpl extends UserActionImpl {
 
-    private PteroApplicationImpl impl;
-
-    private String userName;
-    private String email;
-    private String firstName;
-    private String lastName;
-    private String password;
     private ApplicationUser user;
 
     public EditUserImpl(ApplicationUser user, PteroApplicationImpl impl) {
+        super(impl, Route.Users.EDIT_USER.compile(user.getId()));
         this.user = user;
-        this.impl = impl;
     }
 
     @Override
-    public UserAction setUserName(String userName) {
-        this.userName = userName;
-        return this;
-    }
-
-    @Override
-    public UserAction setEmail(String email) {
-        this.email = email;
-        return this;
-    }
-
-    @Override
-    public UserAction setFirstName(String firstName) {
-        this.firstName = firstName;
-        return this;
-    }
-
-    @Override
-    public UserAction setLastName(String lastName) {
-        this.lastName = lastName;
-        return this;
-    }
-
-    @Override
-    public UserAction setPassword(String password) {
-        this.password = password;
-        return this;
-    }
-
-    @Override
-    public PteroAction<ApplicationUser> build() {
+    protected RequestBody finalizeData() {
         JSONObject json = new JSONObject();
-        if(this.userName == null)
-            json.put("username", this.user.getUserName());
-        else
-            json.put("username", this.userName);
-        if(this.email == null)
-            json.put("email", this.user.getEmail());
-        else
-            json.put("email", this.email);
-        if(this.firstName == null)
-        	json.put("first_name", this.user.getFirstName());
-        else
-        	json.put("first_name", this.firstName);
-        if(this.lastName == null)
-        	json.put("last_name", this.user.getLastName());
-        else
-        	json.put("last_name", this.lastName);
-        json.put("password", this.password);
-        return PteroActionImpl.onExecute(() -> {
-            Route.CompiledRoute route = Route.Users.EDIT_USER.compile(user.getId()).withJSONdata(json);
-            JSONObject jsonObject = impl.getRequester().request(route).toJSONObject();
-
-            return new ApplicationUserImpl(jsonObject, impl);
-        });
+        json.put("username", userName == null ? user.getUserName() : userName);
+        json.put("email", email == null ? user.getEmail() : email);
+        json.put("first_name", firstName == null ? user.getFirstName() : firstName);
+        json.put("last_name", lastName == null ? user.getLastName() : lastName);
+        json.put("password", password);
+        return getRequestBody(json);
     }
 }

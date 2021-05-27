@@ -1,13 +1,61 @@
 package com.mattmalec.pterodactyl4j;
 
+import com.mattmalec.pterodactyl4j.exceptions.RateLimitedException;
+import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
+
 import java.util.function.Consumer;
 
 /**
- * Represents a terminal between the user and the API of choice.
+ * Represents a terminal between the user and P4J.
  */
 public interface PteroAction<T> {
 
-    T execute();
+    /**
+     * The default failure callback used when none is provided in {@link #executeAsync(Consumer, Consumer)}.
+     *
+     * @return The fallback failure consumer
+     */
+    static Consumer<? super Throwable> getDefaultFailure() {
+        return PteroActionImpl.DEFAULT_FAILURE;
+    }
+
+
+    /**
+     * The default success callback used when none is provided in {@link #executeAsync(Consumer, Consumer)} or {@link #executeAsync(Consumer)}.
+     *
+     * @return The fallback success consumer
+     */
+    static Consumer<Object> getDefaultSuccess() {
+        return PteroActionImpl.DEFAULT_SUCCESS;
+    }
+
+    /**
+     * Blocks the current Thread and awaits the completion of a Request.
+     * <br>Used for synchronous logic.
+     *
+     * <p><b>This method is synchronous</b>
+     *
+     * @return The response value
+     **/
+    default T execute() {
+        return execute(true);
+    }
+
+    /**
+     * Blocks the current Thread and awaits the completion of a Request.
+     * <br>Used for synchronous logic.
+     *
+     * <p><b>This method is synchronous</b>
+     *
+     * @param  shouldQueue
+     *         Whether this should automatically handle rate limitations (default true)
+     *
+     * @throws RateLimitedException
+     *         If the Request was rate limited and {@code shouldQueue} is false.
+     *         Use {@link #execute()} to avoid this Exception.
+     * @return The response value
+     **/
+    T execute(boolean shouldQueue) throws RateLimitedException;
 
     /**
      * Submits a Request for execution.

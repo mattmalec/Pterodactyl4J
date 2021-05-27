@@ -1,7 +1,7 @@
 package com.mattmalec.pterodactyl4j.client.entities;
 
 import com.mattmalec.pterodactyl4j.DataType;
-import com.mattmalec.pterodactyl4j.entities.PteroAction;
+import com.mattmalec.pterodactyl4j.PteroAction;
 
 import java.time.OffsetDateTime;
 import java.util.List;

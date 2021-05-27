@@ -1,26 +1,23 @@
 package com.mattmalec.pterodactyl4j.client.entities.impl;
 
-import com.mattmalec.pterodactyl4j.PteroActionImpl;
+import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.client.entities.Backup;
 import com.mattmalec.pterodactyl4j.client.entities.ClientServer;
 import com.mattmalec.pterodactyl4j.client.managers.BackupAction;
-import com.mattmalec.pterodactyl4j.entities.PteroAction;
 import com.mattmalec.pterodactyl4j.requests.Route;
+import okhttp3.RequestBody;
 import org.json.JSONObject;
 
 import java.util.List;
 
-public class CreateBackupImpl implements BackupAction {
-
-    private ClientServer server;
-    private PteroClientImpl impl;
+public class CreateBackupImpl extends PteroActionImpl<Backup> implements BackupAction {
 
     private String name;
     private List<String> files;
 
     public CreateBackupImpl(ClientServer server, PteroClientImpl impl) {
-        this.server = server;
-        this.impl = impl;
+        super(impl.getPteroApi(), Route.Backups.CREATE_BACKUP.compile(server.getIdentifier()),
+                (response, request) -> new BackupImpl(response.getObject(), server));
     }
 
     @Override
@@ -36,17 +33,13 @@ public class CreateBackupImpl implements BackupAction {
     }
 
     @Override
-    public PteroAction<Backup> build() {
+    protected RequestBody finalizeData() {
         if(name != null && name.length() > 191) {
             throw new IllegalArgumentException("The name cannot be over 191 characters");
         }
         JSONObject json = new JSONObject()
                 .put("name", name)
                 .put("ignored", files == null ? "" : files);
-        return PteroActionImpl.onExecute(() -> {
-            Route.CompiledRoute route = Route.Backups.CREATE_BACKUP.compile(server.getIdentifier()).withJSONdata(json);
-            JSONObject obj = impl.getRequester().request(route).toJSONObject();
-            return new BackupImpl(obj, server);
-        });
+        return getRequestBody(json);
     }
 }

@@ -1,189 +1,40 @@
 package com.mattmalec.pterodactyl4j.application.entities.impl;
 
-import com.mattmalec.pterodactyl4j.PteroActionImpl;
-import com.mattmalec.pterodactyl4j.application.entities.Location;
 import com.mattmalec.pterodactyl4j.application.entities.Node;
 import com.mattmalec.pterodactyl4j.application.managers.NodeAction;
-import com.mattmalec.pterodactyl4j.entities.PteroAction;
-import com.mattmalec.pterodactyl4j.requests.Requester;
 import com.mattmalec.pterodactyl4j.requests.Route;
+import com.mattmalec.pterodactyl4j.requests.action.NodeActionImpl;
+import okhttp3.RequestBody;
 import org.json.JSONObject;
 
-public class EditNodeImpl implements NodeAction {
+import java.util.function.Consumer;
 
-	private Requester requester;
+public class EditNodeImpl extends NodeActionImpl {
+
 	private Node node;
 
-	private String name;
-	private Location location;
-	private Boolean isPublic;
-	private String fqdn;
-	private Boolean isBehindProxy;
-	private String daemonBase;
-	private String memory;
-	private String memoryOverallocate;
-	private String diskSpace;
-	private String diskSpaceOverallocate;
-	private String daemonSFTPPort;
-	private String daemonListenPort;
-	private Boolean throttle;
-	private Boolean secure;
-
-	private PteroApplicationImpl impl;
-
 	EditNodeImpl(PteroApplicationImpl impl, Node node) {
-		this.requester = impl.getRequester();
-		this.impl = impl;
+		super(impl, Route.Nodes.EDIT_NODE.compile(node.getId()));
 		this.node = node;
 	}
 
 	@Override
-	public NodeAction setName(String name) {
-		this.name = name;
-		return this;
-	}
-
-	@Override
-	public NodeAction setLocation(Location location) {
-		this.location = location;
-		return this;
-	}
-
-	@Override
-	public NodeAction setPublic(boolean isPublic) {
-		this.isPublic = isPublic;
-		return this;
-	}
-
-	@Override
-	public NodeAction setFQDN(String fqdn) {
-		this.fqdn = fqdn;
-		return this;
-	}
-
-	@Override
-	public NodeAction setBehindProxy(boolean isBehindProxy) {
-		this.isBehindProxy = isBehindProxy;
-		return this;
-	}
-
-	@Override
-	public NodeAction setDaemonBase(String daemonBase) {
-		this.daemonBase = daemonBase;
-		return this;
-	}
-
-	@Override
-	public NodeAction setMemory(String memory) {
-		this.memory = memory;
-		return this;
-	}
-
-	@Override
-	public NodeAction setMemoryOverallocate(String memoryOverallocate) {
-		this.memoryOverallocate = memoryOverallocate;
-		return this;
-	}
-
-	@Override
-	public NodeAction setDiskSpace(String diskSpace) {
-		this.diskSpace = diskSpace;
-		return this;
-	}
-
-	@Override
-	public NodeAction setDiskSpaceOverallocate(String diskSpaceOverallocate) {
-		this.diskSpaceOverallocate = diskSpaceOverallocate;
-		return this;
-	}
-
-	@Override
-	public NodeAction setDaemonSFTPPort(String port) {
-		this.daemonSFTPPort = port;
-		return this;
-	}
-
-	@Override
-	public NodeAction setDaemonListenPort(String port) {
-		this.daemonListenPort = port;
-		return this;
-	}
-
-	@Override
-	public NodeAction setThrottle(boolean throttle) {
-		this.throttle = throttle;
-		return this;
-	}
-
-	@Override
-	public NodeAction setScheme(boolean secure) {
-		this.secure = secure;
-		return this;
-	}
-
-	@Override
-	public PteroAction<Node> build() {
-		return PteroActionImpl.onExecute(() -> {
-				JSONObject json = new JSONObject();
-				if(name == null)
-					json.put("name", node.getName());
-				else
-					json.put("name", name);
-				if(location == null)
-					json.put("location_id", node.getLocation().retrieve().execute().getId());
-				else
-					json.put("location_id", location.getId());
-				if(isPublic == null)
-					json.put("public", node.isPublic() ? "1" : "0");
-				else
-					json.put("public", isPublic ? "1" : "0");
-				if(fqdn == null)
-					json.put("fqdn", node.getFQDN());
-				else
-					json.put("fqdn", fqdn);
-				if(secure == null)
-					json.put("scheme", node.getScheme());
-				else
-					json.put("scheme", secure ? "https" : "http");
-				if(isBehindProxy == null)
-					json.put("behind_proxy", node.isBehindProxy() ? "1" : "0");
-				else
-					json.put("behind_proxy", isBehindProxy ? "1" : "0");
-				if(daemonBase == null)
-					json.put("daemon_base", node.getDaemonBase());
-				else
-					json.put("daemon_base", daemonBase);
-				if(memory == null)
-					json.put("memory", node.getMemoryLong());
-				else
-					json.put("memory", Long.parseLong(memory));
-				if(memoryOverallocate == null)
-					json.put("memory_overallocate", node.getMemoryOverallocateLong());
-				else
-					json.put("memory_overallocate", Long.parseLong(memoryOverallocate));
-				if(diskSpace == null)
-					json.put("disk", node.getDiskLong());
-				else
-					json.put("disk", Long.parseLong(diskSpace));
-				if(diskSpaceOverallocate == null)
-					json.put("disk_overallocate", node.getDiskOverallocateLong());
-				else
-					json.put("disk_overallocate", Long.parseLong(diskSpaceOverallocate));
-				if(daemonListenPort == null)
-					json.put("daemon_listen", node.getDaemonListenPort());
-				else
-					json.put("daemon_listen", daemonListenPort);
-				if(daemonSFTPPort == null)
-					json.put("daemon_sftp", node.getDaemonSFTPPort());
-				else
-					json.put("daemon_sftp", daemonSFTPPort);
-				if(throttle == null)
-					json.put("throttle", new JSONObject().put("enabled", false));
-				else
-					json.put("throttle", new JSONObject().put("enabled", throttle));
-				Route.CompiledRoute route = Route.Nodes.EDIT_NODE.compile(node.getId()).withJSONdata(json);
-				JSONObject jsonObject = requester.request(route).toJSONObject();
-				return new NodeImpl(jsonObject, impl);
-		});
+	protected RequestBody finalizeData() {
+		JSONObject json = new JSONObject();
+		json.put("name", name == null ? node.getName() : name);
+		json.put("location_id", location == null ? node.getLocation().retrieve().execute().getId() : location.getId());
+		json.put("public", isPublic == null ? (node.isPublic() ? "1" : "0") : (isPublic ? "1" : "0"));
+		json.put("fqdn", fqdn == null ? node.getFQDN() : fqdn);
+		json.put("scheme", secure == null ? node.getScheme() : (secure ? "https" : "http"));
+		json.put("behind_proxy", isBehindProxy == null ? (node.isBehindProxy() ? "1" : "0") : (isBehindProxy ? "1" : "0"));
+		json.put("daemon_base", daemonBase == null ? node.getDaemonBase() : daemonBase);
+		json.put("memory", memory == null ? node.getMemoryLong() : Long.parseUnsignedLong(memory));
+		json.put("memory_overallocate", memoryOverallocate == null ? node.getMemoryOverallocateLong() : Long.parseUnsignedLong(memoryOverallocate));
+		json.put("disk", diskSpace == null ? node.getDiskLong() : Long.parseUnsignedLong(diskSpace));
+		json.put("disk_overallocate", diskSpaceOverallocate == null ? node.getDiskOverallocateLong() : Long.parseUnsignedLong(diskSpaceOverallocate));
+		json.put("daemon_listen", daemonListenPort == null ? node.getDaemonListenPort() : daemonListenPort);
+		json.put("daemon_sftp", daemonSFTPPort == null ? node.getDaemonSFTPPort() : daemonSFTPPort);
+		json.put("throttle", throttle == null ? new JSONObject().put("enabled", false) : new JSONObject().put("enabled", throttle));
+		return getRequestBody(json);
 	}
 }

@@ -1,10 +1,10 @@
 package com.mattmalec.pterodactyl4j.client.entities.impl;
 
+import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.client.entities.ClientServer;
 import com.mattmalec.pterodactyl4j.client.entities.Cron;
 import com.mattmalec.pterodactyl4j.client.entities.Schedule;
 import com.mattmalec.pterodactyl4j.client.managers.ScheduleTaskManager;
-import com.mattmalec.pterodactyl4j.entities.PteroAction;
 import org.json.JSONObject;
 
 import java.time.OffsetDateTime;
