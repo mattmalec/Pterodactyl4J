@@ -70,6 +70,10 @@ public class Response {
         return this.retryAfter;
     }
 
+    public int getCode() {
+        return this.code;
+    }
+
     public okhttp3.Response getRawResponse() {
         return this.rawResponse;
     }

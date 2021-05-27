@@ -1,8 +1,6 @@
 package com.mattmalec.pterodactyl4j.requests;
 
-import com.mattmalec.pterodactyl4j.PteroActionImpl;
-import com.mattmalec.pterodactyl4j.exceptions.HttpException;
-import com.mattmalec.pterodactyl4j.exceptions.RateLimitedException;
+import com.mattmalec.pterodactyl4j.exceptions.*;
 import okhttp3.RequestBody;
 
 import java.util.function.Consumer;
@@ -31,30 +29,50 @@ public class Request<T> {
     public void onSuccess(T success) {
         if (done) return;
         done = true;
-        try {
-            onSuccess.accept(success);
-        } catch (Throwable t) {
-            System.err.printf("Encountered error while processing success consumer: %s%n", t);
-            throw t;
-        }
+        action.getApi().getCallbackPool().execute(() -> {
+            try {
+                onSuccess.accept(success);
+            } catch (Throwable t) {
+                System.err.printf("Encountered error while processing success consumer: %s%n", t);
+                throw t;
+            }
+        });
     }
 
     public void setOnFailure(Response response) {
-        if(response.isRateLimit()) {
+        if (response.isRateLimit()) {
             onFailure(new RateLimitedException(route, response.getRetryAfter()));
         } else
-            onFailure(new HttpException(String.format("There was an HTTP exception: %s", response.getRawResponse().message())));
+            switch (response.getCode()) {
+                case 403:
+                    onFailure(new LoginException("The provided token is either incorrect or does not have access to process this request."));
+                    break;
+                case 404:
+                    onFailure(new NotFoundException("The requested entity was not found."));
+                    break;
+                case 422:
+                    onFailure(new MissingActionException("The request is missing required fields.", response.getObject()));
+                    break;
+                case 500:
+                    onFailure(new ServerException("The server has encountered an Internal Server Error."));
+                    break;
+                default:
+                    onFailure(new HttpException(String.format("Pterodactyl4J has encountered a %d error.", response.getCode()), response.getObject()));
+                    break;
+            }
     }
 
     public void onFailure(Throwable failException) {
         if (done) return;
         done = true;
-        try {
-            onFailure.accept(failException);
-        } catch (Throwable t) {
-            System.err.printf("Encountered error while processing failure consumer: %s%n", t);
-            throw t;
-        }
+        action.getApi().getCallbackPool().execute(() -> {
+            try {
+                onFailure.accept(failException);
+            } catch (Throwable t) {
+                System.err.printf("Encountered error while processing failure consumer: %s%n", t);
+                throw t;
+            }
+        });
     }
 
     public void cancel() {

@@ -1,6 +1,5 @@
 package com.mattmalec.pterodactyl4j.requests;
 
-import com.mattmalec.pterodactyl4j.PteroActionImpl;
 import okhttp3.RequestBody;
 
 import java.util.concurrent.CompletableFuture;
@@ -11,7 +10,7 @@ public class RequestFuture<T> extends CompletableFuture<T> {
 
     public RequestFuture(PteroActionImpl<T> action, Route.CompiledRoute route, RequestBody requestBody, boolean shouldQueue) {
         this.request = new Request<>(action, this::complete, this::completeExceptionally, route, requestBody, shouldQueue);
-        action.getRequester().request(this.request);
+        action.getApi().getRequester().request(this.request);
     }
 
     @Override

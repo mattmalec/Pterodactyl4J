@@ -3,19 +3,9 @@ package com.mattmalec.pterodactyl4j.utils;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.function.Supplier;
 
+// i love you jda
 public class LockUtils {
-
-    public static <E> void locked(ReentrantLock lock, Supplier<E> task) {
-        try {
-            tryLock(lock);
-            task.get();
-        } finally {
-            if (lock.isHeldByCurrentThread())
-                lock.unlock();
-        }
-    }
 
     public static void locked(ReentrantLock lock, Runnable task) {
         try {

@@ -1,11 +1,13 @@
 package com.mattmalec.pterodactyl4j.requests;
 
+import com.mattmalec.pterodactyl4j.entities.PteroAPI;
 import com.mattmalec.pterodactyl4j.utils.LockUtils;
 import okhttp3.Headers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.*;
 import java.util.concurrent.locks.ReentrantLock;
@@ -20,9 +22,10 @@ public class RateLimiter implements Runnable {
     private static final String REMAINING_HEADER = "X-RateLimit-Remaining";
 
     private final Requester requester;
-    private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+    private final ScheduledExecutorService scheduler;
 
     private final Queue<Request<?>> requests = new ConcurrentLinkedQueue<>();
+    private final Map<RateLimiter, Future<?>> rateLimitQueue = new ConcurrentHashMap<>();
 
     private long reset = 0;
     private int limit = 1;
@@ -31,14 +34,15 @@ public class RateLimiter implements Runnable {
     
     private final ReentrantLock lock = new ReentrantLock();
 
-    public RateLimiter(Requester requester) {
+    public RateLimiter(Requester requester, PteroAPI api) {
         this.requester = requester;
+        this.scheduler = api.getRateLimitPool();
     }
 
     public void queueRequest(Request<?> request) {
         LockUtils.locked(lock, () -> {
             requests.offer(request);
-            runBucket();
+            runQueue();
         });
     }
 
@@ -81,8 +85,9 @@ public class RateLimiter implements Runnable {
             }
         });
     }
-    private void runBucket() {
-        LockUtils.locked(lock, () -> scheduler.schedule(this, getRateLimit(), TimeUnit.MILLISECONDS));
+    private void runQueue() {
+        LockUtils.locked(lock, () -> rateLimitQueue.computeIfAbsent(this, k ->
+            scheduler.schedule(this, getRateLimit(), TimeUnit.MILLISECONDS)));
     }
 
     private void cancel(Iterator<Request<?>> it, Request<?> request, Throwable exception) {
@@ -105,15 +110,16 @@ public class RateLimiter implements Runnable {
 
     private void backoff() {
         LockUtils.locked(lock, () -> {
-            if (!requests.isEmpty()) runBucket();
+            rateLimitQueue.remove(this);
+            if (!requests.isEmpty()) runQueue();
         });
     }
 
     @Override
     public void run() {
         RATELIMIT_LOG.trace("Rate limiter is running {} requests", requests.size());
-        Iterator<Request<?>> iterator = requests.iterator();
 
+        Iterator<Request<?>> iterator = requests.iterator();
         while (iterator.hasNext()) {
             Long rateLimit = getRateLimit();
             if (rateLimit > 0L) {
@@ -122,6 +128,7 @@ public class RateLimiter implements Runnable {
             }
 
             Request<?> request = iterator.next();
+
             if (isSkipped(iterator, request))
                 continue;
 

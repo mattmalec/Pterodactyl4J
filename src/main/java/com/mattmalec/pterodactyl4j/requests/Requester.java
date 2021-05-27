@@ -19,7 +19,6 @@ public class Requester {
     private final PteroAPI api;
     private final Logger REQUESTER_LOG = LoggerFactory.getLogger(Requester.class);
 
-    public static final RequestBody EMPTY_BODY = RequestBody.create(null, new byte[0]);
     public static final MediaType MEDIA_TYPE_JSON = MediaType.parse("application/json; charset=utf8");
     private static final String PTERODACTYL_API_PREFIX = "%s/api/";
 
@@ -28,8 +27,8 @@ public class Requester {
 
     public Requester(PteroAPI api) {
         this.api = api;
-        this.rateLimiter = new RateLimiter(this);
-        this.client = new OkHttpClient();
+        this.rateLimiter = new RateLimiter(this, api);
+        this.client = api.getHttpClient();
     }
 
     public <T> void request(Request<T> request) {
@@ -49,7 +48,7 @@ public class Requester {
     public Long execute(Request<?> apiRequest, boolean retried, boolean handleOnRateLimit) {
 
         Route.CompiledRoute route = apiRequest.getRoute();
-        long retryAfter = rateLimiter.getRateLimit();
+        Long retryAfter = rateLimiter.getRateLimit();
 
         if (retryAfter > 0) {
             if (handleOnRateLimit)
@@ -114,7 +113,9 @@ public class Requester {
 
             retryAfter = rateLimiter.handleResponse(apiRequest, lastResponse);
 
-            if (handleOnRateLimit)
+            if (retryAfter == null)
+                apiRequest.handleResponse(new Response(lastResponse, -1));
+            else if (handleOnRateLimit)
                 apiRequest.handleResponse(new Response(lastResponse, retryAfter));
 
             return retryAfter;
@@ -127,7 +128,10 @@ public class Requester {
         } catch (Exception e) {
             if (!retried && isRetry(e))
                 return execute(apiRequest, true, handleOnRateLimit);
-            REQUESTER_LOG.error("There was an exception while executing a REST request {}", e.getMessage());
+            if (e.getMessage() == null)
+                REQUESTER_LOG.error("There was an exception while executing a request");
+            else
+                REQUESTER_LOG.error("{}", e.getMessage());
             apiRequest.handleResponse(new Response(lastResponse, e));
             return null;
         } finally {
