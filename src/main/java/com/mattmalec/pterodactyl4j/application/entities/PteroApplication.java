@@ -99,7 +99,7 @@ public interface PteroApplication {
 
 	/**
 	 * Returns the {@link com.mattmalec.pterodactyl4j.application.managers.UserManager UserManager}, used to create, edit, and delete ApplicationUsers from the Pterodactyl instance
-	 * <br>Executing any of the containing methods requires an <b>Application API key</b> with the <b>Users</b> permission with <b>Read & Write</b> access.
+	 * <br>Executing any of the containing methods requires an <b>Application API key</b> with the <b>Users</b> permission with <b>Read &amp; Write</b> access.
 	 *
 	 * @return The User Manager
 	 */
@@ -187,7 +187,7 @@ public interface PteroApplication {
 
 	/**
 	 * Returns the {@link com.mattmalec.pterodactyl4j.application.managers.NodeManager NodeManager}, used to create, edit, and delete Nodes from the Pterodactyl instance
-	 * <br>Executing any of the containing methods requires an <b>Application API key</b> with the <b>Users</b> permission with <b>Read & Write</b> access.
+	 * <br>Executing any of the containing methods requires an <b>Application API key</b> with the <b>Users</b> permission with <b>Read &amp; Write</b> access.
 	 *
 	 * @return The Node Manager
 	 */
@@ -320,7 +320,7 @@ public interface PteroApplication {
 
 	/**
 	 * Returns the {@link com.mattmalec.pterodactyl4j.application.managers.LocationManager LocationManager}, used to create, edit, and delete Locations from the Pterodactyl instance
-	 * <br>Executing any of the containing methods requires an <b>Application API key</b> with the <b>Locations</b> permission with <b>Read & Write</b> access.
+	 * <br>Executing any of the containing methods requires an <b>Application API key</b> with the <b>Locations</b> permission with <b>Read &amp; Write</b> access.
 	 *
 	 * @return The Location Manager
 	 */
@@ -581,8 +581,8 @@ public interface PteroApplication {
 
 	/**
 	 * Returns a {@link ServerCreationAction ServerAction}, used to create servers on the Pterodactyl instance
-	 * <br>Executing the {@link ServerCreationAction#build()} method requires an <b>Application API key</b> with the <b>Locations</b>, <b>Nests</b> and <b>Nodes</b> with <b>Read</b> access
-	 * and <b>Servers</b> and <b>Users</b> permission with <b>Read & Write</b> access.
+	 * <br>Creating a server requires an <b>Application API key</b> with the <b>Locations</b>, <b>Nests</b> and <b>Nodes</b> with <b>Read</b> access
+	 * and <b>Servers</b> and <b>Users</b> permission with <b>Read &amp; Write</b> access.
 	 *
 	 * @return The ServerAction used to create servers
 	 */
