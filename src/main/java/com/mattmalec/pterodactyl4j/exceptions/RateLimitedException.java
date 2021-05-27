@@ -1,19 +1,10 @@
 package com.mattmalec.pterodactyl4j.exceptions;
 
-import org.json.JSONObject;
+import com.mattmalec.pterodactyl4j.requests.Route;
 
 public class RateLimitedException extends HttpException {
 
-    public RateLimitedException(String text, JSONObject json) {
-        super(text, json);
-    }
-
-    public RateLimitedException(String message) {
-        super(message);
-    }
-
-    public RateLimitedException(String message, Throwable cause)
-    {
-        super(message, cause);
+    public RateLimitedException(Route.CompiledRoute route, long retryAfter) {
+        super(String.format("The request was rate limited. Retry-After: %d  Route: %s", retryAfter, route.getCompiledRoute()));
     }
 }
