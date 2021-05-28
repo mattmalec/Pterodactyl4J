@@ -5,7 +5,7 @@ import static com.mattmalec.pterodactyl4j.requests.Method.*;
 public class Route {
 
 	private static final String APPLICATION_PREFIX = "application/";
-	private static final String CLIENT_PREFIX = "client/";
+	private static final String CLIENT_PREFIX      = "client/";
 
 
 	public static class Users {
@@ -124,6 +124,23 @@ public class Route {
 		public static final Route CREATE_TASK			= new Route(POST,	CLIENT_PREFIX + "servers/{server_id}/schedules/{identifier}/tasks");
 		public static final Route UPDATE_TASK			= new Route(POST,	CLIENT_PREFIX + "servers/{server_id}/schedules/{schedule_id}/tasks/{identifier}");
 		public static final Route DELETE_TASK			= new Route(DELETE, CLIENT_PREFIX + "servers/{server_id}/schedules/{schedule_id}/tasks/{identifier}");
+
+	}
+
+	public static class Files {
+
+		public static final Route LIST_FILES 			= new Route(GET,    CLIENT_PREFIX + "servers/{server_id}/files/list?directory={directory}");
+		public static final Route GET_CONTENTS 			= new Route(GET,    CLIENT_PREFIX + "servers/{server_id}/files/contents?file={file}");
+		public static final Route DOWNLOAD_FILE 		= new Route(GET,    CLIENT_PREFIX + "servers/{server_id}/files/download?file={file}");
+		public static final Route RENAME_FILES 			= new Route(PUT,    CLIENT_PREFIX + "servers/{server_id}/files/rename");
+		public static final Route COPY_FILE 			= new Route(POST,   CLIENT_PREFIX + "servers/{server_id}/files/copy");
+		public static final Route WRITE_FILE 			= new Route(POST,   CLIENT_PREFIX + "servers/{server_id}/files/write?file={file}");
+		public static final Route COMPRESS_FILES 		= new Route(POST,   CLIENT_PREFIX + "servers/{server_id}/files/compress");
+		public static final Route DECOMPRESS_FILE 		= new Route(POST,   CLIENT_PREFIX + "servers/{server_id}/files/decompress");
+		public static final Route DELETE_FILES 			= new Route(POST,   CLIENT_PREFIX + "servers/{server_id}/files/delete");
+		public static final Route CREATE_FOLDER 		= new Route(POST,   CLIENT_PREFIX + "servers/{server_id}/files/create-folder");
+		public static final Route UPLOAD_FILE 			= new Route(GET,    CLIENT_PREFIX + "servers/{server_id}/files/upload");
+		public static final Route UPLOAD_FILE_BY_URL 	= new Route(POST,   CLIENT_PREFIX + "servers/{server_id}/files/pull?directory={directory}&url={url}");
 
 	}
 
