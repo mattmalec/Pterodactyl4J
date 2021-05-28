@@ -161,7 +161,7 @@ public class PteroApplicationImpl implements PteroApplication {
 	@Override
 	public PteroAction<List<Allocation>> retrieveAllocationsByNode(Node node) {
 		return PteroActionImpl.onExecute(() -> {
-			JSONObject json = new PteroActionImpl<JSONObject>(api, Route.Nodes.LIST_ALLOCATIONS.compile("1"),
+			JSONObject json = new PteroActionImpl<JSONObject>(api, Route.Nodes.LIST_ALLOCATIONS.compile(node.getId(), "1"),
 					(response, request) -> response.getObject()).execute();
 			List<Allocation> allocations = new ArrayList<>();
 			long pages = json.getJSONObject("meta").getJSONObject("pagination").getLong("total_pages");
@@ -170,7 +170,7 @@ public class PteroApplicationImpl implements PteroApplication {
 				allocations.add(new AllocationImpl(allocation, this));
 			}
 			for (int i = 2; i <= pages; i++) {
-				JSONObject nextJson = new PteroActionImpl<JSONObject>(api, Route.Nodes.LIST_ALLOCATIONS.compile(Long.toUnsignedString(i)),
+				JSONObject nextJson = new PteroActionImpl<JSONObject>(api, Route.Nodes.LIST_ALLOCATIONS.compile(node.getId(), Long.toUnsignedString(i)),
 						(response, request) -> response.getObject()).execute();
 				for (Object o : nextJson.getJSONArray("data")) {
 					JSONObject allocation = new JSONObject(o.toString());
