@@ -42,6 +42,7 @@ public interface Node extends ISnowflake {
 	default Relationed<List<Allocation>> getAllocationsByPort(String port) {
 		return getAllocationsByPort(Integer.parseUnsignedInt(port));
 	}
+	PteroAction<Node.Configuration> retrieveConfiguration();
 
 	NodeAction edit();
 	PteroAction<Void> delete();

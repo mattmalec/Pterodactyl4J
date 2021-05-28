@@ -203,6 +203,12 @@ public class NodeImpl implements Node {
 	}
 
 	@Override
+	public PteroAction<Configuration> retrieveConfiguration() {
+		return PteroActionImpl.onRequestExecute(impl.getPteroApi(), Route.Nodes.GET_CONFIGURATION.compile(getId()),
+				(response, request) -> new NodeConfigurationImpl(response.getObject()));
+	}
+
+	@Override
 	public long getIdLong() {
 		return json.getLong("id");
 	}
