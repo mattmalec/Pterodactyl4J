@@ -190,7 +190,7 @@ public class NodeImpl implements Node {
 		return new Relationed<List<Allocation>>() {
 			@Override
 			public PteroAction<List<Allocation>> retrieve() {
-				return PteroActionImpl.onExecute(() -> getAllocations().retrieve().execute().stream().filter(a -> a.getPortInt() == port).collect(Collectors.toList()));
+				return PteroActionImpl.onExecute(impl.getPteroApi(), () -> getAllocations().retrieve().execute().stream().filter(a -> a.getPortInt() == port).collect(Collectors.toList()));
 			}
 
 			@Override

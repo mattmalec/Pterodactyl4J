@@ -1,6 +1,9 @@
 package com.mattmalec.pterodactyl4j;
 
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 /**
  * Represents a value used in communication with an {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer}.
@@ -83,5 +86,17 @@ public class EnvironmentValue<T> {
     @Override
     public String toString() {
         return get().toString();
+    }
+
+    /**
+     * Returns a Collector used to convert the EnvironmentValue from the environment variables map to a String
+     * <br><br>
+     * This is helpful when we need to pass an environment variable map of String values instead of
+     * EnvironmentValues to the Pterodactyl API
+     *
+     * @return The collector
+     */
+    public static Collector<Map.Entry<String, EnvironmentValue<?>>, ?, Map<String, String>> collector() {
+        return Collectors.toMap(Map.Entry::getKey, e -> e.getValue().getAsString().orElse("null"));
     }
 }

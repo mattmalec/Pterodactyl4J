@@ -3,13 +3,13 @@ package com.mattmalec.pterodactyl4j.application.managers;
 import com.mattmalec.pterodactyl4j.DataType;
 import com.mattmalec.pterodactyl4j.EnvironmentValue;
 import com.mattmalec.pterodactyl4j.PteroAction;
-import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.application.entities.Allocation;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationEgg;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationServer;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationUser;
 import com.mattmalec.pterodactyl4j.application.entities.impl.ApplicationServerImpl;
 import com.mattmalec.pterodactyl4j.application.entities.impl.PteroApplicationImpl;
+import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.requests.Route;
 import org.json.JSONObject;
 
@@ -27,7 +27,7 @@ public class ServerManager {
 	}
 
 	public PteroAction<ApplicationServer> setName(String name) {
-		return PteroActionImpl.onExecute(() -> {
+		return PteroActionImpl.onExecute(impl.getPteroApi(), () -> {
 			JSONObject obj = new JSONObject()
 					.put("name", name)
 					.put("description", server.getDescription())
@@ -48,7 +48,7 @@ public class ServerManager {
 	}
 
 	public PteroAction<ApplicationServer> setDescription(String description) {
-		return PteroActionImpl.onExecute(() -> {
+		return PteroActionImpl.onExecute(impl.getPteroApi(), () -> {
 			JSONObject obj = new JSONObject()
 					.put("name", server.getName())
 					.put("description", description)
@@ -80,7 +80,7 @@ public class ServerManager {
 	}
 
 	public PteroAction<ApplicationServer> setMemory(long amount, DataType dataType) {
-		return PteroActionImpl.onExecute(() ->
+		return PteroActionImpl.onExecute(impl.getPteroApi(), () ->
 		{
 			long trueAmount;
 			if (dataType == DataType.MB)
@@ -110,7 +110,7 @@ public class ServerManager {
 	}
 
 	public PteroAction<ApplicationServer> setSwap(long amount, DataType dataType) {
-		return PteroActionImpl.onExecute(() ->
+		return PteroActionImpl.onExecute(impl.getPteroApi(), () ->
 		{
 			long trueAmount;
 			if (dataType == DataType.MB)
@@ -140,7 +140,7 @@ public class ServerManager {
 	}
 
 	public PteroAction<ApplicationServer> setIO(long amount) {
-		return PteroActionImpl.onExecute(() ->
+		return PteroActionImpl.onExecute(impl.getPteroApi(), () ->
 		{
 			JSONObject obj = new JSONObject()
 					.put("memory", server.getLimits().getMemory())
@@ -164,7 +164,7 @@ public class ServerManager {
 	}
 
 	public PteroAction<ApplicationServer> setCPU(long amount) {
-		return PteroActionImpl.onExecute(() ->
+		return PteroActionImpl.onExecute(impl.getPteroApi(), () ->
 		{
 			JSONObject obj = new JSONObject()
 					.put("memory", server.getLimits().getMemory())
@@ -188,7 +188,7 @@ public class ServerManager {
 	}
 
 	public PteroAction<ApplicationServer> setThreads(String cores) {
-		return PteroActionImpl.onExecute(() ->
+		return PteroActionImpl.onExecute(impl.getPteroApi(), () ->
 		{
 			JSONObject obj = new JSONObject()
 					.put("memory", server.getLimits().getMemory())
@@ -212,7 +212,7 @@ public class ServerManager {
 	}
 
 	public PteroAction<ApplicationServer> setDisk(long amount, DataType dataType) {
-		return PteroActionImpl.onExecute(() ->
+		return PteroActionImpl.onExecute(impl.getPteroApi(), () ->
 		{
 			long trueAmount;
 			if (dataType == DataType.MB)
@@ -242,7 +242,7 @@ public class ServerManager {
 	}
 
 	public PteroAction<ApplicationServer> setAllowedDatabases(int amount) {
-		return PteroActionImpl.onExecute(() ->
+		return PteroActionImpl.onExecute(impl.getPteroApi(), () ->
 		{
 			JSONObject obj = new JSONObject()
 					.put("memory", server.getLimits().getMemory())
@@ -266,7 +266,7 @@ public class ServerManager {
 	}
 
 	public PteroAction<ApplicationServer> setAllowedAllocations(int amount) {
-		return PteroActionImpl.onExecute(() ->
+		return PteroActionImpl.onExecute(impl.getPteroApi(), () ->
 		{
 			JSONObject obj = new JSONObject()
 					.put("memory", server.getLimits().getMemory())
@@ -290,7 +290,7 @@ public class ServerManager {
 	}
 
 	public PteroAction<ApplicationServer> setAllowedBackups(int amount) {
-		return PteroActionImpl.onExecute(() ->
+		return PteroActionImpl.onExecute(impl.getPteroApi(), () ->
 		{
 			JSONObject obj = new JSONObject()
 					.put("memory", server.getLimits().getMemory())
@@ -314,7 +314,7 @@ public class ServerManager {
 	}
 
 	public PteroAction<Void> setStartupCommand(String command) {
-		return PteroActionImpl.onExecute(() ->
+		return PteroActionImpl.onExecute(impl.getPteroApi(), () ->
 		{
 			JSONObject obj = new JSONObject()
 					.put("startup", command)
@@ -327,60 +327,70 @@ public class ServerManager {
 		});
 	}
 
-	public PteroAction<Void> setEnvironment(Map<String, EnvironmentValue<?>> environment) {
-		Map<String, Object> env = new HashMap<>();
-		environment.forEach((k, v) -> env.put(k, v.get().orElse(null)));
-		return PteroActionImpl.onExecute(() ->
+	public PteroAction<ApplicationServer> setEnvironment(Map<String, EnvironmentValue<?>> environment) {
+		return PteroActionImpl.onExecute(impl.getPteroApi(), () ->
 		{
+			Map<String, EnvironmentValue<?>> env = new HashMap<>(server.getContainer().getEnvironment());
+			env.putAll(environment);
 			JSONObject obj = new JSONObject()
 					.put("startup", server.getContainer().getStartupCommand())
-					.put("environment", env)
+					.put("environment", env.entrySet().stream()
+							.collect(EnvironmentValue.collector()))
 					.put("egg", server.getEgg().retrieve().execute().getId())
-					.put("image", server.getContainer().getImage());
-			return new PteroActionImpl<Void>(impl.getPteroApi(),
+					.put("image", server.getContainer().getImage())
+					// this won't do anything since the server is installed, but pterodactyl requires it so here we are
+					.put("skip_scripts", true);
+			return new PteroActionImpl<ApplicationServer>(impl.getPteroApi(),
 					Route.Servers.UPDATE_SERVER_STARTUP.compile(server.getId()),
-					PteroActionImpl.getRequestBody(obj)).execute();
+					PteroActionImpl.getRequestBody(obj), (response, request) -> new ApplicationServerImpl(impl, response.getObject())).execute();
 		});
 	}
 
-	public PteroAction<Void> setEgg(ApplicationEgg egg) {
+	public PteroAction<ApplicationServer> setEgg(ApplicationEgg egg) {
 		JSONObject obj = new JSONObject()
 				.put("startup", server.getContainer().getStartupCommand())
-				.put("environment", server.getContainer().getEnvironment().keySet())
+				.put("environment", server.getContainer().getEnvironment().entrySet()
+				.stream().collect(EnvironmentValue.collector()))
 				.put("egg", egg.getId())
-				.put("image", server.getContainer().getImage());
-		return PteroActionImpl.onRequestExecute(impl.getPteroApi(),
+				.put("image", server.getContainer().getImage())
+				// this won't do anything since the server is installed, but pterodactyl requires it so here we are
+				.put("skip_scripts", true);
+		return new PteroActionImpl<>(impl.getPteroApi(),
 				Route.Servers.UPDATE_SERVER_STARTUP.compile(server.getId()),
-				PteroActionImpl.getRequestBody(obj));
+				PteroActionImpl.getRequestBody(obj), (response, request) -> new ApplicationServerImpl(impl, response.getObject()));
 
 	}
 
-	public PteroAction<Void> setImage(String dockerImage) {
-		return PteroActionImpl.onExecute(() ->
+	public PteroAction<ApplicationServer> setImage(String dockerImage) {
+		return PteroActionImpl.onExecute(impl.getPteroApi(), () ->
 		{
 			JSONObject obj = new JSONObject()
 					.put("startup", server.getContainer().getStartupCommand())
-					.put("environment", server.getContainer().getEnvironment().keySet())
+					.put("environment", server.getContainer().getEnvironment().entrySet()
+							.stream().collect(EnvironmentValue.collector()))
 					.put("egg", server.getEgg().retrieve().execute().getId())
-					.put("image", dockerImage);
-			return new PteroActionImpl<Void>(impl.getPteroApi(),
+					.put("image", dockerImage)
+					// this won't do anything since the server is installed, but pterodactyl requires it so here we are
+					.put("skip_scripts", true);
+			return new PteroActionImpl<ApplicationServer>(impl.getPteroApi(),
 					Route.Servers.UPDATE_SERVER_STARTUP.compile(server.getId()),
-					PteroActionImpl.getRequestBody(obj)).execute();
+					PteroActionImpl.getRequestBody(obj), (response, request) -> new ApplicationServerImpl(impl, response.getObject())).execute();
 		});
 	}
 
-	public PteroAction<Void> setSkipScripts(boolean skipScripts) {
-		return PteroActionImpl.onExecute(() ->
+	public PteroAction<ApplicationServer> setSkipScripts(boolean skipScripts) {
+		return PteroActionImpl.onExecute(impl.getPteroApi(), () ->
         {
 				JSONObject obj = new JSONObject()
 						.put("startup", server.getContainer().getStartupCommand())
-						.put("environment",  server.getContainer().getEnvironment().keySet())
+						.put("environment", server.getContainer().getEnvironment().entrySet()
+								.stream().collect(EnvironmentValue.collector()))
 						.put("egg", server.getEgg().retrieve().execute().getId())
 						.put("image", server.getContainer().getImage())
 						.put("skip_scripts", skipScripts);
-			return new PteroActionImpl<Void>(impl.getPteroApi(),
+			return new PteroActionImpl<ApplicationServer>(impl.getPteroApi(),
 					Route.Servers.UPDATE_SERVER_STARTUP.compile(server.getId()),
-					PteroActionImpl.getRequestBody(obj)).execute();
+					PteroActionImpl.getRequestBody(obj), (response, request) -> new ApplicationServerImpl(impl, response.getObject())).execute();
         });
 	}
 }

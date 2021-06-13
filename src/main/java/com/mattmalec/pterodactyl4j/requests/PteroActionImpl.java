@@ -3,6 +3,7 @@ package com.mattmalec.pterodactyl4j.requests;
 import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.entities.PteroAPI;
 import com.mattmalec.pterodactyl4j.exceptions.HttpException;
+import com.mattmalec.pterodactyl4j.exceptions.MissingActionException;
 import okhttp3.RequestBody;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -23,8 +24,8 @@ public class PteroActionImpl<T> implements PteroAction<T> {
 
     private BiFunction<Response, Request<T>, T> handler;
 
-    public static <T> PteroActionImpl<T> onExecute(Supplier<? extends T> supplier) {
-        return new PteroActionImpl<>(supplier);
+    public static <T> PteroActionImpl<T> onExecute(PteroAPI api, Supplier<? extends T> supplier) {
+        return new PteroActionImpl<>(api, supplier);
     }
 
     public static <T> PteroActionImpl<T> onRequestExecute(PteroAPI api, Route.CompiledRoute route) {
@@ -39,12 +40,9 @@ public class PteroActionImpl<T> implements PteroAction<T> {
         return new PteroActionImpl<>(api, route, handler);
     }
 
-    public PteroActionImpl(Supplier<? extends T> supplier) {
+    public PteroActionImpl(PteroAPI api, Supplier<? extends T> supplier) {
+        this.api = api;
         this.supplier = supplier;
-    }
-
-    public PteroActionImpl(PteroAPI api) {
-        this(api, null);
     }
 
     public PteroActionImpl(PteroAPI api, Route.CompiledRoute route) {
@@ -81,6 +79,8 @@ public class PteroActionImpl<T> implements PteroAction<T> {
                     Throwable cause = ex.getCause();
                     if (cause instanceof HttpException) {
                         throw (HttpException) cause.fillInStackTrace();
+                    } else if (cause instanceof MissingActionException) {
+                        throw (MissingActionException) cause.fillInStackTrace();
                     }
                 }
                 throw ex;
@@ -108,9 +108,11 @@ public class PteroActionImpl<T> implements PteroAction<T> {
                 RequestBody data = finalizeData();
                 api.getRequester().request(new Request<>(this, finalizedSuccess, finalizedFailure, route, data, true));
             });
-        } else
+        } else {
             CompletableFuture.supplyAsync(supplier, api.getSupplierPool())
                     .thenAcceptAsync(success);
+        }
+
     }
 
     public PteroAPI getApi() {

@@ -152,7 +152,7 @@ public class ClientServerImpl implements ClientServer {
 
 	@Override
 	public PteroAction<List<Backup>> retrieveBackups() {
-		return PteroActionImpl.onExecute(() -> {
+		return PteroActionImpl.onExecute(impl.getPteroApi(), () -> {
 			List<Backup> backups = new ArrayList<>();
 			JSONObject json = new PteroActionImpl<JSONObject>(impl.getPteroApi(),
 					Route.Backups.LIST_BACKUPS.compile(getIdentifier(), "1"),
@@ -213,6 +213,10 @@ public class ClientServerImpl implements ClientServer {
 		return new ScheduleManagerImpl(this, impl);
 	}
 
+	@Override
+	public FileManager getFileManager() {
+		return new FileManagerImpl(this, impl);
+	}
 
 	@Override
 	public String toString() {

@@ -57,7 +57,7 @@ public class PteroClientImpl implements PteroClient {
 
     @Override
     public PteroAction<List<ClientServer>> retrieveServers() {
-        return PteroActionImpl.onExecute(() -> {
+        return PteroActionImpl.onExecute(api, () -> {
             List<ClientServer> servers = new ArrayList<>();
             JSONObject json = new PteroActionImpl<JSONObject>(api, Route.Client.LIST_SERVERS.compile("1"),
                     (response, request) -> response.getObject()).execute();
@@ -86,7 +86,7 @@ public class PteroClientImpl implements PteroClient {
 
     @Override
     public PteroAction<List<ClientServer>> retrieveServersByName(String name, boolean caseSensetive) {
-        return PteroActionImpl.onExecute(() ->
+        return PteroActionImpl.onExecute(api, () ->
         {
             List<ClientServer> servers = retrieveServers().execute();
             Stream<ClientServer> newServers = servers.stream();

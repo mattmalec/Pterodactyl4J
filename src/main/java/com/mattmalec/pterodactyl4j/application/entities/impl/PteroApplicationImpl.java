@@ -36,7 +36,7 @@ public class PteroApplicationImpl implements PteroApplication {
 
 	@Override
 	public PteroAction<List<ApplicationUser>> retrieveUsers() {
-		return PteroActionImpl.onExecute(() -> {
+		return PteroActionImpl.onExecute(api, () -> {
 			List<ApplicationUser> users = new ArrayList<>();
 			JSONObject json = new PteroActionImpl<JSONObject>(api, Route.Users.LIST_USERS.compile("1"),
 					(response, request) -> response.getObject()).execute();
@@ -59,7 +59,7 @@ public class PteroApplicationImpl implements PteroApplication {
 
 	@Override
 	public PteroAction<List<ApplicationUser>> retrieveUsersByUsername(String name, boolean caseSensetive) {
-		return PteroActionImpl.onExecute(() ->
+		return PteroActionImpl.onExecute(api, () ->
         {
 				List<ApplicationUser> users = retrieveUsers().execute();
 				Stream<ApplicationUser> newUsers = users.stream();
@@ -76,7 +76,7 @@ public class PteroApplicationImpl implements PteroApplication {
 
 	@Override
 	public PteroAction<List<ApplicationUser>> retrieveUsersByEmail(String email, boolean caseSensetive) {
-		return PteroActionImpl.onExecute(() ->
+		return PteroActionImpl.onExecute(api, () ->
         {
 				List<ApplicationUser> users = retrieveUsers().execute();
 				Stream<ApplicationUser> newUsers = users.stream();
@@ -98,7 +98,7 @@ public class PteroApplicationImpl implements PteroApplication {
 
 	@Override
 	public PteroAction<List<Node>> retrieveNodes() {
-		return PteroActionImpl.onExecute(() -> {
+		return PteroActionImpl.onExecute(api, () -> {
 			List<Node> nodes = new ArrayList<>();
 			JSONObject json = new PteroActionImpl<JSONObject>(api, Route.Nodes.LIST_NODES.compile("1"),
 					(response, request) -> response.getObject()).execute();
@@ -127,7 +127,7 @@ public class PteroApplicationImpl implements PteroApplication {
 
 	@Override
 	public PteroAction<List<Node>> retrieveNodesByName(String name, boolean caseSensetive) {
-		return PteroActionImpl.onExecute(() ->
+		return PteroActionImpl.onExecute(api, () ->
         {
 				List<Node> nodes = retrieveNodes().execute();
 				Stream<Node> newNodes = nodes.stream();
@@ -144,7 +144,7 @@ public class PteroApplicationImpl implements PteroApplication {
 
 	@Override
 	public PteroAction<List<Node>> retrieveNodesByLocation(Location location) {
-		return PteroActionImpl.onExecute(() ->
+		return PteroActionImpl.onExecute(api, () ->
         {
 				List<Node> nodes = retrieveNodes().execute();
 				List<Node> newNodes = nodes.stream()
@@ -160,7 +160,7 @@ public class PteroApplicationImpl implements PteroApplication {
 
 	@Override
 	public PteroAction<List<Allocation>> retrieveAllocationsByNode(Node node) {
-		return PteroActionImpl.onExecute(() -> {
+		return PteroActionImpl.onExecute(api, () -> {
 			JSONObject json = new PteroActionImpl<JSONObject>(api, Route.Nodes.LIST_ALLOCATIONS.compile(node.getId(), "1"),
 					(response, request) -> response.getObject()).execute();
 			List<Allocation> allocations = new ArrayList<>();
@@ -184,7 +184,7 @@ public class PteroApplicationImpl implements PteroApplication {
 
 	@Override
 	public PteroAction<List<Allocation>> retrieveAllocations() {
-		return PteroActionImpl.onExecute(() ->
+		return PteroActionImpl.onExecute(api, () ->
         {
 				List<Allocation> allocations = new ArrayList<>();
 				List<Node> nodes = retrieveNodes().execute();
@@ -198,7 +198,7 @@ public class PteroApplicationImpl implements PteroApplication {
 
 	@Override
 	public PteroAction<Allocation> retrieveAllocationById(String id) {
-		return PteroActionImpl.onExecute(() -> retrieveAllocations().execute().stream()
+		return PteroActionImpl.onExecute(api, () -> retrieveAllocations().execute().stream()
 						.filter(a -> a.getId().equals(id))
 						.findFirst().orElse(null));
 	}
@@ -212,7 +212,7 @@ public class PteroApplicationImpl implements PteroApplication {
 
 	@Override
 	public PteroAction<List<ApplicationEgg>> retrieveEggs() {
-		return PteroActionImpl.onExecute(() ->
+		return PteroActionImpl.onExecute(api, () ->
         {
 				List<Nest> nests = retrieveNests().execute();
 				List<ApplicationEgg> eggs = new ArrayList<>();
@@ -245,7 +245,7 @@ public class PteroApplicationImpl implements PteroApplication {
 
 	@Override
 	public PteroAction<List<Nest>> retrieveNests() {
-		return PteroActionImpl.onExecute(() -> {
+		return PteroActionImpl.onExecute(api, () -> {
 			List<Nest> nests = new ArrayList<>();
 			JSONObject json = new PteroActionImpl<JSONObject>(api, Route.Nests.LIST_NESTS.compile("1"),
 					(response, request) -> response.getObject()).execute();
@@ -269,7 +269,7 @@ public class PteroApplicationImpl implements PteroApplication {
 
 	@Override
 	public PteroAction<List<Nest>> retrieveNestsByName(String name, boolean caseSensetive) {
-		return PteroActionImpl.onExecute(() ->
+		return PteroActionImpl.onExecute(api, () ->
         {
 				List<Nest> nests = retrieveNests().execute();
 				Stream<Nest> newNests = nests.stream();
@@ -286,7 +286,7 @@ public class PteroApplicationImpl implements PteroApplication {
 
 	@Override
 	public PteroAction<List<Nest>> retrieveNestsByAuthor(String author, boolean caseSensetive) {
-		return PteroActionImpl.onExecute(() ->
+		return PteroActionImpl.onExecute(api, () ->
         {
 				List<Nest> nests = retrieveNests().execute();
 				Stream<Nest> newNests = nests.stream();
@@ -303,7 +303,7 @@ public class PteroApplicationImpl implements PteroApplication {
 
 	@Override
 	public PteroAction<List<Location>> retrieveLocations() {
-		return PteroActionImpl.onExecute(() -> {
+		return PteroActionImpl.onExecute(api, () -> {
 			List<Location> locations = new ArrayList<>();
 			JSONObject json = new PteroActionImpl<JSONObject>(api, Route.Locations.LIST_LOCATIONS.compile("1"),
 					(response, request) -> response.getObject()).execute();
@@ -333,7 +333,7 @@ public class PteroApplicationImpl implements PteroApplication {
 
 	@Override
 	public PteroAction<List<Location>> retrieveLocationsByShortCode(String name, boolean caseSensetive) {
-		return PteroActionImpl.onExecute(() ->
+		return PteroActionImpl.onExecute(api, () ->
         {
 				List<Location> locations = retrieveLocations().execute();
 				Stream<Location> newLocations = locations.stream();
@@ -355,7 +355,7 @@ public class PteroApplicationImpl implements PteroApplication {
 
 	@Override
 	public PteroAction<List<ApplicationServer>> retrieveServers() {
-		return PteroActionImpl.onExecute(() -> {
+		return PteroActionImpl.onExecute(api, () -> {
 			List<ApplicationServer> servers = new ArrayList<>();
 			JSONObject json = new PteroActionImpl<JSONObject>(api, Route.Servers.LIST_SERVERS.compile("1"),
 					(response, request) -> response.getObject()).execute();
@@ -385,7 +385,7 @@ public class PteroApplicationImpl implements PteroApplication {
 
 	@Override
 	public PteroAction<List<ApplicationServer>> retrieveServersByName(String name, boolean caseSensetive) {
-		return PteroActionImpl.onExecute(() -> {
+		return PteroActionImpl.onExecute(api, () -> {
 				List<ApplicationServer> servers = retrieveServers().execute();
 				Stream<ApplicationServer> newServers = servers.stream();
 
@@ -401,7 +401,7 @@ public class PteroApplicationImpl implements PteroApplication {
 
 	@Override
 	public PteroAction<List<ApplicationServer>> retrieveServersByOwner(ApplicationUser user) {
-		return PteroActionImpl.onExecute(() ->
+		return PteroActionImpl.onExecute(api, () ->
         {
 				List<ApplicationServer> servers = retrieveServers().execute();
 				List<ApplicationServer> newServers = servers.stream()
@@ -414,7 +414,7 @@ public class PteroApplicationImpl implements PteroApplication {
 
 	@Override
 	public PteroAction<List<ApplicationServer>> retrieveServersByNode(Node node) {
-		return PteroActionImpl.onExecute(() ->
+		return PteroActionImpl.onExecute(api, () ->
         {
 				List<ApplicationServer> servers = retrieveServers().execute();
 				List<ApplicationServer> newServers = servers.stream()
@@ -427,7 +427,7 @@ public class PteroApplicationImpl implements PteroApplication {
 
 	@Override
 	public PteroAction<List<ApplicationServer>> retrieveServersByLocation(Location location) {
-		return PteroActionImpl.onExecute(() ->
+		return PteroActionImpl.onExecute(api, () ->
         {
 				List<ApplicationServer> servers = retrieveServers().execute();
 				List<ApplicationServer> newServers = servers.stream()
