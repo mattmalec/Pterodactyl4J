@@ -6,6 +6,8 @@ import com.mattmalec.pterodactyl4j.exceptions.LoginException;
 import okhttp3.Call;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
+import okhttp3.RequestBody;
+import okhttp3.internal.http.HttpMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,6 +20,7 @@ public class Requester {
     private final PteroAPI api;
     private final Logger REQUESTER_LOG = LoggerFactory.getLogger(Requester.class);
 
+    public static final RequestBody EMPTY_BODY = RequestBody.create(null, new byte[0]);
     public static final MediaType MEDIA_TYPE_JSON = MediaType.parse("application/json; charset=utf8");
     private static final String PTERODACTYL_API_PREFIX = "%s/api/";
 
@@ -68,7 +71,10 @@ public class Requester {
         String method = route.getMethod().toString();
         if (apiRequest.getRequestBody() != null)
             builder.method(method, apiRequest.getRequestBody());
-        else builder.method(method, null);
+        else if (HttpMethod.requiresRequestBody(method))
+            builder.method(method, EMPTY_BODY);
+        else
+            builder.method(method, null);
 
         builder.header("Accept", "Application/vnd.pterodactyl.v1+json");
 
