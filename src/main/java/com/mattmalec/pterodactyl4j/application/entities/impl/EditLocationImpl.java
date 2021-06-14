@@ -18,8 +18,8 @@ public class EditLocationImpl extends AbstractLocationAction {
     @Override
     protected RequestBody finalizeData() {
         JSONObject json = new JSONObject();
-        json.put("shortcode", shortCode == null ? location.getShortCode() : shortCode);
-        json.put("description", description == null ? location.getDescription() : description);
+        json.put("short", shortCode == null ? location.getShortCode() : shortCode);
+        json.put("long", description == null ? location.getDescription() : description);
         return getRequestBody(json);
     }
 }
