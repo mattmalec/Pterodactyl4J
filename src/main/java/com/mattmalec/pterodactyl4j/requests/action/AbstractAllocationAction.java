@@ -57,8 +57,7 @@ public abstract class AbstractAllocationAction extends PteroActionImpl<Void> imp
 
     @Override
     public AllocationAction removePorts(String... ports) {
-        portSet.removeAll(Arrays.asList(ports));
+        Arrays.asList(ports).forEach(portSet::remove);
         return this;
     }
-    
 }
