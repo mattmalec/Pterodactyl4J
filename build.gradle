@@ -40,7 +40,6 @@ artifacts {
 
 repositories {
     mavenCentral()
-    jcenter()
 }
 
 dependencies {
