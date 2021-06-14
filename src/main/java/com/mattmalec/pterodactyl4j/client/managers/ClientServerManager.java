@@ -9,8 +9,8 @@ import org.json.JSONObject;
 
 public class ClientServerManager {
 
-    private ClientServer server;
-    private PteroClientImpl impl;
+    private final ClientServer server;
+    private final PteroClientImpl impl;
 
     public ClientServerManager(ClientServer server, PteroClientImpl impl) {
         this.server = server;

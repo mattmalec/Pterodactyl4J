@@ -19,7 +19,7 @@ import java.util.stream.Stream;
 
 public class PteroApplicationImpl implements PteroApplication {
 
-	private PteroAPI api;
+	private final PteroAPI api;
 
 	public PteroApplicationImpl(PteroAPI api) {
 		this.api = api;

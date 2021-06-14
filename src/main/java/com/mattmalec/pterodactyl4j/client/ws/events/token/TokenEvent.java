@@ -7,7 +7,7 @@ import com.mattmalec.pterodactyl4j.client.ws.events.Event;
 
 public abstract class TokenEvent extends Event {
 
-    private boolean expired;
+    private final boolean expired;
 
     public TokenEvent(PteroClientImpl api, ClientServer server, WebSocketManager manager, boolean expired) {
         super(api, server, manager);

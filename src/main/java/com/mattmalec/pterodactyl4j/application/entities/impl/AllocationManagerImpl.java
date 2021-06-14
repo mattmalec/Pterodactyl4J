@@ -10,7 +10,7 @@ import com.mattmalec.pterodactyl4j.requests.Route;
 
 public class AllocationManagerImpl implements AllocationManager {
 
-	private PteroApplicationImpl impl;
+	private final PteroApplicationImpl impl;
 	private Node node;
 
 	public AllocationManagerImpl(Node node, PteroApplicationImpl impl) {

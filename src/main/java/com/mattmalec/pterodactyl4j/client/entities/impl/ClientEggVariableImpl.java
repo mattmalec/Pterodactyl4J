@@ -6,7 +6,7 @@ import org.json.JSONObject;
 
 public class ClientEggVariableImpl implements ClientEgg.EggVariable {
 
-    private JSONObject json;
+    private final JSONObject json;
 
     public ClientEggVariableImpl(JSONObject json) {
         this.json = json.getJSONObject("attributes");

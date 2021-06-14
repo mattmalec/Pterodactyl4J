@@ -10,9 +10,9 @@ import com.mattmalec.pterodactyl4j.requests.Route;
 
 public class ScheduleTaskManagerImpl implements ScheduleTaskManager {
 
-	private ClientServer server;
-	private Schedule schedule;
-	private PteroClientImpl impl;
+	private final ClientServer server;
+	private final Schedule schedule;
+	private final PteroClientImpl impl;
 
 	public ScheduleTaskManagerImpl(ClientServer server, Schedule schedule, PteroClientImpl impl) {
 		this.server = server;

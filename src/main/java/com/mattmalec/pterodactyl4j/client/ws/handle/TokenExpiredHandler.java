@@ -5,11 +5,9 @@ import com.mattmalec.pterodactyl4j.client.entities.impl.PteroClientImpl;
 import com.mattmalec.pterodactyl4j.client.managers.WebSocketManager;
 import com.mattmalec.pterodactyl4j.client.ws.WebSocketClient;
 
-import java.util.Optional;
-
 public class TokenExpiredHandler extends ClientSocketHandler {
 
-    private WebSocketClient webSocketClient;
+    private final WebSocketClient webSocketClient;
 
     public TokenExpiredHandler(PteroClientImpl client, ClientServer server, WebSocketManager manager, WebSocketClient webSocketClient) {
         super(client, server, manager);

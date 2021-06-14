@@ -9,8 +9,8 @@ public class WebSocketBuilder {
 
     private IClientListenerManager eventManager = new InterfacedClientListenerManager();
 
-    private PteroClientImpl api;
-    private ClientServer server;
+    private final PteroClientImpl api;
+    private final ClientServer server;
 
     public WebSocketBuilder(PteroClientImpl api, ClientServer server) {
         this.api = api;

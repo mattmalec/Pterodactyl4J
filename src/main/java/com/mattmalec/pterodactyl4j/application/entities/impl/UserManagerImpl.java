@@ -9,7 +9,7 @@ import com.mattmalec.pterodactyl4j.requests.Route;
 
 public class UserManagerImpl implements UserManager {
 
-    private PteroApplicationImpl impl;
+    private final PteroApplicationImpl impl;
 
     public UserManagerImpl(PteroApplicationImpl impl) {
         this.impl = impl;

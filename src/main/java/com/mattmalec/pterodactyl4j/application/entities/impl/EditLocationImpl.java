@@ -8,7 +8,7 @@ import org.json.JSONObject;
 
 public class EditLocationImpl extends AbstractLocationAction {
 
-    private Location location;
+    private final Location location;
 
     EditLocationImpl(Location location, PteroApplicationImpl impl) {
         super(impl, Route.Locations.EDIT_LOCATION.compile(location.getId()));

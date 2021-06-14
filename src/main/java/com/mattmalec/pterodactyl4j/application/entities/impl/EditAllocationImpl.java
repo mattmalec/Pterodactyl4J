@@ -12,8 +12,8 @@ import java.util.function.Consumer;
 
 public class EditAllocationImpl extends AbstractAllocationAction {
 
-	private PteroApplicationImpl impl;
-	private Allocation allocation;
+	private final PteroApplicationImpl impl;
+	private final Allocation allocation;
 
 	public EditAllocationImpl(PteroApplicationImpl impl, Node node, Allocation allocation) {
 		super(impl, Route.Nodes.CREATE_ALLOCATION.compile(node.getId()));

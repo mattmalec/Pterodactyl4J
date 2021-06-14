@@ -9,7 +9,7 @@ import org.json.JSONObject;
 
 public class EditScheduleImpl extends AbstractScheduleAction {
 
-	private Schedule schedule;
+	private final Schedule schedule;
 
 	public EditScheduleImpl(ClientServer server, Schedule schedule, PteroClientImpl impl) {
 		super(impl, server, Route.Schedules.UPDATE_SCHEDULE.compile(server.getUUID().toString(), schedule.getId()));

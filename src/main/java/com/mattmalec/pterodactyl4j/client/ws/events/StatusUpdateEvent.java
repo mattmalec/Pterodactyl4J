@@ -7,7 +7,7 @@ import com.mattmalec.pterodactyl4j.client.managers.WebSocketManager;
 
 public class StatusUpdateEvent extends Event {
 
-    private UtilizationState state;
+    private final UtilizationState state;
 
     public StatusUpdateEvent(PteroClientImpl api, ClientServer server, WebSocketManager manager, UtilizationState state) {
         super(api, server, manager);

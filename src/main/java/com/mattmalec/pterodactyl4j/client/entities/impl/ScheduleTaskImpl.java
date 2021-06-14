@@ -10,8 +10,8 @@ import java.util.Optional;
 
 public class ScheduleTaskImpl implements Schedule.ScheduleTask {
 
-	private JSONObject json;
-	private Schedule schedule;
+	private final JSONObject json;
+	private final Schedule schedule;
 
 	public ScheduleTaskImpl(JSONObject json, Schedule schedule) {
 		this.json = json.getJSONObject("attributes");

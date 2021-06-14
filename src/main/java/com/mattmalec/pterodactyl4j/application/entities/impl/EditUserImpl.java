@@ -8,7 +8,7 @@ import org.json.JSONObject;
 
 public class EditUserImpl extends AbstractUserAction {
 
-    private ApplicationUser user;
+    private final ApplicationUser user;
 
     public EditUserImpl(ApplicationUser user, PteroApplicationImpl impl) {
         super(impl, Route.Users.EDIT_USER.compile(user.getId()));

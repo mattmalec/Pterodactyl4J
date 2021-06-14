@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 public class NodeConfigurationImpl implements Node.Configuration {
 
-    private JSONObject json;
+    private final JSONObject json;
 
     public NodeConfigurationImpl(JSONObject json) {
         this.json = json;
@@ -65,7 +65,7 @@ public class NodeConfigurationImpl implements Node.Configuration {
 
     private static class SystemConfigurationImpl implements Node.SystemConfiguration {
 
-        private JSONObject json;
+        private final JSONObject json;
 
         protected SystemConfigurationImpl(JSONObject json) {
             this.json = json;
@@ -84,7 +84,7 @@ public class NodeConfigurationImpl implements Node.Configuration {
 
     private static class APIConfigurationImpl implements Node.APIConfiguration {
 
-        private JSONObject json;
+        private final JSONObject json;
 
         protected APIConfigurationImpl(JSONObject json) {
             this.json = json;

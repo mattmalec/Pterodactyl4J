@@ -5,7 +5,7 @@ import org.json.JSONObject;
 
 public class LimitImpl implements Limit {
 
-    private JSONObject json;
+    private final JSONObject json;
 
     public LimitImpl(JSONObject json) {
         this.json = json;

@@ -13,9 +13,9 @@ import java.util.*;
 
 public class ApplicationEggImpl implements ApplicationEgg {
 
-    private JSONObject json;
-    private JSONObject relationships;
-    private PteroApplicationImpl impl;
+    private final JSONObject json;
+    private final JSONObject relationships;
+    private final PteroApplicationImpl impl;
 
     public ApplicationEggImpl(JSONObject json, PteroApplicationImpl impl) {
         this.json = json.getJSONObject("attributes");

@@ -9,9 +9,9 @@ import com.mattmalec.pterodactyl4j.client.ws.hooks.IClientListenerManager;
 
 public class WebSocketManager {
 
-    private WebSocketClient client;
-    private IClientListenerManager eventManager;
-    private Thread thread;
+    private final WebSocketClient client;
+    private final IClientListenerManager eventManager;
+    private final Thread thread;
 
     public WebSocketManager(PteroClientImpl api, ClientServer server, IClientListenerManager eventManager) {
         this.eventManager = eventManager;
@@ -57,7 +57,7 @@ public class WebSocketManager {
         LOGS(WebSocketAction.SEND_LOGS),
         STATS(WebSocketAction.SEND_STATS);
 
-        public String data;
+        public final String data;
 
         RequestAction(String data) {
             this.data = data;

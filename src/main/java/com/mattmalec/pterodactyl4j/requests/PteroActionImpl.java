@@ -16,7 +16,7 @@ import java.util.function.Supplier;
 
 public class PteroActionImpl<T> implements PteroAction<T> {
 
-    private PteroAPI api;
+    private final PteroAPI api;
     private Route.CompiledRoute route;
     private RequestBody data;
 

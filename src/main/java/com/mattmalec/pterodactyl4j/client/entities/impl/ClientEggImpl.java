@@ -10,8 +10,8 @@ import java.util.UUID;
 
 public class ClientEggImpl implements ClientEgg {
 
-    private JSONObject json;
-    private JSONObject variables;
+    private final JSONObject json;
+    private final JSONObject variables;
 
     public ClientEggImpl(JSONObject json, JSONObject variables) {
         this.json = json.getJSONObject("attributes");

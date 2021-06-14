@@ -10,8 +10,8 @@ import java.io.IOException;
 
 public class FailureEvent extends ConnectionEvent {
 
-    private Response response;
-    private Throwable throwable;
+    private final Response response;
+    private final Throwable throwable;
 
     public FailureEvent(PteroClientImpl api, ClientServer server, WebSocketManager manager, boolean connected, Response response, Throwable throwable) {
         super(api, server, manager, connected);

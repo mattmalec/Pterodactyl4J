@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 public class ContainerImpl implements Container {
 
-    private JSONObject json;
+    private final JSONObject json;
 
     public ContainerImpl(JSONObject json) {
         this.json = json;

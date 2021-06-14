@@ -21,16 +21,16 @@ import java.util.Optional;
 
 public class WebSocketClient extends WebSocketListener implements Runnable {
 
-    private OkHttpClient webSocketClient;
+    private final OkHttpClient webSocketClient;
 
     public static final Logger WEBSOCKET_LOG = LoggerFactory.getLogger(WebSocketClient.class);
 
     private WebSocket webSocket;
-    private PteroClientImpl client;
-    private ClientServer server;
-    private WebSocketManager manager;
+    private final PteroClientImpl client;
+    private final ClientServer server;
+    private final WebSocketManager manager;
     private boolean connected = false;
-    private Map<String, ClientSocketHandler> handlers = new HashMap<>();
+    private final Map<String, ClientSocketHandler> handlers = new HashMap<>();
 
     public WebSocketClient(PteroClientImpl client, ClientServer server, WebSocketManager manager) {
         this.client = client;

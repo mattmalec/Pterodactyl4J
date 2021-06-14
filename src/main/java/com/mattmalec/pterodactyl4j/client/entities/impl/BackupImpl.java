@@ -12,8 +12,8 @@ import java.util.stream.Collectors;
 
 public class BackupImpl implements Backup {
 
-    private JSONObject json;
-    private ClientServer server;
+    private final JSONObject json;
+    private final ClientServer server;
 
     public BackupImpl(JSONObject json, ClientServer server) {
         this.json = json.getJSONObject("attributes");

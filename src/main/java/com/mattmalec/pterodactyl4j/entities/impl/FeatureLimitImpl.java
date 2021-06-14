@@ -5,7 +5,7 @@ import org.json.JSONObject;
 
 public class FeatureLimitImpl implements FeatureLimit {
 
-    private JSONObject json;
+    private final JSONObject json;
 
     public FeatureLimitImpl(JSONObject json) {
         this.json = json;

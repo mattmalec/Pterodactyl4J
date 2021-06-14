@@ -6,9 +6,9 @@ public enum DataType {
 	GB((byte) 1, 1024,    "Gigabyte"),
 	TB((byte) 2, 1048576, "Terabyte");
 
-	private byte identifier;
-	private int mbValue;
-	private String friendlyName;
+	private final byte identifier;
+	private final int mbValue;
+	private final String friendlyName;
 
 	DataType(byte identifier, int mbValue, String friendlyName) {
 		this.identifier = identifier;

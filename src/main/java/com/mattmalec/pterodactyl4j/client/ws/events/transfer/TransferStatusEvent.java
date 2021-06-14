@@ -7,7 +7,7 @@ import com.mattmalec.pterodactyl4j.client.ws.events.Event;
 
 public class TransferStatusEvent extends Event {
 
-	private String status;
+	private final String status;
 
 	public TransferStatusEvent(PteroClientImpl api, ClientServer server, WebSocketManager manager, String status) {
 		super(api, server, manager);

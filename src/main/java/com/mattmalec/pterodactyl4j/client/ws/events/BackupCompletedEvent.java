@@ -8,7 +8,7 @@ import org.json.JSONObject;
 
 public class BackupCompletedEvent extends Event {
 
-	private JSONObject json;
+	private final JSONObject json;
 
 	public BackupCompletedEvent(PteroClientImpl api, ClientServer server, WebSocketManager manager, JSONObject json) {
 		super(api, server, manager);

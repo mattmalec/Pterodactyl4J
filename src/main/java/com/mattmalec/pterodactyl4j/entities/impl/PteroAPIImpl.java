@@ -13,15 +13,15 @@ import java.util.concurrent.ScheduledExecutorService;
 
 public class PteroAPIImpl implements PteroAPI {
 
-    private String token;
-    private String applicationUrl;
-    private Requester requester;
-    private OkHttpClient httpClient;
-    private ExecutorService callbackPool;
-    private ExecutorService actionPool;
-    private ScheduledExecutorService rateLimitPool;
-    private ExecutorService supplierPool;
-    private OkHttpClient webSocketClient;
+    private final String token;
+    private final String applicationUrl;
+    private final Requester requester;
+    private final OkHttpClient httpClient;
+    private final ExecutorService callbackPool;
+    private final ExecutorService actionPool;
+    private final ScheduledExecutorService rateLimitPool;
+    private final ExecutorService supplierPool;
+    private final OkHttpClient webSocketClient;
 
     public PteroAPIImpl(String applicationUrl, String token, OkHttpClient httpClient, ExecutorService callbackPool, ExecutorService actionPool,
                         ScheduledExecutorService rateLimitPool, ExecutorService supplierPool, OkHttpClient webSocketClient) {

@@ -8,7 +8,7 @@ import java.time.OffsetDateTime;
 
 public class ApplicationEggVariableImpl implements ApplicationEgg.EggVariable {
 
-    private JSONObject json;
+    private final JSONObject json;
 
     public ApplicationEggVariableImpl(JSONObject json) {
         this.json = json.getJSONObject("attributes");

@@ -17,9 +17,9 @@ import java.util.*;
 
 public class ClientServerImpl implements ClientServer {
 
-	private JSONObject json;
-	private JSONObject relationships;
-	private PteroClientImpl impl;
+	private final JSONObject json;
+	private final JSONObject relationships;
+	private final PteroClientImpl impl;
 
 	public ClientServerImpl(JSONObject json, PteroClientImpl impl) {
 		this.json = json.getJSONObject("attributes");

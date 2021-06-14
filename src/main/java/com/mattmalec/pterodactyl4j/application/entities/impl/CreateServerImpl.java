@@ -43,7 +43,7 @@ public class CreateServerImpl extends PteroActionImpl<ApplicationServer> impleme
 	private Allocation defaultAllocation;
 	private Collection<Allocation> additionalAllocations;
 
-	private PteroApplicationImpl impl;
+	private final PteroApplicationImpl impl;
 
 	public CreateServerImpl(PteroApplicationImpl impl) {
 		super(impl.getPteroApi(), Route.Servers.CREATE_SERVER.compile(),

@@ -9,7 +9,7 @@ import org.json.JSONObject;
 
 public class StatsUpdateEvent extends Event {
 
-    private JSONObject stats;
+    private final JSONObject stats;
 
     public StatsUpdateEvent(PteroClientImpl api, ClientServer server, WebSocketManager manager, JSONObject stats) {
         super(api, server, manager);

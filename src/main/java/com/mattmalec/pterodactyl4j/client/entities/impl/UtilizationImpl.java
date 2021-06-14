@@ -6,8 +6,8 @@ import org.json.JSONObject;
 
 public class UtilizationImpl implements Utilization {
 
-    private JSONObject json;
-    private JSONObject resources;
+    private final JSONObject json;
+    private final JSONObject resources;
 
     public UtilizationImpl(JSONObject json) {
         this.json = json.getJSONObject("attributes");

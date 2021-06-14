@@ -18,8 +18,8 @@ import java.util.Map;
 
 public class ServerManager {
 
-	private ApplicationServer server;
-	private PteroApplicationImpl impl;
+	private final ApplicationServer server;
+	private final PteroApplicationImpl impl;
 
 	public ServerManager(ApplicationServer server, PteroApplicationImpl impl) {
 		this.server = server;

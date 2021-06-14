@@ -7,7 +7,7 @@ import com.mattmalec.pterodactyl4j.client.ws.events.Event;
 
 public class TransferLogEvent extends Event {
 
-	private String line;
+	private final String line;
 
 	public TransferLogEvent(PteroClientImpl api, ClientServer server, WebSocketManager manager, String line) {
 		super(api, server, manager);

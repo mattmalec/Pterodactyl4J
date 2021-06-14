@@ -9,7 +9,7 @@ import com.mattmalec.pterodactyl4j.requests.Route;
 
 public class LocationManagerImpl implements LocationManager {
 
-	private PteroApplicationImpl impl;
+	private final PteroApplicationImpl impl;
 
 	public LocationManagerImpl(PteroApplicationImpl impl) {
 		this.impl = impl;

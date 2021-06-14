@@ -16,9 +16,9 @@ import java.util.*;
 
 public class ApplicationServerImpl implements ApplicationServer {
 
-	private PteroApplicationImpl impl;
-	private JSONObject json;
-	private JSONObject relationships;
+	private final PteroApplicationImpl impl;
+	private final JSONObject json;
+	private final JSONObject relationships;
 
 	public ApplicationServerImpl(PteroApplicationImpl impl, JSONObject json) {
 		this.impl = impl;

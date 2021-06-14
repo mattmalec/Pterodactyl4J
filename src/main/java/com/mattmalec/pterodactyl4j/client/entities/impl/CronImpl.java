@@ -5,7 +5,7 @@ import org.json.JSONObject;
 
 public class CronImpl implements Cron {
 
-	private JSONObject json;
+	private final JSONObject json;
 
 	public CronImpl(JSONObject json) {
 		this.json = json.getJSONObject("cron");

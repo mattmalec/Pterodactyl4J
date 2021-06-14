@@ -7,7 +7,7 @@ import com.mattmalec.pterodactyl4j.client.ws.events.Event;
 
 public abstract class InstallEvent extends Event {
 
-    private boolean installed;
+    private final boolean installed;
 
     public InstallEvent(PteroClientImpl api, ClientServer server, WebSocketManager manager, boolean installed) {
         super(api, server, manager);

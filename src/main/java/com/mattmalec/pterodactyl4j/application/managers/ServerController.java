@@ -8,8 +8,8 @@ import com.mattmalec.pterodactyl4j.requests.Route;
 
 public class ServerController {
 
-	private ApplicationServer server;
-	private PteroApplicationImpl impl;
+	private final ApplicationServer server;
+	private final PteroApplicationImpl impl;
 
 	public ServerController(ApplicationServer server, PteroApplicationImpl impl) {
 		this.server = server;

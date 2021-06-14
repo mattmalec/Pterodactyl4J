@@ -8,7 +8,7 @@ import org.json.JSONObject;
 
 public class EditNodeImpl extends AbstractNodeAction {
 
-	private Node node;
+	private final Node node;
 
 	EditNodeImpl(PteroApplicationImpl impl, Node node) {
 		super(impl, Route.Nodes.EDIT_NODE.compile(node.getId()));

@@ -5,7 +5,7 @@ import org.json.JSONObject;
 
 public class ScriptImpl implements Script {
 
-    private JSONObject json;
+    private final JSONObject json;
 
     public ScriptImpl(JSONObject json) {
         this.json = json;

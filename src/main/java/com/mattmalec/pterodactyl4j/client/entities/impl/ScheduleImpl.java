@@ -15,11 +15,11 @@ import java.util.Optional;
 
 public class ScheduleImpl implements Schedule {
 
-	private JSONObject json;
-	private JSONObject tasks;
+	private final JSONObject json;
+	private final JSONObject tasks;
 
-	private ClientServer server;
-	private PteroClientImpl impl;
+	private final ClientServer server;
+	private final PteroClientImpl impl;
 
 	public ScheduleImpl(JSONObject json, ClientServer server, PteroClientImpl impl) {
 		this.json = json.getJSONObject("attributes");
