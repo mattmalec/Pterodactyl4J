@@ -25,7 +25,6 @@ public abstract class AbstractNodeAction extends PteroActionImpl<Node> implement
     protected Boolean throttle;
     protected Boolean secure;
 
-
     public AbstractNodeAction(PteroApplicationImpl impl, Route.CompiledRoute route) {
         super(impl.getPteroApi(), route, (response, request) -> new NodeImpl(response.getObject(), impl));
     }
@@ -113,5 +112,4 @@ public abstract class AbstractNodeAction extends PteroActionImpl<Node> implement
         this.secure = secure;
         return this;
     }
-    
 }
