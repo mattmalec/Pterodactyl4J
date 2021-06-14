@@ -38,7 +38,7 @@ public class LimitImpl implements Limit {
 
     @Override
     public String getThreads() {
-        return json.getString("threads");
+        return json.optString("threads");
     }
 
 }
