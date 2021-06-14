@@ -2,12 +2,12 @@ package com.mattmalec.pterodactyl4j.application.entities.impl;
 
 import com.mattmalec.pterodactyl4j.application.entities.Node;
 import com.mattmalec.pterodactyl4j.requests.Route;
-import com.mattmalec.pterodactyl4j.requests.action.AllocationActionImpl;
+import com.mattmalec.pterodactyl4j.requests.action.AbstractAllocationAction;
 import com.mattmalec.pterodactyl4j.utils.Checks;
 import okhttp3.RequestBody;
 import org.json.JSONObject;
 
-public class CreateAllocationImpl extends AllocationActionImpl {
+public class CreateAllocationImpl extends AbstractAllocationAction {
 
 	public CreateAllocationImpl(PteroApplicationImpl impl, Node node) {
 		super(impl, Route.Nodes.CREATE_ALLOCATION.compile(node.getId()));

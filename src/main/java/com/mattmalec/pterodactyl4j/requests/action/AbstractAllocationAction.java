@@ -8,13 +8,13 @@ import com.mattmalec.pterodactyl4j.requests.Route;
 import java.util.Arrays;
 import java.util.Set;
 
-public class AllocationActionImpl extends PteroActionImpl<Void> implements AllocationAction {
+public abstract class AbstractAllocationAction extends PteroActionImpl<Void> implements AllocationAction {
 
     protected String ip;
     protected String alias;
     protected Set<String> portSet;
 
-    public AllocationActionImpl(PteroApplicationImpl impl, Route.CompiledRoute route) {
+    public AbstractAllocationAction(PteroApplicationImpl impl, Route.CompiledRoute route) {
         super(impl.getPteroApi(), route);
     }
 

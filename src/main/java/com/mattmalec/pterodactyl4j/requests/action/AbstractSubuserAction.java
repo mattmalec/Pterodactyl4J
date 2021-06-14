@@ -11,11 +11,11 @@ import com.mattmalec.pterodactyl4j.requests.Route;
 import java.util.Arrays;
 import java.util.EnumSet;
 
-public class SubuserActionImpl extends PteroActionImpl<ClientSubuser> implements SubuserAction {
+public abstract class AbstractSubuserAction extends PteroActionImpl<ClientSubuser> implements SubuserAction {
 
     protected EnumSet<Permission> permissions;
 
-    public SubuserActionImpl(PteroClientImpl impl, Route.CompiledRoute route) {
+    public AbstractSubuserAction(PteroClientImpl impl, Route.CompiledRoute route) {
         super(impl.getPteroApi(), route, (response, request) -> new ClientSubuserImpl(response.getObject()));
         this.permissions = EnumSet.noneOf(Permission.class);
     }

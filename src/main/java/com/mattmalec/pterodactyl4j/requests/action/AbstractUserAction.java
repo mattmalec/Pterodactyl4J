@@ -7,7 +7,7 @@ import com.mattmalec.pterodactyl4j.application.entities.impl.PteroApplicationImp
 import com.mattmalec.pterodactyl4j.application.managers.UserAction;
 import com.mattmalec.pterodactyl4j.requests.Route;
 
-public class UserActionImpl extends PteroActionImpl<ApplicationUser> implements UserAction {
+public abstract class AbstractUserAction extends PteroActionImpl<ApplicationUser> implements UserAction {
 
     protected String userName;
     protected String email;
@@ -15,7 +15,7 @@ public class UserActionImpl extends PteroActionImpl<ApplicationUser> implements 
     protected String lastName;
     protected String password;
 
-    public UserActionImpl(PteroApplicationImpl impl, Route.CompiledRoute route) {
+    public AbstractUserAction(PteroApplicationImpl impl, Route.CompiledRoute route) {
         super(impl.getPteroApi(), route, (response, request) -> new ApplicationUserImpl(response.getObject(), impl));
     }
 

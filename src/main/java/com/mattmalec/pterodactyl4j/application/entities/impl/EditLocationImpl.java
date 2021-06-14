@@ -2,11 +2,11 @@ package com.mattmalec.pterodactyl4j.application.entities.impl;
 
 import com.mattmalec.pterodactyl4j.application.entities.Location;
 import com.mattmalec.pterodactyl4j.requests.Route;
-import com.mattmalec.pterodactyl4j.requests.action.LocationActionImpl;
+import com.mattmalec.pterodactyl4j.requests.action.AbstractLocationAction;
 import okhttp3.RequestBody;
 import org.json.JSONObject;
 
-public class EditLocationImpl extends LocationActionImpl {
+public class EditLocationImpl extends AbstractLocationAction {
 
     private Location location;
 

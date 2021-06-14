@@ -4,13 +4,13 @@ import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.application.entities.Allocation;
 import com.mattmalec.pterodactyl4j.application.entities.Node;
 import com.mattmalec.pterodactyl4j.requests.Route;
-import com.mattmalec.pterodactyl4j.requests.action.AllocationActionImpl;
+import com.mattmalec.pterodactyl4j.requests.action.AbstractAllocationAction;
 import okhttp3.RequestBody;
 import org.json.JSONObject;
 
 import java.util.function.Consumer;
 
-public class EditAllocationImpl extends AllocationActionImpl {
+public class EditAllocationImpl extends AbstractAllocationAction {
 
 	private PteroApplicationImpl impl;
 	private Allocation allocation;

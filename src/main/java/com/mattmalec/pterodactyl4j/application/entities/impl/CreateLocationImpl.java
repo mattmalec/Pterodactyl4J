@@ -1,12 +1,12 @@
 package com.mattmalec.pterodactyl4j.application.entities.impl;
 
 import com.mattmalec.pterodactyl4j.requests.Route;
-import com.mattmalec.pterodactyl4j.requests.action.LocationActionImpl;
+import com.mattmalec.pterodactyl4j.requests.action.AbstractLocationAction;
 import com.mattmalec.pterodactyl4j.utils.Checks;
 import okhttp3.RequestBody;
 import org.json.JSONObject;
 
-public class CreateLocationImpl extends LocationActionImpl {
+public class CreateLocationImpl extends AbstractLocationAction {
 
 	CreateLocationImpl(PteroApplicationImpl impl) {
 		super(impl, Route.Locations.CREATE_LOCATION.compile());

@@ -8,7 +8,7 @@ import com.mattmalec.pterodactyl4j.application.entities.impl.PteroApplicationImp
 import com.mattmalec.pterodactyl4j.application.managers.NodeAction;
 import com.mattmalec.pterodactyl4j.requests.Route;
 
-public class NodeActionImpl extends PteroActionImpl<Node> implements NodeAction {
+public abstract class AbstractNodeAction extends PteroActionImpl<Node> implements NodeAction {
 
     protected String name;
     protected Location location;
@@ -26,7 +26,7 @@ public class NodeActionImpl extends PteroActionImpl<Node> implements NodeAction 
     protected Boolean secure;
 
 
-    public NodeActionImpl(PteroApplicationImpl impl, Route.CompiledRoute route) {
+    public AbstractNodeAction(PteroApplicationImpl impl, Route.CompiledRoute route) {
         super(impl.getPteroApi(), route, (response, request) -> new NodeImpl(response.getObject(), impl));
     }
 

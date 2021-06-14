@@ -2,11 +2,11 @@ package com.mattmalec.pterodactyl4j.application.entities.impl;
 
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationUser;
 import com.mattmalec.pterodactyl4j.requests.Route;
-import com.mattmalec.pterodactyl4j.requests.action.UserActionImpl;
+import com.mattmalec.pterodactyl4j.requests.action.AbstractUserAction;
 import okhttp3.RequestBody;
 import org.json.JSONObject;
 
-public class EditUserImpl extends UserActionImpl {
+public class EditUserImpl extends AbstractUserAction {
 
     private ApplicationUser user;
 

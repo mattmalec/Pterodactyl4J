@@ -10,7 +10,7 @@ import com.mattmalec.pterodactyl4j.client.managers.ScheduleAction;
 import com.mattmalec.pterodactyl4j.requests.Route;
 import com.mattmalec.pterodactyl4j.utils.CronUtils;
 
-public class ScheduleActionImpl extends PteroActionImpl<Schedule> implements ScheduleAction {
+public abstract class AbstractScheduleAction extends PteroActionImpl<Schedule> implements ScheduleAction {
 
     protected String name;
     protected Boolean active;
@@ -20,7 +20,7 @@ public class ScheduleActionImpl extends PteroActionImpl<Schedule> implements Sch
     protected String dayOfWeek;
     protected String dayOfMonth;
 
-    public ScheduleActionImpl(PteroClientImpl impl, ClientServer server, Route.CompiledRoute route) {
+    public AbstractScheduleAction(PteroClientImpl impl, ClientServer server, Route.CompiledRoute route) {
         super(impl.getPteroApi(), route, (response, request) -> new ScheduleImpl(response.getObject(), server, impl));
     }
 

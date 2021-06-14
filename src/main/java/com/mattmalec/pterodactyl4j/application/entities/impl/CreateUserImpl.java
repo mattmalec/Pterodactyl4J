@@ -1,12 +1,12 @@
 package com.mattmalec.pterodactyl4j.application.entities.impl;
 
 import com.mattmalec.pterodactyl4j.requests.Route;
-import com.mattmalec.pterodactyl4j.requests.action.UserActionImpl;
+import com.mattmalec.pterodactyl4j.requests.action.AbstractUserAction;
 import com.mattmalec.pterodactyl4j.utils.Checks;
 import okhttp3.RequestBody;
 import org.json.JSONObject;
 
-public class CreateUserImpl extends UserActionImpl {
+public class CreateUserImpl extends AbstractUserAction {
 
     public CreateUserImpl(PteroApplicationImpl impl) {
         super(impl, Route.Users.CREATE_USER.compile());

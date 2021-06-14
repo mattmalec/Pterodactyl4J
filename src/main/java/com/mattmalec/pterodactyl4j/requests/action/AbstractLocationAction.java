@@ -7,12 +7,12 @@ import com.mattmalec.pterodactyl4j.application.entities.impl.PteroApplicationImp
 import com.mattmalec.pterodactyl4j.application.managers.LocationAction;
 import com.mattmalec.pterodactyl4j.requests.Route;
 
-public class LocationActionImpl extends PteroActionImpl<Location> implements LocationAction {
+public abstract class AbstractLocationAction extends PteroActionImpl<Location> implements LocationAction {
 
     protected String shortCode;
     protected String description;
 
-    public LocationActionImpl(PteroApplicationImpl impl, Route.CompiledRoute route) {
+    public AbstractLocationAction(PteroApplicationImpl impl, Route.CompiledRoute route) {
         super(impl.getPteroApi(), route, (response, request) -> new LocationImpl(response.getObject(), impl));
     }
 

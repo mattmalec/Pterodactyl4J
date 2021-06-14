@@ -8,13 +8,13 @@ import com.mattmalec.pterodactyl4j.client.entities.impl.ScheduleTaskImpl;
 import com.mattmalec.pterodactyl4j.client.managers.ScheduleTaskAction;
 import com.mattmalec.pterodactyl4j.requests.Route;
 
-public class ScheduleTaskActionImpl extends PteroActionImpl<Schedule.ScheduleTask> implements ScheduleTaskAction {
+public abstract class AbstractScheduleTaskAction extends PteroActionImpl<Schedule.ScheduleTask> implements ScheduleTaskAction {
     
     protected Schedule.ScheduleTask.ScheduleAction action;
     protected String payload;
     protected String timeOffset;
 
-    public ScheduleTaskActionImpl(PteroClientImpl impl, Schedule schedule, Route.CompiledRoute route) {
+    public AbstractScheduleTaskAction(PteroClientImpl impl, Schedule schedule, Route.CompiledRoute route) {
         super(impl.getPteroApi(), route, (response, request) -> new ScheduleTaskImpl(response.getObject(), schedule));
     }
 

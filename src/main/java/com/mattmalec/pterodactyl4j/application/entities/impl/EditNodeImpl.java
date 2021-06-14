@@ -1,15 +1,12 @@
 package com.mattmalec.pterodactyl4j.application.entities.impl;
 
 import com.mattmalec.pterodactyl4j.application.entities.Node;
-import com.mattmalec.pterodactyl4j.application.managers.NodeAction;
 import com.mattmalec.pterodactyl4j.requests.Route;
-import com.mattmalec.pterodactyl4j.requests.action.NodeActionImpl;
+import com.mattmalec.pterodactyl4j.requests.action.AbstractNodeAction;
 import okhttp3.RequestBody;
 import org.json.JSONObject;
 
-import java.util.function.Consumer;
-
-public class EditNodeImpl extends NodeActionImpl {
+public class EditNodeImpl extends AbstractNodeAction {
 
 	private Node node;
 
