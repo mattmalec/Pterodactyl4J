@@ -214,11 +214,6 @@ public class ClientServerImpl implements ClientServer {
 	}
 
 	@Override
-	public FileManager getFileManager() {
-		return new FileManagerImpl(this, impl);
-	}
-
-	@Override
 	public String toString() {
 		return json.toString(4);
 	}
