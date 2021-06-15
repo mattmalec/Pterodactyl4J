@@ -13,8 +13,7 @@ public class InterfacedClientListenerManager implements IClientListenerManager {
 
     private static final Logger LISTENER_LOG = LoggerFactory.getLogger(ClientSocketListener.class);
 
-    // thread-safe
-    private static final List<ClientSocketListener> listeners = new CopyOnWriteArrayList<>();
+    private final List<ClientSocketListener> listeners = new CopyOnWriteArrayList<>();
 
     @Override
     public void register(Object listener) {
