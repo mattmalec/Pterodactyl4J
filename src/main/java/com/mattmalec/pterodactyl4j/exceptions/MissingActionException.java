@@ -2,11 +2,7 @@ package com.mattmalec.pterodactyl4j.exceptions;
 
 import org.json.JSONObject;
 
-public class MissingActionException extends RuntimeException {
-
-    public MissingActionException(String message) {
-        super(message);
-    }
+public class MissingActionException extends PteroException {
 
     public MissingActionException(String text, JSONObject json) {
         super(formatMessage(text, json));
@@ -19,9 +15,5 @@ public class MissingActionException extends RuntimeException {
             message.append("\t- ").append(obj.getString("detail")).append(" (Source: ").append(obj.getJSONObject("meta").getString("source_field")).append(")\n");
         }
         return message.toString();
-    }
-
-    public MissingActionException(String message, Throwable cause) {
-        super(message, cause);
     }
 }
