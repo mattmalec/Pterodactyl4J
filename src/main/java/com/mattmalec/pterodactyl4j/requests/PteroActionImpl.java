@@ -3,6 +3,7 @@ package com.mattmalec.pterodactyl4j.requests;
 import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.entities.PteroAPI;
 import com.mattmalec.pterodactyl4j.exceptions.HttpException;
+import com.mattmalec.pterodactyl4j.exceptions.LoginException;
 import com.mattmalec.pterodactyl4j.exceptions.MissingActionException;
 import okhttp3.RequestBody;
 import org.json.JSONArray;
@@ -81,6 +82,8 @@ public class PteroActionImpl<T> implements PteroAction<T> {
                         throw (HttpException) cause.fillInStackTrace();
                     } else if (cause instanceof MissingActionException) {
                         throw (MissingActionException) cause.fillInStackTrace();
+                    } else if (cause instanceof LoginException) {
+                        throw (LoginException) cause.fillInStackTrace();
                     }
                 }
                 throw ex;
