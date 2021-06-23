@@ -1,13 +1,13 @@
 package com.mattmalec.pterodactyl4j.client.entities.impl;
 
 import com.mattmalec.pterodactyl4j.PteroAction;
-import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.client.entities.*;
 import com.mattmalec.pterodactyl4j.client.managers.*;
 import com.mattmalec.pterodactyl4j.entities.FeatureLimit;
 import com.mattmalec.pterodactyl4j.entities.Limit;
 import com.mattmalec.pterodactyl4j.entities.impl.FeatureLimitImpl;
 import com.mattmalec.pterodactyl4j.entities.impl.LimitImpl;
+import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.requests.Route;
 import com.mattmalec.pterodactyl4j.utils.Relationed;
 import org.json.JSONArray;
@@ -80,7 +80,7 @@ public class ClientServerImpl implements ClientServer {
 	@Override
 	public Set<String> getEggFeatures() {
 		JSONArray features = json.getJSONArray("egg_features");
-		HashSet<String> eggFeatures = new HashSet<>();
+		Set<String> eggFeatures = new HashSet<>();
 		features.forEach(o -> eggFeatures.add(o.toString()));
 		return Collections.unmodifiableSet(eggFeatures);
 	}
