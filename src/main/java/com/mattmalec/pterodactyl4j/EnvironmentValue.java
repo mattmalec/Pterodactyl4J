@@ -39,12 +39,18 @@ public class EnvironmentValue<T> {
     /**
      * Resolves an {@link java.lang.Integer}
      *
+     * <p>Note that the method does not allow for a leading sign, either positive or negative.
+     * If a String passes the numeric test, it may still generate a NumberFormatException
+     * when parsed by Integer.parseInt, e.g. if the value is outside the range
+     * for int respectively.
+     *
      * @return {@link java.util.Optional} with a possible Integer value
      */
     public Optional<Integer> getAsInteger() {
         if(value instanceof Integer)
             return Optional.of((Integer) value);
-        return Optional.empty();
+        return getAsString().flatMap(value -> value.chars().allMatch(Character::isDigit) ?
+                Optional.of(Integer.parseInt(value)) : Optional.empty());
     }
 
     /**
