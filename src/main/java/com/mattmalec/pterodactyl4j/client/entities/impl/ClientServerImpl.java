@@ -1,5 +1,6 @@
 package com.mattmalec.pterodactyl4j.client.entities.impl;
 
+import com.mattmalec.pterodactyl4j.PowerAction;
 import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.client.entities.*;
 import com.mattmalec.pterodactyl4j.client.managers.*;
@@ -211,6 +212,26 @@ public class ClientServerImpl implements ClientServer {
 	@Override
 	public ScheduleManager getScheduleManager() {
 		return new ScheduleManagerImpl(this, impl);
+	}
+
+	@Override
+	public PteroAction<Utilization> retrieveUtilization() {
+		return PteroActionImpl.onRequestExecute(impl.getPteroApi(), Route.Client.GET_UTILIZATION.compile(getIdentifier()),
+				(response, request) -> new UtilizationImpl(response.getObject()));
+	}
+
+	@Override
+	public PteroAction<Void> setPower(PowerAction powerAction) {
+		JSONObject obj = new JSONObject().put("signal", powerAction.name().toLowerCase());
+		return PteroActionImpl.onRequestExecute(impl.getPteroApi(),
+				Route.Client.SET_POWER.compile(getIdentifier()), PteroActionImpl.getRequestBody(obj));
+	}
+
+	@Override
+	public PteroAction<Void> sendCommand(String command) {
+		JSONObject obj = new JSONObject().put("command", command);
+		return PteroActionImpl.onRequestExecute(impl.getPteroApi(),
+				Route.Client.SEND_COMMAND.compile(getIdentifier()), PteroActionImpl.getRequestBody(obj));
 	}
 
 	@Override
