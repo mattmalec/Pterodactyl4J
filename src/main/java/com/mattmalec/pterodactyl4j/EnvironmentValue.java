@@ -39,8 +39,8 @@ public class EnvironmentValue<T> {
     /**
      * Resolves an {@link java.lang.Integer}
      *
-     * <p>Note that the method does not allow for a leading sign, either positive or negative.
-     * If a String passes the numeric test, it may still generate a NumberFormatException
+     * <p>Note that the method will not return a present optional if the number includes a leading sign, either positive or negative.
+     * If the String passes the numeric test, it may still generate a NumberFormatException
      * when parsed by Integer.parseInt, e.g. if the value is outside the range
      * for int respectively.
      *
