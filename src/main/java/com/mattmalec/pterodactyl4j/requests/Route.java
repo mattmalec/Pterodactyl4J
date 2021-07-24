@@ -7,7 +7,6 @@ public class Route {
 	private static final String APPLICATION_PREFIX = "application/";
 	private static final String CLIENT_PREFIX      = "client/";
 
-
 	public static class Users {
 
 		public static final Route LIST_USERS  			= new Route(GET,    APPLICATION_PREFIX + "users?page={page}&include=servers");
@@ -170,16 +169,14 @@ public class Route {
 		return "Route(" + method + ": " + route + ")";
 	}
 	public CompiledRoute compile(String... params) {
-		if (params.length != paramCount) {
+		if (params.length != paramCount)
 			throw new IllegalArgumentException("Error Compiling Route: [" + route + "], incorrect amount of parameters provided. " +
 					"Expected: " + paramCount + ", Provided: " + params.length);
-		}
 
 		if (paramCount == 0)
 			return new CompiledRoute(this, compilableRoute);
 
 		String compiledRoute = String.format(compilableRoute, (Object[]) params);
-
 
 		return new CompiledRoute(this, compiledRoute);
 	}
