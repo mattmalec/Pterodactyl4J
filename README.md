@@ -127,7 +127,7 @@ public class MyApp extends ClientSocketListenerAdapter
     public void onStatsUpdate(StatsUpdateEvent event)
     {
 
-        System.out.println(String.format("Memory U2sage: %s/%s", event.getMemoryFormatted(DataType.MB), event.getMaxMemoryFormatted(DataType.MB)));
+        System.out.println(String.format("Memory Usage: %s/%s", event.getMemoryFormatted(DataType.MB), event.getMaxMemoryFormatted(DataType.MB)));
 
     }
 }
