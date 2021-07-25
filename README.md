@@ -132,6 +132,19 @@ public class MyApp extends ClientSocketListenerAdapter
     }
 }
 ```
+**Starting a server**:
+```java
+public class ServerStarter
+{
+    public static void main(String[] args)
+    {
+
+        PteroClient api = PteroBuilder.createClient("https://pterodactyl.app", "xyz321");
+        api.retrieveServerByIdentifier("39f09a87").flatMap(ClientServer::start).executeAsync();
+    
+    }
+}
+```
 
 ## Download
 Latest Version: [ ![version][] ][download]
