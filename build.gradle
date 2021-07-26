@@ -70,6 +70,6 @@ class Version {
 
     @Override
     String toString() {
-        return "$major.${minor}._$build"
+        return "$major.${minor}_$build"
     }
 }
