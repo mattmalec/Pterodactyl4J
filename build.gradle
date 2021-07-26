@@ -5,16 +5,15 @@ plugins {
 
 sourceCompatibility = 1.8
 
-Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
+def versionObject = new Version("2", "BETA")
 
-version properties.getProperty("version")
+version "$versionObject"
 
 uploadArchives {
     repositories {
         mavenDeployer {
             repository(url: "https://repo.mattmalec.com/repository/releases") {
-                authentication(userName: properties.getProperty("username"), password: properties.getProperty("password"))
+                authentication(userName: getProjectProperty("jenkinsUsername"), password: getProjectProperty("jenkinsPassword"))
             }
             pom.version = version
             pom.artifactId = "Pterodactyl4J"
@@ -50,8 +49,27 @@ dependencies {
 
 compileJava.options.encoding = 'UTF-8'
 
-tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
+def getProjectProperty(propertyName) {
+    def property = ""
+    if (hasProperty(propertyName)) {
+        property = project.properties[propertyName] ?: ""
+    }
+    return property
 }
 
+class Version {
+    def major
+    def minor
 
+    def build = System.getenv('BUILD_NUMBER') ?: 'DEV'
+
+    Version(String major, String minor) {
+        this.major = major
+        this.minor = minor
+    }
+
+    @Override
+    String toString() {
+        return "$major.${minor}._$build"
+    }
+}
