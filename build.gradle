@@ -3,7 +3,7 @@ plugins {
     id 'maven'
 }
 
-sourceCompatibility = 1.8
+sourceCompatibility = targetCompatibility = 1.8
 
 def versionObject = new Version(major: 2, minor: "BETA")
 
@@ -49,6 +49,7 @@ javadoc {
             "com/mattmalec/pterodactyl4j/utils/Checks.java",
             "com/mattmalec/pterodactyl4j/utils/ExceptionUtils.java",
             "com/mattmalec/pterodactyl4j/utils/LockUtils.java",
+            "com/mattmalec/pterodactyl4j/utils/NamedThreadFactory.java",
 
             "com/mattmalec/pterodactyl4j/entities/impl",
             "com/mattmalec/pterodactyl4j/application/entities/impl",
