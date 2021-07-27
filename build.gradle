@@ -6,8 +6,17 @@ plugins {
 sourceCompatibility = targetCompatibility = 1.8
 
 def versionObject = new Version(major: 2, minor: "BETA")
-
 version "$versionObject"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.squareup.okhttp3:okhttp:3.11.0'
+    implementation 'org.json:json:20160810'
+    implementation 'org.slf4j:slf4j-api:1.7.25'
+}
 
 uploadArchives {
     repositories {
@@ -62,7 +71,7 @@ javadoc {
 
 task sourcesJar(type: Jar) {
     classifier = 'sources'
-    from System.getProperty("java.class.path")
+    from sourceSets.main.java
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
@@ -75,17 +84,11 @@ artifacts {
     archives sourcesJar
 }
 
-repositories {
-    mavenCentral()
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+    options.incremental = true
+    options.compilerArgs += ["-Xlint:deprecation", "-Xlint:unchecked"]
 }
-
-dependencies {
-    implementation 'com.squareup.okhttp3:okhttp:3.11.0'
-    implementation 'org.json:json:20160810'
-    implementation 'org.slf4j:slf4j-api:1.7.25'
-}
-
-compileJava.options.encoding = 'UTF-8'
 
 class Version {
     def major, minor
