@@ -3,7 +3,7 @@ package com.mattmalec.pterodactyl4j;
 import com.mattmalec.pterodactyl4j.entities.PteroAPI;
 import com.mattmalec.pterodactyl4j.exceptions.RateLimitedException;
 import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
-import com.mattmalec.pterodactyl4j.requests.operators.*;
+import com.mattmalec.pterodactyl4j.requests.operator.*;
 import com.mattmalec.pterodactyl4j.utils.Checks;
 
 import java.time.Duration;
@@ -227,6 +227,33 @@ public interface PteroAction<T> {
         return new MapErrorPteroAction<>(this, condition == null ? (x) -> true : condition, map);
     }
 
+    /**
+     * Intermediate operator that returns a modified PteroAction.
+     *
+     * <p>This does not modify the instance but returns a new PteroAction which will apply
+     * the map function on successful execution. This will execute the result of both PteroActions.
+     * <br>The provided PteroAction must not be null!
+     *
+     * <h2>Example</h2>
+     * <pre>{@code
+     * public void startServer(String identifier) {
+     *     client.retrieveServerByIdentifier(identifier) // retrieve the client server
+     *         .flatMap(ClientServer::start) // start the server
+     *         .executeAsync(__ -> System.out.println("Starting server " + identifier));
+     * }
+     * }</pre>
+     *
+     * @param  flatMap
+     *         The mapping function to apply to the action result, must return a PteroAction
+     *
+     * @param  <O>
+     *         The target output type
+     *
+     * @return PteroAction for the mapped type
+     *
+     * @see    #flatMap(Function)
+     * @see    #map(Function)
+     */
     default <O> PteroAction<O> flatMap(Function<? super T, ? extends PteroAction<O>> flatMap) {
         return flatMap(null, flatMap);
     }
@@ -240,9 +267,9 @@ public interface PteroAction<T> {
      *
      * <h2>Example</h2>
      * <pre>{@code
-     * public void startServer(String identifier) {
+     * public void startServer(String identifier, boolean shouldStart) {
      *     client.retrieveServerByIdentifier(identifier) // retrieve the client server
-     *         .flatMap(ClientServer::start) // start the server
+     *         .flatMap((x) -> shouldStart, ClientServer::start) // start the server
      *         .executeAsync(__ -> System.out.println("Starting server " + identifier));
      * }
      * }</pre>
@@ -372,7 +399,7 @@ public interface PteroAction<T> {
      * public PteroAction<Void> selfDestruct(ClientServer server) {
      *        server.sendCommand("say Stopping server in 5 seconds...")
      *        .delay(Duration.ofSeconds(5), scheduler)
-     *        .flatMap(__ server.stop());
+     *        .flatMap(__ -> server.stop());
      * }
      * }</pre>
      *
@@ -398,7 +425,7 @@ public interface PteroAction<T> {
      * public PteroAction<Void> selfDestruct(ClientServer server) {
      *        server.sendCommand("say Stopping server in 5 seconds...")
      *        .delay(5, TimeUnit.SECONDS)
-     *        .flatMap(__ server.stop());
+     *        .flatMap(__ -> server.stop());
      * }
      * }</pre>
      *
@@ -423,7 +450,7 @@ public interface PteroAction<T> {
      * public PteroAction<Void> selfDestruct(ClientServer server) {
      *        server.sendCommand("say Stopping server in 5 seconds...")
      *        .delay(5, TimeUnit.SECONDS, scheduler)
-     *        .flatMap(__ server.stop());
+     *        .flatMap(__ -> server.stop());
      * }
      * }</pre>
      *

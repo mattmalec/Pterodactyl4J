@@ -1,4 +1,4 @@
-package com.mattmalec.pterodactyl4j.requests.operators;
+package com.mattmalec.pterodactyl4j.requests.operator;
 
 import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.exceptions.PteroException;
@@ -7,6 +7,8 @@ import com.mattmalec.pterodactyl4j.utils.ExceptionUtils;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+
+// big thanks to JDA for this tremendous code
 
 public class FlatMapErrorPteroAction<T> extends PteroActionOperator<T, T> {
 

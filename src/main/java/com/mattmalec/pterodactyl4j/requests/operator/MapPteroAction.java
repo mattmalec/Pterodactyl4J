@@ -1,9 +1,11 @@
-package com.mattmalec.pterodactyl4j.requests.operators;
+package com.mattmalec.pterodactyl4j.requests.operator;
 
 import com.mattmalec.pterodactyl4j.PteroAction;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
+
+// big thanks to JDA for this tremendous code
 
 public class MapPteroAction<I, O> extends PteroActionOperator<I, O> {
 

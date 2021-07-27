@@ -1,10 +1,12 @@
-package com.mattmalec.pterodactyl4j.requests.operators;
+package com.mattmalec.pterodactyl4j.requests.operator;
 
 import com.mattmalec.pterodactyl4j.PteroAction;
 
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
+
+// big thanks to JDA for this tremendous code
 
 public class DelayPteroAction<T> extends PteroActionOperator<T, T> {
 

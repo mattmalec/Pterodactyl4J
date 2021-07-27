@@ -1,9 +1,11 @@
-package com.mattmalec.pterodactyl4j.requests.operators;
+package com.mattmalec.pterodactyl4j.requests.operator;
 
 import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.entities.PteroAPI;
 
 import java.util.function.Consumer;
+
+// big thanks to JDA for this tremendous code
 
 public abstract class PteroActionOperator<I, O> implements PteroAction<O> {
 
