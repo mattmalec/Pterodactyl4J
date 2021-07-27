@@ -169,7 +169,7 @@ The interface also supports several operators to improve quality of life:
 - [`flatMap`](https://ci.mattmalec.com/job/Pterodactyl4J/javadoc/com/mattmalec/pterodactyl4j/PteroAction.html#flatMap(java.util.function.Function))
    Allows you to chain another PteroAction on the result of the previous one
 - [`delay`](https://ci.mattmalec.com/job/Pterodactyl4J/javadoc/com/mattmalec/pterodactyl4j/PteroAction.html#delay(long,java.util.concurrent.TimeUnit))
-   Delays execution of the PteroAction
+   Delays execution of the previous PteroAction
   
 **Example**:
 ```java
