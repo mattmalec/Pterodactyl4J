@@ -1,8 +1,14 @@
 [version]: https://shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Frepo.mattmalec.com%2Frepository%2Freleases%2Fcom%2Fmattmalec%2FPterodactyl4J%2Fmaven-metadata.xml&color=informational&label=Download
+[jenkins]: https://ci.mattmalec.com/job/Pterodactyl4J
+[build]: https://ci.mattmalec.com/job/Pterodactyl4J/badge/icon
+[javadocs]: https://ci.mattmalec.com/job/Pterodactyl4J/javadoc
 [download]: #download
+[jenkins-shield]: https://img.shields.io/badge/Download-Jenkins-orange.svg
 [discord-shield]: https://discord.com/api/guilds/780230961035608064/widget.png
 [discord-invite]: https://discord.gg/7fAabrTJZW
 [ ![version][] ][download]
+[ ![jenkins-shield][] ][jenkins]
+[ ![build][] ][jenkins]
 [ ![discord-shield][] ][discord-invite]
 # Pterodactyl4J
 
@@ -146,8 +152,55 @@ public class ServerStarter
 }
 ```
 
+### PteroAction
+
+[PteroAction](https://ci.mattmalec.com/job/Pterodactyl4J/javadoc/com/mattmalec/pterodactyl4j/PteroAction.html) is designed 
+to make request handling simple.
+
+It provides lazy request handling by offering asynchronous [callbacks](https://ci.mattmalec.com/job/Pterodactyl4J/javadoc/com/mattmalec/pterodactyl4j/PteroAction.html#executeAsync(java.util.function.Consumer))
+and [synchronous](https://ci.mattmalec.com/job/Pterodactyl4J/javadoc/com/mattmalec/pterodactyl4j/PteroAction.html#execute()) execution.
+
+This provides the user with a variety of patterns to use when making a request. The recommended approach is to use the asynchronous methods whenever possible.
+
+The interface also supports several operators to improve quality of life:
+
+- [`map`](https://ci.mattmalec.com/job/Pterodactyl4J/javadoc/com/mattmalec/pterodactyl4j/PteroAction.html#map(java.util.function.Function))
+   Allows you to convert the result of a PteroAction to a different value
+- [`flatMap`](https://ci.mattmalec.com/job/Pterodactyl4J/javadoc/com/mattmalec/pterodactyl4j/PteroAction.html#flatMap(java.util.function.Function))
+   Allows you to chain another PteroAction on the result of the previous one
+- [`delay`](https://ci.mattmalec.com/job/Pterodactyl4J/javadoc/com/mattmalec/pterodactyl4j/PteroAction.html#delay(long,java.util.concurrent.TimeUnit))
+   Delays execution of the PteroAction
+  
+**Example**:
+```java
+public void startServer(String identifier) {
+    System.out.println("Starting server in 5 seconds...")
+    client.retrieveServerByIdentifier(identifier) // retrieve the client server
+        .delay(5, TimeUnit.SECONDS) // wait 5 seconds
+        .flatMap(ClientServer::start) // start the server
+        .executeAsync(__ -> System.out.println("Starting server " + identifier + " now"));
+}
+```
+
+### Rate limiting
+
+P4J handles rate limiting from Pterodactyl by keeping track of requests, pausing
+execution when the limit is hit, and finishing the remaining requests when the limit is lifted. 
+
+P4J can do this by keeping a queue of requests that are waiting to be executed. 
+When P4J is not being rate limited, it will continue to poll requests and execute.
+
+When queuing requests with `execute()`, there can only be one request in the queue concurrently. 
+Each of the following requests will be handled in order. 
+
+However, requests queued with `executeAsync()` will be handled unordered due to the asychronous nature. 
+With this approach, there can be an "unlimited" number of pending requests waiting
+to be handled when it is convenient for P4J. 
+
+Queuing requests asynchronously is generally faster than a synchronous approach, which is why the former is preferred to the latter.
+
 ## Download
-Latest Version: [ ![version][] ][download]
+Latest Version: [ ![version][] ][jenkins]
 
 Be sure to replace the **VERSION** key below with the one of the versions shown above!
 
@@ -184,17 +237,17 @@ The builds are distributed using a Nexus instance
 
 ### Logging Framework - SLF4J
 
-Pterodactyl4J uses [SLF4J](https://www.slf4j.org/) to log its WebSocket messages.
+Pterodactyl4J uses [SLF4J](https://www.slf4j.org/) to log its messages.
 
 That means you should add some SLF4J implementation to your build path in addition to P4J.
-If no implementation is found, the following message will be printed to the console when building the WebSocket:
+If no implementation is found, the following message will be printed to the console when executing a request:
 ```
 SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
 SLF4J: Defaulting to no-operation (NOP) logger implementation
 SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
 ```
 
-P4J does **NOT** offer a fallback logger in place of SLF4J. You need an implementation to receive WebSocket log messages.
+P4J does **NOT** offer a fallback logger in place of SLF4J. You need an implementation to receive contextual log messages.
 
 The most popular implementations are [Log4j 2](https://logging.apache.org/log4j/2.x/) and [Logback](https://logback.qos.ch/)
 
@@ -206,11 +259,12 @@ For general troubleshooting, you can view some troubleshooting steps in the exam
 Alternatively, if you need help outside of P4J, you can join the [Pterodactyl Discord server](https://discord.gg/pterodactyl).
 
 ## Documentation
-The docs will have everything you need to know in order to use the wrapper once finished of course.
+The docs are **currently incomplete**, but will have everything you need to know in order to use the wrapper once they are finished.
+
+You can find them on [Jenkins][jenkins] or they can be accessed directly [here][javadocs].
 
 ## Contributing to Pterodactyl4J
-If you want to contribute to Pterodactyl4J, make sure to base your branch off of our **development** branch (develop)
-and create your PR into that **same** branch.
+If you want to contribute to Pterodactyl4J, make sure to base your branch off the **develop** branch and create your PR into that **same** branch.
 
 It is recommended to get in touch with myself before opening Pull Requests (either through an issue or on Discord).<br>
 
