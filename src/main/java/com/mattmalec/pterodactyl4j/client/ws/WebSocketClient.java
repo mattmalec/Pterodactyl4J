@@ -45,12 +45,14 @@ public class WebSocketClient extends WebSocketListener implements Runnable {
     private final PteroClientImpl client;
     private final ClientServer server;
     private final WebSocketManager manager;
+    private final boolean useFreshServer;
     private boolean connected = false;
     private final Map<String, ClientSocketHandler> handlers = new HashMap<>();
 
-    public WebSocketClient(PteroClientImpl client, ClientServer server, WebSocketManager manager) {
+    public WebSocketClient(PteroClientImpl client, ClientServer server, boolean useFreshServer, WebSocketManager manager) {
         this.client = client;
         this.server = server;
+        this.useFreshServer = useFreshServer;
         this.manager = manager;
         this.webSocketClient = client.getP4J().getWebSocketClient();
         setupHandlers();
@@ -125,7 +127,14 @@ public class WebSocketClient extends WebSocketListener implements Runnable {
 
     private void handleEvent(String event, String args) {
         ClientSocketHandler handler = getHandler(event);
-        handler.handleInternally(args);
+
+        if (useFreshServer)
+            client.retrieveServerByIdentifier(server.getIdentifier())
+                    .executeAsync(freshServer ->
+                                    handler.setServer(freshServer).handleInternally(args),
+                            __ -> handler.handleInternally(args));
+        else
+            handler.handleInternally(args);
     }
 
     @SuppressWarnings("unchecked")
