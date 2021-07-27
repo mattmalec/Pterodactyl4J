@@ -5,7 +5,7 @@ plugins {
 
 sourceCompatibility = 1.8
 
-def versionObject = new Version("2", "BETA")
+def versionObject = new Version(major: 2, minor: "BETA")
 
 version "$versionObject"
 
@@ -20,6 +20,43 @@ uploadArchives {
             pom.groupId = "com.mattmalec"
         }
     }
+}
+
+javadoc {
+    failOnError = false
+    options {
+        memberLevel = JavadocMemberLevel.PUBLIC
+        encoding = "UTF-8"
+    }
+    if (options instanceof StandardJavadocDocletOptions) {
+        StandardJavadocDocletOptions opt = options
+        opt.author()
+        opt.tags("incubating:a:Incubating:")
+        opt.links(
+                "https://docs.oracle.com/javase/8/docs/api/",
+                "https://square.github.io/okhttp/3.x/okhttp/")
+        if (JavaVersion.current().isJava9Compatible()) {
+            opt.addBooleanOption("html5", true)
+            opt.addStringOption("-release", "8")
+        }
+        if (JavaVersion.current().isJava11Compatible()) {
+            opt.addBooleanOption("-no-module-directories", true)
+        }
+    }
+
+    exclude("com/mattmalec/pterodactyl4j/requests",
+
+            "com/mattmalec/pterodactyl4j/utils/Checks.java",
+            "com/mattmalec/pterodactyl4j/utils/ExceptionUtils.java",
+            "com/mattmalec/pterodactyl4j/utils/LockUtils.java",
+
+            "com/mattmalec/pterodactyl4j/entities/impl",
+            "com/mattmalec/pterodactyl4j/application/entities/impl",
+            "com/mattmalec/pterodactyl4j/client/entities/impl",
+
+            "com/mattmalec/pterodactyl4j/client/ws/handle",
+            "com/mattmalec/pterodactyl4j/client/ws/WebSocketClient.java",
+            "com/mattmalec/pterodactyl4j/client/ws/WebSocketAction.java")
 }
 
 task sourcesJar(type: Jar) {
@@ -58,17 +95,9 @@ def getProjectProperty(propertyName) {
 }
 
 class Version {
-    def major
-    def minor
-
+    def major, minor
     def build = System.getenv('BUILD_NUMBER') ?: 'DEV'
 
-    Version(String major, String minor) {
-        this.major = major
-        this.minor = minor
-    }
-
-    @Override
     String toString() {
         return "$major.${minor}_$build"
     }
