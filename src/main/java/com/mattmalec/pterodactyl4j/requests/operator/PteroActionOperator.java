@@ -1,7 +1,7 @@
 package com.mattmalec.pterodactyl4j.requests.operator;
 
 import com.mattmalec.pterodactyl4j.PteroAction;
-import com.mattmalec.pterodactyl4j.entities.PteroAPI;
+import com.mattmalec.pterodactyl4j.entities.P4J;
 
 import java.util.function.Consumer;
 
@@ -30,7 +30,7 @@ public abstract class PteroActionOperator<I, O> implements PteroAction<O> {
     }
 
     @Override
-    public PteroAPI getApi() {
-        return action.getApi();
+    public P4J getP4J() {
+        return action.getP4J();
     }
 }

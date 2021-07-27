@@ -25,20 +25,20 @@ public class BackupManagerImpl implements BackupManager {
 
     @Override
     public PteroAction<String> retrieveDownloadUrl(Backup backup) {
-        return new PteroActionImpl<>(impl.getPteroApi(),
+        return new PteroActionImpl<>(impl.getP4J(),
                 Route.Backups.DOWNLOAD_BACKUP.compile(server.getIdentifier(), backup.getUUID().toString()),
                 (response, request) -> response.getObject().getJSONObject("attributes").getString("url"));
     }
 
     @Override
     public PteroAction<Void> restoreBackup(Backup backup) {
-        return PteroActionImpl.onRequestExecute(impl.getPteroApi(),
+        return PteroActionImpl.onRequestExecute(impl.getP4J(),
                 Route.Backups.RESTORE_BACKUP.compile(server.getIdentifier(), backup.getUUID().toString()));
     }
 
     @Override
     public PteroAction<Void> deleteBackup(Backup backup) {
-        return PteroActionImpl.onRequestExecute(impl.getPteroApi(),
+        return PteroActionImpl.onRequestExecute(impl.getP4J(),
                 Route.Backups.DELETE_BACKUP.compile(server.getIdentifier(), backup.getUUID().toString()));
     }
 }

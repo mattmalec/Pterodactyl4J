@@ -16,7 +16,7 @@ public abstract class AbstractUserAction extends PteroActionImpl<ApplicationUser
     protected String password;
 
     public AbstractUserAction(PteroApplicationImpl impl, Route.CompiledRoute route) {
-        super(impl.getPteroApi(), route, (response, request) -> new ApplicationUserImpl(response.getObject(), impl));
+        super(impl.getP4J(), route, (response, request) -> new ApplicationUserImpl(response.getObject(), impl));
     }
 
     @Override

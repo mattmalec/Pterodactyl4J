@@ -27,6 +27,6 @@ public class UserManagerImpl implements UserManager {
 
     @Override
     public PteroAction<Void> deleteUser(ApplicationUser user) {
-        return PteroActionImpl.onRequestExecute(impl.getPteroApi(), Route.Users.DELETE_USER.compile(user.getId()));
+        return PteroActionImpl.onRequestExecute(impl.getP4J(), Route.Users.DELETE_USER.compile(user.getId()));
     }
 }

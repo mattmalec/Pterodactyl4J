@@ -19,12 +19,12 @@ public class ClientServerManager {
 
     public PteroAction<Void> setName(String name) {
         JSONObject obj = new JSONObject().put("name", name);
-        return PteroActionImpl.onRequestExecute(impl.getPteroApi(),
+        return PteroActionImpl.onRequestExecute(impl.getP4J(),
                 Route.Client.RENAME_SERVER.compile(server.getIdentifier()), PteroActionImpl.getRequestBody(obj));
     }
 
     public PteroAction<Void> reinstall() {
-        return PteroActionImpl.onRequestExecute(impl.getPteroApi(),
+        return PteroActionImpl.onRequestExecute(impl.getP4J(),
                 Route.Client.REINSTALL_SERVER.compile(server.getIdentifier()));
     }
 }

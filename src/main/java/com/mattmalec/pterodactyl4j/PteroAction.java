@@ -1,6 +1,6 @@
 package com.mattmalec.pterodactyl4j;
 
-import com.mattmalec.pterodactyl4j.entities.PteroAPI;
+import com.mattmalec.pterodactyl4j.entities.P4J;
 import com.mattmalec.pterodactyl4j.exceptions.RateLimitedException;
 import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.requests.operator.*;
@@ -48,7 +48,7 @@ public interface PteroAction<T> {
      *
      * @return The corresponding API instance
      */
-    PteroAPI getApi();
+    P4J getP4J();
 
     /**
      * The default failure callback used when none is provided in {@link #executeAsync(Consumer, Consumer)}.
@@ -406,7 +406,7 @@ public interface PteroAction<T> {
      * @param  duration
      *         The delay
      * @param  scheduler
-     *         The scheduler to use, null to use {@link PteroAPI#getRateLimitPool()}
+     *         The scheduler to use, null to use {@link P4J#getRateLimitPool()}
      *
      * @return PteroAction with delay
      */
@@ -459,7 +459,7 @@ public interface PteroAction<T> {
      * @param  unit
      *         The time unit for the delay value
      * @param  scheduler
-     *         The scheduler to use, null to use {@link PteroAPI#getRateLimitPool()}
+     *         The scheduler to use, null to use {@link P4J#getRateLimitPool()}
      *
      * @return PteroAction with delay
      */

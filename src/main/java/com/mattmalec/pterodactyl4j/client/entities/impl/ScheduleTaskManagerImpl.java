@@ -32,7 +32,7 @@ public class ScheduleTaskManagerImpl implements ScheduleTaskManager {
 
 	@Override
 	public PteroAction<Void> deleteTask(Schedule.ScheduleTask task) {
-		return PteroActionImpl.onRequestExecute(impl.getPteroApi(),
+		return PteroActionImpl.onRequestExecute(impl.getP4J(),
 				Route.Schedules.DELETE_TASK.compile(server.getUUID().toString(), schedule.getId(), task.getId()));
 	}
 }

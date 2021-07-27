@@ -21,7 +21,7 @@ public abstract class AbstractScheduleAction extends PteroActionImpl<Schedule> i
     protected String dayOfMonth;
 
     public AbstractScheduleAction(PteroClientImpl impl, ClientServer server, Route.CompiledRoute route) {
-        super(impl.getPteroApi(), route, (response, request) -> new ScheduleImpl(response.getObject(), server, impl));
+        super(impl.getP4J(), route, (response, request) -> new ScheduleImpl(response.getObject(), server, impl));
     }
 
     @Override

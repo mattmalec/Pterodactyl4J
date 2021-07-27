@@ -31,7 +31,7 @@ public class SubuserManagerImpl implements SubuserManager {
 
     @Override
     public PteroAction<Void> deleteUser(ClientSubuser subuser) {
-        return PteroActionImpl.onRequestExecute(impl.getPteroApi(),
+        return PteroActionImpl.onRequestExecute(impl.getP4J(),
                 Route.Subusers.DELETE_SUBUSER.compile(server.getUUID().toString(), subuser.getUUID().toString()));
     }
 }

@@ -1,10 +1,7 @@
 package com.mattmalec.pterodactyl4j.requests;
 
 import com.mattmalec.pterodactyl4j.PteroAction;
-import com.mattmalec.pterodactyl4j.entities.PteroAPI;
-import com.mattmalec.pterodactyl4j.exceptions.HttpException;
-import com.mattmalec.pterodactyl4j.exceptions.LoginException;
-import com.mattmalec.pterodactyl4j.exceptions.MissingActionException;
+import com.mattmalec.pterodactyl4j.entities.P4J;
 import com.mattmalec.pterodactyl4j.exceptions.PteroException;
 import okhttp3.RequestBody;
 import org.json.JSONArray;
@@ -18,7 +15,7 @@ import java.util.function.Supplier;
 
 public class PteroActionImpl<T> implements PteroAction<T> {
 
-    private final PteroAPI api;
+    private final P4J api;
     private Route.CompiledRoute route;
     private RequestBody data;
 
@@ -26,40 +23,40 @@ public class PteroActionImpl<T> implements PteroAction<T> {
 
     private BiFunction<Response, Request<T>, T> handler;
 
-    public static <T> PteroActionImpl<T> onExecute(PteroAPI api, Supplier<? extends T> supplier) {
+    public static <T> PteroActionImpl<T> onExecute(P4J api, Supplier<? extends T> supplier) {
         return new PteroActionImpl<>(api, supplier);
     }
 
-    public static <T> PteroActionImpl<T> onRequestExecute(PteroAPI api, Route.CompiledRoute route) {
+    public static <T> PteroActionImpl<T> onRequestExecute(P4J api, Route.CompiledRoute route) {
         return new PteroActionImpl<>(api, route);
     }
 
-    public static <T> PteroActionImpl<T> onRequestExecute(PteroAPI api, Route.CompiledRoute route, RequestBody data) {
+    public static <T> PteroActionImpl<T> onRequestExecute(P4J api, Route.CompiledRoute route, RequestBody data) {
         return new PteroActionImpl<>(api, route, data);
     }
 
-    public static <T> PteroActionImpl<T> onRequestExecute(PteroAPI api, Route.CompiledRoute route, BiFunction<Response, Request<T>, T> handler) {
+    public static <T> PteroActionImpl<T> onRequestExecute(P4J api, Route.CompiledRoute route, BiFunction<Response, Request<T>, T> handler) {
         return new PteroActionImpl<>(api, route, handler);
     }
 
-    public PteroActionImpl(PteroAPI api, Supplier<? extends T> supplier) {
+    public PteroActionImpl(P4J api, Supplier<? extends T> supplier) {
         this.api = api;
         this.supplier = supplier;
     }
 
-    public PteroActionImpl(PteroAPI api, Route.CompiledRoute route) {
+    public PteroActionImpl(P4J api, Route.CompiledRoute route) {
         this(api, route, null, null);
     }
 
-    public PteroActionImpl(PteroAPI api, Route.CompiledRoute route, RequestBody data) {
+    public PteroActionImpl(P4J api, Route.CompiledRoute route, RequestBody data) {
         this(api, route, data, null);
     }
 
-    public PteroActionImpl(PteroAPI api, Route.CompiledRoute route, BiFunction<Response, Request<T>, T> handler) {
+    public PteroActionImpl(P4J api, Route.CompiledRoute route, BiFunction<Response, Request<T>, T> handler) {
         this(api, route, null, handler);
     }
 
-    public PteroActionImpl(PteroAPI api, Route.CompiledRoute route, RequestBody data, BiFunction<Response, Request<T>, T> handler) {
+    public PteroActionImpl(P4J api, Route.CompiledRoute route, RequestBody data, BiFunction<Response, Request<T>, T> handler) {
         this.api = api;
         this.route = route;
         this.data = data;
@@ -115,7 +112,7 @@ public class PteroActionImpl<T> implements PteroAction<T> {
     }
 
     @Override
-    public PteroAPI getApi() {
+    public P4J getP4J() {
         return api;
     }
 

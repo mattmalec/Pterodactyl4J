@@ -15,7 +15,7 @@ public abstract class AbstractScheduleTaskAction extends PteroActionImpl<Schedul
     protected String timeOffset;
 
     public AbstractScheduleTaskAction(PteroClientImpl impl, Schedule schedule, Route.CompiledRoute route) {
-        super(impl.getPteroApi(), route, (response, request) -> new ScheduleTaskImpl(response.getObject(), schedule));
+        super(impl.getP4J(), route, (response, request) -> new ScheduleTaskImpl(response.getObject(), schedule));
     }
 
     @Override

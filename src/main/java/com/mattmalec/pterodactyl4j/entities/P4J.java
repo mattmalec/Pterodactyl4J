@@ -8,7 +8,7 @@ import okhttp3.OkHttpClient;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ScheduledExecutorService;
 
-public interface PteroAPI {
+public interface P4J {
 
 	String getToken();
 	Requester getRequester();

@@ -16,7 +16,7 @@ public abstract class AbstractSubuserAction extends PteroActionImpl<ClientSubuse
     protected EnumSet<Permission> permissions;
 
     public AbstractSubuserAction(PteroClientImpl impl, Route.CompiledRoute route) {
-        super(impl.getPteroApi(), route, (response, request) -> new ClientSubuserImpl(response.getObject()));
+        super(impl.getP4J(), route, (response, request) -> new ClientSubuserImpl(response.getObject()));
         this.permissions = EnumSet.noneOf(Permission.class);
     }
 

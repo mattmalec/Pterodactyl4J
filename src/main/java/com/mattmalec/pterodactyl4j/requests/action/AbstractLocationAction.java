@@ -13,7 +13,7 @@ public abstract class AbstractLocationAction extends PteroActionImpl<Location> i
     protected String description;
 
     public AbstractLocationAction(PteroApplicationImpl impl, Route.CompiledRoute route) {
-        super(impl.getPteroApi(), route, (response, request) -> new LocationImpl(response.getObject(), impl));
+        super(impl.getP4J(), route, (response, request) -> new LocationImpl(response.getObject(), impl));
     }
 
     @Override

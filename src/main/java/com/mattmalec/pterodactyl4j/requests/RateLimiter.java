@@ -1,6 +1,6 @@
 package com.mattmalec.pterodactyl4j.requests;
 
-import com.mattmalec.pterodactyl4j.entities.PteroAPI;
+import com.mattmalec.pterodactyl4j.entities.P4J;
 import com.mattmalec.pterodactyl4j.utils.LockUtils;
 import okhttp3.Headers;
 import org.slf4j.Logger;
@@ -34,7 +34,7 @@ public class RateLimiter implements Runnable {
     
     private final ReentrantLock lock = new ReentrantLock();
 
-    public RateLimiter(Requester requester, PteroAPI api) {
+    public RateLimiter(Requester requester, P4J api) {
         this.requester = requester;
         this.scheduler = api.getRateLimitPool();
     }

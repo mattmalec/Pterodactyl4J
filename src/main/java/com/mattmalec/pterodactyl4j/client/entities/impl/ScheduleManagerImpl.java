@@ -30,7 +30,7 @@ public class ScheduleManagerImpl implements ScheduleManager {
 
 	@Override
 	public PteroAction<Void> delete(Schedule schedule) {
-		return PteroActionImpl.onRequestExecute(impl.getPteroApi(),
+		return PteroActionImpl.onRequestExecute(impl.getP4J(),
 				Route.Schedules.DELETE_SCHEDULE.compile(server.getUUID().toString(), schedule.getId()));
 	}
 }

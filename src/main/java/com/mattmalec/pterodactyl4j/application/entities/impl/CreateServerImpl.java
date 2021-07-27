@@ -46,7 +46,7 @@ public class CreateServerImpl extends PteroActionImpl<ApplicationServer> impleme
 	private final PteroApplicationImpl impl;
 
 	public CreateServerImpl(PteroApplicationImpl impl) {
-		super(impl.getPteroApi(), Route.Servers.CREATE_SERVER.compile(),
+		super(impl.getP4J(), Route.Servers.CREATE_SERVER.compile(),
 				(response, request) -> new ApplicationServerImpl(impl, response.getObject()));
 		this.environment = new HashMap<>();
 		this.impl = impl;

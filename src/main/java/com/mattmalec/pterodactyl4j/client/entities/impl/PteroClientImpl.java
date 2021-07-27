@@ -7,7 +7,7 @@ import com.mattmalec.pterodactyl4j.client.entities.Account;
 import com.mattmalec.pterodactyl4j.client.entities.ClientServer;
 import com.mattmalec.pterodactyl4j.client.entities.PteroClient;
 import com.mattmalec.pterodactyl4j.client.entities.Utilization;
-import com.mattmalec.pterodactyl4j.entities.PteroAPI;
+import com.mattmalec.pterodactyl4j.entities.P4J;
 import com.mattmalec.pterodactyl4j.requests.Route;
 import org.json.JSONObject;
 
@@ -19,13 +19,13 @@ import java.util.stream.Stream;
 
 public class PteroClientImpl implements PteroClient {
 
-    private final PteroAPI api;
+    private final P4J api;
 
-    public PteroClientImpl(PteroAPI api) {
+    public PteroClientImpl(P4J api) {
         this.api = api;
     }
 
-    public PteroAPI getPteroApi() {
+    public P4J getP4J() {
         return api;
     }
 

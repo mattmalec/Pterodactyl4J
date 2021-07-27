@@ -4,14 +4,14 @@ import com.mattmalec.pterodactyl4j.application.entities.PteroApplication;
 import com.mattmalec.pterodactyl4j.application.entities.impl.PteroApplicationImpl;
 import com.mattmalec.pterodactyl4j.client.entities.PteroClient;
 import com.mattmalec.pterodactyl4j.client.entities.impl.PteroClientImpl;
-import com.mattmalec.pterodactyl4j.entities.PteroAPI;
+import com.mattmalec.pterodactyl4j.entities.P4J;
 import com.mattmalec.pterodactyl4j.requests.Requester;
 import okhttp3.OkHttpClient;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ScheduledExecutorService;
 
-public class PteroAPIImpl implements PteroAPI {
+public class P4JImpl implements P4J {
 
     private final String token;
     private final String applicationUrl;
@@ -23,8 +23,8 @@ public class PteroAPIImpl implements PteroAPI {
     private final ExecutorService supplierPool;
     private final OkHttpClient webSocketClient;
 
-    public PteroAPIImpl(String applicationUrl, String token, OkHttpClient httpClient, ExecutorService callbackPool, ExecutorService actionPool,
-                        ScheduledExecutorService rateLimitPool, ExecutorService supplierPool, OkHttpClient webSocketClient) {
+    public P4JImpl(String applicationUrl, String token, OkHttpClient httpClient, ExecutorService callbackPool, ExecutorService actionPool,
+                   ScheduledExecutorService rateLimitPool, ExecutorService supplierPool, OkHttpClient webSocketClient) {
         this.token = token;
         this.applicationUrl = applicationUrl;
         this.httpClient = httpClient;

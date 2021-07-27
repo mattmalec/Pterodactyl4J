@@ -123,7 +123,7 @@ public class ClientServerImpl implements ClientServer {
 		return new Relationed<ClientSubuser>() {
 			@Override
 			public PteroAction<ClientSubuser> retrieve() {
-				return PteroActionImpl.onRequestExecute(impl.getPteroApi(),
+				return PteroActionImpl.onRequestExecute(impl.getP4J(),
 						Route.Subusers.GET_SUBUSER.compile(getIdentifier(), uuid.toString()),
 						(response, request) -> new ClientSubuserImpl(response.getObject()));
 			}
@@ -153,9 +153,9 @@ public class ClientServerImpl implements ClientServer {
 
 	@Override
 	public PteroAction<List<Backup>> retrieveBackups() {
-		return PteroActionImpl.onExecute(impl.getPteroApi(), () -> {
+		return PteroActionImpl.onExecute(impl.getP4J(), () -> {
 			List<Backup> backups = new ArrayList<>();
-			JSONObject json = new PteroActionImpl<JSONObject>(impl.getPteroApi(),
+			JSONObject json = new PteroActionImpl<JSONObject>(impl.getP4J(),
 					Route.Backups.LIST_BACKUPS.compile(getIdentifier(), "1"),
 					(response, request) -> response.getObject()).execute();
 			long pages = json.getJSONObject("meta").getJSONObject("pagination").getLong("total_pages");
@@ -164,7 +164,7 @@ public class ClientServerImpl implements ClientServer {
 				backups.add(new BackupImpl(backup, this));
 			}
 			for (int i = 2; i <= pages; i++) {
-				JSONObject nextJson = new PteroActionImpl<JSONObject>(impl.getPteroApi(),
+				JSONObject nextJson = new PteroActionImpl<JSONObject>(impl.getP4J(),
 						Route.Backups.LIST_BACKUPS.compile(getIdentifier(), Long.toUnsignedString(i)),
 						(response, request) -> response.getObject()).execute();
 				for (Object o : nextJson.getJSONArray("data")) {
@@ -178,7 +178,7 @@ public class ClientServerImpl implements ClientServer {
 
 	@Override
 	public PteroAction<Backup> retrieveBackup(UUID uuid) {
-		return PteroActionImpl.onRequestExecute(impl.getPteroApi(),
+		return PteroActionImpl.onRequestExecute(impl.getP4J(),
 				Route.Backups.GET_BACKUP.compile(getIdentifier(), uuid.toString()),
 				(response, request) -> new BackupImpl(response.getObject(), this));
 	}
@@ -190,7 +190,7 @@ public class ClientServerImpl implements ClientServer {
 
 	@Override
 	public PteroAction<List<Schedule>> retrieveSchedules() {
-		return PteroActionImpl.onRequestExecute(impl.getPteroApi(),
+		return PteroActionImpl.onRequestExecute(impl.getP4J(),
 				Route.Schedules.LIST_SCHEDULES.compile(getIdentifier()), (response, request) -> {
 					JSONObject json = response.getObject();
 					List<Schedule> schedules = new ArrayList<>();
@@ -204,7 +204,7 @@ public class ClientServerImpl implements ClientServer {
 
 	@Override
 	public PteroAction<Schedule> retrieveSchedule(String id) {
-		return PteroActionImpl.onRequestExecute(impl.getPteroApi(),
+		return PteroActionImpl.onRequestExecute(impl.getP4J(),
 				Route.Schedules.GET_SCHEDULE.compile(getIdentifier(), id),
 				(response, request) -> new ScheduleImpl(response.getObject(), this, impl));
 	}
@@ -216,21 +216,21 @@ public class ClientServerImpl implements ClientServer {
 
 	@Override
 	public PteroAction<Utilization> retrieveUtilization() {
-		return PteroActionImpl.onRequestExecute(impl.getPteroApi(), Route.Client.GET_UTILIZATION.compile(getIdentifier()),
+		return PteroActionImpl.onRequestExecute(impl.getP4J(), Route.Client.GET_UTILIZATION.compile(getIdentifier()),
 				(response, request) -> new UtilizationImpl(response.getObject()));
 	}
 
 	@Override
 	public PteroAction<Void> setPower(PowerAction powerAction) {
 		JSONObject obj = new JSONObject().put("signal", powerAction.name().toLowerCase());
-		return PteroActionImpl.onRequestExecute(impl.getPteroApi(),
+		return PteroActionImpl.onRequestExecute(impl.getP4J(),
 				Route.Client.SET_POWER.compile(getIdentifier()), PteroActionImpl.getRequestBody(obj));
 	}
 
 	@Override
 	public PteroAction<Void> sendCommand(String command) {
 		JSONObject obj = new JSONObject().put("command", command);
-		return PteroActionImpl.onRequestExecute(impl.getPteroApi(),
+		return PteroActionImpl.onRequestExecute(impl.getP4J(),
 				Route.Client.SEND_COMMAND.compile(getIdentifier()), PteroActionImpl.getRequestBody(obj));
 	}
 

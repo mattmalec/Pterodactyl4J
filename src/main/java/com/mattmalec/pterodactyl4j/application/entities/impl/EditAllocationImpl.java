@@ -23,14 +23,14 @@ public class EditAllocationImpl extends AbstractAllocationAction {
 
 	@Override
 	public Void execute() {
-		PteroActionImpl.onRequestExecute(impl.getPteroApi(),
+		PteroActionImpl.onRequestExecute(impl.getP4J(),
 				Route.Nodes.DELETE_ALLOCATION.compile(allocation.getId())).execute();
 		return super.execute();
 	}
 
 	@Override
 	public void executeAsync(Consumer<? super Void> success, Consumer<? super Throwable> failure) {
-		PteroActionImpl.onRequestExecute(impl.getPteroApi(),
+		PteroActionImpl.onRequestExecute(impl.getP4J(),
 				Route.Nodes.DELETE_ALLOCATION.compile(allocation.getId())).executeAsync();
 		super.executeAsync(success, failure);
 	}

@@ -17,19 +17,19 @@ public class ServerController {
 	}
 
 	public PteroAction<Void> suspend() {
-		return PteroActionImpl.onRequestExecute(impl.getPteroApi(), Route.Servers.SUSPEND_SERVER.compile(server.getId()));
+		return PteroActionImpl.onRequestExecute(impl.getP4J(), Route.Servers.SUSPEND_SERVER.compile(server.getId()));
 	}
 
 	public PteroAction<Void> unsuspend() {
-		return PteroActionImpl.onRequestExecute(impl.getPteroApi(), Route.Servers.UNSUSPEND_SERVER.compile(server.getId()));
+		return PteroActionImpl.onRequestExecute(impl.getP4J(), Route.Servers.UNSUSPEND_SERVER.compile(server.getId()));
 	}
 
 	public PteroAction<Void> reinstall() {
-		return PteroActionImpl.onRequestExecute(impl.getPteroApi(), Route.Servers.REINSTALL_SERVER.compile(server.getId()));
+		return PteroActionImpl.onRequestExecute(impl.getP4J(), Route.Servers.REINSTALL_SERVER.compile(server.getId()));
 	}
 
 	public PteroAction<Void> delete(boolean withForce) {
-		return PteroActionImpl.onRequestExecute(impl.getPteroApi(), withForce ?
+		return PteroActionImpl.onRequestExecute(impl.getP4J(), withForce ?
 				Route.Servers.FORCE_DELETE_SERVER.compile(server.getId()) :
 				Route.Servers.SAFE_DELETE_SERVER.compile(server.getId()));
 	}

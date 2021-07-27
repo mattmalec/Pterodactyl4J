@@ -114,7 +114,7 @@ public class ApplicationUserImpl implements ApplicationUser {
 
 	@Override
 	public PteroAction<Void> delete() {
-		return PteroActionImpl.onRequestExecute(impl.getPteroApi(), Route.Users.DELETE_USER.compile(getId()));
+		return PteroActionImpl.onRequestExecute(impl.getP4J(), Route.Users.DELETE_USER.compile(getId()));
 	}
 
 	@Override

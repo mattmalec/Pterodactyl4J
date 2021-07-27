@@ -26,7 +26,7 @@ public abstract class AbstractNodeAction extends PteroActionImpl<Node> implement
     protected Boolean secure;
 
     public AbstractNodeAction(PteroApplicationImpl impl, Route.CompiledRoute route) {
-        super(impl.getPteroApi(), route, (response, request) -> new NodeImpl(response.getObject(), impl));
+        super(impl.getP4J(), route, (response, request) -> new NodeImpl(response.getObject(), impl));
     }
 
     @Override

@@ -27,6 +27,6 @@ public class NodeManagerImpl implements NodeManager {
 
     @Override
     public PteroAction<Void> deleteNode(Node node) {
-        return PteroActionImpl.onRequestExecute(impl.getPteroApi(), Route.Nodes.DELETE_NODE.compile(node.getId()));
+        return PteroActionImpl.onRequestExecute(impl.getP4J(), Route.Nodes.DELETE_NODE.compile(node.getId()));
     }
 }

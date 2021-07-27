@@ -190,7 +190,7 @@ public class NodeImpl implements Node {
 		return new Relationed<List<Allocation>>() {
 			@Override
 			public PteroAction<List<Allocation>> retrieve() {
-				return PteroActionImpl.onExecute(impl.getPteroApi(), () -> getAllocations().retrieve().execute().stream().filter(a -> a.getPortInt() == port).collect(Collectors.toList()));
+				return PteroActionImpl.onExecute(impl.getP4J(), () -> getAllocations().retrieve().execute().stream().filter(a -> a.getPortInt() == port).collect(Collectors.toList()));
 			}
 
 			@Override
@@ -204,7 +204,7 @@ public class NodeImpl implements Node {
 
 	@Override
 	public PteroAction<Configuration> retrieveConfiguration() {
-		return PteroActionImpl.onRequestExecute(impl.getPteroApi(), Route.Nodes.GET_CONFIGURATION.compile(getId()),
+		return PteroActionImpl.onRequestExecute(impl.getP4J(), Route.Nodes.GET_CONFIGURATION.compile(getId()),
 				(response, request) -> new NodeConfigurationImpl(response.getObject()));
 	}
 
@@ -235,6 +235,6 @@ public class NodeImpl implements Node {
 
 	@Override
 	public PteroAction<Void> delete() {
-		return PteroActionImpl.onRequestExecute(impl.getPteroApi(), Route.Nodes.DELETE_NODE.compile(getId()));
+		return PteroActionImpl.onRequestExecute(impl.getP4J(), Route.Nodes.DELETE_NODE.compile(getId()));
 	}
 }

@@ -19,13 +19,13 @@ public class AccountManager {
     }
 
     public PteroAction<String> get2FAImage() {
-        return new PteroActionImpl<>(impl.getPteroApi(), Route.Accounts.GET_2FA_CODE.compile(),
+        return new PteroActionImpl<>(impl.getP4J(), Route.Accounts.GET_2FA_CODE.compile(),
                 (response, request) -> response.getObject().getJSONObject("data").getString("image_url_data"));
     }
 
     public PteroAction<Set<String>> enable2FA(int code) {
         JSONObject obj = new JSONObject().put("code", code);
-        return new PteroActionImpl<>(impl.getPteroApi(),
+        return new PteroActionImpl<>(impl.getP4J(),
                 Route.Accounts.ENABLE_2FA.compile(), PteroActionImpl.getRequestBody(obj),
                 (response, request) -> Collections.unmodifiableSet(response.getObject().getJSONObject("attributes")
                         .getJSONArray("tokens").toList().stream().map(Object::toString).collect(Collectors.toSet())));
@@ -33,7 +33,7 @@ public class AccountManager {
 
     public PteroAction<Void> disable2FA(String password) {
         JSONObject obj = new JSONObject().put("password", password);
-        return PteroActionImpl.onRequestExecute(impl.getPteroApi(),  Route.Accounts.DISABLE_2FA.compile(),
+        return PteroActionImpl.onRequestExecute(impl.getP4J(),  Route.Accounts.DISABLE_2FA.compile(),
                 PteroActionImpl.getRequestBody(obj));
     }
 
@@ -41,7 +41,7 @@ public class AccountManager {
         JSONObject obj = new JSONObject()
                 .put("email", newEmail)
                 .put("password", password);
-        return PteroActionImpl.onRequestExecute(impl.getPteroApi(),  Route.Accounts.UPDATE_EMAIL.compile(),
+        return PteroActionImpl.onRequestExecute(impl.getP4J(),  Route.Accounts.UPDATE_EMAIL.compile(),
                 PteroActionImpl.getRequestBody(obj));
     }
 
@@ -50,7 +50,7 @@ public class AccountManager {
                 .put("current_password", currentPassword)
                 .put("password", newPassword)
                 .put("password_confirmation", newPassword);
-        return PteroActionImpl.onRequestExecute(impl.getPteroApi(),  Route.Accounts.UPDATE_PASSWORD.compile(),
+        return PteroActionImpl.onRequestExecute(impl.getP4J(),  Route.Accounts.UPDATE_PASSWORD.compile(),
                 PteroActionImpl.getRequestBody(obj));
     }
 }

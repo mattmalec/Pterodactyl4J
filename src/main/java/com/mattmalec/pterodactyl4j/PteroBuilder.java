@@ -2,8 +2,8 @@ package com.mattmalec.pterodactyl4j;
 
 import com.mattmalec.pterodactyl4j.application.entities.PteroApplication;
 import com.mattmalec.pterodactyl4j.client.entities.PteroClient;
-import com.mattmalec.pterodactyl4j.entities.PteroAPI;
-import com.mattmalec.pterodactyl4j.entities.impl.PteroAPIImpl;
+import com.mattmalec.pterodactyl4j.entities.P4J;
+import com.mattmalec.pterodactyl4j.entities.impl.P4JImpl;
 import com.mattmalec.pterodactyl4j.utils.Checks;
 import com.mattmalec.pterodactyl4j.utils.NamedThreadFactory;
 import okhttp3.OkHttpClient;
@@ -242,7 +242,7 @@ public class PteroBuilder {
         return this.token;
     }
 
-    private PteroAPI build() {
+    private P4J build() {
         Checks.notBlank(token, "API Key");
         Checks.notBlank(applicationUrl, "Application URL");
         if (httpClient == null)
@@ -257,7 +257,7 @@ public class PteroBuilder {
             this.supplierPool = Executors.newFixedThreadPool(3, new NamedThreadFactory("Supplier"));
         if (webSocketClient == null)
             this.webSocketClient = new OkHttpClient();
-        return new PteroAPIImpl(this.applicationUrl, this.token, this.httpClient, this.callbackPool, this.actionPool,
+        return new P4JImpl(this.applicationUrl, this.token, this.httpClient, this.callbackPool, this.actionPool,
                 this.rateLimitPool, this.supplierPool, this.webSocketClient);
     }
 

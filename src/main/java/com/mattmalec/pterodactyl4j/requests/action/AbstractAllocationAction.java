@@ -15,7 +15,7 @@ public abstract class AbstractAllocationAction extends PteroActionImpl<Void> imp
     protected Set<String> portSet;
 
     public AbstractAllocationAction(PteroApplicationImpl impl, Route.CompiledRoute route) {
-        super(impl.getPteroApi(), route);
+        super(impl.getP4J(), route);
     }
 
     @Override

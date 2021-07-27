@@ -1,6 +1,6 @@
 package com.mattmalec.pterodactyl4j.requests;
 
-import com.mattmalec.pterodactyl4j.entities.PteroAPI;
+import com.mattmalec.pterodactyl4j.entities.P4J;
 import com.mattmalec.pterodactyl4j.exceptions.HttpException;
 import com.mattmalec.pterodactyl4j.exceptions.LoginException;
 import okhttp3.Call;
@@ -17,7 +17,7 @@ import java.net.SocketTimeoutException;
 
 public class Requester {
 
-    private final PteroAPI api;
+    private final P4J api;
     private final Logger REQUESTER_LOG = LoggerFactory.getLogger(Requester.class);
 
     public static final RequestBody EMPTY_BODY = RequestBody.create(null, new byte[0]);
@@ -27,7 +27,7 @@ public class Requester {
     private final RateLimiter rateLimiter;
     private final OkHttpClient client;
 
-    public Requester(PteroAPI api) {
+    public Requester(P4J api) {
         this.api = api;
         this.rateLimiter = new RateLimiter(this, api);
         this.client = api.getHttpClient();

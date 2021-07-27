@@ -27,7 +27,7 @@ public class AllocationManagerImpl implements AllocationManager {
 	}
 
 	public PteroAction<Void> deleteAllocation(Allocation allocation) {
-		return PteroActionImpl.onRequestExecute(impl.getPteroApi(), Route.Nodes.DELETE_ALLOCATION.compile(node.getId(), allocation.getId()));
+		return PteroActionImpl.onRequestExecute(impl.getP4J(), Route.Nodes.DELETE_ALLOCATION.compile(node.getId(), allocation.getId()));
 	}
 
 }

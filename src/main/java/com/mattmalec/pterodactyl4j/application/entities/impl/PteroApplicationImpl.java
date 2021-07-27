@@ -7,7 +7,7 @@ import com.mattmalec.pterodactyl4j.application.managers.LocationManager;
 import com.mattmalec.pterodactyl4j.application.managers.NodeManager;
 import com.mattmalec.pterodactyl4j.application.managers.ServerCreationAction;
 import com.mattmalec.pterodactyl4j.application.managers.UserManager;
-import com.mattmalec.pterodactyl4j.entities.PteroAPI;
+import com.mattmalec.pterodactyl4j.entities.P4J;
 import com.mattmalec.pterodactyl4j.requests.Route;
 import org.json.JSONObject;
 
@@ -19,13 +19,13 @@ import java.util.stream.Stream;
 
 public class PteroApplicationImpl implements PteroApplication {
 
-	private final PteroAPI api;
+	private final P4J api;
 
-	public PteroApplicationImpl(PteroAPI api) {
+	public PteroApplicationImpl(P4J api) {
 		this.api = api;
 	}
 
-	public PteroAPI getPteroApi() {
+	public P4J getP4J() {
 		return api;
 	}
 

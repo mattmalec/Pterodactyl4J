@@ -16,7 +16,7 @@ public class CreateBackupImpl extends PteroActionImpl<Backup> implements BackupA
     private List<String> files;
 
     public CreateBackupImpl(ClientServer server, PteroClientImpl impl) {
-        super(impl.getPteroApi(), Route.Backups.CREATE_BACKUP.compile(server.getIdentifier()),
+        super(impl.getP4J(), Route.Backups.CREATE_BACKUP.compile(server.getIdentifier()),
                 (response, request) -> new BackupImpl(response.getObject(), server));
     }
 

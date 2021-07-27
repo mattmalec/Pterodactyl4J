@@ -18,7 +18,7 @@ public class DelayPteroAction<T> extends PteroActionOperator<T, T> {
         super(action);
         this.unit = unit;
         this.delay = delay;
-        this.scheduler = scheduler == null ? action.getApi().getRateLimitPool() : scheduler;
+        this.scheduler = scheduler == null ? action.getP4J().getRateLimitPool() : scheduler;
     }
 
     @Override

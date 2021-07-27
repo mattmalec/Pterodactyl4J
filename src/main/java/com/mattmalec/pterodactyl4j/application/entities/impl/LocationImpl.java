@@ -107,7 +107,7 @@ public class LocationImpl implements Location {
 
 	@Override
 	public PteroAction<Void> delete() {
-		return PteroActionImpl.onRequestExecute(impl.getPteroApi(), Route.Locations.DELETE_LOCATION.compile(getId()));
+		return PteroActionImpl.onRequestExecute(impl.getP4J(), Route.Locations.DELETE_LOCATION.compile(getId()));
 	}
 
 	@Override

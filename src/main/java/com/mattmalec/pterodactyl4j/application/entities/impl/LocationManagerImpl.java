@@ -27,6 +27,6 @@ public class LocationManagerImpl implements LocationManager {
 
 	@Override
 	public PteroAction<Void> deleteLocation(Location location) {
-		return PteroActionImpl.onRequestExecute(impl.getPteroApi(), Route.Locations.DELETE_LOCATION.compile(location.getId()));
+		return PteroActionImpl.onRequestExecute(impl.getP4J(), Route.Locations.DELETE_LOCATION.compile(location.getId()));
 	}
 }
