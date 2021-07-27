@@ -13,7 +13,7 @@ uploadArchives {
     repositories {
         mavenDeployer {
             repository(url: "https://repo.mattmalec.com/repository/releases") {
-                authentication(userName: getProjectProperty("jenkinsUsername"), password: getProjectProperty("jenkinsPassword"))
+                authentication(userName: System.getenv("jenkinsUsername"), password: System.getenv("jenkinsPassword"))
             }
             pom.version = version
             pom.artifactId = "Pterodactyl4J"
@@ -86,14 +86,6 @@ dependencies {
 }
 
 compileJava.options.encoding = 'UTF-8'
-
-def getProjectProperty(propertyName) {
-    def property = ""
-    if (hasProperty(propertyName)) {
-        property = project.properties[propertyName] ?: ""
-    }
-    return property
-}
 
 class Version {
     def major, minor
