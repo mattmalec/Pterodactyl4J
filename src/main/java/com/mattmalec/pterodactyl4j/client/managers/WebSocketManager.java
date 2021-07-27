@@ -29,9 +29,9 @@ public class WebSocketManager {
     private final IClientListenerManager eventManager;
     private final Thread thread;
 
-    public WebSocketManager(PteroClientImpl api, ClientServer server, IClientListenerManager eventManager) {
+    public WebSocketManager(PteroClientImpl api, ClientServer server, IClientListenerManager eventManager, boolean useFreshServer) {
         this.eventManager = eventManager;
-        this.client = new WebSocketClient(api, server, this);
+        this.client = new WebSocketClient(api, server, useFreshServer, this);
         this.thread = new Thread(client, "P4J-ClientWS");
         connect();
     }

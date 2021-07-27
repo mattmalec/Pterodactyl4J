@@ -23,7 +23,7 @@ import com.mattmalec.pterodactyl4j.client.managers.WebSocketManager;
 public abstract class ClientSocketHandler {
 
     private final PteroClientImpl client;
-    private final ClientServer server;
+    private ClientServer server;
     private final WebSocketManager manager;
 
     public ClientSocketHandler(PteroClientImpl client, ClientServer server, WebSocketManager manager) {
@@ -34,6 +34,11 @@ public abstract class ClientSocketHandler {
 
     protected PteroClientImpl getClient() {
         return client;
+    }
+
+    public ClientSocketHandler setServer(ClientServer server) {
+        this.server = server;
+        return this;
     }
 
     protected ClientServer getServer() {
