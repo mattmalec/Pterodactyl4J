@@ -43,7 +43,8 @@ public class ServerManager {
 	}
 
 	public PteroAction<ApplicationServer> setName(String name) {
-		return PteroActionImpl.onExecute(impl.getP4J(), () -> {
+		return PteroActionImpl.onExecute(impl.getP4J(), () ->
+		{
 			JSONObject obj = new JSONObject()
 					.put("name", name)
 					.put("description", server.getDescription())
@@ -64,7 +65,8 @@ public class ServerManager {
 	}
 
 	public PteroAction<ApplicationServer> setDescription(String description) {
-		return PteroActionImpl.onExecute(impl.getP4J(), () -> {
+		return PteroActionImpl.onExecute(impl.getP4J(), () ->
+		{
 			JSONObject obj = new JSONObject()
 					.put("name", server.getName())
 					.put("description", description)
@@ -77,15 +79,7 @@ public class ServerManager {
 
 	public PteroAction<ApplicationServer> setAllocation(Allocation allocation) {
 		JSONObject obj = new JSONObject()
-				.put("memory", server.getLimits().getMemory())
-				.put("swap", server.getLimits().getSwap())
-				.put("io", server.getLimits().getIO())
-				.put("cpu", server.getLimits().getCPU())
-				.put("disk", server.getLimits().getDisk())
-				.put("threads", server.getLimits().getThreads());
-		JSONObject allocations = new JSONObject()
-				.put("default", allocation.getId());
-		obj.put("allocation", allocations);
+				.put("allocatiom", allocation.getId());
 		JSONObject featureLimits = new JSONObject()
 				.put("databases", server.getFeatureLimits().getDatabases())
 				.put("allocations", server.getFeatureLimits().getAllocations())
@@ -105,15 +99,15 @@ public class ServerManager {
 				trueAmount = amount * dataType.getMbValue();
 
 			JSONObject obj = new JSONObject()
+				.put("allocation", server.getDefaultAllocation().get().orElseGet(() -> server.getDefaultAllocation().retrieve().execute()).getId());
+			JSONObject limits = new JSONObject()
 					.put("memory", trueAmount)
 					.put("swap", server.getLimits().getSwap())
 					.put("io", server.getLimits().getIO())
 					.put("cpu", server.getLimits().getCPU())
 					.put("disk", server.getLimits().getDisk())
 					.put("threads", server.getLimits().getThreads());
-			JSONObject allocations = new JSONObject()
-					.put("default", server.getDefaultAllocation().get().orElseGet(() -> server.getDefaultAllocation().retrieve().execute()).getId());
-			obj.put("allocation", allocations);
+			obj.put("limits", limits);
 			JSONObject featureLimits = new JSONObject()
 					.put("databases", server.getFeatureLimits().getDatabases())
 					.put("allocations", server.getFeatureLimits().getAllocations())
@@ -135,15 +129,15 @@ public class ServerManager {
 				trueAmount = amount * dataType.getMbValue();
 
 			JSONObject obj = new JSONObject()
+					.put("allocation", server.getDefaultAllocation().get().orElseGet(() -> server.getDefaultAllocation().retrieve().execute()).getId());
+			JSONObject limits = new JSONObject()
 					.put("memory", server.getLimits().getMemory())
 					.put("swap", trueAmount)
 					.put("io", server.getLimits().getIO())
 					.put("cpu", server.getLimits().getCPU())
 					.put("disk", server.getLimits().getDisk())
 					.put("threads", server.getLimits().getThreads());
-			JSONObject allocations = new JSONObject()
-					.put("default", server.getDefaultAllocation().get().orElseGet(() -> server.getDefaultAllocation().retrieve().execute()).getId());
-			obj.put("allocation", allocations);
+			obj.put("limits", limits);
 			JSONObject featureLimits = new JSONObject()
 					.put("databases", server.getFeatureLimits().getDatabases())
 					.put("allocations", server.getFeatureLimits().getAllocations())
@@ -159,15 +153,15 @@ public class ServerManager {
 		return PteroActionImpl.onExecute(impl.getP4J(), () ->
 		{
 			JSONObject obj = new JSONObject()
+					.put("allocatiom", server.getDefaultAllocation().get().orElseGet(() -> server.getDefaultAllocation().retrieve().execute()).getId());
+			JSONObject limits = new JSONObject()
 					.put("memory", server.getLimits().getMemory())
 					.put("swap", server.getLimits().getSwap())
 					.put("io", amount)
 					.put("cpu", server.getLimits().getCPU())
 					.put("disk", server.getLimits().getDisk())
 					.put("threads", server.getLimits().getThreads());
-			JSONObject allocations = new JSONObject()
-					.put("default", server.getDefaultAllocation().get().orElseGet(() -> server.getDefaultAllocation().retrieve().execute()).getId());
-			obj.put("allocation", allocations);
+			obj.put("limits", limits);
 			JSONObject featureLimits = new JSONObject()
 					.put("databases", server.getFeatureLimits().getDatabases())
 					.put("allocations", server.getFeatureLimits().getAllocations())
@@ -183,15 +177,15 @@ public class ServerManager {
 		return PteroActionImpl.onExecute(impl.getP4J(), () ->
 		{
 			JSONObject obj = new JSONObject()
+					.put("allocation", server.getDefaultAllocation().get().orElseGet(() -> server.getDefaultAllocation().retrieve().execute()).getId());
+			JSONObject limits = new JSONObject()
 					.put("memory", server.getLimits().getMemory())
 					.put("swap", server.getLimits().getSwap())
 					.put("io", server.getLimits().getIO())
 					.put("cpu", amount)
 					.put("disk", server.getLimits().getDisk())
 					.put("threads", server.getLimits().getThreads());
-			JSONObject allocations = new JSONObject()
-					.put("default", server.getDefaultAllocation().get().orElseGet(() -> server.getDefaultAllocation().retrieve().execute()).getId());
-			obj.put("allocation", allocations);
+			obj.put("limits", limits);
 			JSONObject featureLimits = new JSONObject()
 					.put("databases", server.getFeatureLimits().getDatabases())
 					.put("allocations", server.getFeatureLimits().getAllocations())
@@ -207,15 +201,15 @@ public class ServerManager {
 		return PteroActionImpl.onExecute(impl.getP4J(), () ->
 		{
 			JSONObject obj = new JSONObject()
+					.put("allocation", server.getDefaultAllocation().get().orElseGet(() -> server.getDefaultAllocation().retrieve().execute()).getId());
+			JSONObject limits = new JSONObject()
 					.put("memory", server.getLimits().getMemory())
 					.put("swap", server.getLimits().getSwap())
 					.put("io", server.getLimits().getIO())
 					.put("cpu", server.getLimits().getCPU())
 					.put("disk", server.getLimits().getDisk())
 					.put("threads", cores);
-			JSONObject allocations = new JSONObject()
-					.put("default", server.getDefaultAllocation().get().orElseGet(() -> server.getDefaultAllocation().retrieve().execute()).getId());
-			obj.put("allocation", allocations);
+			obj.put("limits", limits);
 			JSONObject featureLimits = new JSONObject()
 					.put("databases", server.getFeatureLimits().getDatabases())
 					.put("allocations", server.getFeatureLimits().getAllocations())
@@ -237,15 +231,15 @@ public class ServerManager {
 				trueAmount = amount * dataType.getMbValue();
 
 			JSONObject obj = new JSONObject()
+					.put("allocation", server.getDefaultAllocation().get().orElseGet(() -> server.getDefaultAllocation().retrieve().execute()).getId());
+			JSONObject limits = new JSONObject()
 					.put("memory", server.getLimits().getMemory())
 					.put("swap", server.getLimits().getSwap())
 					.put("io", server.getLimits().getIO())
 					.put("cpu", server.getLimits().getCPU())
 					.put("disk", trueAmount)
 					.put("threads", server.getLimits().getThreads());
-			JSONObject allocations = new JSONObject()
-					.put("default", server.getDefaultAllocation().get().orElseGet(() -> server.getDefaultAllocation().retrieve().execute()).getId());
-			obj.put("allocation", allocations);
+			obj.put("limits", limits);
 			JSONObject featureLimits = new JSONObject()
 					.put("databases", server.getFeatureLimits().getDatabases())
 					.put("allocations", server.getFeatureLimits().getAllocations())
@@ -260,21 +254,12 @@ public class ServerManager {
 	public PteroAction<ApplicationServer> setAllowedDatabases(int amount) {
 		return PteroActionImpl.onExecute(impl.getP4J(), () ->
 		{
-			JSONObject obj = new JSONObject()
-					.put("memory", server.getLimits().getMemory())
-					.put("swap", server.getLimits().getSwap())
-					.put("io", server.getLimits().getIO())
-					.put("cpu", server.getLimits().getCPU())
-					.put("disk", server.getLimits().getDisk())
-					.put("threads", server.getLimits().getThreads());
-			JSONObject allocations = new JSONObject()
-					.put("default", server.getDefaultAllocation().get().orElseGet(() -> server.getDefaultAllocation().retrieve().execute()).getId());
-			obj.put("allocation", allocations);
 			JSONObject featureLimits = new JSONObject()
 					.put("databases", amount)
 					.put("allocations", server.getFeatureLimits().getAllocations())
 					.put("backups", server.getFeatureLimits().getBackups());
-			obj.put("feature_limits", featureLimits);
+			JSONObject obj = new JSONObject()
+					.put("feature_limits", featureLimits);
 
 			return new PteroActionImpl<ApplicationServer>(impl.getP4J(), Route.Servers.UPDATE_SERVER_BUILD.compile(server.getId()),
 					PteroActionImpl.getRequestBody(obj), (response, request) -> new ApplicationServerImpl(impl, response.getObject())).execute();
@@ -284,21 +269,12 @@ public class ServerManager {
 	public PteroAction<ApplicationServer> setAllowedAllocations(int amount) {
 		return PteroActionImpl.onExecute(impl.getP4J(), () ->
 		{
-			JSONObject obj = new JSONObject()
-					.put("memory", server.getLimits().getMemory())
-					.put("swap", server.getLimits().getSwap())
-					.put("io", server.getLimits().getIO())
-					.put("cpu", server.getLimits().getCPU())
-					.put("disk", server.getLimits().getDisk())
-					.put("threads", server.getLimits().getThreads());
-			JSONObject allocations = new JSONObject()
-					.put("default", server.getDefaultAllocation().get().orElseGet(() -> server.getDefaultAllocation().retrieve().execute()).getId());
-			obj.put("allocation", allocations);
 			JSONObject featureLimits = new JSONObject()
 					.put("databases", server.getFeatureLimits().getDatabases())
 					.put("allocations", amount)
 					.put("backups", server.getFeatureLimits().getBackups());
-			obj.put("feature_limits", featureLimits);
+			JSONObject obj = new JSONObject()
+					.put("feature_limits", featureLimits);
 
 			return new PteroActionImpl<ApplicationServer>(impl.getP4J(), Route.Servers.UPDATE_SERVER_BUILD.compile(server.getId()),
 					PteroActionImpl.getRequestBody(obj), (response, request) -> new ApplicationServerImpl(impl, response.getObject())).execute();
@@ -308,21 +284,12 @@ public class ServerManager {
 	public PteroAction<ApplicationServer> setAllowedBackups(int amount) {
 		return PteroActionImpl.onExecute(impl.getP4J(), () ->
 		{
-			JSONObject obj = new JSONObject()
-					.put("memory", server.getLimits().getMemory())
-					.put("swap", server.getLimits().getSwap())
-					.put("io", server.getLimits().getIO())
-					.put("cpu", server.getLimits().getCPU())
-					.put("disk", server.getLimits().getDisk())
-					.put("threads", server.getLimits().getThreads());
-			JSONObject allocations = new JSONObject()
-					.put("default", server.getDefaultAllocation().get().orElseGet(() -> server.getDefaultAllocation().retrieve().execute()).getId());
-			obj.put("allocation", allocations);
 			JSONObject featureLimits = new JSONObject()
 					.put("databases", server.getFeatureLimits().getDatabases())
 					.put("allocations", server.getFeatureLimits().getAllocations())
 					.put("backups", amount);
-			obj.put("feature_limits", featureLimits);
+			JSONObject obj = new JSONObject()
+					.put("feature_limits", featureLimits);
 
 			return new PteroActionImpl<ApplicationServer>(impl.getP4J(), Route.Servers.UPDATE_SERVER_BUILD.compile(server.getId()),
 					PteroActionImpl.getRequestBody(obj), (response, request) -> new ApplicationServerImpl(impl, response.getObject())).execute();
@@ -336,7 +303,9 @@ public class ServerManager {
 					.put("startup", command)
 					.put("environment", server.getContainer().getEnvironment().keySet())
 					.put("egg", server.getEgg().retrieve().execute().getId())
-					.put("image", server.getContainer().getImage());
+					.put("image", server.getContainer().getImage())
+					// this won't do anything since the server is installed, but pterodactyl requires it so here we are
+					.put("skip_scripts", true);
 			return new PteroActionImpl<Void>(impl.getP4J(),
 					Route.Servers.UPDATE_SERVER_STARTUP.compile(server.getId()),
 					PteroActionImpl.getRequestBody(obj)).execute();
