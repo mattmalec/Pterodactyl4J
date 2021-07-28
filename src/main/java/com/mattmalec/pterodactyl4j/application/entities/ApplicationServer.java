@@ -100,7 +100,23 @@ public interface ApplicationServer extends Server, ISnowflake {
 	 * @return {@link com.mattmalec.pterodactyl4j.utils.Relationed Relationed} - Type {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationEgg ApplicationEgg}
 	 */
 	Container getContainer();
+
+	/**
+	 * Returns the {@link com.mattmalec.pterodactyl4j.application.managers.ServerManager} for this ApplicationServer, used to modify
+	 * the limits and feature of the server.
+	 * <br>Managing a server requires an <b>Application API key</b> with the <b>Servers</b> permission with <b>Read &amp; Write</b> access.
+	 *
+	 * @return The manager for this server
+	 */
 	ServerManager getManager();
+
+	/**
+	 * Returns the {@link com.mattmalec.pterodactyl4j.application.managers.ServerController} for this ApplicationServer, used to control
+	 * the server state
+	 * <br>Controlling a server requires an <b>Application API key</b> with the <b>Servers</b> permission with <b>Read &amp; Write</b> access.
+	 *
+	 * @return The controller for this server
+	 */
 	ServerController getController();
 
 }
