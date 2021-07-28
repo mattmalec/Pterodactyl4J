@@ -296,6 +296,31 @@ public class ServerManager {
 		});
 	}
 
+	public PteroAction<ApplicationServer> setEnableOOMKiller(boolean enable) {
+		return PteroActionImpl.onExecute(impl.getP4J(), () ->
+		{
+			JSONObject obj = new JSONObject()
+					.put("allocation", server.getDefaultAllocation().get().orElseGet(() -> server.getDefaultAllocation().retrieve().execute()).getId())
+					.put("oom_disabled", !enable);
+			JSONObject limits = new JSONObject()
+					.put("memory", server.getLimits().getMemory())
+					.put("swap", server.getLimits().getSwap())
+					.put("io", server.getLimits().getIO())
+					.put("cpu", server.getLimits().getCPU())
+					.put("disk", server.getLimits().getDisk())
+					.put("threads", server.getLimits().getThreads());
+			obj.put("limits", limits);
+			JSONObject featureLimits = new JSONObject()
+					.put("databases", server.getFeatureLimits().getDatabases())
+					.put("allocations", server.getFeatureLimits().getAllocations())
+					.put("backups", server.getFeatureLimits().getBackups());
+			obj.put("feature_limits", featureLimits);
+
+			return new PteroActionImpl<ApplicationServer>(impl.getP4J(), Route.Servers.UPDATE_SERVER_BUILD.compile(server.getId()),
+					PteroActionImpl.getRequestBody(obj), (response, request) -> new ApplicationServerImpl(impl, response.getObject())).execute();
+		});
+	}
+
 	public PteroAction<Void> setStartupCommand(String command) {
 		return PteroActionImpl.onExecute(impl.getP4J(), () ->
 		{
