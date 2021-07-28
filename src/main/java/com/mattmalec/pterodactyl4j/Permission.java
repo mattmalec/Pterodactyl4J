@@ -18,6 +18,9 @@ package com.mattmalec.pterodactyl4j;
 
 import java.util.EnumSet;
 
+/**
+ * Represents the raw and description values used by Pterodactyl for Permissions
+ */
 public enum Permission {
 
     WEBSOCKET_CONNECT("websocket.connect", "Allows a user to connect to the websocket instance for a server to stream the console."),
@@ -73,16 +76,54 @@ public enum Permission {
     private final String raw;
     private final String description;
 
+    /**
+     * Represents a set of all the available permissions
+     */
     public static final Permission[] ALL_PERMISSIONS = Permission.values();
 
+    /**
+     * All permissions that apply to controlling a server's state
+     */
     public static final Permission[] CONTROL_PERMISSIONS    = new Permission[] { CONTROL_CONSOLE, CONTROL_START, CONTROL_STOP, CONTROL_RESTART };
+
+    /**
+     * All permissions that apply to controlling a server's database
+     */
     public static final Permission[] DATABASE_PERMISSIONS   = new Permission[] { DATABASE_READ, DATABASE_CREATE, DATABASE_UPDATE, DATABASE_DELETE, DATABASE_VIEW_PASSWORD };
+
+    /**
+     * All permissions that apply to a server's schedules
+     */
     public static final Permission[] SCHEDULE_PERMISSIONS   = new Permission[] { SCHEDULE_READ, SCHEDULE_CREATE, SCHEDULE_UPDATE, SCHEDULE_DELETE };
+
+    /**
+     * All permissions that apply to controlling a server's subuser access
+     */
     public static final Permission[] USER_PERMISSIONS       = new Permission[] { USER_READ, USER_CREATE, USER_UPDATE, USER_DELETE };
+
+    /**
+     * All permissions that apply to controlling a server's backups
+     */
     public static final Permission[] BACKUP_PERMISSIONS     = new Permission[] { BACKUP_READ, BACKUP_CREATE, BACKUP_UPDATE, BACKUP_DELETE, BACKUP_DOWNLOAD, BACKUP_RESTORE };
+
+    /**
+     * All permissions that apply to controlling a server's allocations
+     */
     public static final Permission[] ALLOCATION_PERMISSIONS = new Permission[] { ALLOCATION_READ, ALLOCATION_CREATE, ALLOCATION_UPDATE, ALLOCATION_DELETE };
+
+    /**
+     * All permissions that apply to modifying a server's files
+     */
     public static final Permission[] FILE_PERMISSIONS       = new Permission[] { FILE_READ, FILE_READ_CONTENT, FILE_CREATE, FILE_UPDATE, FILE_DELETE, FILE_ARCHIVE, FILE_SFTP };
+
+    /**
+     * All permissions that apply to modifying a server's startup command
+     */
     public static final Permission[] STARTUP_PERMISSIONS    = new Permission[] { STARTUP_READ, STARTUP_UPDATE };
+
+    /**
+     * All permissions that apply to renaming and reinstalling a server
+     */
     public static final Permission[] SETTINGS_PERMISSIONS   = new Permission[] { SETTINGS_RENAME, SETTINGS_REINSTALL };
 
 
@@ -91,14 +132,35 @@ public enum Permission {
         this.description = description;
     }
 
+    /**
+     * The value of this permission when viewed as a raw value.
+     *
+     * @return The raw value of this {@link com.mattmalec.pterodactyl4j.Permission}
+     */
     public String getRaw() {
         return raw;
     }
 
+    /**
+     * The readable description as used in Pterodactyl
+     *
+     * @return The readable description of this {@link com.mattmalec.pterodactyl4j.Permission}
+     */
     public String getDescription() {
         return description;
     }
 
+
+    /**
+     * A set of all {@link com.mattmalec.pterodactyl4j.Permission Permissions} that are specified by the collection of
+     * raw permissions.
+     *
+     * @param  permissions
+     *         The raw representation of permissions
+     *
+     * @return Possibly-empty EnumSet of {@link com.mattmalec.pterodactyl4j.Permission Permissions}.
+     *
+     */
     public static EnumSet<Permission> getPermissions(String... permissions) {
         EnumSet<Permission> perms = EnumSet.noneOf(Permission.class);
         if(permissions.length == 0) {
@@ -111,6 +173,15 @@ public enum Permission {
         return perms;
     }
 
+    /**
+     * This is effectively the opposite of {@link #getPermissions(String...)}, this takes 1 or more {@link com.mattmalec.pterodactyl4j.Permission Permissions}
+     * and returns a list of the raw representations.
+     *
+     * @param  permissions
+     *         The collection of permissions of which to return into the raw representation
+     *
+     * @return Never-empty String array representating the raw values of the {@link com.mattmalec.pterodactyl4j.Permission Permissions}
+     */
     public static String[] getRaw(Permission... permissions) {
         int length = permissions.length;
         String[] perms = new String[length];
@@ -120,6 +191,15 @@ public enum Permission {
         return perms;
     }
 
+    /**
+     * This is effectively {@link #getPermissions(String...)}, designed for returning a single {@link com.mattmalec.pterodactyl4j.Permission Permission}
+     *
+     * @param  raw
+     *         The raw representation of the permission
+     *
+     * @return Never-null {@link com.mattmalec.pterodactyl4j.Permission Permission}.
+     *
+     */
     public static Permission ofRaw(String raw) {
         for(Permission perm : ALL_PERMISSIONS) {
             if(perm.getRaw().equals(raw)) {
