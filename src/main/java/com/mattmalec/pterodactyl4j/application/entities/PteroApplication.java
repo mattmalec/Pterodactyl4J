@@ -596,7 +596,7 @@ public interface PteroApplication {
 	PteroAction<List<ApplicationServer>> retrieveServersByLocation(Location location);
 
 	/**
-	 * Returns a {@link ServerCreationAction ServerAction}, used to create servers on the Pterodactyl instance
+	 * Returns a {@link com.mattmalec.pterodactyl4j.application.managers.ServerCreationAction}, used to create servers on the Pterodactyl instance
 	 * <br>Creating a server requires an <b>Application API key</b> with the <b>Locations</b>, <b>Nests</b> and <b>Nodes</b> with <b>Read</b> access
 	 * and <b>Servers</b> and <b>Users</b> permission with <b>Read &amp; Write</b> access.
 	 *
