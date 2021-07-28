@@ -21,6 +21,11 @@ import java.util.Collection;
 
 public class Checks {
 
+    public static void check(boolean expression, String message) {
+        if (!expression)
+            throw new IllegalArgumentException(message);
+    }
+
     public static void notNull(Object o, String name) {
         if(o == null) {
             throw new IllegalArgumentException(name + " cannot be null!");
