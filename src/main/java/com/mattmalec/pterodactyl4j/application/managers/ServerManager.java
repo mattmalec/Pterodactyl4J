@@ -290,7 +290,7 @@ public class ServerManager {
 		return PteroActionImpl.onExecute(impl.getP4J(), () ->
 		{
 			JSONObject obj = new JSONObject()
-					.put("allocatiom", server.getDefaultAllocation().get().orElseGet(() -> server.getDefaultAllocation().retrieve().execute()).getId());
+					.put("allocation", server.getDefaultAllocation().get().orElseGet(() -> server.getDefaultAllocation().retrieve().execute()).getId());
 			JSONObject limits = new JSONObject()
 					.put("memory", server.getLimits().getMemory())
 					.put("swap", server.getLimits().getSwap())
