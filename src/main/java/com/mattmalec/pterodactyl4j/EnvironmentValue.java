@@ -112,8 +112,8 @@ public class EnvironmentValue<T> {
 
     /**
      * Returns a Collector used to convert the EnvironmentValue from the environment variables map to a String
-     * <br><br>
-     * This is helpful when we need to pass an environment variable map of String values instead of
+     *
+     * <p>This is helpful when we need to pass an environment variable map of String values instead of
      * EnvironmentValues to the Pterodactyl API
      *
      * @return The collector
