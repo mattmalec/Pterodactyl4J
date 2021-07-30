@@ -75,8 +75,7 @@ public class PteroApplicationImpl implements PteroApplication {
 
 	@Override
 	public PteroAction<List<ApplicationUser>> retrieveUsersByUsername(String name, boolean caseSensetive) {
-		return PteroActionImpl.onExecute(api, () ->
-        {
+		return PteroActionImpl.onExecute(api, () -> {
 				List<ApplicationUser> users = retrieveUsers().execute();
 				Stream<ApplicationUser> newUsers = users.stream();
 
@@ -92,8 +91,7 @@ public class PteroApplicationImpl implements PteroApplication {
 
 	@Override
 	public PteroAction<List<ApplicationUser>> retrieveUsersByEmail(String email, boolean caseSensetive) {
-		return PteroActionImpl.onExecute(api, () ->
-        {
+		return PteroActionImpl.onExecute(api, () -> {
 				List<ApplicationUser> users = retrieveUsers().execute();
 				Stream<ApplicationUser> newUsers = users.stream();
 
@@ -143,8 +141,7 @@ public class PteroApplicationImpl implements PteroApplication {
 
 	@Override
 	public PteroAction<List<Node>> retrieveNodesByName(String name, boolean caseSensetive) {
-		return PteroActionImpl.onExecute(api, () ->
-        {
+		return PteroActionImpl.onExecute(api, () -> {
 				List<Node> nodes = retrieveNodes().execute();
 				Stream<Node> newNodes = nodes.stream();
 
@@ -160,8 +157,7 @@ public class PteroApplicationImpl implements PteroApplication {
 
 	@Override
 	public PteroAction<List<Node>> retrieveNodesByLocation(Location location) {
-		return PteroActionImpl.onExecute(api, () ->
-        {
+		return PteroActionImpl.onExecute(api, () -> {
 				List<Node> nodes = retrieveNodes().execute();
 				List<Node> newNodes = nodes.stream()
 						.filter(n -> n.getLocation().retrieve().execute().getIdLong() == location.getIdLong()).collect(Collectors.toList());
@@ -200,8 +196,7 @@ public class PteroApplicationImpl implements PteroApplication {
 
 	@Override
 	public PteroAction<List<Allocation>> retrieveAllocations() {
-		return PteroActionImpl.onExecute(api, () ->
-        {
+		return PteroActionImpl.onExecute(api, () -> {
 				List<Allocation> allocations = new ArrayList<>();
 				List<Node> nodes = retrieveNodes().execute();
 				for(Node node : nodes) {
@@ -228,8 +223,7 @@ public class PteroApplicationImpl implements PteroApplication {
 
 	@Override
 	public PteroAction<List<ApplicationEgg>> retrieveEggs() {
-		return PteroActionImpl.onExecute(api, () ->
-        {
+		return PteroActionImpl.onExecute(api, () -> {
 				List<Nest> nests = retrieveNests().execute();
 				List<ApplicationEgg> eggs = new ArrayList<>();
 				for(Nest nest : nests) {
@@ -285,8 +279,7 @@ public class PteroApplicationImpl implements PteroApplication {
 
 	@Override
 	public PteroAction<List<Nest>> retrieveNestsByName(String name, boolean caseSensetive) {
-		return PteroActionImpl.onExecute(api, () ->
-        {
+		return PteroActionImpl.onExecute(api, () -> {
 				List<Nest> nests = retrieveNests().execute();
 				Stream<Nest> newNests = nests.stream();
 
@@ -302,8 +295,7 @@ public class PteroApplicationImpl implements PteroApplication {
 
 	@Override
 	public PteroAction<List<Nest>> retrieveNestsByAuthor(String author, boolean caseSensetive) {
-		return PteroActionImpl.onExecute(api, () ->
-        {
+		return PteroActionImpl.onExecute(api, () -> {
 				List<Nest> nests = retrieveNests().execute();
 				Stream<Nest> newNests = nests.stream();
 
@@ -349,8 +341,7 @@ public class PteroApplicationImpl implements PteroApplication {
 
 	@Override
 	public PteroAction<List<Location>> retrieveLocationsByShortCode(String name, boolean caseSensetive) {
-		return PteroActionImpl.onExecute(api, () ->
-        {
+		return PteroActionImpl.onExecute(api, () -> {
 				List<Location> locations = retrieveLocations().execute();
 				Stream<Location> newLocations = locations.stream();
 
@@ -417,8 +408,7 @@ public class PteroApplicationImpl implements PteroApplication {
 
 	@Override
 	public PteroAction<List<ApplicationServer>> retrieveServersByOwner(ApplicationUser user) {
-		return PteroActionImpl.onExecute(api, () ->
-        {
+		return PteroActionImpl.onExecute(api, () -> {
 				List<ApplicationServer> servers = retrieveServers().execute();
 				List<ApplicationServer> newServers = servers.stream()
 						.filter(s -> s.getOwner().get()
@@ -430,8 +420,7 @@ public class PteroApplicationImpl implements PteroApplication {
 
 	@Override
 	public PteroAction<List<ApplicationServer>> retrieveServersByNode(Node node) {
-		return PteroActionImpl.onExecute(api, () ->
-        {
+		return PteroActionImpl.onExecute(api, () -> {
 				List<ApplicationServer> servers = retrieveServers().execute();
 				List<ApplicationServer> newServers = servers.stream()
 						.filter(s -> s.getNode().get()
@@ -443,8 +432,7 @@ public class PteroApplicationImpl implements PteroApplication {
 
 	@Override
 	public PteroAction<List<ApplicationServer>> retrieveServersByLocation(Location location) {
-		return PteroActionImpl.onExecute(api, () ->
-        {
+		return PteroActionImpl.onExecute(api, () -> {
 				List<ApplicationServer> servers = retrieveServers().execute();
 				List<ApplicationServer> newServers = servers.stream()
 						.filter(s -> s.getNode().retrieve().execute().getLocation().get()

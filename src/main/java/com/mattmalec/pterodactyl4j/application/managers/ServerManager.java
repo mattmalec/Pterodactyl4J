@@ -709,8 +709,7 @@ public class ServerManager {
 	public PteroAction<ApplicationServer> setImage(String dockerImage) {
 		Checks.notNull(dockerImage, "Docker Image");
 		Checks.check(dockerImage.length() <= 191, "Docker image cannot be longer than 191 characters");
-		return PteroActionImpl.onExecute(impl.getP4J(), () ->
-		{
+		return PteroActionImpl.onExecute(impl.getP4J(), () -> {
 			JSONObject obj = new JSONObject()
 					.put("startup", server.getContainer().getStartupCommand())
 					.put("environment", server.getContainer().getEnvironment().entrySet()
@@ -738,8 +737,7 @@ public class ServerManager {
 	 * {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer} - The updated server
 	 */
 	public PteroAction<ApplicationServer> setSkipScripts(boolean skipScripts) {
-		return PteroActionImpl.onExecute(impl.getP4J(), () ->
-        {
+		return PteroActionImpl.onExecute(impl.getP4J(), () -> {
 				JSONObject obj = new JSONObject()
 						.put("startup", server.getContainer().getStartupCommand())
 						.put("environment", server.getContainer().getEnvironment().entrySet()

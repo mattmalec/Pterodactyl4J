@@ -102,8 +102,7 @@ public class PteroClientImpl implements PteroClient {
 
     @Override
     public PteroAction<List<ClientServer>> retrieveServersByName(String name, boolean caseSensetive) {
-        return PteroActionImpl.onExecute(api, () ->
-        {
+        return PteroActionImpl.onExecute(api, () -> {
             List<ClientServer> servers = retrieveServers().execute();
             Stream<ClientServer> newServers = servers.stream();
 
