@@ -16,6 +16,12 @@
 
 package com.mattmalec.pterodactyl4j;
 
+import com.mattmalec.pterodactyl4j.client.entities.Backup;
+import com.mattmalec.pterodactyl4j.client.entities.ClientServer;
+import com.mattmalec.pterodactyl4j.client.entities.ClientSubuser;
+import com.mattmalec.pterodactyl4j.client.entities.Schedule;
+import com.mattmalec.pterodactyl4j.client.managers.*;
+
 import java.util.EnumSet;
 
 /**
@@ -23,52 +29,241 @@ import java.util.EnumSet;
  */
 public enum Permission {
 
+    /**
+     * Allows a user to connect to the websocket instance for a server to stream the console.
+     *
+     * @see WebSocketBuilder#build()
+     */
     WEBSOCKET_CONNECT("websocket.connect", "Allows a user to connect to the websocket instance for a server to stream the console."),
+
+    /**
+     * Allows a user to send commands to the server instance via the console.
+     */
     CONTROL_CONSOLE("control.console", "Allows a user to send commands to the server instance via the console."),
+
+    /**
+     * Allows a user to start the server if it is stopped.
+     *
+     * @see ClientServer#start()
+     */
     CONTROL_START("control.start", "Allows a user to start the server if it is stopped."),
+
+    /**
+     * Allows a user to stop a server if it is running.
+     *
+     * @see ClientServer#stop()
+     */
     CONTROL_STOP("control.stop", "Allows a user to stop a server if it is running."),
+
+    /**
+     * Allows a user to perform a server restart. This allows them to start the server if it is offline, but not put the server in a completely stopped state.
+     *
+     * @see ClientServer#restart()
+     */
     CONTROL_RESTART("control.restart", "Allows a user to perform a server restart. This allows them to start the server if it is offline, but not put the server in a completely stopped state."),
 
+
+    /**
+     * Allows a user to view the database associated with this server.
+     */
     DATABASE_READ("database.read", "Allows a user to view the database associated with this server."),
+
+    /**
+     * Allows a user to create a new database for this server.
+     */
     DATABASE_CREATE("database.create", "Allows a user to create a new database for this server."),
+
+    /**
+     * Allows a user to rotate the password on a database instance. If the user does not have the {@link Permission#DATABASE_VIEW_PASSWORD} permission they will not see the updated password.
+     */
     DATABASE_UPDATE("database.update", "Allows a user to rotate the password on a database instance. If the user does not have the view_password permission they will not see the updated password."),
+
+    /**
+     * Allows a user to remove a database instance from this server.
+     */
     DATABASE_DELETE("database.delete", "Allows a user to remove a database instance from this server."),
+
+    /**
+     * Allows a user to view the password associated with a database instance for this server.
+     */
     DATABASE_VIEW_PASSWORD("database.view_password", "Allows a user to view the password associated with a database instance for this server."),
 
+    /**
+     * Allows a user to view schedules and the tasks associated with them for this server.
+     *
+     * @see ClientServer#retrieveSchedules()
+     */
     SCHEDULE_READ("schedule.read", "Allows a user to view schedules and the tasks associated with them for this server."),
+
+    /**
+     * Allows a user to create new schedules for this server.
+     *
+     * @see ScheduleManager#createSchedule()
+     */
     SCHEDULE_CREATE("schedule.create", "Allows a user to create new schedules for this server."),
+
+    /**
+     * Allows a user to update schedules and schedule tasks for this server.
+     *
+     * @see ScheduleManager#editSchedule(Schedule)
+     */
     SCHEDULE_UPDATE("schedule.update", "Allows a user to update schedules and schedule tasks for this server."),
+
+    /**
+     * Allows a user to delete schedules for this server.
+     *
+     * @see ScheduleManager#delete(Schedule)
+     */
     SCHEDULE_DELETE("schedule.delete", "Allows a user to delete schedules for this server."),
 
+
+    /**
+     * Allows the user to view subusers and their permissions for the server.
+     *
+     * @see ClientServer#getSubusers()
+     */
     USER_READ("user.read", "Allows the user to view subusers and their permissions for the server."),
+
+    /**
+     * Allows a user to create new subusers for the server.
+     *
+     * @see SubuserManager#createUser()
+     */
     USER_CREATE("user.create", "Allows a user to create new subusers for the server."),
+
+    /**
+     * Allows a user to modify other subusers.
+     *
+     * @see SubuserManager#editUser(ClientSubuser)
+     */
     USER_UPDATE("user.update", "Allows a user to modify other subusers."),
+
+    /**
+     * Allows a user to delete a subuser from the server.
+     *
+     * @see SubuserManager#deleteUser(ClientSubuser)
+     */
     USER_DELETE("user.delete", "Allows a user to delete a subuser from the server."),
 
+
+    /**
+     * Allows a user to view all backups that exist for this server.
+     *
+     * @see ClientServer#retrieveBackups()
+     */
     BACKUP_READ("backup.read", "Allows a user to view all backups that exist for this server."),
+
+    /**
+     * Allows a user to create new backups for this server.
+     *
+     * @see BackupManager#createBackup()
+     */
     BACKUP_CREATE("backup.create", "Allows a user to create new backups for this server."),
+
     BACKUP_UPDATE("backup.update", ""),
+
+    /**
+     * Allows a user to remove backups from the system.
+     *
+     * @see BackupManager#deleteBackup(Backup)
+     */
     BACKUP_DELETE("backup.delete", "Allows a user to remove backups from the system."),
+
+    /**
+     * Allows a user to download backups.
+     *
+     * @see BackupManager#retrieveDownloadUrl(Backup)
+     */
     BACKUP_DOWNLOAD("backup.download", "Allows a user to download backups."),
+
+    /**
+     * Allows a user to restore backups for the server.
+     *
+     * @see BackupManager#restoreBackup(Backup)
+     */
     BACKUP_RESTORE("backup.restore", "Allows a user to restore backups for the server."),
 
+
+    /**
+     * Allows a user to view all allocations currently assigned to this server. Users with any level of access to this server can always view the primary allocation.
+     */
     ALLOCATION_READ("allocation.read", "Allows a user to view all allocations currently assigned to this server. Users with any level of access to this server can always view the primary allocation."),
+
+    /**
+     * Allows a user to assign additional allocations to the server.
+     */
     ALLOCATION_CREATE("allocation.create", "Allows a user to assign additional allocations to the server."),
+
+    /**
+     * Allows a user to change the primary server allocation and attach notes to each allocation.
+     */
     ALLOCATION_UPDATE("allocation.update", "Allows a user to change the primary server allocation and attach notes to each allocation."),
+
+    /**
+     * Allows a user to delete an allocation from the server.
+     */
     ALLOCATION_DELETE("allocation.delete", "Allows a user to delete an allocation from the server."),
 
+
+    /**
+     * Allows a user to view the contents of a directory, but not view the contents of or download files.
+     */
     FILE_READ("file.read", "Allows a user to view the contents of a directory, but not view the contents of or download files."),
+
+    /**
+     * Allows a user to view the contents of a given file. This will also allow the user to download files.
+     */
     FILE_READ_CONTENT("file.read-content", "Allows a user to view the contents of a given file. This will also allow the user to download files."),
+
+    /**
+     * Allows a user to create additional files and folders via the Panel or direct upload.
+     */
     FILE_CREATE("file.create", "Allows a user to create additional files and folders via the Panel or direct upload."),
+
+    /**
+     * Allows a user to update the contents of an existing file or directory.
+     */
     FILE_UPDATE("file.update", "Allows a user to update the contents of an existing file or directory."),
+
+    /**
+     * Allows a user to delete files or directories.
+     */
     FILE_DELETE("file.delete", "Allows a user to delete files or directories."),
+
+    /**
+     * Allows a user to archive the contents of a directory as well as decompress existing archives on the system.
+     */
     FILE_ARCHIVE("file.archive", "Allows a user to archive the contents of a directory as well as decompress existing archives on the system."),
+
+    /**
+     * Allows a user to connect to SFTP and manage server files using the other assigned file permissions.
+     */
     FILE_SFTP("file.sftp", "Allows a user to connect to SFTP and manage server files using the other assigned file permissions."),
 
+
+    /**
+     * Allows a user to view the startup variables for a server.
+     */
     STARTUP_READ("startup.read", "Allows a user to view the startup variables for a server."),
+
+    /**
+     * Allows a user to modify the startup variables for the server.
+     */
     STARTUP_UPDATE("startup.update", "Allows a user to modify the startup variables for the server."),
 
+
+    /**
+     * Allows a user to rename this server.
+     *
+     * @see ClientServerManager#setName(String)
+     */
     SETTINGS_RENAME("settings.rename", "Allows a user to rename this server."),
+
+    /**
+     * Allows a user to trigger a reinstall of this server.
+     *
+     * @see ClientServerManager#reinstall()
+     */
     SETTINGS_REINSTALL("settings.reinstall", "Allows a user to trigger a reinstall of this server."),
 
     UNKNOWN("unknown", "Unknown Permission");
