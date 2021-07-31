@@ -270,6 +270,9 @@ public enum Permission {
      */
     SETTINGS_REINSTALL("settings.reinstall", "Allows a user to trigger a reinstall of this server."),
 
+    /**
+     * Unknown Permission
+     */
     UNKNOWN("unknown", "Unknown Permission");
 
     private final String raw;
