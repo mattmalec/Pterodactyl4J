@@ -255,6 +255,11 @@ public enum Permission {
      */
     STARTUP_UPDATE("startup.update", "Allows a user to modify the startup variables for the server."),
 
+    /**
+     * Allows a user to modify the Docker image used when running the server.
+     */
+    STARTUP_DOCKER_IMAGE("startup.docker-image", "Allows a user to modify the Docker image used when running the server."),
+
 
     /**
      * Allows a user to rename this server.
