@@ -172,12 +172,16 @@ public enum Permission {
     /**
      * Allows a user to download backups.
      *
+     * <p><b>Danger: This allows a user to access all files for the server in the backup.</b>
+     *
      * @see BackupManager#retrieveDownloadUrl(Backup)
      */
     BACKUP_DOWNLOAD("backup.download", "Allows a user to download backups."),
 
     /**
      * Allows a user to restore backups for the server.
+     *
+     * <p><b>Danger: this allows the user to delete all of the server files in the process.</b>
      *
      * @see BackupManager#restoreBackup(Backup)
      */
