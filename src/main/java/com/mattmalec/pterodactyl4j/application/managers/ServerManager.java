@@ -185,16 +185,17 @@ public class ServerManager {
 	 * {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer} - The updated server
 	 */
 	public PteroAction<ApplicationServer> setMemory(long amount, DataType dataType) {
-		Checks.check(amount < 0, "Memory cannot be less than 0");
 		Checks.notNull(dataType, "Data Type");
+		Checks.check(amount < 0, "Memory cannot be less than 0");
+
+		long trueAmount;
+		if (dataType == DataType.MB)
+			trueAmount = amount;
+		else
+			trueAmount = amount * dataType.getMbValue();
+
 		return PteroActionImpl.onExecute(impl.getP4J(), () ->
 		{
-			long trueAmount;
-			if (dataType == DataType.MB)
-				trueAmount = amount;
-			else
-				trueAmount = amount * dataType.getMbValue();
-
 			JSONObject obj = new JSONObject()
 				.put("allocation", server.getDefaultAllocation().get().orElseGet(() -> server.getDefaultAllocation().retrieve().execute()).getId());
 			JSONObject limits = new JSONObject()
@@ -238,16 +239,16 @@ public class ServerManager {
 	 * {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer} - The updated server
 	 */
 	public PteroAction<ApplicationServer> setSwap(long amount, DataType dataType) {
+		long trueAmount;
+		if (dataType == DataType.MB)
+			trueAmount = amount;
+		else
+			trueAmount = amount * dataType.getMbValue();
+
+		Checks.check(trueAmount < -1, "Swap cannot be less than -1 MB");
+
 		return PteroActionImpl.onExecute(impl.getP4J(), () ->
 		{
-			long trueAmount;
-			if (dataType == DataType.MB)
-				trueAmount = amount;
-			else
-				trueAmount = amount * dataType.getMbValue();
-
-			Checks.check(trueAmount < -1, "Swap cannot be less than -1 MB");
-
 			JSONObject obj = new JSONObject()
 					.put("allocation", server.getDefaultAllocation().get().orElseGet(() -> server.getDefaultAllocation().retrieve().execute()).getId());
 			JSONObject limits = new JSONObject()
@@ -415,16 +416,16 @@ public class ServerManager {
 	 * {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer} - The updated server
 	 */
 	public PteroAction<ApplicationServer> setDisk(long amount, DataType dataType) {
+		Checks.check(amount < 0, "Amount must be greater than 0");
+
+		long trueAmount;
+		if (dataType == DataType.MB)
+			trueAmount = amount;
+		else
+			trueAmount = amount * dataType.getMbValue();
+
 		return PteroActionImpl.onExecute(impl.getP4J(), () ->
 		{
-			long trueAmount;
-			if (dataType == DataType.MB)
-				trueAmount = amount;
-			else
-				trueAmount = amount * dataType.getMbValue();
-
-			Checks.check(amount < 0, "Amount must be greater than 0");
-
 			JSONObject obj = new JSONObject()
 					.put("allocation", server.getDefaultAllocation().get().orElseGet(() -> server.getDefaultAllocation().retrieve().execute()).getId());
 			JSONObject limits = new JSONObject()
