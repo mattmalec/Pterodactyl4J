@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package com.mattmalec.pterodactyl4j.requests.operator;
+package com.mattmalec.pterodactyl4j.requests.action.operator;
 
 import com.mattmalec.pterodactyl4j.PteroAction;
 

@@ -19,7 +19,7 @@ package com.mattmalec.pterodactyl4j;
 import com.mattmalec.pterodactyl4j.entities.P4J;
 import com.mattmalec.pterodactyl4j.exceptions.RateLimitedException;
 import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
-import com.mattmalec.pterodactyl4j.requests.operator.*;
+import com.mattmalec.pterodactyl4j.requests.action.operator.*;
 import com.mattmalec.pterodactyl4j.utils.Checks;
 
 import java.time.Duration;
