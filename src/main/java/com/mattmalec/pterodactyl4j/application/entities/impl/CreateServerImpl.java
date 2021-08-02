@@ -221,7 +221,7 @@ public class CreateServerImpl extends PteroActionImpl<ApplicationServer> impleme
 
 	@Override
 	protected RequestBody finalizeData() {
-		Checks.check(memory < 4, "The minimum memory limit is 4 MB.");
+		Checks.check(memory > 4, "The minimum memory limit is 4 MB.");
 		Checks.notNull(owner, "Owner");
 		Checks.notNull(egg, "Egg and Nest");
 		Nest nest = egg.getNest().get().orElseGet(() -> egg.getNest().retrieve().execute());
