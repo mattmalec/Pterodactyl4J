@@ -128,6 +128,35 @@ public class ServerManager {
 	}
 
 	/**
+	 * Sets the external id of this {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer}.
+	 *
+	 * @param  id
+	 *         The new external for the server or {@code null} to remove
+	 *
+	 * @throws IllegalArgumentException
+	 *         If the provided id is not between 1-191 characters long
+	 *
+	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type
+	 * {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer} - The updated server
+	 */
+	public PteroAction<ApplicationServer> setExternalId(String id) {
+		if (id != null)
+			Checks.check(id.length() >= 1 && id.length() <= 191, "ID must be between 1-191 characters long");
+
+		return PteroActionImpl.onExecute(impl.getP4J(), () ->
+		{
+			JSONObject obj = new JSONObject()
+					.put("name", server.getName())
+					.put("description", server.getDescription())
+					.put("external_id", id)
+					.put("user", server.getOwner().get().orElseGet(() -> server.getOwner().retrieve().execute()).getId());
+			return new PteroActionImpl<ApplicationServer>(impl.getP4J(),
+					Route.Servers.UPDATE_SERVER_DETAILS.compile(server.getId()), PteroActionImpl.getRequestBody(obj),
+					(response, request) -> new ApplicationServerImpl(impl, response.getObject())).execute();
+		});
+	}
+
+	/**
 	 * Sets the primary allocation for this {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer}.
 	 *
 	 * @param  allocation
