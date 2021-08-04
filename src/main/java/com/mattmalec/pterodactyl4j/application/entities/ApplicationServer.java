@@ -43,7 +43,10 @@ public interface ApplicationServer extends Server, ISnowflake {
 	 * <p> The server suspension state can be controlled using {@link ServerController#suspend()} and {@link ServerController#unsuspend()}.
 	 *
 	 * @return True - if this ApplicationServer is suspended
+	 *
+	 * @deprecated This key will be removed in the coming Pterodactyl updates. Use {@link ApplicationServer#getStatus()} instead
 	 */
+	@Deprecated
 	boolean isSuspended();
 
 	/**
