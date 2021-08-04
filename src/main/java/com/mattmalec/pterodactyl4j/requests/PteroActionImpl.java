@@ -31,9 +31,9 @@ import java.util.function.Supplier;
 
 public class PteroActionImpl<T> implements PteroAction<T> {
 
-    private final P4J api;
-    private Route.CompiledRoute route;
-    private RequestBody data;
+    protected final P4J api;
+    protected Route.CompiledRoute route;
+    protected RequestBody data;
 
     private Supplier<? extends T> supplier;
 
