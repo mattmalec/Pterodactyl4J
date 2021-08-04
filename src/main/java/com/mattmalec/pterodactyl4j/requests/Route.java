@@ -16,6 +16,8 @@
 
 package com.mattmalec.pterodactyl4j.requests;
 
+import com.mattmalec.pterodactyl4j.utils.Checks;
+
 import static com.mattmalec.pterodactyl4j.requests.Method.*;
 
 public class Route {
@@ -59,7 +61,7 @@ public class Route {
 	public static class Servers {
 
 		public static final Route LIST_SERVERS 			= new Route(GET,    APPLICATION_PREFIX + "servers?page={page}&include=allocations,user,subusers,nest,egg,location,node,databases");
-		public static final Route GET_SERVER 			= new Route(GET,    APPLICATION_PREFIX + "servers/{server_id}?include=allocations,user,subusers,nest,egg,location,node,databases");
+		public static final Route GET_SERVER 			= new Route(GET,    APPLICATION_PREFIX + "servers/{server_id}");
 		public static final Route UPDATE_SERVER_DETAILS = new Route(PATCH,  APPLICATION_PREFIX + "servers/{server_id}/details");
 		public static final Route UPDATE_SERVER_BUILD   = new Route(PATCH,  APPLICATION_PREFIX + "servers/{server_id}/build");
 		public static final Route UPDATE_SERVER_STARTUP = new Route(PATCH,  APPLICATION_PREFIX + "servers/{server_id}/startup");
@@ -198,12 +200,31 @@ public class Route {
 	}
 
 	public static class CompiledRoute {
+
 		private final Route baseRoute;
 		private final String compiledRoute;
+		private final boolean hasQueryParams;
 
-		private CompiledRoute(Route baseRoute, String compiledRoute) {
+		public CompiledRoute(Route baseRoute, String compiledRoute) {
+			this(baseRoute, compiledRoute, false);
+		}
+
+		private CompiledRoute(Route baseRoute, String compiledRoute, boolean hasQueryParams) {
 			this.baseRoute = baseRoute;
 			this.compiledRoute = compiledRoute;
+			this.hasQueryParams = hasQueryParams;
+		}
+
+		public CompiledRoute withQueryParams(String... params) {
+			Checks.check(params.length >= 2, "Params length must be at least 2");
+			Checks.check(params.length % 2 == 0, "Params length must be a multiple of 2");
+
+			StringBuilder newRoute = new StringBuilder(compiledRoute);
+
+			for (int i = 0; i < params.length; i++)
+				newRoute.append(!hasQueryParams && i == 0 ? '?' : '&').append(params[i]).append('=').append(params[++i]);
+
+			return new CompiledRoute(baseRoute, newRoute.toString(), true);
 		}
 
 		public String getCompiledRoute() {
