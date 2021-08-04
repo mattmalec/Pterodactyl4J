@@ -52,7 +52,7 @@ public interface Server {
 	 * <p>
 	 * This value can be modified using {@link com.mattmalec.pterodactyl4j.application.managers.ServerManager#setDescription(String) ServerManager#setDescription(String)}.
 	 *
-	 * @return Never-null String containing the Servers's description.
+	 * @return Possibly-null String containing the Servers's description.
 	 */
 	String getDescription();
 
