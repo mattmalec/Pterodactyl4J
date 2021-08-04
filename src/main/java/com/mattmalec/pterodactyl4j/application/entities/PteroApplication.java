@@ -21,6 +21,7 @@ import com.mattmalec.pterodactyl4j.application.managers.LocationManager;
 import com.mattmalec.pterodactyl4j.application.managers.NodeManager;
 import com.mattmalec.pterodactyl4j.application.managers.ServerCreationAction;
 import com.mattmalec.pterodactyl4j.application.managers.UserManager;
+import com.mattmalec.pterodactyl4j.requests.RelatablePteroAction;
 
 import java.util.List;
 
@@ -516,7 +517,7 @@ public interface PteroApplication {
 	 *
 	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer}
 	 */
-	PteroAction<ApplicationServer> retrieveServerById(String id);
+	RelatablePteroAction<ApplicationServer, ApplicationServer.Relationship> retrieveServerById(String id);
 
 	/**
 	 * Retrieves an individual ApplicationServer represented by the provided id from Pterodactyl instance
@@ -533,7 +534,7 @@ public interface PteroApplication {
 	 *
 	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer}
 	 */
-	default PteroAction<ApplicationServer> retrieveServerById(long id) {
+	default RelatablePteroAction<ApplicationServer, ApplicationServer.Relationship> retrieveServerById(long id) {
 		return retrieveServerById(Long.toUnsignedString(id));
 	}
 

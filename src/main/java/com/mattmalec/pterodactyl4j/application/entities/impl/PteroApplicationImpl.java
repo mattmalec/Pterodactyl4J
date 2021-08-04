@@ -24,7 +24,9 @@ import com.mattmalec.pterodactyl4j.application.managers.NodeManager;
 import com.mattmalec.pterodactyl4j.application.managers.ServerCreationAction;
 import com.mattmalec.pterodactyl4j.application.managers.UserManager;
 import com.mattmalec.pterodactyl4j.entities.P4J;
+import com.mattmalec.pterodactyl4j.requests.RelatablePteroAction;
 import com.mattmalec.pterodactyl4j.requests.Route;
+import com.mattmalec.pterodactyl4j.requests.action.RelatablePteroActionImpl;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -385,8 +387,8 @@ public class PteroApplicationImpl implements PteroApplication {
 	}
 
 	@Override
-	public PteroAction<ApplicationServer> retrieveServerById(String id) {
-		return PteroActionImpl.onRequestExecute(api, Route.Servers.GET_SERVER.compile(id),
+	public RelatablePteroAction<ApplicationServer, ApplicationServer.Relationship> retrieveServerById(String id) {
+		return new RelatablePteroActionImpl<>(ApplicationServer.Relationship.class, api, Route.Servers.GET_SERVER.compile(id),
 				(response, request) -> new ApplicationServerImpl(this, response.getObject()));
 	}
 
