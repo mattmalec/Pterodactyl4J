@@ -60,7 +60,7 @@ public interface ApplicationServer extends Server, ISnowflake {
 	/**
 	 * The external id of the ApplicationServer
 	 *
-	 * @return Possibly-null String containing the Servers's identifier.
+	 * @return Possibly-null String containing the Servers's external id.
 	 */
 	String getExternalId();
 
