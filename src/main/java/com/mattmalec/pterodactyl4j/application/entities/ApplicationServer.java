@@ -38,6 +38,21 @@ import java.util.Optional;
 public interface ApplicationServer extends Server, ISnowflake {
 
 	/**
+	 * The available relationships that can be included for this ApplicationServer
+	 */
+	enum Relationship {
+		ALLOCATIONS,
+		USERS,
+		SUBUSERS,
+		NEST,
+		EGG,
+		VARIABLES,
+		LOCATION,
+		NODE,
+		DATABASES
+	}
+
+	/**
 	 * Returns whether or not this ApplicationServer is currently in a suspended state
 	 * <p> The server suspension state can be controlled using {@link ServerController#suspend()} and {@link ServerController#unsuspend()}.
 	 *
