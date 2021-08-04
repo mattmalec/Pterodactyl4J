@@ -5,7 +5,7 @@ plugins {
 
 sourceCompatibility = targetCompatibility = 1.8
 
-def versionObject = new Version(major: 2, minor: "BETA")
+def versionObject = new Version(major: "FEATURE", minor: "RELATIONSHIPS")
 version "$versionObject"
 
 repositories {
