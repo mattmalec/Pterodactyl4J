@@ -16,6 +16,7 @@
 
 package com.mattmalec.pterodactyl4j.application.entities;
 
+import com.mattmalec.pterodactyl4j.ServerStatus;
 import com.mattmalec.pterodactyl4j.application.managers.ServerController;
 import com.mattmalec.pterodactyl4j.application.managers.ServerManager;
 import com.mattmalec.pterodactyl4j.entities.Server;
@@ -44,6 +45,14 @@ public interface ApplicationServer extends Server, ISnowflake {
 	 * @return True - if this ApplicationServer is suspended
 	 */
 	boolean isSuspended();
+
+	/**
+	 * The current status of the {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer}
+	 * <br>If there's no status (server is in a normal state), then this method will return {@link com.mattmalec.pterodactyl4j.ServerStatus#UNKNOWN UNKNOWN}
+	 *
+	 * @return The current server status. Can return {@link com.mattmalec.pterodactyl4j.ServerStatus#UNKNOWN}
+	 */
+	ServerStatus getStatus();
 
 	/**
 	 * The external id of the ApplicationServer

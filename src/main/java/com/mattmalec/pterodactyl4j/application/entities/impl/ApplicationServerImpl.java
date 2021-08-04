@@ -17,6 +17,7 @@
 package com.mattmalec.pterodactyl4j.application.entities.impl;
 
 import com.mattmalec.pterodactyl4j.PteroAction;
+import com.mattmalec.pterodactyl4j.ServerStatus;
 import com.mattmalec.pterodactyl4j.application.entities.*;
 import com.mattmalec.pterodactyl4j.application.managers.ServerController;
 import com.mattmalec.pterodactyl4j.application.managers.ServerManager;
@@ -178,6 +179,13 @@ public class ApplicationServerImpl implements ApplicationServer {
 				return Optional.of(new ApplicationEggImpl(relationships.getJSONObject("egg"), impl));
 			}
 		};
+	}
+
+	@Override
+	public ServerStatus getStatus() {
+		if (json.isNull("status"))
+			return ServerStatus.UNKNOWN;
+		return ServerStatus.valueOf(json.getString("status").toLowerCase());
 	}
 
 	@Override
