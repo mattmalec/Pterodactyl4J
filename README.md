@@ -161,7 +161,7 @@ to make request handling simple.
 It provides lazy request handling by offering asynchronous [callbacks](https://ci.mattmalec.com/job/Pterodactyl4J/javadoc/com/mattmalec/pterodactyl4j/PteroAction.html#executeAsync(java.util.function.Consumer))
 and [synchronous](https://ci.mattmalec.com/job/Pterodactyl4J/javadoc/com/mattmalec/pterodactyl4j/PteroAction.html#execute()) execution.
 
-This provides the user with a variety of patterns to use when making a request. The recommended approach is to use the asynchronous methods whenever possible.
+This gives the user with a variety of patterns to use when making a request. The recommended approach is to use the asynchronous methods whenever possible.
 
 The interface also supports several operators to improve quality of life:
 
