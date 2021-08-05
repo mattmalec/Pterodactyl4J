@@ -89,7 +89,8 @@ public class MyApp extends ClientSocketListenerAdapter
 
         PteroClient api = PteroBuilder.createClient("https://pterodactyl.app", "xyz321");
         // if there isn't another thread running, this won't execute. you'll need to grab the server synchronously
-        api.retrieveServerByIdentifier("39f09a87").executeAsync(server -> server.getWebSocketBuilder().addEventListeners(new MyApp()).build());
+       api.retrieveServerByIdentifier("39f09a87").map(ClientServer::getWebSocketBuilder)
+               .map(builder -> builder.addEventListeners(new Object())).executeAsync(WebSocketBuilder::build);
     
     }
 
