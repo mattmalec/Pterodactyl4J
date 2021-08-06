@@ -185,7 +185,7 @@ public class ApplicationServerImpl implements ApplicationServer {
 	public ServerStatus getStatus() {
 		if (json.isNull("status"))
 			return ServerStatus.UNKNOWN;
-		return ServerStatus.valueOf(json.getString("status").toLowerCase());
+		return ServerStatus.valueOf(json.getString("status").toUpperCase());
 	}
 
 	@Override
