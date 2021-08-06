@@ -38,6 +38,7 @@ public interface ClientServer extends Server {
 	String getNode();
 	boolean isSuspended();
 	boolean isInstalling();
+	boolean isTransferring();
 
 	ClientServerManager getManager();
 
