@@ -19,6 +19,8 @@ package com.mattmalec.pterodactyl4j.requests;
 import com.mattmalec.pterodactyl4j.exceptions.*;
 import okhttp3.RequestBody;
 
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.TimeoutException;
 import java.util.function.Consumer;
 
 public class Request<T> {
@@ -29,17 +31,20 @@ public class Request<T> {
     private final Route.CompiledRoute route;
     private final RequestBody requestBody;
     private final boolean shouldQueue;
+    private final long deadline;
 
     private boolean done = false;
     private boolean isCancelled = false;
 
-    public Request(PteroActionImpl<T> action, Consumer<? super T> onSuccess, Consumer<? super Throwable> onFailure, Route.CompiledRoute route, RequestBody requestBody, boolean shouldQueue) {
+    public Request(PteroActionImpl<T> action, Consumer<? super T> onSuccess, Consumer<? super Throwable> onFailure,
+                   Route.CompiledRoute route, RequestBody requestBody, boolean shouldQueue, long deadline) {
         this.action = action;
         this.onSuccess = onSuccess;
         this.onFailure = onFailure;
         this.route = route;
         this.requestBody = requestBody;
         this.shouldQueue = shouldQueue;
+        this.deadline = deadline;
     }
 
     public void onSuccess(T success) {
@@ -99,6 +104,27 @@ public class Request<T> {
         return isCancelled;
     }
 
+    public void onCancelled() {
+        onFailure(new CancellationException("Action has been cancelled"));
+    }
+
+    public void onTimeout() {
+        onFailure(new TimeoutException("Action has timed out"));
+    }
+
+    public boolean isSkipped() {
+        boolean cancel = isCancelled();
+        boolean timeout = isTimeout();
+
+        if (timeout)
+            onTimeout();
+
+        if (cancel)
+            onCancelled();
+
+        return cancel || timeout;
+    }
+
     public RequestBody getRequestBody() {
         return requestBody;
     }
@@ -109,6 +135,10 @@ public class Request<T> {
 
     public boolean shouldQueue() {
         return shouldQueue;
+    }
+
+    private boolean isTimeout() {
+        return deadline > 0 && deadline < System.currentTimeMillis();
     }
 
     public void handleResponse(Response response) {
