@@ -274,7 +274,7 @@ public class ServerManager {
 		else
 			trueAmount = amount * dataType.getMbValue();
 
-		Checks.check(trueAmount > -1, "Swap cannot be less than -1 MB");
+		Checks.check(trueAmount >= -1, "Swap cannot be less than -1 MB");
 
 		return PteroActionImpl.onExecute(impl.getP4J(), () ->
 		{
