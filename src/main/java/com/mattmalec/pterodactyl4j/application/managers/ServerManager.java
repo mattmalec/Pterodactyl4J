@@ -215,7 +215,7 @@ public class ServerManager {
 	 */
 	public PteroAction<ApplicationServer> setMemory(long amount, DataType dataType) {
 		Checks.notNull(dataType, "Data Type");
-		Checks.check(amount < 0, "Memory cannot be less than 0");
+		Checks.check(amount > 0, "Memory cannot be less than 0");
 
 		long trueAmount;
 		if (dataType == DataType.MB)
@@ -274,7 +274,7 @@ public class ServerManager {
 		else
 			trueAmount = amount * dataType.getMbValue();
 
-		Checks.check(trueAmount < -1, "Swap cannot be less than -1 MB");
+		Checks.check(trueAmount >= -1, "Swap cannot be less than -1 MB");
 
 		return PteroActionImpl.onExecute(impl.getP4J(), () ->
 		{
@@ -355,7 +355,7 @@ public class ServerManager {
 	 * {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer} - The updated server
 	 */
 	public PteroAction<ApplicationServer> setCPU(long amount) {
-		Checks.check(amount < 0, "Amount must be greater than 0");
+		Checks.check(amount > 0, "Amount must be greater than 0");
 		return PteroActionImpl.onExecute(impl.getP4J(), () ->
 		{
 			JSONObject obj = new JSONObject()
@@ -445,7 +445,7 @@ public class ServerManager {
 	 * {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer} - The updated server
 	 */
 	public PteroAction<ApplicationServer> setDisk(long amount, DataType dataType) {
-		Checks.check(amount < 0, "Amount must be greater than 0");
+		Checks.check(amount > 0, "Amount must be greater than 0");
 
 		long trueAmount;
 		if (dataType == DataType.MB)
@@ -489,7 +489,7 @@ public class ServerManager {
 	 * {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer} - The updated server
 	 */
 	public PteroAction<ApplicationServer> setAllowedDatabases(int amount) {
-		Checks.check(amount < 0, "Amount must be greater than 0");
+		Checks.check(amount > 0, "Amount must be greater than 0");
 		return PteroActionImpl.onExecute(impl.getP4J(), () ->
 		{
 			JSONObject obj = new JSONObject()
