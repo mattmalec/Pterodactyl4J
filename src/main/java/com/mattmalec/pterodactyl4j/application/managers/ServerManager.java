@@ -738,7 +738,7 @@ public class ServerManager {
 	 */
 	public PteroAction<ApplicationServer> setImage(String dockerImage) {
 		Checks.notNull(dockerImage, "Docker Image");
-		Checks.check(dockerImage.length() > 191, "Docker image cannot be longer than 191 characters");
+		Checks.check(dockerImage.length() <= 191, "Docker image cannot be longer than 191 characters");
 		return PteroActionImpl.onExecute(impl.getP4J(), () -> {
 			JSONObject obj = new JSONObject()
 					.put("startup", server.getContainer().getStartupCommand())
