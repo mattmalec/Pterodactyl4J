@@ -40,6 +40,8 @@ public interface Container {
 	 * Returns whether the ApplicationServer is currently in an installing state
 	 *
 	 * @return True - if the Server has finished installing.
+	 *
+	 * @see ApplicationServer#getStatus()
 	 */
 	boolean isInstalled();
 
