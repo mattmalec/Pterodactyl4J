@@ -213,6 +213,21 @@ public class ApplicationServerImpl implements ApplicationServer {
 	}
 
 	@Override
+	public ServerDetailManager getDetailManager() {
+		return new ServerDetailManagerImpl(this, impl);
+	}
+
+	@Override
+	public ServerBuildManager getBuildManager() {
+		return new ServerBuildManagerImpl(this, impl);
+	}
+
+	@Override
+	public ServerStartupManager getStartupManager() {
+		return new ServerStartupManagerImpl(this, impl);
+	}
+
+	@Override
 	public ServerManager getManager() {
 		return new ServerManager(this);
 	}
