@@ -23,15 +23,8 @@ import com.mattmalec.pterodactyl4j.application.entities.Allocation;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationEgg;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationServer;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationUser;
-import com.mattmalec.pterodactyl4j.application.entities.impl.ApplicationServerImpl;
-import com.mattmalec.pterodactyl4j.application.entities.impl.PteroApplicationImpl;
 import com.mattmalec.pterodactyl4j.client.entities.ClientServer;
-import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
-import com.mattmalec.pterodactyl4j.requests.Route;
-import com.mattmalec.pterodactyl4j.utils.Checks;
-import org.json.JSONObject;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -49,11 +42,9 @@ import java.util.Map;
 public class ServerManager {
 
 	private final ApplicationServer server;
-	private final PteroApplicationImpl impl;
 
-	public ServerManager(ApplicationServer server, PteroApplicationImpl impl) {
+	public ServerManager(ApplicationServer server) {
 		this.server = server;
-		this.impl = impl;
 	}
 
 	/**
@@ -67,20 +58,12 @@ public class ServerManager {
 	 *
 	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type
 	 * {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer} - The updated server
+	 *
+	 * @deprecated This will be removed in the next major release (non-beta). Use {@link ServerDetailManager#setName(String)} instead
 	 */
+	@Deprecated
 	public PteroAction<ApplicationServer> setName(String name) {
-		Checks.notNull(name, "Name");
-		Checks.check(name.length() >= 1 && name.length() <= 191, "Name must be between 1-191 characters long");
-		return PteroActionImpl.onExecute(impl.getP4J(), () ->
-		{
-			JSONObject obj = new JSONObject()
-					.put("name", name)
-					.put("description", server.getDescription())
-					.put("user", server.getOwner().get().orElseGet(() -> server.getOwner().retrieve().execute()).getId());
-			return new PteroActionImpl<ApplicationServer>(impl.getP4J(),
-					Route.Servers.UPDATE_SERVER_DETAILS.compile(server.getId()), PteroActionImpl.getRequestBody(obj),
-					(response, request) -> new ApplicationServerImpl(impl, response.getObject())).execute();
-		});
+		return server.getDetailManager().setName(name);
 	}
 
 	/**
@@ -94,15 +77,12 @@ public class ServerManager {
 	 *
 	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type
 	 * {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer} - The updated server
+	 *
+	 * @deprecated This will be removed in the next major release (non-beta). Use {@link ServerDetailManager#setOwner(ApplicationUser)} instead
 	 */
+	@Deprecated
 	public PteroAction<ApplicationServer> setOwner(ApplicationUser user) {
-		Checks.notNull(user, "Owner");
-		JSONObject obj = new JSONObject()
-				.put("name", server.getName())
-				.put("description", server.getDescription())
-				.put("user", user.getId());
-		return new PteroActionImpl<>(impl.getP4J(), Route.Servers.UPDATE_SERVER_DETAILS.compile(server.getId()),
-				PteroActionImpl.getRequestBody(obj), (response, request) -> new ApplicationServerImpl(impl, response.getObject()));
+		return server.getDetailManager().setOwner(user);
 	}
 
 	/**
@@ -113,18 +93,12 @@ public class ServerManager {
 	 *
 	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type
 	 * {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer} - The updated server
+	 *
+	 * @deprecated This will be removed in the next major release (non-beta). Use {@link ServerDetailManager#setDescription(String)} instead
 	 */
+	@Deprecated
 	public PteroAction<ApplicationServer> setDescription(String description) {
-		return PteroActionImpl.onExecute(impl.getP4J(), () ->
-		{
-			JSONObject obj = new JSONObject()
-					.put("name", server.getName())
-					.put("description", description)
-					.put("user", server.getOwner().get().orElseGet(() -> server.getOwner().retrieve().execute()).getId());
-			return new PteroActionImpl<ApplicationServer>(impl.getP4J(),
-					Route.Servers.UPDATE_SERVER_DETAILS.compile(server.getId()), PteroActionImpl.getRequestBody(obj),
-					(response, request) -> new ApplicationServerImpl(impl, response.getObject())).execute();
-		});
+		return server.getDetailManager().setDescription(description);
 	}
 
 	/**
@@ -138,22 +112,12 @@ public class ServerManager {
 	 *
 	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type
 	 * {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer} - The updated server
+	 *
+	 * @deprecated This will be removed in the next major release (non-beta). Use {@link ServerDetailManager#setExternalId(String)} instead
 	 */
+	@Deprecated
 	public PteroAction<ApplicationServer> setExternalId(String id) {
-		if (id != null)
-			Checks.check(id.length() >= 1 && id.length() <= 191, "ID must be between 1-191 characters long");
-
-		return PteroActionImpl.onExecute(impl.getP4J(), () ->
-		{
-			JSONObject obj = new JSONObject()
-					.put("name", server.getName())
-					.put("description", server.getDescription())
-					.put("external_id", id)
-					.put("user", server.getOwner().get().orElseGet(() -> server.getOwner().retrieve().execute()).getId());
-			return new PteroActionImpl<ApplicationServer>(impl.getP4J(),
-					Route.Servers.UPDATE_SERVER_DETAILS.compile(server.getId()), PteroActionImpl.getRequestBody(obj),
-					(response, request) -> new ApplicationServerImpl(impl, response.getObject())).execute();
-		});
+		return server.getDetailManager().setExternalId(id);
 	}
 
 	/**
@@ -170,26 +134,12 @@ public class ServerManager {
 	 *
 	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type
 	 * {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer} - The updated server
+	 *
+	 * @deprecated This will be removed in the next major release (non-beta). Use {@link ServerBuildManager#setAllocation(Allocation)} instead
 	 */
+	@Deprecated
 	public PteroAction<ApplicationServer> setAllocation(Allocation allocation) {
-		Checks.notNull(allocation, "Allocation");
-		JSONObject obj = new JSONObject()
-				.put("allocation", allocation.getId());
-		JSONObject limits = new JSONObject()
-				.put("memory", server.getLimits().getMemory())
-				.put("swap", server.getLimits().getSwap())
-				.put("io", server.getLimits().getIO())
-				.put("cpu", server.getLimits().getCPU())
-				.put("disk", server.getLimits().getDisk())
-				.put("threads", server.getLimits().getThreads());
-		obj.put("limits", limits);
-		JSONObject featureLimits = new JSONObject()
-				.put("databases", server.getFeatureLimits().getDatabases())
-				.put("allocations", server.getFeatureLimits().getAllocations())
-				.put("backups", server.getFeatureLimits().getBackups());
-		obj.put("feature_limits", featureLimits);
-		return new PteroActionImpl<>(impl.getP4J(), Route.Servers.UPDATE_SERVER_BUILD.compile(server.getId()),
-				PteroActionImpl.getRequestBody(obj), (response, request) -> new ApplicationServerImpl(impl, response.getObject()));
+		return server.getBuildManager().setAllocation(allocation);
 	}
 
 	/**
@@ -212,38 +162,12 @@ public class ServerManager {
 	 *
 	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type
 	 * {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer} - The updated server
+	 *
+	 * @deprecated This will be removed in the next major release (non-beta). Use {@link ServerBuildManager#setMemory(long, DataType)} instead
 	 */
+	@Deprecated
 	public PteroAction<ApplicationServer> setMemory(long amount, DataType dataType) {
-		Checks.notNull(dataType, "Data Type");
-		Checks.check(amount > 0, "Memory cannot be less than 0");
-
-		long trueAmount;
-		if (dataType == DataType.MB)
-			trueAmount = amount;
-		else
-			trueAmount = amount * dataType.getMbValue();
-
-		return PteroActionImpl.onExecute(impl.getP4J(), () ->
-		{
-			JSONObject obj = new JSONObject()
-				.put("allocation", server.getDefaultAllocation().get().orElseGet(() -> server.getDefaultAllocation().retrieve().execute()).getId());
-			JSONObject limits = new JSONObject()
-					.put("memory", trueAmount)
-					.put("swap", server.getLimits().getSwap())
-					.put("io", server.getLimits().getIO())
-					.put("cpu", server.getLimits().getCPU())
-					.put("disk", server.getLimits().getDisk())
-					.put("threads", server.getLimits().getThreads());
-			obj.put("limits", limits);
-			JSONObject featureLimits = new JSONObject()
-					.put("databases", server.getFeatureLimits().getDatabases())
-					.put("allocations", server.getFeatureLimits().getAllocations())
-					.put("backups", server.getFeatureLimits().getBackups());
-			obj.put("feature_limits", featureLimits);
-
-			return new PteroActionImpl<ApplicationServer>(impl.getP4J(), Route.Servers.UPDATE_SERVER_BUILD.compile(server.getId()),
-					PteroActionImpl.getRequestBody(obj), (response, request) -> new ApplicationServerImpl(impl, response.getObject())).execute();
-		});
+		return server.getBuildManager().setMemory(amount, dataType);
 	}
 
 	/**
@@ -266,37 +190,12 @@ public class ServerManager {
 	 *
 	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type
 	 * {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer} - The updated server
+	 *
+	 * @deprecated This will be removed in the next major release (non-beta). Use {@link ServerBuildManager#setSwap(long, DataType)} instead
 	 */
+	@Deprecated
 	public PteroAction<ApplicationServer> setSwap(long amount, DataType dataType) {
-		long trueAmount;
-		if (dataType == DataType.MB)
-			trueAmount = amount;
-		else
-			trueAmount = amount * dataType.getMbValue();
-
-		Checks.check(trueAmount >= -1, "Swap cannot be less than -1 MB");
-
-		return PteroActionImpl.onExecute(impl.getP4J(), () ->
-		{
-			JSONObject obj = new JSONObject()
-					.put("allocation", server.getDefaultAllocation().get().orElseGet(() -> server.getDefaultAllocation().retrieve().execute()).getId());
-			JSONObject limits = new JSONObject()
-					.put("memory", server.getLimits().getMemory())
-					.put("swap", trueAmount)
-					.put("io", server.getLimits().getIO())
-					.put("cpu", server.getLimits().getCPU())
-					.put("disk", server.getLimits().getDisk())
-					.put("threads", server.getLimits().getThreads());
-			obj.put("limits", limits);
-			JSONObject featureLimits = new JSONObject()
-					.put("databases", server.getFeatureLimits().getDatabases())
-					.put("allocations", server.getFeatureLimits().getAllocations())
-					.put("backups", server.getFeatureLimits().getBackups());
-			obj.put("feature_limits", featureLimits);
-
-			return new PteroActionImpl<ApplicationServer>(impl.getP4J(), Route.Servers.UPDATE_SERVER_BUILD.compile(server.getId()),
-					PteroActionImpl.getRequestBody(obj), (response, request) -> new ApplicationServerImpl(impl, response.getObject())).execute();
-		});
+		return server.getBuildManager().setSwap(amount, dataType);
 	}
 
 	/**
@@ -314,30 +213,12 @@ public class ServerManager {
 	 *
 	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type
 	 * {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer} - The updated server
+	 *
+	 * @deprecated This will be removed in the next major release (non-beta). Use {@link ServerBuildManager#setIO(long)} instead
 	 */
+	@Deprecated
 	public PteroAction<ApplicationServer> setIO(long amount) {
-		Checks.check(amount >= 10 && amount <= 1000, "Proportion must be between 10-1000");
-		return PteroActionImpl.onExecute(impl.getP4J(), () ->
-		{
-			JSONObject obj = new JSONObject()
-					.put("allocation", server.getDefaultAllocation().get().orElseGet(() -> server.getDefaultAllocation().retrieve().execute()).getId());
-			JSONObject limits = new JSONObject()
-					.put("memory", server.getLimits().getMemory())
-					.put("swap", server.getLimits().getSwap())
-					.put("io", amount)
-					.put("cpu", server.getLimits().getCPU())
-					.put("disk", server.getLimits().getDisk())
-					.put("threads", server.getLimits().getThreads());
-			obj.put("limits", limits);
-			JSONObject featureLimits = new JSONObject()
-					.put("databases", server.getFeatureLimits().getDatabases())
-					.put("allocations", server.getFeatureLimits().getAllocations())
-					.put("backups", server.getFeatureLimits().getBackups());
-			obj.put("feature_limits", featureLimits);
-
-			return new PteroActionImpl<ApplicationServer>(impl.getP4J(), Route.Servers.UPDATE_SERVER_BUILD.compile(server.getId()),
-					PteroActionImpl.getRequestBody(obj), (response, request) -> new ApplicationServerImpl(impl, response.getObject())).execute();
-		});
+		return server.getBuildManager().setIO(amount);
 	}
 
 	/**
@@ -353,30 +234,12 @@ public class ServerManager {
 	 *
 	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type
 	 * {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer} - The updated server
+	 *
+	 * @deprecated This will be removed in the next major release (non-beta). Use {@link ServerBuildManager#setCPU(long)} instead
 	 */
+	@Deprecated
 	public PteroAction<ApplicationServer> setCPU(long amount) {
-		Checks.check(amount > 0, "Amount must be greater than 0");
-		return PteroActionImpl.onExecute(impl.getP4J(), () ->
-		{
-			JSONObject obj = new JSONObject()
-					.put("allocation", server.getDefaultAllocation().get().orElseGet(() -> server.getDefaultAllocation().retrieve().execute()).getId());
-			JSONObject limits = new JSONObject()
-					.put("memory", server.getLimits().getMemory())
-					.put("swap", server.getLimits().getSwap())
-					.put("io", server.getLimits().getIO())
-					.put("cpu", amount)
-					.put("disk", server.getLimits().getDisk())
-					.put("threads", server.getLimits().getThreads());
-			obj.put("limits", limits);
-			JSONObject featureLimits = new JSONObject()
-					.put("databases", server.getFeatureLimits().getDatabases())
-					.put("allocations", server.getFeatureLimits().getAllocations())
-					.put("backups", server.getFeatureLimits().getBackups());
-			obj.put("feature_limits", featureLimits);
-
-			return new PteroActionImpl<ApplicationServer>(impl.getP4J(), Route.Servers.UPDATE_SERVER_BUILD.compile(server.getId()),
-					PteroActionImpl.getRequestBody(obj), (response, request) -> new ApplicationServerImpl(impl, response.getObject())).execute();
-		});
+		return server.getBuildManager().setCPU(amount);
 	}
 
 	/**
@@ -398,29 +261,13 @@ public class ServerManager {
 	 *
 	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type
 	 * {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer} - The updated server
-	 */
-	public PteroAction<ApplicationServer> setThreads(String cores) {
-		return PteroActionImpl.onExecute(impl.getP4J(), () ->
-		{
-			JSONObject obj = new JSONObject()
-					.put("allocation", server.getDefaultAllocation().get().orElseGet(() -> server.getDefaultAllocation().retrieve().execute()).getId());
-			JSONObject limits = new JSONObject()
-					.put("memory", server.getLimits().getMemory())
-					.put("swap", server.getLimits().getSwap())
-					.put("io", server.getLimits().getIO())
-					.put("cpu", server.getLimits().getCPU())
-					.put("disk", server.getLimits().getDisk())
-					.put("threads", cores);
-			obj.put("limits", limits);
-			JSONObject featureLimits = new JSONObject()
-					.put("databases", server.getFeatureLimits().getDatabases())
-					.put("allocations", server.getFeatureLimits().getAllocations())
-					.put("backups", server.getFeatureLimits().getBackups());
-			obj.put("feature_limits", featureLimits);
+	 *
+	 * @deprecated This will be removed in the next major release (non-beta). Use {@link ServerBuildManager#setThreads(String)} instead
 
-			return new PteroActionImpl<ApplicationServer>(impl.getP4J(), Route.Servers.UPDATE_SERVER_BUILD.compile(server.getId()),
-					PteroActionImpl.getRequestBody(obj), (response, request) -> new ApplicationServerImpl(impl, response.getObject())).execute();
-		});
+	 */
+	@Deprecated
+	public PteroAction<ApplicationServer> setThreads(String cores) {
+		return server.getBuildManager().setThreads(cores);
 	}
 
 	/**
@@ -443,37 +290,12 @@ public class ServerManager {
 	 *
 	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type
 	 * {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer} - The updated server
+	 *
+	 * @deprecated This will be removed in the next major release (non-beta). Use {@link ServerBuildManager#setDisk(long, DataType)} instead
 	 */
+	@Deprecated
 	public PteroAction<ApplicationServer> setDisk(long amount, DataType dataType) {
-		Checks.check(amount > 0, "Amount must be greater than 0");
-
-		long trueAmount;
-		if (dataType == DataType.MB)
-			trueAmount = amount;
-		else
-			trueAmount = amount * dataType.getMbValue();
-
-		return PteroActionImpl.onExecute(impl.getP4J(), () ->
-		{
-			JSONObject obj = new JSONObject()
-					.put("allocation", server.getDefaultAllocation().get().orElseGet(() -> server.getDefaultAllocation().retrieve().execute()).getId());
-			JSONObject limits = new JSONObject()
-					.put("memory", server.getLimits().getMemory())
-					.put("swap", server.getLimits().getSwap())
-					.put("io", server.getLimits().getIO())
-					.put("cpu", server.getLimits().getCPU())
-					.put("disk", trueAmount)
-					.put("threads", server.getLimits().getThreads());
-			obj.put("limits", limits);
-			JSONObject featureLimits = new JSONObject()
-					.put("databases", server.getFeatureLimits().getDatabases())
-					.put("allocations", server.getFeatureLimits().getAllocations())
-					.put("backups", server.getFeatureLimits().getBackups());
-			obj.put("feature_limits", featureLimits);
-
-			return new PteroActionImpl<ApplicationServer>(impl.getP4J(), Route.Servers.UPDATE_SERVER_BUILD.compile(server.getId()),
-					PteroActionImpl.getRequestBody(obj), (response, request) -> new ApplicationServerImpl(impl, response.getObject())).execute();
-		});
+		return server.getBuildManager().setDisk(amount, dataType);
 	}
 
 	/**
@@ -487,30 +309,12 @@ public class ServerManager {
 	 *
 	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type
 	 * {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer} - The updated server
+	 *
+	 * @deprecated This will be removed in the next major release (non-beta). Use {@link ServerBuildManager#setAllowedDatabases(int)} instead
 	 */
+	@Deprecated
 	public PteroAction<ApplicationServer> setAllowedDatabases(int amount) {
-		Checks.check(amount > 0, "Amount must be greater than 0");
-		return PteroActionImpl.onExecute(impl.getP4J(), () ->
-		{
-			JSONObject obj = new JSONObject()
-					.put("allocation", server.getDefaultAllocation().get().orElseGet(() -> server.getDefaultAllocation().retrieve().execute()).getId());
-			JSONObject limits = new JSONObject()
-					.put("memory", server.getLimits().getMemory())
-					.put("swap", server.getLimits().getSwap())
-					.put("io", server.getLimits().getIO())
-					.put("cpu", server.getLimits().getCPU())
-					.put("disk", server.getLimits().getDisk())
-					.put("threads", server.getLimits().getThreads());
-			obj.put("limits", limits);
-			JSONObject featureLimits = new JSONObject()
-					.put("databases", amount)
-					.put("allocations", server.getFeatureLimits().getAllocations())
-					.put("backups", server.getFeatureLimits().getBackups());
-			obj.put("feature_limits", featureLimits);
-
-			return new PteroActionImpl<ApplicationServer>(impl.getP4J(), Route.Servers.UPDATE_SERVER_BUILD.compile(server.getId()),
-					PteroActionImpl.getRequestBody(obj), (response, request) -> new ApplicationServerImpl(impl, response.getObject())).execute();
-		});
+		return server.getBuildManager().setAllowedDatabases(amount);
 	}
 
 	/**
@@ -524,29 +328,12 @@ public class ServerManager {
 	 *
 	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type
 	 * {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer} - The updated server
+	 *
+	 * @deprecated This will be removed in the next major release (non-beta). Use {@link ServerBuildManager#setAllowedAllocations(int)} instead
 	 */
+	@Deprecated
 	public PteroAction<ApplicationServer> setAllowedAllocations(int amount) {
-		return PteroActionImpl.onExecute(impl.getP4J(), () ->
-		{
-			JSONObject obj = new JSONObject()
-					.put("allocation", server.getDefaultAllocation().get().orElseGet(() -> server.getDefaultAllocation().retrieve().execute()).getId());
-			JSONObject limits = new JSONObject()
-					.put("memory", server.getLimits().getMemory())
-					.put("swap", server.getLimits().getSwap())
-					.put("io", server.getLimits().getIO())
-					.put("cpu", server.getLimits().getCPU())
-					.put("disk", server.getLimits().getDisk())
-					.put("threads", server.getLimits().getThreads());
-			obj.put("limits", limits);
-			JSONObject featureLimits = new JSONObject()
-					.put("databases", server.getFeatureLimits().getDatabases())
-					.put("allocations", amount)
-					.put("backups", server.getFeatureLimits().getBackups());
-			obj.put("feature_limits", featureLimits);
-
-			return new PteroActionImpl<ApplicationServer>(impl.getP4J(), Route.Servers.UPDATE_SERVER_BUILD.compile(server.getId()),
-					PteroActionImpl.getRequestBody(obj), (response, request) -> new ApplicationServerImpl(impl, response.getObject())).execute();
-		});
+		return server.getBuildManager().setAllowedAllocations(amount);
 	}
 
 	/**
@@ -560,29 +347,12 @@ public class ServerManager {
 	 *
 	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type
 	 * {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer} - The updated server
+	 *
+	 * @deprecated This will be removed in the next major release (non-beta). Use {@link ServerBuildManager#setAllowedBackups(int)} instead
 	 */
+	@Deprecated
 	public PteroAction<ApplicationServer> setAllowedBackups(int amount) {
-		return PteroActionImpl.onExecute(impl.getP4J(), () ->
-		{
-			JSONObject obj = new JSONObject()
-					.put("allocation", server.getDefaultAllocation().get().orElseGet(() -> server.getDefaultAllocation().retrieve().execute()).getId());
-			JSONObject limits = new JSONObject()
-					.put("memory", server.getLimits().getMemory())
-					.put("swap", server.getLimits().getSwap())
-					.put("io", server.getLimits().getIO())
-					.put("cpu", server.getLimits().getCPU())
-					.put("disk", server.getLimits().getDisk())
-					.put("threads", server.getLimits().getThreads());
-			obj.put("limits", limits);
-			JSONObject featureLimits = new JSONObject()
-					.put("databases", server.getFeatureLimits().getDatabases())
-					.put("allocations", server.getFeatureLimits().getAllocations())
-					.put("backups", amount);
-			obj.put("feature_limits", featureLimits);
-
-			return new PteroActionImpl<ApplicationServer>(impl.getP4J(), Route.Servers.UPDATE_SERVER_BUILD.compile(server.getId()),
-					PteroActionImpl.getRequestBody(obj), (response, request) -> new ApplicationServerImpl(impl, response.getObject())).execute();
-		});
+		return server.getBuildManager().setAllowedBackups(amount);
 	}
 
 	/**
@@ -599,30 +369,12 @@ public class ServerManager {
 	 *
 	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type
 	 * {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer} - The updated server
+	 *
+	 * @deprecated This will be removed in the next major release (non-beta). Use {@link ServerBuildManager#setEnableOOMKiller(boolean)} instead
 	 */
+	@Deprecated
 	public PteroAction<ApplicationServer> setEnableOOMKiller(boolean enable) {
-		return PteroActionImpl.onExecute(impl.getP4J(), () ->
-		{
-			JSONObject obj = new JSONObject()
-					.put("allocation", server.getDefaultAllocation().get().orElseGet(() -> server.getDefaultAllocation().retrieve().execute()).getId())
-					.put("oom_disabled", !enable);
-			JSONObject limits = new JSONObject()
-					.put("memory", server.getLimits().getMemory())
-					.put("swap", server.getLimits().getSwap())
-					.put("io", server.getLimits().getIO())
-					.put("cpu", server.getLimits().getCPU())
-					.put("disk", server.getLimits().getDisk())
-					.put("threads", server.getLimits().getThreads());
-			obj.put("limits", limits);
-			JSONObject featureLimits = new JSONObject()
-					.put("databases", server.getFeatureLimits().getDatabases())
-					.put("allocations", server.getFeatureLimits().getAllocations())
-					.put("backups", server.getFeatureLimits().getBackups());
-			obj.put("feature_limits", featureLimits);
-
-			return new PteroActionImpl<ApplicationServer>(impl.getP4J(), Route.Servers.UPDATE_SERVER_BUILD.compile(server.getId()),
-					PteroActionImpl.getRequestBody(obj), (response, request) -> new ApplicationServerImpl(impl, response.getObject())).execute();
-		});
+		return server.getBuildManager().setEnableOOMKiller(enable);
 	}
 
 	/**
@@ -636,22 +388,12 @@ public class ServerManager {
 	 *
 	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type
 	 * {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer} - The updated server
+	 *
+	 * @deprecated This will be removed in the next major release (non-beta). Use {@link ServerStartupManager#setStartupCommand(String)} instead
 	 */
+	@Deprecated
 	public PteroAction<ApplicationServer> setStartupCommand(String command) {
-		Checks.notNull(command, "Startup Command");
-		return PteroActionImpl.onExecute(impl.getP4J(), () ->
-		{
-			JSONObject obj = new JSONObject()
-					.put("startup", command)
-					.put("environment", server.getContainer().getEnvironment().keySet())
-					.put("egg", server.getEgg().retrieve().execute().getId())
-					.put("image", server.getContainer().getImage())
-					// this won't do anything since the server is installed, but pterodactyl requires it so here we are
-					.put("skip_scripts", true);
-			return new PteroActionImpl<ApplicationServer>(impl.getP4J(),
-					Route.Servers.UPDATE_SERVER_STARTUP.compile(server.getId()),
-					PteroActionImpl.getRequestBody(obj), (response, request) -> new ApplicationServerImpl(impl, response.getObject())).execute();
-		});
+		return server.getStartupManager().setStartupCommand(command);
 	}
 
 	/**
@@ -668,25 +410,12 @@ public class ServerManager {
 	 * {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer} - The updated server
 	 *
 	 * @see EnvironmentValue
+	 *
+	 * @deprecated This will be removed in the next major release (non-beta). Use {@link ServerStartupManager#setEnvironment(Map)} instead
 	 */
+	@Deprecated
 	public PteroAction<ApplicationServer> setEnvironment(Map<String, EnvironmentValue<?>> environment) {
-		Checks.notNull(environment, "Environment");
-		return PteroActionImpl.onExecute(impl.getP4J(), () ->
-		{
-			Map<String, EnvironmentValue<?>> env = new HashMap<>(server.getContainer().getEnvironment());
-			env.putAll(environment);
-			JSONObject obj = new JSONObject()
-					.put("startup", server.getContainer().getStartupCommand())
-					.put("environment", env.entrySet().stream()
-							.collect(EnvironmentValue.collector()))
-					.put("egg", server.getEgg().retrieve().execute().getId())
-					.put("image", server.getContainer().getImage())
-					// this won't do anything since the server is installed, but pterodactyl requires it so here we are
-					.put("skip_scripts", true);
-			return new PteroActionImpl<ApplicationServer>(impl.getP4J(),
-					Route.Servers.UPDATE_SERVER_STARTUP.compile(server.getId()),
-					PteroActionImpl.getRequestBody(obj), (response, request) -> new ApplicationServerImpl(impl, response.getObject())).execute();
-		});
+		return server.getStartupManager().setEnvironment(environment);
 	}
 
 	/**
@@ -704,20 +433,12 @@ public class ServerManager {
 	 * {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer} - The updated server
 	 *
 	 * @see ClientServer#restart()
+	 *
+	 * @deprecated This will be removed in the next major release (non-beta). Use {@link ServerStartupManager#setEgg(ApplicationEgg)} instead
 	 */
+	@Deprecated
 	public PteroAction<ApplicationServer> setEgg(ApplicationEgg egg) {
-		JSONObject obj = new JSONObject()
-				.put("startup", server.getContainer().getStartupCommand())
-				.put("environment", server.getContainer().getEnvironment().entrySet()
-				.stream().collect(EnvironmentValue.collector()))
-				.put("egg", egg.getId())
-				.put("image", server.getContainer().getImage())
-				// this won't do anything since the server is installed, but pterodactyl requires it so here we are
-				.put("skip_scripts", true);
-		return new PteroActionImpl<>(impl.getP4J(),
-				Route.Servers.UPDATE_SERVER_STARTUP.compile(server.getId()),
-				PteroActionImpl.getRequestBody(obj), (response, request) -> new ApplicationServerImpl(impl, response.getObject()));
-
+		return server.getStartupManager().setEgg(egg);
 	}
 
 	/**
@@ -735,23 +456,12 @@ public class ServerManager {
 	 * {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer} - The updated server
 	 *
 	 * @see ClientServer#restart()
+	 *
+	 * @deprecated This will be removed in the next major release (non-beta). Use {@link ServerStartupManager#setImage(String)} instead
 	 */
+	@Deprecated
 	public PteroAction<ApplicationServer> setImage(String dockerImage) {
-		Checks.notNull(dockerImage, "Docker Image");
-		Checks.check(dockerImage.length() <= 191, "Docker image cannot be longer than 191 characters");
-		return PteroActionImpl.onExecute(impl.getP4J(), () -> {
-			JSONObject obj = new JSONObject()
-					.put("startup", server.getContainer().getStartupCommand())
-					.put("environment", server.getContainer().getEnvironment().entrySet()
-							.stream().collect(EnvironmentValue.collector()))
-					.put("egg", server.getEgg().retrieve().execute().getId())
-					.put("image", dockerImage)
-					// this won't do anything since the server is installed, but pterodactyl requires it so here we are
-					.put("skip_scripts", true);
-			return new PteroActionImpl<ApplicationServer>(impl.getP4J(),
-					Route.Servers.UPDATE_SERVER_STARTUP.compile(server.getId()),
-					PteroActionImpl.getRequestBody(obj), (response, request) -> new ApplicationServerImpl(impl, response.getObject())).execute();
-		});
+		return server.getStartupManager().setImage(dockerImage);
 	}
 
 	/**
@@ -765,19 +475,11 @@ public class ServerManager {
 	 *
 	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type
 	 * {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer} - The updated server
+	 *
+	 * @deprecated This will be removed in the next major release (non-beta). Use {@link ServerStartupManager#setSkipScripts(boolean)} instead
 	 */
+	@Deprecated
 	public PteroAction<ApplicationServer> setSkipScripts(boolean skipScripts) {
-		return PteroActionImpl.onExecute(impl.getP4J(), () -> {
-				JSONObject obj = new JSONObject()
-						.put("startup", server.getContainer().getStartupCommand())
-						.put("environment", server.getContainer().getEnvironment().entrySet()
-								.stream().collect(EnvironmentValue.collector()))
-						.put("egg", server.getEgg().retrieve().execute().getId())
-						.put("image", server.getContainer().getImage())
-						.put("skip_scripts", skipScripts);
-			return new PteroActionImpl<ApplicationServer>(impl.getP4J(),
-					Route.Servers.UPDATE_SERVER_STARTUP.compile(server.getId()),
-					PteroActionImpl.getRequestBody(obj), (response, request) -> new ApplicationServerImpl(impl, response.getObject())).execute();
-        });
+		return server.getStartupManager().setSkipScripts(skipScripts);
 	}
 }
