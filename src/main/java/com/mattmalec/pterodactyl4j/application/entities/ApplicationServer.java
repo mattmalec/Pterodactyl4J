@@ -206,9 +206,11 @@ public interface ApplicationServer extends Server, ISnowflake {
 	}
 
 	/**
-	 * The Egg the ApplicationServer is using
+	 * The container of the ApplicationServer used to get startup objects
 	 *
-	 * @return {@link com.mattmalec.pterodactyl4j.utils.Relationed Relationed} - Type {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationEgg ApplicationEgg}
+	 * @return The server container
+	 *
+	 * @see ApplicationServer#getStartupManager()
 	 */
 	Container getContainer();
 
