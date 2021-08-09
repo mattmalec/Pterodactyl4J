@@ -218,7 +218,11 @@ public interface ApplicationServer extends Server, ISnowflake {
 	 * <br>Managing a server requires an <b>Application API key</b> with the <b>Servers</b> permission with <b>Read &amp; Write</b> access.
 	 *
 	 * @return The manager for this server
+	 *
+	 * @deprecated This will be removed in the next major release (non-beta). Use {@link ApplicationServer#getDetailManager()},
+	 * {@link ApplicationServer#getBuildManager()}, or {@link ApplicationServer#getStartupManager()} instead
 	 */
+	@Deprecated
 	ServerManager getManager();
 
 	/**
