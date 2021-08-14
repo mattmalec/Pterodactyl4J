@@ -107,6 +107,10 @@ public class Requester {
             REQUESTER_LOG.debug("Executing request {} {}", route.getMethod(), route.getCompiledRoute());
             int attempt = 0;
             do {
+
+                if (apiRequest.isSkipped())
+                    return null;
+
                 Call call = client.newCall(request);
                 lastResponse = call.execute();
                 responses[attempt] = lastResponse;

@@ -26,6 +26,8 @@ import java.util.function.Consumer;
 public abstract class PteroActionOperator<I, O> implements PteroAction<O> {
 
     protected final PteroAction<I> action;
+    protected long deadline = 0;
+
 
     public PteroActionOperator(PteroAction<I> action) {
         this.action = action;
@@ -43,6 +45,13 @@ public abstract class PteroActionOperator<I, O> implements PteroAction<O> {
             PteroAction.getDefaultFailure().accept(throwable);
         else
             callback.accept(throwable);
+    }
+
+    @Override
+    public PteroAction<O> deadline(long timestamp) {
+        this.deadline = timestamp;
+        action.deadline(timestamp);
+        return this;
     }
 
     @Override

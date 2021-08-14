@@ -106,19 +106,14 @@ public class RateLimiter implements Runnable {
             scheduler.schedule(this, getRateLimit(), TimeUnit.MILLISECONDS)));
     }
 
-    private void cancel(Iterator<Request<?>> it, Request<?> request, Throwable exception) {
-        request.onFailure(exception);
+    private void cancel(Iterator<Request<?>> it, Request<?> request) {
+        request.onCancelled();
         it.remove();
     }
 
     private boolean isSkipped(Iterator<Request<?>> it, Request<?> request) {
-        try {
-            if (request.isCancelled()) {
-                cancel(it, request, new CancellationException("Action has been cancelled"));
-                return true;
-            }
-        } catch (Throwable exception) {
-            cancel(it, request, exception);
+        if (request.isSkipped()) {
+            cancel(it, request);
             return true;
         }
         return false;

@@ -17,8 +17,7 @@
 package com.mattmalec.pterodactyl4j.application.entities;
 
 import com.mattmalec.pterodactyl4j.ServerStatus;
-import com.mattmalec.pterodactyl4j.application.managers.ServerController;
-import com.mattmalec.pterodactyl4j.application.managers.ServerManager;
+import com.mattmalec.pterodactyl4j.application.managers.*;
 import com.mattmalec.pterodactyl4j.entities.Server;
 import com.mattmalec.pterodactyl4j.utils.Relationed;
 
@@ -72,11 +71,51 @@ public interface ApplicationServer extends Server, ISnowflake {
 	Relationed<ApplicationUser> getOwner();
 
 	/**
+	 * The {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationUser owner} id of the ApplicationServer
+	 *
+	 * @return Long containing the owner id
+	 *
+	 * @see ApplicationServer#getOwner()
+	 */
+	long getOwnerIdLong();
+
+	/**
+	 * The {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationUser owner} id of the ApplicationServer
+	 *
+	 * @return Never-null String containing the owner id
+	 *
+	 * @see ApplicationServer#getOwner()
+	 */
+	default String getOwnerId() {
+		return Long.toUnsignedString(getOwnerIdLong());
+	}
+
+	/**
 	 * The Node the ApplicationServer is running on
 	 *
 	 * @return {@link com.mattmalec.pterodactyl4j.utils.Relationed Relationed} - Type {@link com.mattmalec.pterodactyl4j.application.entities.Node Node}
 	 */
 	Relationed<Node> getNode();
+
+	/**
+	 * The id of the {@link com.mattmalec.pterodactyl4j.application.entities.Node Node} the ApplicationServer is running on
+	 *
+	 * @return Long containing the node id
+	 *
+	 * @see ApplicationServer#getNode()
+	 */
+	long getNodeIdLong();
+
+	/**
+	 * The id of the {@link com.mattmalec.pterodactyl4j.application.entities.Node Node} the ApplicationServer is running on
+	 *
+	 * @return Never-null String containing the node id
+	 *
+	 * @see ApplicationServer#getNode()
+	 */
+	default String getNodeId() {
+		return Long.toUnsignedString(getNodeIdLong());
+	}
 
 	/**
 	 * The Allocations assigned to the ApplicationServer
@@ -93,11 +132,51 @@ public interface ApplicationServer extends Server, ISnowflake {
 	Relationed<Allocation> getDefaultAllocation();
 
 	/**
+	 * The id of the main {@link com.mattmalec.pterodactyl4j.application.entities.Allocation Allocation} for the ApplicationServer
+	 *
+	 * @return Long containing the main allocation id
+	 *
+	 * @see ApplicationServer#getDefaultAllocation()
+	 */
+	long getDefaultAllocationIdLong();
+
+	/**
+	 * The id of the main {@link com.mattmalec.pterodactyl4j.application.entities.Allocation Allocation} for the ApplicationServer
+	 *
+	 * @return Never-null String containing the main allocation id
+	 *
+	 * @see ApplicationServer#getDefaultAllocation()
+	 */
+	default String getDefaultAllocationId() {
+		return Long.toUnsignedString(getDefaultAllocationIdLong());
+	}
+
+	/**
 	 * The Nest the ApplicationServer is using
 	 *
 	 * @return {@link com.mattmalec.pterodactyl4j.utils.Relationed Relationed} - Type {@link com.mattmalec.pterodactyl4j.application.entities.Nest Nest}
 	 */
 	Relationed<Nest> getNest();
+
+	/**
+	 * The id of the {@link com.mattmalec.pterodactyl4j.application.entities.Nest Nest} for the ApplicationServer
+	 *
+	 * @return Long containing the nest id
+	 *
+	 * @see ApplicationServer#getNest()
+	 */
+	long getNestIdLong();
+
+	/**
+	 * The id of the {@link com.mattmalec.pterodactyl4j.application.entities.Nest Nest} for the ApplicationServer
+	 *
+	 * @return Never-null String containing the nest id
+	 *
+	 * @see ApplicationServer#getNest()
+	 */
+	default String getNestId() {
+		return Long.toUnsignedString(getNestIdLong());
+	}
 
 	/**
 	 * The Egg the ApplicationServer is using
@@ -107,9 +186,31 @@ public interface ApplicationServer extends Server, ISnowflake {
 	Relationed<ApplicationEgg> getEgg();
 
 	/**
-	 * The Egg the ApplicationServer is using
+	 * The id of the {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationEgg ApplicationEgg} for the ApplicationServer
 	 *
-	 * @return {@link com.mattmalec.pterodactyl4j.utils.Relationed Relationed} - Type {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationEgg ApplicationEgg}
+	 * @return Long containing the egg id
+	 *
+	 * @see ApplicationServer#getEgg()
+	 */
+	long getEggIdLong();
+
+	/**
+	 * The id of the {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationEgg ApplicationEgg} for the ApplicationServer
+	 *
+	 * @return Never-null String containing the egg id
+	 *
+	 * @see ApplicationServer#getNest()
+	 */
+	default String getEggId() {
+		return Long.toUnsignedString(getEggIdLong());
+	}
+
+	/**
+	 * The container of the ApplicationServer used to get startup objects
+	 *
+	 * @return The server container
+	 *
+	 * @see ApplicationServer#getStartupManager()
 	 */
 	Container getContainer();
 
@@ -119,8 +220,39 @@ public interface ApplicationServer extends Server, ISnowflake {
 	 * <br>Managing a server requires an <b>Application API key</b> with the <b>Servers</b> permission with <b>Read &amp; Write</b> access.
 	 *
 	 * @return The manager for this server
+	 *
+	 * @deprecated This will be removed in the next major release (non-beta). Use {@link ApplicationServer#getDetailManager()},
+	 * {@link ApplicationServer#getBuildManager()}, or {@link ApplicationServer#getStartupManager()} instead
 	 */
+	@Deprecated
 	ServerManager getManager();
+
+	/**
+	 * Returns the {@link com.mattmalec.pterodactyl4j.application.managers.ServerDetailManager ServerDetailManager} for this
+	 * ApplicationServer, used to modify the server details
+	 * <br>Managing a server requires an <b>Application API key</b> with the <b>Servers</b> permission with <b>Read &amp; Write</b> access.
+	 *
+	 * @return The detail manager for this server
+	 */
+	ServerDetailManager getDetailManager();
+
+	/**
+	 * Returns the {@link com.mattmalec.pterodactyl4j.application.managers.ServerBuildManager ServerBuildManager} for this
+	 * ApplicationServer, used to modify the build configuration limits and feature limits
+	 * <br>Managing a server requires an <b>Application API key</b> with the <b>Servers</b> permission with <b>Read &amp; Write</b> access.
+	 *
+	 * @return The build manager for this server
+	 */
+	ServerBuildManager getBuildManager();
+
+	/**
+	 * Returns the {@link com.mattmalec.pterodactyl4j.application.managers.ServerStartupManager ServerStartupManager} for this
+	 * ApplicationServer, used to modify the startup parameters
+	 * <br>Managing a server requires an <b>Application API key</b> with the <b>Servers</b> permission with <b>Read &amp; Write</b> access.
+	 *
+	 * @return The build manager for this server
+	 */
+	ServerStartupManager getStartupManager();
 
 	/**
 	 * Returns the {@link com.mattmalec.pterodactyl4j.application.managers.ServerController} for this ApplicationServer, used to control

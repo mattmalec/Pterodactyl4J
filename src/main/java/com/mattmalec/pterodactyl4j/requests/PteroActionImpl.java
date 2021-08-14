@@ -34,6 +34,7 @@ public class PteroActionImpl<T> implements PteroAction<T> {
     private final P4J api;
     private Route.CompiledRoute route;
     private RequestBody data;
+    private long deadline = 0;
 
     private Supplier<? extends T> supplier;
 
@@ -88,7 +89,7 @@ public class PteroActionImpl<T> implements PteroAction<T> {
             Route.CompiledRoute route = finalizeRoute();
             RequestBody data = finalizeData();
             try {
-                return new RequestFuture<>(this, route, data, shouldQueue).join();
+                return new RequestFuture<>(this, route, data, shouldQueue, deadline).join();
             } catch (CompletionException ex) {
                 if (ex.getCause() != null) {
                     Throwable cause = ex.getCause();
@@ -118,13 +119,19 @@ public class PteroActionImpl<T> implements PteroAction<T> {
 
             api.getActionPool().submit(() -> {
                 RequestBody data = finalizeData();
-                api.getRequester().request(new Request<>(this, finalizedSuccess, finalizedFailure, route, data, true));
+                api.getRequester().request(new Request<>(this, finalizedSuccess, finalizedFailure, route, data, true, deadline));
             });
         } else {
             CompletableFuture.supplyAsync(supplier, api.getSupplierPool())
                     .thenAcceptAsync(success);
         }
 
+    }
+
+    @Override
+    public PteroAction<T> deadline(long timestamp) {
+        this.deadline = timestamp;
+        return this;
     }
 
     @Override

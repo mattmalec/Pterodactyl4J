@@ -22,6 +22,7 @@ import com.mattmalec.pterodactyl4j.application.managers.AllocationAction;
 import com.mattmalec.pterodactyl4j.requests.Route;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 
 public abstract class AbstractAllocationAction extends PteroActionImpl<Void> implements AllocationAction {
@@ -32,6 +33,7 @@ public abstract class AbstractAllocationAction extends PteroActionImpl<Void> imp
 
     public AbstractAllocationAction(PteroApplicationImpl impl, Route.CompiledRoute route) {
         super(impl.getP4J(), route);
+        this.portSet = new HashSet<>();
     }
 
     @Override

@@ -159,6 +159,59 @@ public interface PteroAction<T> {
     void executeAsync(Consumer<? super T> success, Consumer<? super Throwable> failure);
 
     /**
+     * Schedules a timeout for this PteroAction instance.
+     * <br>If the request doesn't get executed within the timeout, it will fail.
+     *
+     * <p>When a PteroAction times out, it will fail with a {@link java.util.concurrent.TimeoutException TimeoutException}.
+     * This is the same as {@code deadline(System.currentTimeMillis() + unit.toMillis(timeout))}.
+     *
+     * <h2>Example</h2>
+     * <pre>{@code
+     * action.timeout(10, TimeUnit.SECONDS)  // 10 seconds from now
+     *       .delay(20, TimeUnit.SECONDS)
+     *       .executeAsync(); // request will not be executed within deadline and will timeout immediately after 20 seconds
+     * }</pre>
+     *
+     * @param  timeout
+     *         The timeout to use
+     * @param  unit
+     *         {@link TimeUnit TimeUnit} for the timeout value
+     *
+     * @throws IllegalArgumentException
+     *         If the provided time unit is null
+     *
+     * @return The same PteroAction instance with the applied timeout
+     */
+    default PteroAction<T> timeout(long timeout, TimeUnit unit) {
+        Checks.notNull(unit, "TimeUnit");
+        return deadline(timeout <= 0 ? 0 : System.currentTimeMillis() + unit.toMillis(timeout));
+    }
+
+    /**
+     * Similar to {@link #timeout(long, TimeUnit)}, but schedules a deadline when request has to be completed.
+     * <br>If the deadline is reached, the request will fail with a {@link java.util.concurrent.TimeoutException TimeoutException}.
+     *
+     * <p>This does not mean that the request will immediately timeout when the deadline is reached. P4J will check the deadline
+     * right before executing the request, and it will only timeout if the deadline has passed.
+     *
+     * <h2>Example</h2>
+     * <pre>{@code
+     * action.deadline(System.currentTimeMillis() + 10000) // 10 seconds from now
+     *       .delay(20, TimeUnit.SECONDS)
+     *       .executeAsync(); // request will not be executed within deadline and will timeout immediately after 20 seconds
+     * }</pre>
+     *
+     *
+     * @param  timestamp
+     *         Millisecond timestamp at which the request will timeout
+     *
+     * @return The same PteroAction with the applied deadline
+     *
+     * @see    #timeout(long, TimeUnit)
+     */
+    PteroAction<T> deadline(long timestamp);
+
+    /**
      * Intermediate operator that returns a modified PteroAction.
      *
      * <p>This does not modify the instance but returns a new PteroAction which will apply

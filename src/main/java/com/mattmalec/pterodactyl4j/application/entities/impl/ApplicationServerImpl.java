@@ -19,8 +19,7 @@ package com.mattmalec.pterodactyl4j.application.entities.impl;
 import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.ServerStatus;
 import com.mattmalec.pterodactyl4j.application.entities.*;
-import com.mattmalec.pterodactyl4j.application.managers.ServerController;
-import com.mattmalec.pterodactyl4j.application.managers.ServerManager;
+import com.mattmalec.pterodactyl4j.application.managers.*;
 import com.mattmalec.pterodactyl4j.entities.FeatureLimit;
 import com.mattmalec.pterodactyl4j.entities.Limit;
 import com.mattmalec.pterodactyl4j.entities.impl.FeatureLimitImpl;
@@ -88,7 +87,7 @@ public class ApplicationServerImpl implements ApplicationServer {
 		return new Relationed<ApplicationUser>() {
 			@Override
 			public PteroAction<ApplicationUser> retrieve() {
-				return impl.retrieveUserById(json.getLong("user"));
+				return impl.retrieveUserById(getOwnerIdLong());
 			}
 
 			@Override
@@ -100,11 +99,16 @@ public class ApplicationServerImpl implements ApplicationServer {
 	}
 
 	@Override
+	public long getOwnerIdLong() {
+		return json.getLong("user");
+	}
+
+	@Override
 	public Relationed<Node> getNode() {
 		return new Relationed<Node>() {
 			@Override
 			public PteroAction<Node> retrieve() {
-				return impl.retrieveNodeById(json.getLong("node"));
+				return impl.retrieveNodeById(getNodeIdLong());
 			}
 
 			@Override
@@ -113,6 +117,11 @@ public class ApplicationServerImpl implements ApplicationServer {
 				return Optional.of(new NodeImpl(relationships.getJSONObject("node"), impl));
 			}
 		};
+	}
+
+	@Override
+	public long getNodeIdLong() {
+		return json.getLong("node");
 	}
 
 	@Override
@@ -132,7 +141,7 @@ public class ApplicationServerImpl implements ApplicationServer {
 		return new Relationed<Allocation>() {
 			@Override
 			public PteroAction<Allocation> retrieve() {
-				return impl.retrieveAllocationById(json.getLong("allocation"));
+				return impl.retrieveAllocationById(getDefaultAllocationIdLong());
 			}
 
 			@Override
@@ -140,7 +149,7 @@ public class ApplicationServerImpl implements ApplicationServer {
 				if(!json.has("relationships")) return Optional.empty();
 				List<Allocation> allocations = getAllocations().get();
 				for (Allocation a : allocations) {
-					if (a.getIdLong() == json.getLong("allocation")) {
+					if (a.getIdLong() == getDefaultAllocationIdLong()) {
 						return Optional.of(a);
 					}
 				}
@@ -150,11 +159,16 @@ public class ApplicationServerImpl implements ApplicationServer {
 	}
 
 	@Override
+	public long getDefaultAllocationIdLong() {
+		return json.getLong("allocation");
+	}
+
+	@Override
 	public Relationed<Nest> getNest() {
 		return new Relationed<Nest>() {
 			@Override
 			public PteroAction<Nest> retrieve() {
-				return impl.retrieveNestById(json.getLong("nest"));
+				return impl.retrieveNestById(getNestIdLong());
 			}
 
 			@Override
@@ -166,11 +180,16 @@ public class ApplicationServerImpl implements ApplicationServer {
 	}
 
 	@Override
+	public long getNestIdLong() {
+		return json.getLong("nest");
+	}
+
+	@Override
 	public Relationed<ApplicationEgg> getEgg() {
 		return new Relationed<ApplicationEgg>() {
 			@Override
 			public PteroAction<ApplicationEgg> retrieve() {
-				return impl.retrieveEggById(getNest().retrieve().execute(), json.getLong("egg"));
+				return impl.retrieveEggById(getNest().retrieve().execute(), getEggIdLong());
 			}
 
 			@Override
@@ -182,6 +201,11 @@ public class ApplicationServerImpl implements ApplicationServer {
 	}
 
 	@Override
+	public long getEggIdLong() {
+		return json.getLong("egg");
+	}
+
+	@Override
 	public ServerStatus getStatus() {
 		if (json.isNull("status"))
 			return ServerStatus.UNKNOWN;
@@ -189,8 +213,23 @@ public class ApplicationServerImpl implements ApplicationServer {
 	}
 
 	@Override
+	public ServerDetailManager getDetailManager() {
+		return new ServerDetailManagerImpl(this, impl);
+	}
+
+	@Override
+	public ServerBuildManager getBuildManager() {
+		return new ServerBuildManagerImpl(this, impl);
+	}
+
+	@Override
+	public ServerStartupManager getStartupManager() {
+		return new ServerStartupManagerImpl(this, impl);
+	}
+
+	@Override
 	public ServerManager getManager() {
-		return new ServerManager(this, impl);
+		return new ServerManager(this);
 	}
 
 	@Override
@@ -206,8 +245,8 @@ public class ApplicationServerImpl implements ApplicationServer {
 	@Override
 	public long getIdLong() {
 		return json.getLong("id");
-
 	}
+
 	@Override
 	public OffsetDateTime getCreationDate() {
 		return OffsetDateTime.parse(json.optString("created_at"));

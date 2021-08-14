@@ -24,8 +24,8 @@ public class RequestFuture<T> extends CompletableFuture<T> {
 
     private final Request<T> request;
 
-    public RequestFuture(PteroActionImpl<T> action, Route.CompiledRoute route, RequestBody requestBody, boolean shouldQueue) {
-        this.request = new Request<>(action, this::complete, this::completeExceptionally, route, requestBody, shouldQueue);
+    public RequestFuture(PteroActionImpl<T> action, Route.CompiledRoute route, RequestBody requestBody, boolean shouldQueue, long deadline) {
+        this.request = new Request<>(action, this::complete, this::completeExceptionally, route, requestBody, shouldQueue, deadline);
         action.getP4J().getRequester().request(this.request);
     }
 
