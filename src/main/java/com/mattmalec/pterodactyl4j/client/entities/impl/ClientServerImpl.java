@@ -118,6 +118,11 @@ public class ClientServerImpl implements ClientServer {
 	}
 
 	@Override
+	public boolean isTransferring() {
+		return json.getBoolean("is_transferring");
+	}
+
+	@Override
 	public WebSocketBuilder getWebSocketBuilder() {
 		return new WebSocketBuilder(impl, this);
 	}
