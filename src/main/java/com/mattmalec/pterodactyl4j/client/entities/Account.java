@@ -42,6 +42,11 @@ public interface Account extends User {
 
     PteroAction<List<APIKey>> retrieveAPIKeys();
 
+    default PteroAction<Optional<APIKey>> retrieveAPIKeyByIdentifier(String identifier) {
+        return retrieveAPIKeys().map(List::stream)
+                .map(stream -> stream.filter(key -> key.getIdentifier().equals(identifier))).map(Stream::findFirst);
+    }
+
     APIKeyAction createAPIKey();
 
     AccountManager getManager();
