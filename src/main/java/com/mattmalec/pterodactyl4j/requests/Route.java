@@ -125,6 +125,7 @@ public class Route {
 		public static final Route DOWNLOAD_BACKUP		= new Route(GET, 	CLIENT_PREFIX + "servers/{server_id}/backups/{identifier}/download");
 		public static final Route CREATE_BACKUP			= new Route(POST, 	CLIENT_PREFIX + "servers/{server_id}/backups");
 		public static final Route RESTORE_BACKUP		= new Route(POST,   CLIENT_PREFIX + "servers/{server_id}/backups/{identifier}/restore?truncate=true");
+		public static final Route LOCK_BACKUP			= new Route(POST,   CLIENT_PREFIX + "servers/{server_id}/backups/{identifier}/lock");
 		public static final Route DELETE_BACKUP			= new Route(DELETE, CLIENT_PREFIX + "servers/{server_id}/backups/{identifier}");
 
 	}
