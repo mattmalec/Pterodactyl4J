@@ -38,6 +38,8 @@ public interface Backup {
     PteroAction<String> retrieveDownloadUrl();
     OffsetDateTime getTimeCompleted();
     OffsetDateTime getTimeCreated();
+
+    PteroAction<Backup> toggleLock();
     PteroAction<Void> restore();
     PteroAction<Void> delete();
 

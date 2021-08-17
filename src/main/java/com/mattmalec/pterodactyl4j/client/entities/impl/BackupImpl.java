@@ -87,6 +87,11 @@ public class BackupImpl implements Backup {
     }
 
     @Override
+    public PteroAction<Backup> toggleLock() {
+        return server.getBackupManager().toggleLock(this);
+    }
+
+    @Override
     public PteroAction<Void> restore() {
         return server.getBackupManager().restoreBackup(this);
     }
