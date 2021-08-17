@@ -16,9 +16,18 @@
 
 package com.mattmalec.pterodactyl4j.client.entities.impl;
 
+import com.mattmalec.pterodactyl4j.PteroAction;
+import com.mattmalec.pterodactyl4j.client.entities.APIKey;
 import com.mattmalec.pterodactyl4j.client.entities.Account;
+import com.mattmalec.pterodactyl4j.client.managers.APIKeyAction;
 import com.mattmalec.pterodactyl4j.client.managers.AccountManager;
+import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
+import com.mattmalec.pterodactyl4j.requests.Route;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class AccountImpl implements Account {
 
@@ -68,6 +77,24 @@ public class AccountImpl implements Account {
     @Override
     public boolean isRootAdmin() {
         return json.getBoolean("admin");
+    }
+
+    @Override
+    public PteroAction<List<APIKey>> retrieveAPIKeys() {
+        return new PteroActionImpl<>(impl.getP4J(), Route.Accounts.GET_API_KEYS.compile(), (response, request) -> {
+            JSONObject json = response.getObject();
+            List<APIKey> keys = new ArrayList<>();
+            for (Object o : json.getJSONArray("data")) {
+                JSONObject key = new JSONObject(o.toString());
+                keys.add(new APIKeyImpl(key, impl));
+            }
+            return Collections.unmodifiableList(keys);
+        });
+    }
+
+    @Override
+    public APIKeyAction createAPIKey() {
+        return new CreateAPIKeyImpl(impl);
     }
 
     @Override

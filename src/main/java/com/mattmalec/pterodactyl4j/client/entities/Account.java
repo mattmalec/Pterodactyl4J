@@ -16,10 +16,15 @@
 
 package com.mattmalec.pterodactyl4j.client.entities;
 
+import com.mattmalec.pterodactyl4j.PteroAction;
+import com.mattmalec.pterodactyl4j.client.managers.APIKeyAction;
 import com.mattmalec.pterodactyl4j.client.managers.AccountManager;
 import com.mattmalec.pterodactyl4j.entities.User;
 
+import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 public interface Account extends User {
 
@@ -34,6 +39,10 @@ public interface Account extends User {
     default Locale getLocale() {
         return Locale.forLanguageTag(getLanguage());
     }
+
+    PteroAction<List<APIKey>> retrieveAPIKeys();
+
+    APIKeyAction createAPIKey();
 
     AccountManager getManager();
 
