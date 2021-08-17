@@ -57,6 +57,11 @@ public class BackupImpl implements Backup {
     }
 
     @Override
+    public boolean isLocked() {
+        return json.getBoolean("is_locked");
+    }
+
+    @Override
     public long getSize() {
         return json.getLong("bytes");
     }

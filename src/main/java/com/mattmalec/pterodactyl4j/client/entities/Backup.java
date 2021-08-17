@@ -29,6 +29,7 @@ public interface Backup {
     String getName();
     String getChecksum();
     boolean isSuccessful();
+    boolean isLocked();
     long getSize();
     default String getSizeFormatted(DataType dataType) {
         return String.format("%.2f %s", getSize() / (dataType.getMbValue() * Math.pow(2, 20)), dataType.name());
