@@ -97,6 +97,9 @@ public class ClientServerImpl implements ClientServer {
 	@Override
 	public Set<String> getEggFeatures() {
 		JSONArray features = json.getJSONArray("egg_features");
+		if (features.length() == 0)
+			return Collections.emptySet();
+
 		Set<String> eggFeatures = new HashSet<>();
 		features.forEach(o -> eggFeatures.add(o.toString()));
 		return Collections.unmodifiableSet(eggFeatures);
