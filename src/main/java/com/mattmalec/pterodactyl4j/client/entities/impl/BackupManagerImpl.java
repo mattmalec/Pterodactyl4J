@@ -53,6 +53,13 @@ public class BackupManagerImpl implements BackupManager {
     }
 
     @Override
+    public PteroAction<Backup> toggleLock(Backup backup) {
+        return new PteroActionImpl<>(impl.getP4J(),
+                Route.Backups.LOCK_BACKUP.compile(server.getIdentifier(), backup.getUUID().toString()),
+                (response, request) -> new BackupImpl(response.getObject(), server));
+    }
+
+    @Override
     public PteroAction<Void> deleteBackup(Backup backup) {
         return PteroActionImpl.onRequestExecute(impl.getP4J(),
                 Route.Backups.DELETE_BACKUP.compile(server.getIdentifier(), backup.getUUID().toString()));

@@ -24,6 +24,7 @@ public interface BackupManager {
     BackupAction createBackup();
     PteroAction<String> retrieveDownloadUrl(Backup backup);
     PteroAction<Void> restoreBackup(Backup backup);
+    PteroAction<Backup> toggleLock(Backup backup);
     PteroAction<Void> deleteBackup(Backup backup);
 
 }
