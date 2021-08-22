@@ -67,7 +67,7 @@ public class ServerStartupManagerImpl extends AbstractManagerBase implements Ser
 
     @Override
     public ServerStartupManager setEgg(ApplicationEgg egg) {
-        Checks.notNull(environment, "Egg");
+        Checks.notNull(egg, "Egg");
 
         set |= EGG;
         this.egg = egg.getIdLong();
