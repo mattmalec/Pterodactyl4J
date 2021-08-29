@@ -86,4 +86,6 @@ public interface ClientServer extends Server {
 	PteroAction<Schedule> retrieveSchedule(String id);
 	ScheduleManager getScheduleManager();
 
+	DatabaseManager getDatabaseManager();
+
 }

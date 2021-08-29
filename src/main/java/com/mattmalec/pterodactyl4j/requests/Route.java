@@ -160,6 +160,15 @@ public class Route {
 
 	}
 
+	public static class Databases {
+
+		public static final Route LIST_DATABASES 		= new Route(GET, 	CLIENT_PREFIX + "servers/{server_id}/databases?include=password");
+		public static final Route CREATE_DATABASE 		= new Route(POST, 	CLIENT_PREFIX + "servers/{server_id}/databases");
+		public static final Route ROTATE_PASSWORD 		= new Route(POST, 	CLIENT_PREFIX + "servers/{server_id}/databases/{database_id}/rotate-password");
+		public static final Route DELETE_DATABASE 		= new Route(DELETE, 	CLIENT_PREFIX + "servers/{server_id}/databases/{database_id}");
+
+	}
+
 	private final Method method;
 	private final String route;
 	private final String compilableRoute;

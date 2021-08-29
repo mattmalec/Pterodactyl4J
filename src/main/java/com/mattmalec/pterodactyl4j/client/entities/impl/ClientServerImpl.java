@@ -239,6 +239,11 @@ public class ClientServerImpl implements ClientServer {
 	}
 
 	@Override
+	public DatabaseManager getDatabaseManager() {
+		return new DatabaseManagerImpl(this, impl);
+	}
+
+	@Override
 	public PteroAction<Utilization> retrieveUtilization() {
 		return PteroActionImpl.onRequestExecute(impl.getP4J(), Route.Client.GET_UTILIZATION.compile(getIdentifier()),
 				(response, request) -> new UtilizationImpl(response.getObject()));
