@@ -14,7 +14,7 @@ import org.json.JSONObject;
 
 import java.util.function.Supplier;
 
-public class CreateDatabaseImpl extends PteroActionImpl<Database> implements DatabaseAction {
+public class CreateDatabaseImpl extends PteroActionImpl<ClientDatabase> implements ClientDatabaseAction {
 
     private String database;
     private String remote;
