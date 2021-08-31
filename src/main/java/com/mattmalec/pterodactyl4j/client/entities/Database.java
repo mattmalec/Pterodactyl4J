@@ -8,7 +8,7 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 
-public interface Database {
+public interface ClientDatabase extends Database {
 
     String getID();
     String getName();
