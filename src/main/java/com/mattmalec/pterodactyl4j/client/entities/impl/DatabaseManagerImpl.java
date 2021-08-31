@@ -74,7 +74,8 @@ public class DatabaseManagerImpl implements DatabaseManager {
     public PteroAction<Database> rotateDatabasePassword(Database database) {
 
          return PteroActionImpl.onRequestExecute(impl.getP4J(),
-                 Route.Databases.ROTATE_PASSWORD.compile(server.getIdentifier(), database.getID()), (response, request) -> new DatabaseImpl(response.getObject(), this.server));
+                 Route.Databases.ROTATE_PASSWORD.compile(server.getIdentifier(), database.getID()), 
+                     (response, request) -> new DatabaseImpl(response.getObject(), this.server));
 
     }
 }
