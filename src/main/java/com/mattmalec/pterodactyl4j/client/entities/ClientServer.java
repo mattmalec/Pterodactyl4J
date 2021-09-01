@@ -87,5 +87,9 @@ public interface ClientServer extends Server {
 	ScheduleManager getScheduleManager();
 
 	DatabaseManager getDatabaseManager();
+	PteroAction<List<ClientDatabase>> retrieveDatabases();
+	default PteroAction<ClientDatabase> retrieveDatabase(String id) {
+		return retrieveDatabases().map(dbs -> dbs.stream().filter(db-> db.getId().equals(id)).findFirst().orElse(null));
+	}
 
 }
