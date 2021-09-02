@@ -75,6 +75,11 @@ public class ScheduleImpl implements Schedule {
 	}
 
 	@Override
+	public boolean isOnlyWhenServerIsOnline() {
+		return json.getBoolean("only_when_online");
+	}
+
+	@Override
 	public boolean isProcessing() {
 		return json.getBoolean("is_processing");
 	}

@@ -20,6 +20,7 @@ public interface Cron {
 
 	String getDayOfWeek();
 	String getDayOfMonth();
+	String getMonth();
 	String getHour();
 	String getMinute();
 	String getExpression();

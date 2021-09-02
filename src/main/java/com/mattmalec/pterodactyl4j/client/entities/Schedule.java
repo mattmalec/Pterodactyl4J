@@ -30,6 +30,7 @@ public interface Schedule extends ISnowflake {
 	String getName();
 	Cron getCron();
 	boolean isActive();
+	boolean isOnlyWhenServerIsOnline();
 	boolean isProcessing();
 	Optional<OffsetDateTime> getLastRunDate();
 	OffsetDateTime getNextRunDate();

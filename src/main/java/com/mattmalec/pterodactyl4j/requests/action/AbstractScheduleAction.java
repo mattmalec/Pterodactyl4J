@@ -30,10 +30,12 @@ public abstract class AbstractScheduleAction extends PteroActionImpl<Schedule> i
 
     protected String name;
     protected Boolean active;
+    protected Boolean whenServerIsOnline;
     protected Cron cron;
     protected String minute;
     protected String hour;
     protected String dayOfWeek;
+    protected String month;
     protected String dayOfMonth;
 
     public AbstractScheduleAction(PteroClientImpl impl, ClientServer server, Route.CompiledRoute route) {
@@ -49,6 +51,12 @@ public abstract class AbstractScheduleAction extends PteroActionImpl<Schedule> i
     @Override
     public ScheduleAction setActive(boolean active) {
         this.active = active;
+        return this;
+    }
+
+    @Override
+    public ScheduleAction setWhenServerIsOnline(boolean whenServerIsOnline) {
+        this.whenServerIsOnline = whenServerIsOnline;
         return this;
     }
 
@@ -79,6 +87,12 @@ public abstract class AbstractScheduleAction extends PteroActionImpl<Schedule> i
     @Override
     public ScheduleAction setDayOfWeek(String dayOfWeek) {
         this.dayOfWeek = dayOfWeek;
+        return this;
+    }
+
+    @Override
+    public ScheduleAction setMonth(String month) {
+        this.month = month;
         return this;
     }
 

@@ -17,6 +17,7 @@
 package com.mattmalec.pterodactyl4j.client.entities.impl;
 
 import com.mattmalec.pterodactyl4j.client.entities.ClientServer;
+import com.mattmalec.pterodactyl4j.client.managers.ScheduleAction;
 import com.mattmalec.pterodactyl4j.requests.Route;
 import com.mattmalec.pterodactyl4j.requests.action.AbstractScheduleAction;
 import com.mattmalec.pterodactyl4j.utils.Checks;
@@ -35,10 +36,13 @@ public class CreateScheduleImpl extends AbstractScheduleAction {
 		JSONObject json = new JSONObject()
 				.put("name", name)
 				.put("is_active", active)
+				.put("only_when_online", whenServerIsOnline == null || whenServerIsOnline)
 				.put("minute", minute == null ? cron.getMinute() : minute)
 				.put("hour", hour == null ? cron.getHour() : hour)
 				.put("day_of_week", dayOfWeek == null ? cron.getDayOfWeek() : dayOfWeek)
+				.put("month", month == null ? cron.getMonth() : month)
 				.put("day_of_month", dayOfMonth == null ? cron.getDayOfMonth() : dayOfMonth);
 		return getRequestBody(json);
 	}
+
 }
