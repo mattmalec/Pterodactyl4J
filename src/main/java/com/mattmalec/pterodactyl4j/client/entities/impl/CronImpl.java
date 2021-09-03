@@ -54,7 +54,7 @@ public class CronImpl implements Cron {
 
 	@Override
 	public String getExpression() {
-		return String.format("%s %s %s %s", getMinute(), getHour(), getDayOfMonth(), getDayOfWeek());
+		return String.format("%s %s %s %s %s", getMinute(), getHour(), getDayOfMonth(), getMonth(), getDayOfWeek());
 	}
 
 	public static Cron ofExpression(String expression) {
