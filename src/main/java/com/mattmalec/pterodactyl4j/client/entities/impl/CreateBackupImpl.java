@@ -16,10 +16,10 @@
 
 package com.mattmalec.pterodactyl4j.client.entities.impl;
 
-import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.client.entities.Backup;
 import com.mattmalec.pterodactyl4j.client.entities.ClientServer;
 import com.mattmalec.pterodactyl4j.client.managers.BackupAction;
+import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.requests.Route;
 import okhttp3.RequestBody;
 import org.json.JSONObject;
@@ -50,12 +50,12 @@ public class CreateBackupImpl extends PteroActionImpl<Backup> implements BackupA
 
     @Override
     protected RequestBody finalizeData() {
-        if(name != null && name.length() > 191) {
+        if(name != null && name.length() > 191)
             throw new IllegalArgumentException("The name cannot be over 191 characters");
-        }
+
         JSONObject json = new JSONObject()
                 .put("name", name)
-                .put("ignored", files == null ? "" : files);
+                .put("ignored", files == null ? "" : String.join("\n", files));
         return getRequestBody(json);
     }
 }
