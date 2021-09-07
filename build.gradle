@@ -1,3 +1,4 @@
+import org.apache.tools.ant.filters.ReplaceTokens
 plugins {
     id 'java'
     id 'maven'
@@ -13,9 +14,9 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.squareup.okhttp3:okhttp:3.11.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.9.1'
     implementation 'org.json:json:20160810'
-    implementation 'org.slf4j:slf4j-api:1.7.25'
+    implementation 'org.slf4j:slf4j-api:1.7.32'
 }
 
 uploadArchives {
@@ -69,9 +70,34 @@ javadoc {
             "com/mattmalec/pterodactyl4j/client/ws/WebSocketAction.java")
 }
 
-task sourcesJar(type: Jar) {
+task sourcesForRelease(type: Copy) {
+    from('src/main/java') {
+        include '**/P4JInfo.java'
+        filter(ReplaceTokens, tokens: [
+                MAJOR: versionObject.major,
+                MINOR: versionObject.minor,
+                BUILD: versionObject.build
+        ])
+    }
+    into 'build/filteredSrc'
+    includeEmptyDirs = false
+}
+
+task generateJavaSources(type: SourceTask) {
+    def javaSources = sourceSets.main.java.filter {
+        it.name != 'P4JInfo.java'
+    }
+    source = javaSources + sourcesForRelease.destinationDir
+    dependsOn sourcesForRelease
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
     classifier = 'sources'
-    from sourceSets.main.java
+    from ('src/main/java') {
+        exclude '**/P4JInfo.java'
+    }
+    from sourcesForRelease.destinationDir
+    dependsOn sourcesForRelease
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
@@ -82,6 +108,11 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 artifacts {
     archives javadocJar
     archives sourcesJar
+}
+
+compileJava {
+    source = generateJavaSources.source
+    dependsOn generateJavaSources
 }
 
 tasks.withType(JavaCompile) {
