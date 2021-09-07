@@ -16,6 +16,7 @@
 
 package com.mattmalec.pterodactyl4j.requests;
 
+import com.mattmalec.pterodactyl4j.P4JInfo;
 import com.mattmalec.pterodactyl4j.entities.P4J;
 import com.mattmalec.pterodactyl4j.exceptions.HttpException;
 import com.mattmalec.pterodactyl4j.exceptions.LoginException;
@@ -39,6 +40,8 @@ public class Requester {
     public static final RequestBody EMPTY_BODY = RequestBody.create(null, new byte[0]);
     public static final MediaType MEDIA_TYPE_JSON = MediaType.parse("application/json; charset=utf8");
     private static final String PTERODACTYL_API_PREFIX = "%s/api/";
+
+    public static final String USER_AGENT = "Pterodactyl4J (" + P4JInfo.VERSION + ")";
 
     private final RateLimiter rateLimiter;
     private final OkHttpClient client;
@@ -92,7 +95,8 @@ public class Requester {
         else
             builder.method(method, null);
 
-        builder.header("Accept", "Application/vnd.pterodactyl.v1+json");
+        builder.header("Accept", "application/vnd.pterodactyl.v1+json")
+                .header("User-Agent", USER_AGENT);
 
         if(api.getToken() == null || api.getToken().isEmpty())
             throw new LoginException("No authorization token was defined.");
