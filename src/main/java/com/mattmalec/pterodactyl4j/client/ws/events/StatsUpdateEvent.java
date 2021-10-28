@@ -80,5 +80,14 @@ public class StatsUpdateEvent extends Event {
         return String.format("%.2f %s", getNetworkEgress() / (dataType.getMbValue() * Math.pow(2, 20)), dataType.name());
     }
 
+    public long getUptime() {
+        return stats.getLong("uptime");
+    }
 
+    public String getUptimeFormatted(){
+        long second = (stats.getLong("uptime") / 1000) % 60;
+        long minute = (stats.getLong("uptime") / (1000 * 60)) % 60;
+        long hour = (stats.getLong("uptime") / (1000 * 60 * 60)) % 24;
+        return String.format("%02d:%02d:%02d", hour, minute, second);
+    }
 }
