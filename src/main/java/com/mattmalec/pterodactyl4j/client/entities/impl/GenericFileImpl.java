@@ -29,12 +29,14 @@ import java.util.EnumSet;
 public class GenericFileImpl implements GenericFile {
 
     private final JSONObject json;
-    private final String context;
+    private final String path;
     private final ClientServer server;
 
     public GenericFileImpl(JSONObject json, String context, ClientServer server) {
         this.json = json.getJSONObject("attributes");
-        this.context = context;
+
+        // weird shit with root directories
+        this.path = context.equals("/") ? context.substring(1) : context;
         this.server = server;
     }
 
@@ -45,7 +47,7 @@ public class GenericFileImpl implements GenericFile {
 
     @Override
     public String getPath() {
-        return String.format("%s/%s", context, getName());
+        return String.format("%s/%s", path, getName());
     }
 
     @Override
