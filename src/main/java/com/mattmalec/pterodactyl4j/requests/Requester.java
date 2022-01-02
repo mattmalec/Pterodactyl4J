@@ -37,9 +37,11 @@ public class Requester {
     private final P4J api;
     private final Logger REQUESTER_LOG = LoggerFactory.getLogger(Requester.class);
 
-    public static final RequestBody EMPTY_BODY = RequestBody.create(null, new byte[0]);
+    public static final RequestBody EMPTY_BODY = RequestBody.create(new byte[0], null);
+
     public static final MediaType MEDIA_TYPE_JSON = MediaType.parse("application/json; charset=utf8");
     public static final MediaType MEDIA_TYPE_PLAIN = MediaType.parse("text/plain; charset=utf8");
+    public static final MediaType MEDIA_TYPE_OCTET = MediaType.parse("application/octet-stream; charset=utf-8");
 
     private static final String PTERODACTYL_API_PREFIX = "%s/api/";
 
