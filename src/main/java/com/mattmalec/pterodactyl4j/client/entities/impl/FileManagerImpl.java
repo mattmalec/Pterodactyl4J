@@ -18,10 +18,7 @@ package com.mattmalec.pterodactyl4j.client.entities.impl;
 
 import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.client.entities.*;
-import com.mattmalec.pterodactyl4j.client.managers.ArchiveAction;
-import com.mattmalec.pterodactyl4j.client.managers.CreateDirectoryAction;
-import com.mattmalec.pterodactyl4j.client.managers.FileManager;
-import com.mattmalec.pterodactyl4j.client.managers.RenameAction;
+import com.mattmalec.pterodactyl4j.client.managers.*;
 import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.requests.Requester;
 import com.mattmalec.pterodactyl4j.requests.Route;
@@ -65,13 +62,8 @@ public class FileManagerImpl implements FileManager {
     }
 
     @Override
-    public PteroAction<Void> rename(GenericFile file, String name) {
-        return rename().addFile(file, name);
-    }
-
-    @Override
-    public PteroAction<Void> delete(GenericFile file) {
-        return null;
+    public DeleteAction delete() {
+        return new DeleteActionImpl(server, impl);
     }
 
     @Override
