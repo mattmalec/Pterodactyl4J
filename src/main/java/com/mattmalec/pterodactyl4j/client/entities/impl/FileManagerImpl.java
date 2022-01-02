@@ -47,6 +47,11 @@ public class FileManagerImpl implements FileManager {
     }
 
     @Override
+    public UploadFileAction upload(Directory directory) {
+        return new UploadFileActionImpl(server, directory, impl);
+    }
+
+    @Override
     public RenameAction rename() {
         return new RenameActionImpl(server, impl);
     }
