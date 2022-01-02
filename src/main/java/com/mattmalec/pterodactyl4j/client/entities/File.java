@@ -21,8 +21,8 @@ import com.mattmalec.pterodactyl4j.PteroAction;
 public interface File extends GenericFile {
 
     PteroAction<String> retrieveContent();
-    PteroAction<String> retrieveDownloadUrl();
+    PteroAction<DownloadableFile> retrieveDownload();
     PteroAction<Void> write(String content);
-    PteroAction<Void> copy(String newName);
+    PteroAction<Void> copy();
 
 }
