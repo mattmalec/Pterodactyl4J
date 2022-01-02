@@ -17,10 +17,7 @@
 package com.mattmalec.pterodactyl4j.client.entities.impl;
 
 import com.mattmalec.pterodactyl4j.PteroAction;
-import com.mattmalec.pterodactyl4j.client.entities.ClientServer;
-import com.mattmalec.pterodactyl4j.client.entities.Directory;
-import com.mattmalec.pterodactyl4j.client.entities.File;
-import com.mattmalec.pterodactyl4j.client.entities.GenericFile;
+import com.mattmalec.pterodactyl4j.client.entities.*;
 import com.mattmalec.pterodactyl4j.client.managers.ArchiveAction;
 import com.mattmalec.pterodactyl4j.client.managers.CreateDirectoryAction;
 import com.mattmalec.pterodactyl4j.client.managers.FileManager;
@@ -29,6 +26,7 @@ import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.requests.Requester;
 import com.mattmalec.pterodactyl4j.requests.Route;
 import okhttp3.RequestBody;
+import org.json.JSONObject;
 
 public class FileManagerImpl implements FileManager {
 
@@ -53,7 +51,7 @@ public class FileManagerImpl implements FileManager {
 
     @Override
     public RenameAction rename() {
-        return null;
+        return new RenameActionImpl(server, impl);
     }
 
     @Override
@@ -68,7 +66,7 @@ public class FileManagerImpl implements FileManager {
 
     @Override
     public PteroAction<Void> rename(GenericFile file, String name) {
-        return null;
+        return rename().addFile(file, name);
     }
 
     @Override
@@ -83,8 +81,9 @@ public class FileManagerImpl implements FileManager {
     }
 
     @Override
-    public PteroAction<String> retrieveDownloadUrl(File file) {
-        return null;
+    public PteroAction<DownloadableFile> retrieveDownload(File file) {
+        return PteroActionImpl.onRequestExecute(impl.getP4J(), Route.Files.DOWNLOAD_FILE.compile(server.getIdentifier(), file.getPath()),
+                (response, request) -> new DownloadableFile(impl.getP4J(), file, response.getObject().getJSONObject("attributes").getString("url")));
     }
 
     @Override
@@ -94,7 +93,8 @@ public class FileManagerImpl implements FileManager {
     }
 
     @Override
-    public PteroAction<Void> copy(File file, String newName) {
-        return null;
+    public PteroAction<Void> copy(File file) {
+        return new PteroActionImpl<>(impl.getP4J(), Route.Files.COPY_FILE.compile(server.getIdentifier()),
+                PteroActionImpl.getRequestBody(new JSONObject().put("location", file.getPath())));
     }
 }
