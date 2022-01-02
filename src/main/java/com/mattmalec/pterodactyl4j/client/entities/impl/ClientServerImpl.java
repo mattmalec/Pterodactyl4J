@@ -266,7 +266,7 @@ public class ClientServerImpl implements ClientServer {
 	@Override
 	public PteroAction<Directory> retrieveDirectory(String path) {
 		return PteroActionImpl.onRequestExecute(impl.getP4J(), Route.Files.LIST_FILES.compile(getIdentifier(), path),
-				(response, request) -> new RootDirectoryImpl(response.getObject(), this));
+				(response, request) -> new RootDirectoryImpl(response.getObject(), path, this));
 	}
 
 	@Override
