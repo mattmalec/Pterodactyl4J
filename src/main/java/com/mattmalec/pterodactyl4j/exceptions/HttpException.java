@@ -19,8 +19,8 @@ package com.mattmalec.pterodactyl4j.exceptions;
 import org.json.JSONObject;
 
 public class HttpException extends PteroException {
-    public HttpException(String message)
-    {
+
+    public HttpException(String message) {
         super(message);
     }
 
