@@ -22,7 +22,9 @@ import com.mattmalec.pterodactyl4j.client.entities.Directory;
 import com.mattmalec.pterodactyl4j.client.entities.File;
 import com.mattmalec.pterodactyl4j.client.entities.GenericFile;
 import com.mattmalec.pterodactyl4j.client.managers.ArchiveAction;
+import com.mattmalec.pterodactyl4j.client.managers.DeleteAction;
 import com.mattmalec.pterodactyl4j.client.managers.RenameAction;
+import com.mattmalec.pterodactyl4j.client.managers.UploadFileAction;
 import org.json.JSONObject;
 
 import java.time.OffsetDateTime;
@@ -157,6 +159,16 @@ public class DirectoryImpl implements Directory {
     @Override
     public PteroAction<Void> delete() {
         return genericFile.delete();
+    }
+
+    @Override
+    public DeleteAction deleteFiles() {
+        return server.getFileManager().delete();
+    }
+
+    @Override
+    public UploadFileAction upload() {
+        return server.getFileManager().upload(this);
     }
 
     @Override
