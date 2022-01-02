@@ -27,6 +27,7 @@ public interface FileManager {
     CreateDirectoryAction createDirectory();
     PteroAction<Void> createFile(Directory directory, String name, String content);
 
+    UploadFileAction upload(Directory directory);
     RenameAction rename();
     ArchiveAction compress();
     PteroAction<Void> decompress(File compressedFile);
