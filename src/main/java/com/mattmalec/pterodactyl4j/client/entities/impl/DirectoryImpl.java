@@ -69,7 +69,7 @@ public class DirectoryImpl implements Directory {
 
     @Override
     public RenameAction rename() {
-        return null;
+        return server.getFileManager().rename();
     }
 
     @Override

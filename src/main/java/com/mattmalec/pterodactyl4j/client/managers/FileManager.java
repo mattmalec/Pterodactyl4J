@@ -18,6 +18,7 @@ package com.mattmalec.pterodactyl4j.client.managers;
 
 import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.client.entities.Directory;
+import com.mattmalec.pterodactyl4j.client.entities.DownloadableFile;
 import com.mattmalec.pterodactyl4j.client.entities.File;
 import com.mattmalec.pterodactyl4j.client.entities.GenericFile;
 
@@ -33,8 +34,8 @@ public interface FileManager {
     PteroAction<Void> delete(GenericFile file);
 
     PteroAction<String> retrieveContent(File file);
-    PteroAction<String> retrieveDownloadUrl(File file);
+    PteroAction<DownloadableFile> retrieveDownload(File file);
     PteroAction<Void> write(File file, String content);
-    PteroAction<Void> copy(File file, String newName);
+    PteroAction<Void> copy(File file);
 
 }
