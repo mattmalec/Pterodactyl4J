@@ -18,10 +18,11 @@ package com.mattmalec.pterodactyl4j.client.managers;
 
 import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.client.entities.File;
+import com.mattmalec.pterodactyl4j.client.entities.GenericFile;
 
 public interface RenameAction extends PteroAction<Void> {
 
-    RenameAction addFile(File file, String newName);
+    RenameAction addFile(GenericFile file, String newName);
     RenameAction clearFiles();
 
 }
