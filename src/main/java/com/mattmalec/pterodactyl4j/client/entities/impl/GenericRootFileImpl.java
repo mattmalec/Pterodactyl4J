@@ -25,15 +25,19 @@ import java.util.EnumSet;
 
 public class GenericRootFileImpl implements GenericFile {
 
+    private final String rootName;
+
     private final String rootPath;
 
     public GenericRootFileImpl(String rootPath) {
         this.rootPath = rootPath;
+        String[] context = rootPath.split("/");
+        this.rootName = rootPath.equals("/") ? "Root Directory" : context[context.length - 1];
     }
 
     @Override
     public String getName() {
-        return "Root Directory";
+        return rootName;
     }
 
     @Override
