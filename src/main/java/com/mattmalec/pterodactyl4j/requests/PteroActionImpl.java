@@ -22,6 +22,8 @@ import com.mattmalec.pterodactyl4j.exceptions.PteroException;
 import okhttp3.RequestBody;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
@@ -30,6 +32,8 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class PteroActionImpl<T> implements PteroAction<T> {
+
+    public static final Logger LOGGER = LoggerFactory.getLogger(PteroAction.class);
 
     private final P4J api;
     private Route.CompiledRoute route;
