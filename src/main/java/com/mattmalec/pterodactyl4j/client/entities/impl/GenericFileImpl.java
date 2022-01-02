@@ -97,12 +97,12 @@ public class GenericFileImpl implements GenericFile {
 
     @Override
     public PteroAction<Void> rename(String name) {
-        return server.getFileManager().rename(this, name);
+        return server.getFileManager().rename().addFile(this, name);
     }
 
     @Override
     public PteroAction<Void> delete() {
-        return server.getFileManager().delete(this);
+        return server.getFileManager().delete().addFile(this);
     }
 
     @Override
