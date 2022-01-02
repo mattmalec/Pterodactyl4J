@@ -24,9 +24,6 @@ public interface ArchiveAction extends PteroAction<File> {
     ArchiveAction addFile(File file);
     ArchiveAction addFiles(File file, File... files);
 
-    ArchiveAction setFiles(File... files);
-    ArchiveAction setFile(File file, File... files);
-
     ArchiveAction clearFiles();
 
 }
