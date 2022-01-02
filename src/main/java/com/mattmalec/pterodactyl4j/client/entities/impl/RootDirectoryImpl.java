@@ -21,8 +21,8 @@ import org.json.JSONObject;
 
 public class RootDirectoryImpl extends DirectoryImpl {
 
-    public RootDirectoryImpl(JSONObject json, ClientServer server) {
-        super(json, new GenericRootFileImpl(), server);
+    public RootDirectoryImpl(JSONObject json, String rootPath, ClientServer server) {
+        super(json, new GenericRootFileImpl(rootPath), server);
     }
 
 }
