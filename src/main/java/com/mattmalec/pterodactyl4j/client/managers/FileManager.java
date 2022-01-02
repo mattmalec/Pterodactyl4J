@@ -30,8 +30,7 @@ public interface FileManager {
     RenameAction rename();
     ArchiveAction compress();
     PteroAction<Void> decompress(File compressedFile);
-    PteroAction<Void> rename(GenericFile file, String name);
-    PteroAction<Void> delete(GenericFile file);
+    DeleteAction delete();
 
     PteroAction<String> retrieveContent(File file);
     PteroAction<DownloadableFile> retrieveDownload(File file);
