@@ -25,6 +25,12 @@ import java.util.EnumSet;
 
 public class GenericRootFileImpl implements GenericFile {
 
+    private final String rootPath;
+
+    public GenericRootFileImpl(String rootPath) {
+        this.rootPath = rootPath;
+    }
+
     @Override
     public String getName() {
         return "Root Directory";
@@ -32,7 +38,7 @@ public class GenericRootFileImpl implements GenericFile {
 
     @Override
     public String getPath() {
-        return "/";
+        return rootPath;
     }
 
     @Override
