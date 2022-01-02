@@ -18,7 +18,9 @@ package com.mattmalec.pterodactyl4j.client.entities;
 
 import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.client.managers.ArchiveAction;
+import com.mattmalec.pterodactyl4j.client.managers.DeleteAction;
 import com.mattmalec.pterodactyl4j.client.managers.RenameAction;
+import com.mattmalec.pterodactyl4j.client.managers.UploadFileAction;
 
 import java.util.List;
 import java.util.Optional;
@@ -55,6 +57,9 @@ public interface Directory extends GenericFile {
 
     PteroAction<Directory> into(Directory directory);
     PteroAction<Directory> back();
+
+    UploadFileAction upload();
+    DeleteAction deleteFiles();
 
     // not yet implemented...
 
