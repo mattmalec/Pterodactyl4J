@@ -18,6 +18,7 @@ package com.mattmalec.pterodactyl4j.client.entities.impl;
 
 import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.client.entities.ClientServer;
+import com.mattmalec.pterodactyl4j.client.entities.DownloadableFile;
 import com.mattmalec.pterodactyl4j.client.entities.File;
 import com.mattmalec.pterodactyl4j.client.managers.FileManager;
 import org.json.JSONObject;
@@ -37,8 +38,8 @@ public class FileImpl extends GenericFileImpl implements File {
     }
 
     @Override
-    public PteroAction<String> retrieveDownloadUrl() {
-        return fileManager.retrieveDownloadUrl(this);
+    public PteroAction<DownloadableFile> retrieveDownload() {
+        return fileManager.retrieveDownload(this);
     }
 
     @Override
@@ -47,8 +48,8 @@ public class FileImpl extends GenericFileImpl implements File {
     }
 
     @Override
-    public PteroAction<Void> copy(String newName) {
-        return fileManager.copy(this, newName);
+    public PteroAction<Void> copy() {
+        return fileManager.copy(this);
     }
 
 }
