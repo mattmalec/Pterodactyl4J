@@ -18,11 +18,12 @@ package com.mattmalec.pterodactyl4j.client.managers;
 
 import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.client.entities.File;
+import com.mattmalec.pterodactyl4j.client.entities.GenericFile;
 
 public interface ArchiveAction extends PteroAction<File> {
 
-    ArchiveAction addFile(File file);
-    ArchiveAction addFiles(File file, File... files);
+    ArchiveAction addFile(GenericFile file);
+    ArchiveAction addFiles(GenericFile file, GenericFile... files);
 
     ArchiveAction clearFiles();
 
