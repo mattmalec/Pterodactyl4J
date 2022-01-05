@@ -43,7 +43,7 @@ public class FileManagerImpl implements FileManager {
     @Override
     public PteroAction<Void> createFile(Directory directory, String name, String content) {
         return PteroActionImpl.onRequestExecute(impl.getP4J(), Route.Files.WRITE_FILE.compile(server.getIdentifier(), directory.getPath() + "/" + name),
-                RequestBody.create(Requester.MEDIA_TYPE_PLAIN, content));
+                RequestBody.create(content, Requester.MEDIA_TYPE_PLAIN));
     }
 
     @Override
@@ -86,7 +86,7 @@ public class FileManagerImpl implements FileManager {
     @Override
     public PteroAction<Void> write(File file, String content) {
         return PteroActionImpl.onRequestExecute(impl.getP4J(), Route.Files.WRITE_FILE.compile(server.getIdentifier(), file.getPath()),
-                RequestBody.create(Requester.MEDIA_TYPE_PLAIN, content));
+                RequestBody.create(content, Requester.MEDIA_TYPE_PLAIN));
     }
 
     @Override
