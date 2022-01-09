@@ -14,26 +14,23 @@
  *    limitations under the License.
  */
 
-package com.mattmalec.pterodactyl4j.exceptions;
+package com.mattmalec.pterodactyl4j.client.entities.impl;
 
+import com.mattmalec.pterodactyl4j.client.entities.ClientServer;
+import com.mattmalec.pterodactyl4j.client.entities.GenericFile;
 import org.json.JSONObject;
 
-public class HttpException extends PteroException {
+import java.util.List;
 
-    public HttpException(String message) {
-        super(message);
+public class CachedDirectoryImpl extends DirectoryImpl {
+
+    public CachedDirectoryImpl(JSONObject json, GenericFile genericFile, ClientServer server) {
+        super(json, genericFile, server);
     }
 
-    private static String formatMessage(String text, JSONObject json) {
-        StringBuilder message = new StringBuilder(text + "\n\n");
-        for(Object o : json.getJSONArray("errors")) {
-            JSONObject obj = new JSONObject(o.toString());
-            message.append("\t- ").append(obj.getString("detail")).append("\n");
-        }
-        return message.toString();
+    @Override
+    public List<GenericFile> getFiles() {
+       throw new UnsupportedOperationException("You need to Directory#into(Directory) this object to get the files");
     }
 
-    public HttpException(String text, JSONObject json) {
-        super(formatMessage(text, json));
-    }
 }

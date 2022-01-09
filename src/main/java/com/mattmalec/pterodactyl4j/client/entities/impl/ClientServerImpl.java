@@ -259,6 +259,23 @@ public class ClientServerImpl implements ClientServer {
 	}
 
 	@Override
+	public FileManager getFileManager() {
+		return new FileManagerImpl(this, impl);
+	}
+
+	@Override
+	public PteroAction<Directory> retrieveDirectory(String path) {
+		return PteroActionImpl.onRequestExecute(impl.getP4J(), Route.Files.LIST_FILES.compile(getIdentifier(), path),
+				(response, request) -> new RootDirectoryImpl(response.getObject(), path, this));
+	}
+
+	@Override
+	public PteroAction<Directory> retrieveDirectory(Directory previousDirectory, Directory directory) {
+		return PteroActionImpl.onRequestExecute(impl.getP4J(), Route.Files.LIST_FILES.compile(getIdentifier(), directory.getPath()),
+				(response, request) -> new DirectoryImpl(response.getObject(), directory, this));
+	}
+
+	@Override
 	public String toString() {
 		return json.toString(4);
 	}

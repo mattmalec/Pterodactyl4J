@@ -86,4 +86,12 @@ public interface ClientServer extends Server {
 	PteroAction<Schedule> retrieveSchedule(String id);
 	ScheduleManager getScheduleManager();
 
+	FileManager getFileManager();
+
+	default PteroAction<Directory> retrieveDirectory() {
+		return retrieveDirectory("/");
+	}
+	PteroAction<Directory> retrieveDirectory(Directory previousDirectory, Directory directory);
+	PteroAction<Directory> retrieveDirectory(String path);
+
 }

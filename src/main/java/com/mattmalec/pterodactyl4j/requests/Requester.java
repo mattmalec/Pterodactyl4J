@@ -37,8 +37,12 @@ public class Requester {
     private final P4J api;
     private final Logger REQUESTER_LOG = LoggerFactory.getLogger(Requester.class);
 
-    public static final RequestBody EMPTY_BODY = RequestBody.create(null, new byte[0]);
+    public static final RequestBody EMPTY_BODY = RequestBody.create(new byte[0], null);
+
     public static final MediaType MEDIA_TYPE_JSON = MediaType.parse("application/json; charset=utf8");
+    public static final MediaType MEDIA_TYPE_PLAIN = MediaType.parse("text/plain; charset=utf8");
+    public static final MediaType MEDIA_TYPE_OCTET = MediaType.parse("application/octet-stream; charset=utf-8");
+
     private static final String PTERODACTYL_API_PREFIX = "%s/api/";
 
     public static final String USER_AGENT = "Pterodactyl4J (" + P4JInfo.VERSION + ")";
@@ -79,10 +83,10 @@ public class Requester {
 
         okhttp3.Request.Builder builder = new okhttp3.Request.Builder();
 
-        if(api.getApplicationUrl() == null || api.getApplicationUrl().isEmpty())
+        if (api.getApplicationUrl() == null || api.getApplicationUrl().isEmpty())
             throw new HttpException("No Pterodactyl URL was defined.");
         String applicationUrl = api.getApplicationUrl();
-        if(applicationUrl.endsWith("/"))
+        if (applicationUrl.endsWith("/"))
             applicationUrl = applicationUrl.substring(0, applicationUrl.length() - 1);
         String url = String.format(PTERODACTYL_API_PREFIX, applicationUrl) + apiRequest.getRoute().getCompiledRoute();
 
@@ -98,7 +102,7 @@ public class Requester {
         builder.header("Accept", "application/vnd.pterodactyl.v1+json")
                 .header("User-Agent", USER_AGENT);
 
-        if(api.getToken() == null || api.getToken().isEmpty())
+        if (api.getToken() == null || api.getToken().isEmpty())
             throw new LoginException("No authorization token was defined.");
         builder.header("Authorization", "Bearer " + api.getToken());
 
@@ -111,7 +115,6 @@ public class Requester {
             REQUESTER_LOG.debug("Executing request {} {}", route.getMethod(), route.getCompiledRoute());
             int attempt = 0;
             do {
-
                 if (apiRequest.isSkipped())
                     return null;
 
