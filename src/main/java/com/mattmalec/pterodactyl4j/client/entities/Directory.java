@@ -61,8 +61,6 @@ public interface Directory extends GenericFile {
     UploadFileAction upload();
     DeleteAction deleteFiles();
 
-    // not yet implemented...
-
     RenameAction rename();
     CompressAction compress();
     PteroAction<Void> decompress(File compressedFile);
