@@ -52,4 +52,8 @@ public class FileImpl extends GenericFileImpl implements File {
         return fileManager.copy(this);
     }
 
+    @Override
+    public PteroAction<Void> decompress() {
+        return fileManager.decompress(this);
+    }
 }

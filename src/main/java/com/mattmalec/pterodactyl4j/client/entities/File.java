@@ -24,5 +24,6 @@ public interface File extends GenericFile {
     PteroAction<DownloadableFile> retrieveDownload();
     PteroAction<Void> write(String content);
     PteroAction<Void> copy();
+    PteroAction<Void> decompress();
 
 }
