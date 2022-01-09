@@ -63,7 +63,7 @@ public class FileManagerImpl implements FileManager {
 
     @Override
     public PteroAction<Void> decompress(File compressedFile) {
-        return null;
+        return new DecompressActionImpl(server, compressedFile, impl);
     }
 
     @Override
