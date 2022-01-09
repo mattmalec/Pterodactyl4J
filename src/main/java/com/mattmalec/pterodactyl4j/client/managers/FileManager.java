@@ -20,7 +20,6 @@ import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.client.entities.Directory;
 import com.mattmalec.pterodactyl4j.client.entities.DownloadableFile;
 import com.mattmalec.pterodactyl4j.client.entities.File;
-import com.mattmalec.pterodactyl4j.client.entities.GenericFile;
 
 public interface FileManager {
 
@@ -29,7 +28,7 @@ public interface FileManager {
 
     UploadFileAction upload(Directory directory);
     RenameAction rename();
-    ArchiveAction compress();
+    CompressAction compress();
     PteroAction<Void> decompress(File compressedFile);
     DeleteAction delete();
 

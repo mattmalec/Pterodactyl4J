@@ -17,7 +17,7 @@
 package com.mattmalec.pterodactyl4j.client.entities;
 
 import com.mattmalec.pterodactyl4j.PteroAction;
-import com.mattmalec.pterodactyl4j.client.managers.ArchiveAction;
+import com.mattmalec.pterodactyl4j.client.managers.CompressAction;
 import com.mattmalec.pterodactyl4j.client.managers.DeleteAction;
 import com.mattmalec.pterodactyl4j.client.managers.RenameAction;
 import com.mattmalec.pterodactyl4j.client.managers.UploadFileAction;
@@ -64,7 +64,7 @@ public interface Directory extends GenericFile {
     // not yet implemented...
 
     RenameAction rename();
-    ArchiveAction compress();
+    CompressAction compress();
     PteroAction<Void> decompress(File compressedFile);
 
 }

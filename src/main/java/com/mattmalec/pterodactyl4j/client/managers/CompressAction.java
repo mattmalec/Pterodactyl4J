@@ -20,11 +20,11 @@ import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.client.entities.File;
 import com.mattmalec.pterodactyl4j.client.entities.GenericFile;
 
-public interface ArchiveAction extends PteroAction<File> {
+public interface CompressAction extends PteroAction<File> {
 
-    ArchiveAction addFile(GenericFile file);
-    ArchiveAction addFiles(GenericFile file, GenericFile... files);
+    CompressAction addFile(GenericFile file);
+    CompressAction addFiles(GenericFile file, GenericFile... files);
 
-    ArchiveAction clearFiles();
+    CompressAction clearFiles();
 
 }

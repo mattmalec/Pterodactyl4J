@@ -57,8 +57,8 @@ public class FileManagerImpl implements FileManager {
     }
 
     @Override
-    public ArchiveAction compress() {
-        return new ArchiveActionImpl(server, impl);
+    public CompressAction compress() {
+        return new CompressActionImpl(server, impl);
     }
 
     @Override

@@ -21,7 +21,7 @@ import com.mattmalec.pterodactyl4j.client.entities.ClientServer;
 import com.mattmalec.pterodactyl4j.client.entities.Directory;
 import com.mattmalec.pterodactyl4j.client.entities.File;
 import com.mattmalec.pterodactyl4j.client.entities.GenericFile;
-import com.mattmalec.pterodactyl4j.client.managers.ArchiveAction;
+import com.mattmalec.pterodactyl4j.client.managers.CompressAction;
 import com.mattmalec.pterodactyl4j.client.managers.DeleteAction;
 import com.mattmalec.pterodactyl4j.client.managers.RenameAction;
 import com.mattmalec.pterodactyl4j.client.managers.UploadFileAction;
@@ -75,7 +75,7 @@ public class DirectoryImpl implements Directory {
     }
 
     @Override
-    public ArchiveAction compress() {
+    public CompressAction compress() {
         return null;
     }
 

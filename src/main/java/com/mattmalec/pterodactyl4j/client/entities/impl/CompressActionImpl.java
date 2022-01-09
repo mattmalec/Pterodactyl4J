@@ -19,7 +19,7 @@ package com.mattmalec.pterodactyl4j.client.entities.impl;
 import com.mattmalec.pterodactyl4j.client.entities.ClientServer;
 import com.mattmalec.pterodactyl4j.client.entities.File;
 import com.mattmalec.pterodactyl4j.client.entities.GenericFile;
-import com.mattmalec.pterodactyl4j.client.managers.ArchiveAction;
+import com.mattmalec.pterodactyl4j.client.managers.CompressAction;
 import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.requests.Route;
 import okhttp3.RequestBody;
@@ -30,23 +30,23 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ArchiveActionImpl extends PteroActionImpl<File> implements ArchiveAction {
+public class CompressActionImpl extends PteroActionImpl<File> implements CompressAction {
 
     private final List<GenericFile> files;
 
-    public ArchiveActionImpl(ClientServer server, PteroClientImpl impl) {
+    public CompressActionImpl(ClientServer server, PteroClientImpl impl) {
         super(impl.getP4J(), Route.Files.COMPRESS_FILES.compile(server.getIdentifier()));
         this.files = new ArrayList<>();
     }
 
     @Override
-    public ArchiveAction addFile(GenericFile file) {
+    public CompressAction addFile(GenericFile file) {
         files.add(file);
         return this;
     }
 
     @Override
-    public ArchiveAction addFiles(GenericFile file, GenericFile... files) {
+    public CompressAction addFiles(GenericFile file, GenericFile... files) {
         this.files.add(file);
 
         if (files.length > 0)
@@ -56,7 +56,7 @@ public class ArchiveActionImpl extends PteroActionImpl<File> implements ArchiveA
     }
 
     @Override
-    public ArchiveAction clearFiles() {
+    public CompressAction clearFiles() {
         files.clear();
         return this;
     }
