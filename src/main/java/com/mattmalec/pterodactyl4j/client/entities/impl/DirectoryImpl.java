@@ -76,12 +76,12 @@ public class DirectoryImpl implements Directory {
 
     @Override
     public CompressAction compress() {
-        return null;
+        return server.getFileManager().compress();
     }
 
     @Override
     public PteroAction<Void> decompress(File compressedFile) {
-        return null;
+        return server.getFileManager().decompress(compressedFile);
     }
 
     @Override
