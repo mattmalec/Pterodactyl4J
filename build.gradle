@@ -44,7 +44,7 @@ javadoc {
         opt.tags("incubating:a:Incubating:")
         opt.links(
                 "https://docs.oracle.com/javase/8/docs/api/",
-                "https://square.github.io/okhttp/3.x/okhttp/")
+                "https://square.github.io/okhttp/4.x/okhttp/okhttp3/")
         if (JavaVersion.current().isJava9Compatible()) {
             opt.addBooleanOption("html5", true)
             opt.addStringOption("-release", "8")
