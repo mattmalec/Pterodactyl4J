@@ -274,14 +274,14 @@ This project requires **Java 8**.<br>
 All dependencies are managed automatically by Gradle.
 
  * OkHttp
-   * Version: **3.11.0**
+   * Version: **4.9.1**
    * [Github](https://github.com/square/okhttp)
-   * [JCenter Repository](https://bintray.com/bintray/jcenter/com.squareup.okhttp3:okhttp)
+   * [Maven Repository](https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp)
  * org.json
    * Version: **20160810**
    * [Github](https://github.com/douglascrockford/JSON-java)
-   * [JCenter Repository](https://bintray.com/bintray/jcenter/org.json%3Ajson/view)
+   * [Maven Repository](https://mvnrepository.com/artifact/org.json/json)
  * slf4j-api
-   * Version: **1.7.25**
+   * Version: **1.7.32**
    * [Website](https://www.slf4j.org/)
-   * [JCenter Repository](https://bintray.com/bintray/jcenter/org.slf4j%3Aslf4j-api/view)
+   * [Maven Repository](https://mvnrepository.com/artifact/org.slf4j/slf4j-api)
