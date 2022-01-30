@@ -286,7 +286,7 @@ public interface ApplicationServer extends Server, ISnowflake {
 	 *
 	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationDatabase ApplicationDatabase}
 	 */
-	PteroAction<ApplicationDatabase> retrieveDatabase(String id);
+	PteroAction<ApplicationDatabase> retrieveDatabaseById(String id);
 
 	/**
 	 * Retrieves an individual ApplicationDatabase represented by the provided id from Pterodactyl instance
@@ -303,8 +303,18 @@ public interface ApplicationServer extends Server, ISnowflake {
 	 *
 	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationDatabase ApplicationDatabase}
 	 */
-	default PteroAction<ApplicationDatabase> retrieveDatabase(long id) {
-		return retrieveDatabase(Long.toUnsignedString(id));
+	default PteroAction<ApplicationDatabase> retrieveDatabaseById(long id) {
+		return retrieveDatabaseById(Long.toUnsignedString(id));
 	}
+
+	/**
+	 * Returns the {@link com.mattmalec.pterodactyl4j.application.managers.ApplicationDatabaseManager ApplicationDatabaseManager},
+	 * used to create, reset passwords, and delete {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationDatabase ApplicationDatabases}
+	 * from the provided {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer}
+	 * <p>Executing any of the containing methods requires an <b>Application API key</b> with the <b>Databases</b> permission with <b>Read &amp; Write</b> access.
+	 *
+	 * @return The Database Manager
+	 */
+	ApplicationDatabaseManager getDatabaseManager();
 
 }
