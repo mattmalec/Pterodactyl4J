@@ -34,6 +34,9 @@ public interface ApplicationDatabase extends Database, ISnowflake {
         return Long.toUnsignedString(getHostIdLong());
     }
 
+    PteroAction<Void> resetPassword();
+    PteroAction<Void> delete();
+
     interface DatabaseHost extends Database.DatabaseHost, ISnowflake {
         String getName();
         String getUserName();
