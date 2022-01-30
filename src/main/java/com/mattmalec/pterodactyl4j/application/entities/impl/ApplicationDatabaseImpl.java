@@ -30,17 +30,29 @@ public class ApplicationDatabaseImpl implements ApplicationDatabase {
 
     private final JSONObject json;
     private final JSONObject relationships;
+    private final ApplicationServer server;
     private final PteroApplicationImpl impl;
 
-    public ApplicationDatabaseImpl(JSONObject json, PteroApplicationImpl impl) {
+    public ApplicationDatabaseImpl(JSONObject json, ApplicationServer server, PteroApplicationImpl impl) {
         this.json = json.getJSONObject("attributes");
         this.relationships = json.getJSONObject("attributes").optJSONObject("relationships");
+        this.server = server;
         this.impl = impl;
     }
 
     @Override
-    public PteroAction<ApplicationServer> retrieveServer() {
-        return impl.retrieveServerById(getServerIdLong());
+    public Relationed<ApplicationServer> retrieveServer() {
+        return new Relationed<ApplicationServer>() {
+            @Override
+            public PteroAction<ApplicationServer> retrieve() {
+                return impl.retrieveServerById(getServerIdLong());
+            }
+
+            @Override
+            public Optional<ApplicationServer> get() {
+                return Optional.of(server);
+            }
+        };
     }
 
     @Override
@@ -53,12 +65,14 @@ public class ApplicationDatabaseImpl implements ApplicationDatabase {
         return new Relationed<DatabaseHost>() {
             @Override
             public PteroAction<DatabaseHost> retrieve() {
-                return null;
+                return retrieveServer()
+                        .get().get().retrieveDatabaseById(getIdLong())
+                        .map(ApplicationDatabase::getHost).map(Relationed::get).map(Optional::get);
             }
 
             @Override
             public Optional<DatabaseHost> get() {
-                if(!json.has("relationships")) return Optional.empty();
+                if (!json.has("relationships")) return Optional.empty();
                 return Optional.of(new ApplicationDatabaseHostImpl(relationships.getJSONObject("host"), impl));
             }
         };
@@ -105,8 +119,35 @@ public class ApplicationDatabaseImpl implements ApplicationDatabase {
     }
 
     @Override
-    public Optional<String> getPassword() {
-        if(!json.has("relationships")) return Optional.empty();
-        return Optional.of(new DatabasePasswordImpl(relationships.getJSONObject("password")).getPassword());
+    public Relationed<String> getPassword() {
+        return new Relationed<String>() {
+            @Override
+            public PteroAction<String> retrieve() {
+                return retrieveServer()
+                        .get().get().retrieveDatabaseById(getIdLong())
+                                .map(ApplicationDatabase::getPassword).map(Relationed::get).map(Optional::get);
+            }
+
+            @Override
+            public Optional<String> get() {
+                if (!json.has("relationships")) return Optional.empty();
+                return Optional.of(new DatabasePasswordImpl(relationships.getJSONObject("password")).getPassword());
+            }
+        };
+    }
+
+    @Override
+    public PteroAction<Void> resetPassword() {
+        return server.getDatabaseManager().resetPassword(this);
+    }
+
+    @Override
+    public PteroAction<Void> delete() {
+        return server.getDatabaseManager().deleteDatabase(this);
+    }
+
+    @Override
+    public String toString() {
+        return json.toString(4);
     }
 }
