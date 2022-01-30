@@ -16,7 +16,7 @@
 
 package com.mattmalec.pterodactyl4j.entities;
 
-import java.util.Optional;
+import com.mattmalec.pterodactyl4j.utils.Relationed;
 
 public interface Database {
 
@@ -25,7 +25,7 @@ public interface Database {
     String getRemote();
     int getMaxConnections();
 
-    Optional<String> getPassword();
+    Relationed<String> getPassword();
 
     interface DatabaseHost {
         String getAddress();
