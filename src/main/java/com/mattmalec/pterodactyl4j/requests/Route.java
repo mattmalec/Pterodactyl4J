@@ -164,7 +164,7 @@ public class Route {
 
 		public static final Route LIST_DATABASES  		= new Route(GET, 	APPLICATION_PREFIX + "servers/{server_id}/databases?include=password,host");
 		public static final Route GET_DATABASE 	  		= new Route(GET, 	APPLICATION_PREFIX + "servers/{server_id}/databases/{database_id}?include=password,host");
-		public static final Route CREATE_DATABASE 		= new Route(POST, 	APPLICATION_PREFIX + "servers/{server_id}/databases");
+		public static final Route CREATE_DATABASE 		= new Route(POST, 	APPLICATION_PREFIX + "servers/{server_id}/databases?include=password,host");
 		public static final Route RESET_PASSWORD  		= new Route(POST, 	APPLICATION_PREFIX + "servers/{server_id}/databases/{database_id}/reset-password");
 		public static final Route DELETE_DATABASE 		= new Route(DELETE, APPLICATION_PREFIX + "servers/{server_id}/databases/{database_id}");
 
