@@ -22,7 +22,7 @@ import com.mattmalec.pterodactyl4j.utils.Relationed;
 
 public interface ApplicationDatabase extends Database, ISnowflake {
 
-    PteroAction<ApplicationServer> retrieveServer();
+    Relationed<ApplicationServer> retrieveServer();
     long getServerIdLong();
     default String getServerId() {
         return Long.toUnsignedString(getServerIdLong());
