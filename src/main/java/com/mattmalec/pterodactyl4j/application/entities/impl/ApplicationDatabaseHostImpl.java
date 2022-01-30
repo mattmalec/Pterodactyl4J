@@ -77,4 +77,9 @@ public class ApplicationDatabaseHostImpl implements ApplicationDatabase.Database
     public int getPort() {
         return json.getInt("port");
     }
+
+    @Override
+    public String toString() {
+        return json.toString(4);
+    }
 }
