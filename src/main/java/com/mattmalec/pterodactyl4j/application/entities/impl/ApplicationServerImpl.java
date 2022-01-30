@@ -24,6 +24,8 @@ import com.mattmalec.pterodactyl4j.entities.FeatureLimit;
 import com.mattmalec.pterodactyl4j.entities.Limit;
 import com.mattmalec.pterodactyl4j.entities.impl.FeatureLimitImpl;
 import com.mattmalec.pterodactyl4j.entities.impl.LimitImpl;
+import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
+import com.mattmalec.pterodactyl4j.requests.Route;
 import com.mattmalec.pterodactyl4j.utils.Relationed;
 import org.json.JSONObject;
 
@@ -235,6 +237,49 @@ public class ApplicationServerImpl implements ApplicationServer {
 	@Override
 	public ServerController getController() {
 		return new ServerController(this, impl);
+	}
+
+	@Override
+	public Relationed<List<ApplicationDatabase>> getDatabases() {
+		ApplicationServer server = this;
+		return new Relationed<List<ApplicationDatabase>>() {
+			@Override
+			public PteroAction<List<ApplicationDatabase>> retrieve() {
+				return PteroActionImpl.onRequestExecute(impl.getP4J(), Route.Databases.LIST_DATABASES.compile(getId()),
+						(response, request) -> {
+							JSONObject json = response.getObject();
+							List<ApplicationDatabase> databases = new ArrayList<>();
+							for (Object o : json.getJSONArray("data")) {
+								JSONObject database = new JSONObject(o.toString());
+								databases.add(new ApplicationDatabaseImpl(database, server, impl));
+							}
+							return Collections.unmodifiableList(databases);
+						});
+			}
+
+			@Override
+			public Optional<List<ApplicationDatabase>> get() {
+				if(!json.has("relationships")) return Optional.empty();
+				JSONObject json = relationships.getJSONObject("databases");
+				List<ApplicationDatabase> databases = new ArrayList<>();
+				for (Object o : json.getJSONArray("data")) {
+					JSONObject database = new JSONObject(o.toString());
+					databases.add(new ApplicationDatabaseImpl(database, server, impl));
+				}
+				return Optional.of(Collections.unmodifiableList(databases));
+			}
+		};
+	}
+
+	@Override
+	public PteroAction<ApplicationDatabase> retrieveDatabaseById(String id) {
+		return PteroActionImpl.onRequestExecute(impl.getP4J(), Route.Databases.GET_DATABASE.compile(getId(), id),
+				(response, request) -> new ApplicationDatabaseImpl(response.getObject(), this, impl));
+	}
+
+	@Override
+	public ApplicationDatabaseManager getDatabaseManager() {
+		return new ApplicationDatabaseManagerImpl(this, impl);
 	}
 
 	@Override
