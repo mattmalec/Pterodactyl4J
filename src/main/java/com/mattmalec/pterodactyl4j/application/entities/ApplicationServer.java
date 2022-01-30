@@ -16,6 +16,7 @@
 
 package com.mattmalec.pterodactyl4j.application.entities;
 
+import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.ServerStatus;
 import com.mattmalec.pterodactyl4j.application.managers.*;
 import com.mattmalec.pterodactyl4j.entities.Server;
@@ -262,5 +263,48 @@ public interface ApplicationServer extends Server, ISnowflake {
 	 * @return The controller for this server
 	 */
 	ServerController getController();
+
+	/**
+	 * The Databases belonging to the ApplicationServer
+	 *
+	 * @return {@link com.mattmalec.pterodactyl4j.utils.Relationed Relationed} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationDatabase ApplicationDatabases}
+	 */
+	Relationed<List<ApplicationDatabase>> getDatabases();
+
+	/**
+	 * Retrieves an individual ApplicationDatabase represented by the provided id from Pterodactyl instance
+	 * <br>This requires an <b>Application API key</b> with the <b>Databases</b> permission with <b>Read</b> access.
+	 *
+	 * @param  id
+	 *         The id
+	 *
+	 * @throws com.mattmalec.pterodactyl4j.exceptions.LoginException
+	 *         If the API key is incorrect or doesn't have the required permissions
+	 *
+	 * @throws com.mattmalec.pterodactyl4j.exceptions.NotFoundException
+	 * 		   If the database cannot be found
+	 *
+	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationDatabase ApplicationDatabase}
+	 */
+	PteroAction<ApplicationDatabase> retrieveDatabase(String id);
+
+	/**
+	 * Retrieves an individual ApplicationDatabase represented by the provided id from Pterodactyl instance
+	 * <br>This requires an <b>Application API key</b> with the <b>Databases</b> permission with <b>Read</b> access.
+	 *
+	 * @param  id
+	 *         The id
+	 *
+	 * @throws com.mattmalec.pterodactyl4j.exceptions.LoginException
+	 *         If the API key is incorrect or doesn't have the required permissions
+	 *
+	 * @throws com.mattmalec.pterodactyl4j.exceptions.NotFoundException
+	 * 		   If the database cannot be found
+	 *
+	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationDatabase ApplicationDatabase}
+	 */
+	default PteroAction<ApplicationDatabase> retrieveDatabase(long id) {
+		return retrieveDatabase(Long.toUnsignedString(id));
+	}
 
 }
