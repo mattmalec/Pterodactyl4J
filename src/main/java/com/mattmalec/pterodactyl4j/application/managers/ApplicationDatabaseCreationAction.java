@@ -91,4 +91,19 @@ public interface ApplicationDatabaseCreationAction extends PteroAction<Applicati
         return setHost(Long.parseUnsignedLong(id));
     }
 
+    /**
+     * Sets the database host for this
+     * {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationDatabase ApplicationDatabase}.
+     *
+     * @param  host
+     *         The {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationDatabase.DatabaseHost DatabaseHost}
+     *
+     *
+     * @return The {@link com.mattmalec.pterodactyl4j.application.managers.ApplicationDatabaseCreationAction ApplicationDatabaseCreationAction}
+     * instance, useful for chaining
+     */
+    default ApplicationDatabaseCreationAction setHost(ApplicationDatabase.DatabaseHost host) {
+        return setHost(host.getNodeIdLong());
+    }
+
 }
