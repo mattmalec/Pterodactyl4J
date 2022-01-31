@@ -23,6 +23,7 @@ import com.mattmalec.pterodactyl4j.entities.Server;
 import com.mattmalec.pterodactyl4j.utils.Relationed;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -93,5 +94,15 @@ public interface ClientServer extends Server {
 	}
 	PteroAction<Directory> retrieveDirectory(Directory previousDirectory, Directory directory);
 	PteroAction<Directory> retrieveDirectory(String path);
+
+	PteroAction<List<ClientDatabase>> retrieveDatabases();
+	default PteroAction<Optional<ClientDatabase>> retrieveDatabaseById(String id) {
+		return retrieveDatabases().map(List::stream).map(stream -> stream.filter(db -> db.getId().equals(id)).findFirst());
+	}
+	default PteroAction<Optional<ClientDatabase>> retrieveDatabaseByName(String name, boolean caseSensitive) {
+		return retrieveDatabases().map(List::stream).map(stream -> stream.filter(db -> caseSensitive ?
+				db.getName().contains(name) : db.getName().toLowerCase().contains(name.toLowerCase())).findFirst());
+	}
+	ClientDatabaseManager getDatabaseManager();
 
 }
