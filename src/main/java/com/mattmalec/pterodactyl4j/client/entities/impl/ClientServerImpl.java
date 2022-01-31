@@ -276,6 +276,25 @@ public class ClientServerImpl implements ClientServer {
 	}
 
 	@Override
+	public PteroAction<List<ClientDatabase>> retrieveDatabases() {
+		return PteroActionImpl.onRequestExecute(impl.getP4J(),
+				Route.ClientDatabases.LIST_DATABASES.compile(getIdentifier()), (response, request) -> {
+					JSONObject json = response.getObject();
+					List<ClientDatabase> databases = new ArrayList<>();
+					for (Object o : json.getJSONArray("data")) {
+						JSONObject database = new JSONObject(o.toString());
+						databases.add(new ClientDatabaseImpl(database, this));
+					}
+					return Collections.unmodifiableList(databases);
+				});
+	}
+
+	@Override
+	public ClientDatabaseManager getDatabaseManager() {
+		return new ClientDatabaseManagerImpl(this, impl);
+	}
+
+	@Override
 	public String toString() {
 		return json.toString(4);
 	}
