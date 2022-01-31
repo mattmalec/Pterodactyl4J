@@ -34,7 +34,6 @@ public class ApplicationDatabaseManagerImpl implements ApplicationDatabaseManage
         this.impl = impl;
     }
 
-
     @Override
     public ApplicationDatabaseCreationAction createDatabase() {
         return new ApplicationDatabaseCreationActionImpl(server, impl);
