@@ -65,8 +65,7 @@ public class ApplicationDatabaseImpl implements ApplicationDatabase {
         return new Relationed<DatabaseHost>() {
             @Override
             public PteroAction<DatabaseHost> retrieve() {
-                return retrieveServer()
-                        .get().get().retrieveDatabaseById(getIdLong())
+                return server.retrieveDatabaseById(getIdLong())
                         .map(ApplicationDatabase::getHost).map(Relationed::get).map(Optional::get);
             }
 
