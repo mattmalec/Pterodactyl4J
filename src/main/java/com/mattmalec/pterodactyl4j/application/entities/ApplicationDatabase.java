@@ -35,7 +35,6 @@ public interface ApplicationDatabase extends Database, ISnowflake {
     }
 
     PteroAction<Void> resetPassword();
-    PteroAction<Void> delete();
 
     interface DatabaseHost extends Database.DatabaseHost, ISnowflake {
         String getName();
