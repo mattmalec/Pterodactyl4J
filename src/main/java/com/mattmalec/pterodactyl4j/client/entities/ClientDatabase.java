@@ -16,11 +16,14 @@
 
 package com.mattmalec.pterodactyl4j.client.entities;
 
+import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.entities.Database;
 
 public interface ClientDatabase extends Database {
 
     String getId();
     Database.DatabaseHost getHost();
+
+    PteroAction<ClientDatabase> resetPassword();
 
 }
