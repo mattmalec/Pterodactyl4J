@@ -19,16 +19,13 @@ package com.mattmalec.pterodactyl4j.client.entities.impl;
 import com.mattmalec.pterodactyl4j.client.entities.ClientDatabase;
 import com.mattmalec.pterodactyl4j.client.entities.ClientServer;
 import com.mattmalec.pterodactyl4j.client.managers.ClientDatabaseCreationAction;
-import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.requests.Route;
+import com.mattmalec.pterodactyl4j.requests.action.AbstractDatabaseAction;
 import com.mattmalec.pterodactyl4j.utils.Checks;
 import okhttp3.RequestBody;
 import org.json.JSONObject;
 
-public class ClientDatabaseCreationActionImpl extends PteroActionImpl<ClientDatabase> implements ClientDatabaseCreationAction {
-
-    private String name;
-    private String remote;
+public class ClientDatabaseCreationActionImpl extends AbstractDatabaseAction<ClientDatabase> implements ClientDatabaseCreationAction {
 
     public ClientDatabaseCreationActionImpl(ClientServer server, PteroClientImpl impl) {
         super(impl.getP4J(), Route.ClientDatabases.CREATE_DATABASE.compile(server.getIdentifier()),

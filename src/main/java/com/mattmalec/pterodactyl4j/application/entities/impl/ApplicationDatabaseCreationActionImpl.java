@@ -19,16 +19,14 @@ package com.mattmalec.pterodactyl4j.application.entities.impl;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationDatabase;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationServer;
 import com.mattmalec.pterodactyl4j.application.managers.ApplicationDatabaseCreationAction;
-import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.requests.Route;
+import com.mattmalec.pterodactyl4j.requests.action.AbstractDatabaseAction;
 import com.mattmalec.pterodactyl4j.utils.Checks;
 import okhttp3.RequestBody;
 import org.json.JSONObject;
 
-public class ApplicationDatabaseCreationActionImpl extends PteroActionImpl<ApplicationDatabase> implements ApplicationDatabaseCreationAction {
+public class ApplicationDatabaseCreationActionImpl extends AbstractDatabaseAction<ApplicationDatabase> implements ApplicationDatabaseCreationAction {
 
-    private String name;
-    private String remote;
     private long host;
 
     public ApplicationDatabaseCreationActionImpl(ApplicationServer server, PteroApplicationImpl impl) {
