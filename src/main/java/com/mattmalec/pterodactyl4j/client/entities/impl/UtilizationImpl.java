@@ -20,6 +20,8 @@ import com.mattmalec.pterodactyl4j.UtilizationState;
 import com.mattmalec.pterodactyl4j.client.entities.Utilization;
 import org.json.JSONObject;
 
+import java.time.Duration;
+
 public class UtilizationImpl implements Utilization {
 
     private final JSONObject json;
@@ -33,6 +35,11 @@ public class UtilizationImpl implements Utilization {
     @Override
     public UtilizationState getState() {
         return UtilizationState.of(json.getString("current_state"));
+    }
+
+    @Override
+    public Duration getUptime() {
+        return Duration.ofMillis(resources.getLong("uptime"));
     }
 
     @Override
