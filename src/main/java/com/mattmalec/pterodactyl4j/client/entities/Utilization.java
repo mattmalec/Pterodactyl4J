@@ -19,9 +19,28 @@ package com.mattmalec.pterodactyl4j.client.entities;
 import com.mattmalec.pterodactyl4j.DataType;
 import com.mattmalec.pterodactyl4j.UtilizationState;
 
+import java.time.Duration;
+
 public interface Utilization {
 
 	UtilizationState getState();
+
+	Duration getUptime();
+
+	default String getUptimeFormatted() {
+		long time = getUptime().toMillis() / 1000;
+
+		double days = Math.floor((double) time / (24 * 60 * 60));
+		double hours = Math.floor(Math.floor(time) / 60 / 60 % 24);
+		double remainder = Math.floor((double) time - (hours * 60 * 60));
+		double minutes = Math.floor(remainder / 60 % 60);
+		double seconds = remainder % 60;
+
+		if (days > 0)
+			return String.format("%.0fd %.0fh %.0fm %.0fs", days, hours, minutes, seconds);
+		else
+			return String.format("%.0fh %.0fm %.0fs", hours, minutes, seconds);
+	}
 
 	long getMemory();
 	default String getMemoryFormatted(DataType dataType) {
