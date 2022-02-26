@@ -295,6 +295,22 @@ public class ClientServerImpl implements ClientServer {
 	}
 
 	@Override
+	public List<ClientAllocation> getAllocations() {
+		List<ClientAllocation> allocations = new ArrayList<>();
+		JSONObject json = relationships.getJSONObject("allocations");
+		for(Object o : json.getJSONArray("data")) {
+			JSONObject allocation = new JSONObject(o.toString());
+			allocations.add(new ClientAllocationImpl(allocation, this));
+		}
+		return Collections.unmodifiableList(allocations);
+	}
+
+	@Override
+	public ClientAllocationManager getAllocationManager() {
+		return new ClientAllocationManagerImpl(this, impl);
+	}
+
+	@Override
 	public String toString() {
 		return json.toString(4);
 	}
