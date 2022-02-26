@@ -32,9 +32,12 @@ public class CreateAllocationImpl extends AbstractAllocationAction {
 	@Override
 	protected RequestBody finalizeData() {
 		JSONObject json = new JSONObject();
-		Checks.notBlank(this.ip, "IP");
-		json.put("ip", this.ip);
-		json.put("alias", this.alias == null ? "" : this.alias);
+		Checks.notBlank(ip, "IP");
+		if (alias != null)
+			Checks.check(alias.length() <= 191, "Allocation alias cannot be longer than 191 characters");
+
+		json.put("ip", ip);
+		json.put("alias", alias);
 		json.put("ports", portSet);
 		return getRequestBody(json);
 	}
