@@ -38,6 +38,7 @@ public class CreateScheduleImpl extends AbstractScheduleAction {
 				.put("minute", minute == null ? cron.getMinute() : minute)
 				.put("hour", hour == null ? cron.getHour() : hour)
 				.put("day_of_week", dayOfWeek == null ? cron.getDayOfWeek() : dayOfWeek)
+				.put("month", month == null ? cron.getMonth() : month)
 				.put("day_of_month", dayOfMonth == null ? cron.getDayOfMonth() : dayOfMonth);
 		return getRequestBody(json);
 	}

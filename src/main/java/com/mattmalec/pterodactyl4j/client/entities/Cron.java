@@ -22,6 +22,7 @@ public interface Cron {
 	String getDayOfMonth();
 	String getHour();
 	String getMinute();
+	String getMonth();
 	String getExpression();
 
 }

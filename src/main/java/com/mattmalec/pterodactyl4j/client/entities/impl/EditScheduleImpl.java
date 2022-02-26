@@ -40,7 +40,9 @@ public class EditScheduleImpl extends AbstractScheduleAction {
 				.put("minute", minute == null ? ((cron == null || cron.getMinute() == null) ? schedule.getCron().getMinute() : cron.getMinute()) : minute)
 				.put("hour", hour == null ? ((cron == null || cron.getHour() == null) ? schedule.getCron().getHour() : cron.getHour()) : hour)
 				.put("day_of_week", dayOfWeek == null ? ((cron == null || cron.getDayOfWeek() == null) ? schedule.getCron().getDayOfWeek() : cron.getDayOfWeek()) : dayOfWeek)
-				.put("day_of_month", dayOfMonth == null ? ((cron == null || cron.getDayOfMonth() == null) ? schedule.getCron().getDayOfMonth() : cron.getDayOfMonth()) : dayOfMonth);
+				.put("day_of_month", dayOfMonth == null ? ((cron == null || cron.getDayOfMonth() == null) ? schedule.getCron().getDayOfMonth() : cron.getDayOfMonth()) : dayOfMonth)
+				.put("month", month == null ? ((cron == null || cron.getMonth() == null) ? schedule.getCron().getMonth() : cron.getMonth()) : month);
+
 		return getRequestBody(json);
 	}
 }

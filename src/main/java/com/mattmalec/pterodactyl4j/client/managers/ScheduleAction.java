@@ -30,5 +30,7 @@ public interface ScheduleAction extends PteroAction<Schedule> {
 	ScheduleAction setHour(String hour);
 	ScheduleAction setDayOfWeek(String dayOfWeek);
 	ScheduleAction setDayOfMonth(String dayOfMonth);
+	ScheduleAction setMonth(String month);
+
 
 }

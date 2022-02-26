@@ -17,6 +17,7 @@
 package com.mattmalec.pterodactyl4j.client.entities.impl;
 
 import com.mattmalec.pterodactyl4j.client.entities.Cron;
+import com.mattmalec.pterodactyl4j.utils.Checks;
 import org.json.JSONObject;
 
 public class CronImpl implements Cron {
@@ -48,18 +49,26 @@ public class CronImpl implements Cron {
 	}
 
 	@Override
+	public String getMonth() {
+		return json.getString("month");
+	}
+
+	@Override
 	public String getExpression() {
-		return String.format("%s %s %s %s", getMinute(), getHour(), getDayOfMonth(), getDayOfWeek());
+		return String.format("%s %s %s %s %s", getMinute(), getHour(), getDayOfMonth(), getMonth(), getDayOfWeek());
 	}
 
 	public static Cron ofExpression(String expression) {
 		String[] exp = expression.split("\\s+");
-		if(exp.length != 4) throw new IllegalArgumentException("P4J Cron Expression must have 4 elements (minute, hour, day of month, day of week)");
+		if (exp.length != 5)
+			throw new IllegalArgumentException("P4J Cron Expression must have 4 elements (minute, hour, day of month, day of week)");
+
 		JSONObject cron = new JSONObject();
 		cron.put("minute", exp[0])
 				.put("hour", exp[1])
 				.put("day_of_month", exp[2])
-				.put("day_of_week", exp[3]);
+				.put("month", exp[3])
+				.put("day_of_week", exp[4]);
 		return new CronImpl(new JSONObject().put("cron", cron));
 	}
 }
