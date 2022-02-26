@@ -179,6 +179,16 @@ public class Route {
 
 	}
 
+	public static class ClientAllocations {
+
+		public static final Route LIST_ALLOCATIONS  	= new Route(GET, 	CLIENT_PREFIX + "servers/{server_id}/network/allocations");
+		public static final Route ASSIGN_ALLOCATION  	= new Route(POST, 	CLIENT_PREFIX + "servers/{server_id}/network/allocations");
+		public static final Route SET_NOTE  			= new Route(POST, 	CLIENT_PREFIX + "servers/{server_id}/network/allocations/{allocation_id}");
+		public static final Route SET_PRIMARY  			= new Route(POST, 	CLIENT_PREFIX + "servers/{server_id}/network/allocations/{allocation_id}/primary");
+		public static final Route DELETE_ALLOCATION  	= new Route(DELETE, CLIENT_PREFIX + "servers/{server_id}/network/allocations/{allocation_id}");
+
+	}
+
 	private final Method method;
 	private final String route;
 	private final String compilableRoute;
