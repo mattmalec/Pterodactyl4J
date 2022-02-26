@@ -23,12 +23,15 @@ import com.mattmalec.pterodactyl4j.client.entities.impl.PteroClientImpl;
 import com.mattmalec.pterodactyl4j.client.entities.impl.ScheduleTaskImpl;
 import com.mattmalec.pterodactyl4j.client.managers.ScheduleTaskAction;
 import com.mattmalec.pterodactyl4j.requests.Route;
+import okhttp3.RequestBody;
+import org.json.JSONObject;
 
 public abstract class AbstractScheduleTaskAction extends PteroActionImpl<Schedule.ScheduleTask> implements ScheduleTaskAction {
     
     protected Schedule.ScheduleTask.ScheduleAction action;
     protected String payload;
     protected String timeOffset;
+    protected boolean continueOnFailure;
 
     public AbstractScheduleTaskAction(PteroClientImpl impl, Schedule schedule, Route.CompiledRoute route) {
         super(impl.getP4J(), route, (response, request) -> new ScheduleTaskImpl(response.getObject(), schedule));
@@ -55,6 +58,12 @@ public abstract class AbstractScheduleTaskAction extends PteroActionImpl<Schedul
     @Override
     public ScheduleTaskAction setTimeOffset(String seconds) {
         this.timeOffset = seconds;
+        return this;
+    }
+
+    @Override
+    public ScheduleTaskAction setContinueOnFailure(boolean continueOnFailure) {
+        this.continueOnFailure = continueOnFailure;
         return this;
     }
 }
