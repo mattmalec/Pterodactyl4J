@@ -24,6 +24,7 @@ public interface ScheduleAction extends PteroAction<Schedule> {
 
 	ScheduleAction setName(String name);
 	ScheduleAction setActive(boolean active);
+	ScheduleAction setWhenServerIsOnline(boolean whenServerIsOnline);
 	ScheduleAction setCron(Cron cron);
 	ScheduleAction setCronExpression(String expression);
 	ScheduleAction setMinute(String minute);

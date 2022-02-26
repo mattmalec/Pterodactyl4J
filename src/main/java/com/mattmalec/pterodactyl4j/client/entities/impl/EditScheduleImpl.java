@@ -37,6 +37,7 @@ public class EditScheduleImpl extends AbstractScheduleAction {
 		JSONObject json = new JSONObject()
 				.put("name", name == null ? schedule.getName() : name)
 				.put("is_active", active == null ? schedule.isActive() : active)
+				.put("only_when_online", whenServerIsOnline == null ? schedule.isOnlyWhenServerIsOnline() : whenServerIsOnline)
 				.put("minute", minute == null ? ((cron == null || cron.getMinute() == null) ? schedule.getCron().getMinute() : cron.getMinute()) : minute)
 				.put("hour", hour == null ? ((cron == null || cron.getHour() == null) ? schedule.getCron().getHour() : cron.getHour()) : hour)
 				.put("day_of_week", dayOfWeek == null ? ((cron == null || cron.getDayOfWeek() == null) ? schedule.getCron().getDayOfWeek() : cron.getDayOfWeek()) : dayOfWeek)

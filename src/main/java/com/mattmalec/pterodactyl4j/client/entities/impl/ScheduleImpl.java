@@ -80,6 +80,11 @@ public class ScheduleImpl implements Schedule {
 	}
 
 	@Override
+	public boolean isOnlyWhenServerIsOnline() {
+		return json.getBoolean("only_when_online");
+	}
+
+	@Override
 	public Optional<OffsetDateTime> getLastRunDate() {
 		if(json.isNull("last_run_at")) return Optional.empty();
 		return Optional.of(OffsetDateTime.parse(json.getString("last_run_at")));

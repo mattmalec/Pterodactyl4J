@@ -31,6 +31,7 @@ public interface Schedule extends ISnowflake {
 	Cron getCron();
 	boolean isActive();
 	boolean isProcessing();
+	boolean isOnlyWhenServerIsOnline();
 	Optional<OffsetDateTime> getLastRunDate();
 	OffsetDateTime getNextRunDate();
 	List<ScheduleTask> getTasks();

@@ -30,6 +30,7 @@ public abstract class AbstractScheduleAction extends PteroActionImpl<Schedule> i
 
     protected String name;
     protected Boolean active;
+    protected Boolean whenServerIsOnline;
     protected Cron cron;
     protected String minute;
     protected String hour;
@@ -50,6 +51,12 @@ public abstract class AbstractScheduleAction extends PteroActionImpl<Schedule> i
     @Override
     public ScheduleAction setActive(boolean active) {
         this.active = active;
+        return this;
+    }
+
+    @Override
+    public ScheduleAction setWhenServerIsOnline(boolean whenServerIsOnline) {
+        this.whenServerIsOnline = whenServerIsOnline;
         return this;
     }
 

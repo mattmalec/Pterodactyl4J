@@ -61,7 +61,7 @@ public class CronImpl implements Cron {
 	public static Cron ofExpression(String expression) {
 		String[] exp = expression.split("\\s+");
 		if (exp.length != 5)
-			throw new IllegalArgumentException("P4J Cron Expression must have 4 elements (minute, hour, day of month, day of week)");
+			throw new IllegalArgumentException("P4J Cron Expression must have 5 elements (minute, hour, day of month, month, day of week)");
 
 		JSONObject cron = new JSONObject();
 		cron.put("minute", exp[0])
