@@ -17,7 +17,7 @@
 package com.mattmalec.pterodactyl4j.application.entities.impl;
 
 import com.mattmalec.pterodactyl4j.PteroAction;
-import com.mattmalec.pterodactyl4j.application.entities.Allocation;
+import com.mattmalec.pterodactyl4j.application.entities.ApplicationAllocation;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationServer;
 import com.mattmalec.pterodactyl4j.application.entities.Node;
 import com.mattmalec.pterodactyl4j.utils.Relationed;
@@ -25,14 +25,14 @@ import org.json.JSONObject;
 
 import java.util.Optional;
 
-public class AllocationImpl implements Allocation {
+public class ApplicationAllocationImpl implements ApplicationAllocation {
 
 	private final JSONObject json;
 	private final JSONObject relationships;
 
 	private final PteroApplicationImpl impl;
 
-	public AllocationImpl(JSONObject json, PteroApplicationImpl impl) {
+	public ApplicationAllocationImpl(JSONObject json, PteroApplicationImpl impl) {
 		this.json = json.getJSONObject("attributes");
 		this.relationships = json.getJSONObject("attributes").optJSONObject("relationships");
 		this.impl = impl;
@@ -49,8 +49,8 @@ public class AllocationImpl implements Allocation {
 	}
 
 	@Override
-	public String getPort() {
-		return Long.toUnsignedString(json.getLong("port"));
+	public int getPortInt() {
+		return json.getInt("port");
 	}
 
 	@Override
@@ -66,11 +66,6 @@ public class AllocationImpl implements Allocation {
 	@Override
 	public long getIdLong() {
 		return json.getLong("id");
-	}
-
-	@Override
-	public String getFullAddress() {
-		return getIP() + ":" + getPort();
 	}
 
 	@Override
