@@ -76,6 +76,11 @@ public class ScheduleTaskImpl implements Schedule.ScheduleTask {
 	}
 
 	@Override
+	public boolean isContinueOnFailure() {
+		return json.getBoolean("continue_on_failure");
+	}
+
+	@Override
 	public long getTimeOffset() {
 		return json.getLong("time_offset");
 	}

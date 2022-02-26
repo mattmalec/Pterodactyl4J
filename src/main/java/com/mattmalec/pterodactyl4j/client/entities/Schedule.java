@@ -44,6 +44,7 @@ public interface Schedule extends ISnowflake {
 		Optional<PowerAction> getPowerPayload();
 		String getPayload();
 		boolean isQueued();
+		boolean isContinueOnFailure();
 		long getTimeOffset();
 		PteroAction<Void> delete();
 
