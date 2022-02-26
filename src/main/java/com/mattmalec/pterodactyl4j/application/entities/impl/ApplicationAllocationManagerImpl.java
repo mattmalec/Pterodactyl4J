@@ -27,7 +27,7 @@ import com.mattmalec.pterodactyl4j.requests.Route;
 public class ApplicationAllocationManagerImpl implements ApplicationAllocationManager {
 
 	private final PteroApplicationImpl impl;
-	private Node node;
+	private final Node node;
 
 	public ApplicationAllocationManagerImpl(Node node, PteroApplicationImpl impl) {
 		this.impl = impl;
