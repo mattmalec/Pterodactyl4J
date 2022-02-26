@@ -17,7 +17,7 @@
 package com.mattmalec.pterodactyl4j.utils;
 
 import com.mattmalec.pterodactyl4j.PteroAction;
-import com.mattmalec.pterodactyl4j.exceptions.RateLimitedException;
+import com.mattmalec.pterodactyl4j.application.entities.ApplicationAllocation;
 
 import java.util.Optional;
 
@@ -36,7 +36,7 @@ import java.util.Optional;
  * <p>However, you cannot include the relationship of a relationship object, like when attempting to get the
  * {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationEgg ApplicationEgg} of an
  * {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer} from an
- * {@link com.mattmalec.pterodactyl4j.application.entities.Allocation Allocation}. The egg relationship will not be included in server relationship from the allocation.
+ * {@link ApplicationAllocation Allocation}. The egg relationship will not be included in server relationship from the allocation.
  * You will need to retrieve the egg instead.
  *
  * @param <T>

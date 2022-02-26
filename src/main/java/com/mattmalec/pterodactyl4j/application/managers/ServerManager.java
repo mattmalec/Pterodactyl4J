@@ -19,7 +19,7 @@ package com.mattmalec.pterodactyl4j.application.managers;
 import com.mattmalec.pterodactyl4j.DataType;
 import com.mattmalec.pterodactyl4j.EnvironmentValue;
 import com.mattmalec.pterodactyl4j.PteroAction;
-import com.mattmalec.pterodactyl4j.application.entities.Allocation;
+import com.mattmalec.pterodactyl4j.application.entities.ApplicationAllocation;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationEgg;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationServer;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationUser;
@@ -135,10 +135,10 @@ public class ServerManager {
 	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type
 	 * {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer} - The updated server
 	 *
-	 * @deprecated This will be removed in the next major release (non-beta). Use {@link ServerBuildManager#setAllocation(Allocation)} instead
+	 * @deprecated This will be removed in the next major release (non-beta). Use {@link ServerBuildManager#setAllocation(ApplicationAllocation)} instead
 	 */
 	@Deprecated
-	public PteroAction<ApplicationServer> setAllocation(Allocation allocation) {
+	public PteroAction<ApplicationServer> setAllocation(ApplicationAllocation allocation) {
 		return server.getBuildManager().setAllocation(allocation);
 	}
 

@@ -18,7 +18,7 @@ package com.mattmalec.pterodactyl4j.application.managers;
 
 import com.mattmalec.pterodactyl4j.DataType;
 import com.mattmalec.pterodactyl4j.PteroAction;
-import com.mattmalec.pterodactyl4j.application.entities.Allocation;
+import com.mattmalec.pterodactyl4j.application.entities.ApplicationAllocation;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationServer;
 
 /**
@@ -68,7 +68,7 @@ public interface ServerBuildManager extends PteroAction<ApplicationServer> {
      * @return The {@link com.mattmalec.pterodactyl4j.application.managers.ServerBuildManager ServerBuildManager}
      * instance, useful for chaining
      */
-    ServerBuildManager setAllocation(Allocation allocation);
+    ServerBuildManager setAllocation(ApplicationAllocation allocation);
 
     /**
      * Sets the memory limit of this {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer}.

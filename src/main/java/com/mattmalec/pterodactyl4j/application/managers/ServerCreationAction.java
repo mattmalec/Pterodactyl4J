@@ -50,13 +50,13 @@ public interface ServerCreationAction extends PteroAction<ApplicationServer> {
 	default ServerCreationAction setPort(int port) {
 		return setPortRange(Collections.singleton(port));
 	}
-	default ServerCreationAction setAllocations(Allocation defaultAllocation, Allocation... additionalAllocations) {
+	default ServerCreationAction setAllocations(ApplicationAllocation defaultAllocation, ApplicationAllocation... additionalAllocations) {
 		return setAllocations(defaultAllocation, Arrays.asList(additionalAllocations));
 	}
-	default ServerCreationAction setAllocation(Allocation defaultAllocation) {
+	default ServerCreationAction setAllocation(ApplicationAllocation defaultAllocation) {
 		return setAllocations(defaultAllocation);
 	}
-	ServerCreationAction setAllocations(Allocation defaultAllocation, Collection<Allocation> additionalAllocations);
+	ServerCreationAction setAllocations(ApplicationAllocation defaultAllocation, Collection<ApplicationAllocation> additionalAllocations);
 	ServerCreationAction startOnCompletion(boolean start);
 	ServerCreationAction skipScripts(boolean skip);
 

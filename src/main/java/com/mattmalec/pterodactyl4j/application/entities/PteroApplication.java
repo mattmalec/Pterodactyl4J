@@ -222,9 +222,9 @@ public interface PteroApplication {
 	 * @throws com.mattmalec.pterodactyl4j.exceptions.NotFoundException
 	 * 		   If the allocation cannot be found
 	 *
-	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link com.mattmalec.pterodactyl4j.application.entities.Allocation Allocation}
+	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link ApplicationAllocation Allocation}
 	 */
-	PteroAction<Allocation> retrieveAllocationById(String id);
+	PteroAction<ApplicationAllocation> retrieveAllocationById(String id);
 
 	/**
 	 * Retrieves an individual Allocation represented by the provided id from Pterodactyl instance
@@ -239,9 +239,9 @@ public interface PteroApplication {
 	 * @throws com.mattmalec.pterodactyl4j.exceptions.NotFoundException
 	 * 		   If the allocation cannot be found
 	 *
-	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link com.mattmalec.pterodactyl4j.application.entities.Allocation Allocation}
+	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link ApplicationAllocation Allocation}
 	 */
-	default PteroAction<Allocation> retrieveAllocationById(long id) {
+	default PteroAction<ApplicationAllocation> retrieveAllocationById(long id) {
 		return retrieveAllocationById(Long.toUnsignedString(id));
 	}
 
@@ -255,9 +255,9 @@ public interface PteroApplication {
 	 * @throws com.mattmalec.pterodactyl4j.exceptions.LoginException
 	 *         If the API key is incorrect or doesn't have the required permissions
 	 *
-	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.Allocation Allocations}
+	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link java.util.List List} of {@link ApplicationAllocation Allocations}
 	 */
-	PteroAction<List<Allocation>> retrieveAllocationsByNode(Node node);
+	PteroAction<List<ApplicationAllocation>> retrieveAllocationsByNode(Node node);
 
 	/**
 	 * Retrieves all of the Allocations from the Pterodactyl instance
@@ -266,9 +266,9 @@ public interface PteroApplication {
 	 * @throws com.mattmalec.pterodactyl4j.exceptions.LoginException
 	 *         If the API key is incorrect or doesn't have the required permissions
 	 *
-	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.Allocation Allocations}
+	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link java.util.List List} of {@link ApplicationAllocation Allocations}
 	 */
-	PteroAction<List<Allocation>> retrieveAllocations();
+	PteroAction<List<ApplicationAllocation>> retrieveAllocations();
 
 	/**
 	 * Retrieves all of the Locations from the Pterodactyl instance

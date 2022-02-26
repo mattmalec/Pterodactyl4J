@@ -17,7 +17,7 @@
 package com.mattmalec.pterodactyl4j.application.entities;
 
 import com.mattmalec.pterodactyl4j.PteroAction;
-import com.mattmalec.pterodactyl4j.application.managers.AllocationManager;
+import com.mattmalec.pterodactyl4j.application.managers.ApplicationAllocationManager;
 import com.mattmalec.pterodactyl4j.application.managers.NodeAction;
 import com.mattmalec.pterodactyl4j.utils.Relationed;
 
@@ -30,7 +30,7 @@ public interface Node extends ISnowflake {
 	String getName();
 	String getDescription();
 	Relationed<Location> getLocation();
-	AllocationManager getAllocationManager();
+	ApplicationAllocationManager getAllocationManager();
 	String getFQDN();
 	String getScheme();
 	boolean isBehindProxy();
@@ -53,9 +53,9 @@ public interface Node extends ISnowflake {
 	String getDaemonSFTPPort();
 	String getDaemonBase();
 	Relationed<List<ApplicationServer>> getServers();
-	Relationed<List<Allocation>> getAllocations();
-	Relationed<List<Allocation>> getAllocationsByPort(int port);
-	default Relationed<List<Allocation>> getAllocationsByPort(String port) {
+	Relationed<List<ApplicationAllocation>> getAllocations();
+	Relationed<List<ApplicationAllocation>> getAllocationsByPort(int port);
+	default Relationed<List<ApplicationAllocation>> getAllocationsByPort(String port) {
 		return getAllocationsByPort(Integer.parseUnsignedInt(port));
 	}
 	PteroAction<Node.Configuration> retrieveConfiguration();

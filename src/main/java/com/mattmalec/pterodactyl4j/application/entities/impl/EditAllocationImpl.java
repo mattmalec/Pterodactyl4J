@@ -17,7 +17,7 @@
 package com.mattmalec.pterodactyl4j.application.entities.impl;
 
 import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
-import com.mattmalec.pterodactyl4j.application.entities.Allocation;
+import com.mattmalec.pterodactyl4j.application.entities.ApplicationAllocation;
 import com.mattmalec.pterodactyl4j.application.entities.Node;
 import com.mattmalec.pterodactyl4j.requests.Route;
 import com.mattmalec.pterodactyl4j.requests.action.AbstractAllocationAction;
@@ -29,9 +29,9 @@ import java.util.function.Consumer;
 public class EditAllocationImpl extends AbstractAllocationAction {
 
 	private final PteroApplicationImpl impl;
-	private final Allocation allocation;
+	private final ApplicationAllocation allocation;
 
-	public EditAllocationImpl(PteroApplicationImpl impl, Node node, Allocation allocation) {
+	public EditAllocationImpl(PteroApplicationImpl impl, Node node, ApplicationAllocation allocation) {
 		super(impl, Route.Nodes.CREATE_ALLOCATION.compile(node.getId()));
 		this.impl = impl;
 		this.allocation = allocation;

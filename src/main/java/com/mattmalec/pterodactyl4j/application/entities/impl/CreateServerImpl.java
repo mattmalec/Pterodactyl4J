@@ -21,7 +21,6 @@ import com.mattmalec.pterodactyl4j.EnvironmentValue;
 import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.application.entities.*;
 import com.mattmalec.pterodactyl4j.application.managers.ServerCreationAction;
-import com.mattmalec.pterodactyl4j.exceptions.IllegalActionException;
 import com.mattmalec.pterodactyl4j.requests.Route;
 import com.mattmalec.pterodactyl4j.utils.Checks;
 import okhttp3.RequestBody;
@@ -56,8 +55,8 @@ public class CreateServerImpl extends PteroActionImpl<ApplicationServer> impleme
 	private boolean useDedicatedIP;
 	private boolean startOnCompletion;
 	private boolean skipScripts;
-	private Allocation defaultAllocation;
-	private Collection<Allocation> additionalAllocations;
+	private ApplicationAllocation defaultAllocation;
+	private Collection<ApplicationAllocation> additionalAllocations;
 
 	private final PteroApplicationImpl impl;
 
@@ -213,7 +212,7 @@ public class CreateServerImpl extends PteroActionImpl<ApplicationServer> impleme
 	}
 
 	@Override
-	public ServerCreationAction setAllocations(Allocation defaultAllocation, Collection<Allocation> additionalAllocations) {
+	public ServerCreationAction setAllocations(ApplicationAllocation defaultAllocation, Collection<ApplicationAllocation> additionalAllocations) {
 		this.defaultAllocation = defaultAllocation;
 		this.additionalAllocations = additionalAllocations;
 		return this;
@@ -244,7 +243,7 @@ public class CreateServerImpl extends PteroActionImpl<ApplicationServer> impleme
 		JSONObject allocation = new JSONObject()
 				.put("default", defaultAllocation != null ? defaultAllocation.getIdLong() : null)
 				.put("additional", (additionalAllocations != null && additionalAllocations.size() != 0) ?
-						additionalAllocations.stream().map(Allocation::getIdLong).collect(Collectors.toList()) : null);
+						additionalAllocations.stream().map(ApplicationAllocation::getIdLong).collect(Collectors.toList()) : null);
 		JSONObject deploy = new JSONObject()
 				.put("locations", locations != null ? locations.stream().map(ISnowflake::getIdLong).collect(Collectors.toList()) : null)
 				.put("dedicated_ip", useDedicatedIP)

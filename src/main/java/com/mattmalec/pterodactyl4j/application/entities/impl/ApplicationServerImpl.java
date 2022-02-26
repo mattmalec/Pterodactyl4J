@@ -127,30 +127,30 @@ public class ApplicationServerImpl implements ApplicationServer {
 	}
 
 	@Override
-	public Optional<List<Allocation>> getAllocations() {
+	public Optional<List<ApplicationAllocation>> getAllocations() {
 		if(!json.has("relationships")) return Optional.empty();
-		List<Allocation> allocations = new ArrayList<>();
+		List<ApplicationAllocation> allocations = new ArrayList<>();
 		JSONObject json = relationships.getJSONObject("allocations");
 		for(Object o : json.getJSONArray("data")) {
 			JSONObject allocation = new JSONObject(o.toString());
-			allocations.add(new AllocationImpl(allocation, impl));
+			allocations.add(new ApplicationAllocationImpl(allocation, impl));
 		}
 		return Optional.of(Collections.unmodifiableList(allocations));
 	}
 
 	@Override
-	public Relationed<Allocation> getDefaultAllocation() {
-		return new Relationed<Allocation>() {
+	public Relationed<ApplicationAllocation> getDefaultAllocation() {
+		return new Relationed<ApplicationAllocation>() {
 			@Override
-			public PteroAction<Allocation> retrieve() {
+			public PteroAction<ApplicationAllocation> retrieve() {
 				return impl.retrieveAllocationById(getDefaultAllocationIdLong());
 			}
 
 			@Override
-			public Optional<Allocation> get() {
+			public Optional<ApplicationAllocation> get() {
 				if(!json.has("relationships")) return Optional.empty();
-				List<Allocation> allocations = getAllocations().get();
-				for (Allocation a : allocations) {
+				List<ApplicationAllocation> allocations = getAllocations().get();
+				for (ApplicationAllocation a : allocations) {
 					if (a.getIdLong() == getDefaultAllocationIdLong()) {
 						return Optional.of(a);
 					}

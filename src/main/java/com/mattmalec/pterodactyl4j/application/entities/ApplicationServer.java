@@ -121,19 +121,19 @@ public interface ApplicationServer extends Server, ISnowflake {
 	/**
 	 * The Allocations assigned to the ApplicationServer
 	 *
-	 * @return {@link java.util.Optional Optional} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.Allocation Allocations}
+	 * @return {@link java.util.Optional Optional} - Type {@link java.util.List List} of {@link ApplicationAllocation Allocations}
 	 */
-	Optional<List<Allocation>> getAllocations();
+	Optional<List<ApplicationAllocation>> getAllocations();
 
 	/**
 	 * The main allocation for the ApplicationServer
 	 *
-	 * @return {@link com.mattmalec.pterodactyl4j.utils.Relationed Relationed} - Type {@link com.mattmalec.pterodactyl4j.application.entities.Allocation Allocation}
+	 * @return {@link com.mattmalec.pterodactyl4j.utils.Relationed Relationed} - Type {@link ApplicationAllocation Allocation}
 	 */
-	Relationed<Allocation> getDefaultAllocation();
+	Relationed<ApplicationAllocation> getDefaultAllocation();
 
 	/**
-	 * The id of the main {@link com.mattmalec.pterodactyl4j.application.entities.Allocation Allocation} for the ApplicationServer
+	 * The id of the main {@link ApplicationAllocation Allocation} for the ApplicationServer
 	 *
 	 * @return Long containing the main allocation id
 	 *
@@ -142,7 +142,7 @@ public interface ApplicationServer extends Server, ISnowflake {
 	long getDefaultAllocationIdLong();
 
 	/**
-	 * The id of the main {@link com.mattmalec.pterodactyl4j.application.entities.Allocation Allocation} for the ApplicationServer
+	 * The id of the main {@link ApplicationAllocation Allocation} for the ApplicationServer
 	 *
 	 * @return Never-null String containing the main allocation id
 	 *

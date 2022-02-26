@@ -17,7 +17,7 @@
 package com.mattmalec.pterodactyl4j.application.entities.impl;
 
 import com.mattmalec.pterodactyl4j.DataType;
-import com.mattmalec.pterodactyl4j.application.entities.Allocation;
+import com.mattmalec.pterodactyl4j.application.entities.ApplicationAllocation;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationServer;
 import com.mattmalec.pterodactyl4j.application.managers.ServerBuildManager;
 import com.mattmalec.pterodactyl4j.requests.Route;
@@ -50,7 +50,7 @@ public class ServerBuildManagerImpl extends AbstractManagerBase implements Serve
     }
 
     @Override
-    public ServerBuildManager setAllocation(Allocation allocation) {
+    public ServerBuildManager setAllocation(ApplicationAllocation allocation) {
         Checks.notNull(allocation, "Allocation");
 
         this.allocation = allocation.getIdLong();

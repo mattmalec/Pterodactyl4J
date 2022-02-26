@@ -171,22 +171,22 @@ public class PteroApplicationImpl implements PteroApplication {
 	}
 
 	@Override
-	public PteroAction<List<Allocation>> retrieveAllocationsByNode(Node node) {
+	public PteroAction<List<ApplicationAllocation>> retrieveAllocationsByNode(Node node) {
 		return PteroActionImpl.onExecute(api, () -> {
 			JSONObject json = new PteroActionImpl<JSONObject>(api, Route.Nodes.LIST_ALLOCATIONS.compile(node.getId(), "1"),
 					(response, request) -> response.getObject()).execute();
-			List<Allocation> allocations = new ArrayList<>();
+			List<ApplicationAllocation> allocations = new ArrayList<>();
 			long pages = json.getJSONObject("meta").getJSONObject("pagination").getLong("total_pages");
 			for (Object o : json.getJSONArray("data")) {
 				JSONObject allocation = new JSONObject(o.toString());
-				allocations.add(new AllocationImpl(allocation, this));
+				allocations.add(new ApplicationAllocationImpl(allocation, this));
 			}
 			for (int i = 2; i <= pages; i++) {
 				JSONObject nextJson = new PteroActionImpl<JSONObject>(api, Route.Nodes.LIST_ALLOCATIONS.compile(node.getId(), Long.toUnsignedString(i)),
 						(response, request) -> response.getObject()).execute();
 				for (Object o : nextJson.getJSONArray("data")) {
 					JSONObject allocation = new JSONObject(o.toString());
-					allocations.add(new AllocationImpl(allocation, this));
+					allocations.add(new ApplicationAllocationImpl(allocation, this));
 				}
 			}
 			return Collections.unmodifiableList(allocations);
@@ -195,9 +195,9 @@ public class PteroApplicationImpl implements PteroApplication {
 
 
 	@Override
-	public PteroAction<List<Allocation>> retrieveAllocations() {
+	public PteroAction<List<ApplicationAllocation>> retrieveAllocations() {
 		return PteroActionImpl.onExecute(api, () -> {
-				List<Allocation> allocations = new ArrayList<>();
+				List<ApplicationAllocation> allocations = new ArrayList<>();
 				List<Node> nodes = retrieveNodes().execute();
 				for(Node node : nodes) {
 					allocations.addAll(node.getAllocations().retrieve().execute());
@@ -208,7 +208,7 @@ public class PteroApplicationImpl implements PteroApplication {
 
 
 	@Override
-	public PteroAction<Allocation> retrieveAllocationById(String id) {
+	public PteroAction<ApplicationAllocation> retrieveAllocationById(String id) {
 		return PteroActionImpl.onExecute(api, () -> retrieveAllocations().execute().stream()
 						.filter(a -> a.getId().equals(id))
 						.findFirst().orElse(null));
