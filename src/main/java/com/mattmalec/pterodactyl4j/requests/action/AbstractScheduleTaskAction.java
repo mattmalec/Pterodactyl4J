@@ -66,4 +66,14 @@ public abstract class AbstractScheduleTaskAction extends PteroActionImpl<Schedul
         this.continueOnFailure = continueOnFailure;
         return this;
     }
+
+    @Override
+    protected RequestBody finalizeData() {
+        JSONObject json = new JSONObject()
+                .put("action", action.name().toLowerCase())
+                .put("payload", payload)
+                .put("continue_on_failure", continueOnFailure)
+                .put("time_offset", timeOffset == null ? "0" : timeOffset);
+        return getRequestBody(json);
+    }
 }
