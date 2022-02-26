@@ -105,4 +105,16 @@ public interface ClientServer extends Server {
 	}
 	ClientDatabaseManager getDatabaseManager();
 
+	List<ClientAllocation> getAllocations();
+	default ClientAllocation getPrimaryAllocation() {
+		return getAllocations().stream().filter(ClientAllocation::isDefault).findFirst().get();
+	}
+	default Optional<ClientAllocation> getAllocationByPort(int port) {
+		return getAllocations().stream().filter(allocation -> allocation.getPortInt() == port).findFirst();
+	}
+	default Optional<ClientAllocation> getAllocationById(long id) {
+		return getAllocations().stream().filter(allocation -> allocation.getIdLong() == id).findFirst();
+	}
+	ClientAllocationManager getAllocationManager();
+
 }
