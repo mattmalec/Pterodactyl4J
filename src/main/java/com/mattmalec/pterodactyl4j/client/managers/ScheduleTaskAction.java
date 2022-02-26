@@ -25,6 +25,7 @@ public interface ScheduleTaskAction extends PteroAction<Schedule.ScheduleTask> {
 	ScheduleTaskAction setAction(Schedule.ScheduleTask.ScheduleAction action);
 	ScheduleTaskAction setPowerPayload(PowerAction payload);
 	ScheduleTaskAction setPayload(String payload);
+	ScheduleTaskAction setContinueOnFailure(boolean continueOnFailure);
 	default ScheduleTaskAction setTimeOffset(int seconds) {
 		return setTimeOffset(Integer.toUnsignedString(seconds));
 	}
