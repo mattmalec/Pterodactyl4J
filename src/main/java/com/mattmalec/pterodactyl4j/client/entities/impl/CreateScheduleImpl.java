@@ -35,7 +35,7 @@ public class CreateScheduleImpl extends AbstractScheduleAction {
 		JSONObject json = new JSONObject()
 				.put("name", name)
 				.put("is_active", active)
-				.put("only_when_online", whenServerIsOnline)
+				.put("only_when_online", whenServerIsOnline != null)
 				.put("minute", minute == null ? cron.getMinute() : minute)
 				.put("hour", hour == null ? cron.getHour() : hour)
 				.put("day_of_week", dayOfWeek == null ? cron.getDayOfWeek() : dayOfWeek)
