@@ -60,6 +60,10 @@ public class PteroActionImpl<T> implements PteroAction<T> {
         return new PteroActionImpl<>(api, route, handler);
     }
 
+    public static <T> PteroActionImpl<T> onRequestExecute(P4J api, Route.CompiledRoute route, RequestBody data, BiFunction<Response, Request<T>, T> handler) {
+        return new PteroActionImpl<>(api, route, data, handler);
+    }
+
     public PteroActionImpl(P4J api, Supplier<? extends T> supplier) {
         this.api = api;
         this.supplier = supplier;
