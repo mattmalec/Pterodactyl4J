@@ -50,32 +50,8 @@ public abstract class AbstractAllocationAction extends PteroActionImpl<Void> imp
 
     @Override
     public AllocationAction setPorts(String... ports) {
-        portSet.clear();
-        portSet.addAll(Arrays.asList(ports));
+        this.portSet = new HashSet<>(Arrays.asList(ports));
         return this;
     }
 
-    @Override
-    public AllocationAction addPorts(String... ports) {
-        portSet.addAll(Arrays.asList(ports));
-        return this;
-    }
-
-    @Override
-    public AllocationAction addPort(String port) {
-        portSet.add(port);
-        return this;
-    }
-
-    @Override
-    public AllocationAction removePort(String port) {
-        portSet.remove(port);
-        return this;
-    }
-
-    @Override
-    public AllocationAction removePorts(String... ports) {
-        Arrays.asList(ports).forEach(portSet::remove);
-        return this;
-    }
 }
