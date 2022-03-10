@@ -45,14 +45,14 @@ public class WebSocketClient extends WebSocketListener implements Runnable {
     private final PteroClientImpl client;
     private final ClientServer server;
     private final WebSocketManager manager;
-    private final boolean useFreshServer;
+    private final boolean freshServer;
     private boolean connected = false;
     private final Map<String, ClientSocketHandler> handlers = new HashMap<>();
 
-    public WebSocketClient(PteroClientImpl client, ClientServer server, boolean useFreshServer, WebSocketManager manager) {
+    public WebSocketClient(PteroClientImpl client, ClientServer server, boolean freshServer, WebSocketManager manager) {
         this.client = client;
         this.server = server;
-        this.useFreshServer = useFreshServer;
+        this.freshServer = freshServer;
         this.manager = manager;
         this.webSocketClient = client.getP4J().getWebSocketClient();
         setupHandlers();
@@ -128,7 +128,7 @@ public class WebSocketClient extends WebSocketListener implements Runnable {
     private void handleEvent(String event, String args) {
         ClientSocketHandler handler = getHandler(event);
 
-        if (useFreshServer)
+        if (freshServer)
             client.retrieveServerByIdentifier(server.getIdentifier())
                     .executeAsync(freshServer ->
                                     handler.setServer(freshServer).handleInternally(args),
