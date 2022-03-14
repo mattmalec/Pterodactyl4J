@@ -39,13 +39,10 @@ public class PteroActionImpl<T> implements PteroAction<T> {
     private Route.CompiledRoute route;
     private RequestBody data;
     private long deadline = 0;
-
-    private Supplier<? extends T> supplier;
-
     private BiFunction<Response, Request<T>, T> handler;
 
-    public static <T> PteroActionImpl<T> onExecute(P4J api, Supplier<? extends T> supplier) {
-        return new PteroActionImpl<>(api, supplier);
+    public static <T> DeferredPteroAction<T> onExecute(P4J api, Supplier<? extends T> supplier) {
+        return new DeferredPteroAction<>(api, supplier);
     }
 
     public static <T> PteroActionImpl<T> onRequestExecute(P4J api, Route.CompiledRoute route) {
@@ -64,9 +61,8 @@ public class PteroActionImpl<T> implements PteroAction<T> {
         return new PteroActionImpl<>(api, route, data, handler);
     }
 
-    public PteroActionImpl(P4J api, Supplier<? extends T> supplier) {
+    public PteroActionImpl(P4J api) {
         this.api = api;
-        this.supplier = supplier;
     }
 
     public PteroActionImpl(P4J api, Route.CompiledRoute route) {
@@ -93,47 +89,35 @@ public class PteroActionImpl<T> implements PteroAction<T> {
 
     @Override
     public T execute(boolean shouldQueue) {
-        if (supplier == null) {
-            Route.CompiledRoute route = finalizeRoute();
-            RequestBody data = finalizeData();
-            try {
-                return new RequestFuture<>(this, route, data, shouldQueue, deadline).join();
-            } catch (CompletionException ex) {
-                if (ex.getCause() != null) {
-                    Throwable cause = ex.getCause();
-                    if (cause instanceof PteroException)
-                        throw (PteroException) cause.fillInStackTrace();
-                }
-                throw ex;
+        Route.CompiledRoute route = finalizeRoute();
+        RequestBody data = finalizeData();
+        try {
+            return new RequestFuture<>(this, route, data, shouldQueue, deadline).join();
+        } catch (CompletionException ex) {
+            if (ex.getCause() != null) {
+                Throwable cause = ex.getCause();
+                if (cause instanceof PteroException)
+                    throw (PteroException) cause.fillInStackTrace();
             }
-        } else
-            return supplier.get();
+            throw ex;
+        }
     }
 
     @Override
     public void executeAsync(Consumer<? super T> success, Consumer<? super Throwable> failure) {
-        if (supplier == null) {
-            Route.CompiledRoute route = finalizeRoute();
-            if (success == null)
-                success = DEFAULT_SUCCESS;
-            if (failure == null)
-                failure = DEFAULT_FAILURE;
+        Route.CompiledRoute route = finalizeRoute();
+        if (success == null)
+            success = DEFAULT_SUCCESS;
+        if (failure == null)
+            failure = DEFAULT_FAILURE;
 
-            // the fact that i have to do this is bullshit
-            Consumer<? super T> finalizedSuccess = success;
-            Consumer<? super Throwable> finalizedFailure = failure;
+        Consumer<? super T> finalizedSuccess = success;
+        Consumer<? super Throwable> finalizedFailure = failure;
 
-//            finalizedFailure.accept(new HttpException("fuck", "you"));
-
-            api.getActionPool().submit(() -> {
-                RequestBody data = finalizeData();
-                api.getRequester().request(new Request<>(this, finalizedSuccess, finalizedFailure, route, data, true, deadline));
-            });
-        } else {
-            CompletableFuture.supplyAsync(supplier, api.getSupplierPool())
-                    .thenAcceptAsync(success);
-        }
-
+        api.getActionPool().submit(() -> {
+            RequestBody data = finalizeData();
+            api.getRequester().request(new Request<>(this, finalizedSuccess, finalizedFailure, route, data, true, deadline));
+        });
     }
 
     @Override
@@ -168,10 +152,10 @@ public class PteroActionImpl<T> implements PteroAction<T> {
     }
 
     public static RequestBody getRequestBody(JSONObject object) {
-        return object == null ? null : RequestBody.create(Requester.MEDIA_TYPE_JSON, object.toString());
+        return object == null ? null : RequestBody.create(object.toString(), Requester.MEDIA_TYPE_JSON);
     }
 
     public static RequestBody getRequestBody(JSONArray array) {
-        return array == null ? null : RequestBody.create(Requester.MEDIA_TYPE_JSON, array.toString());
+        return array == null ? null : RequestBody.create(array.toString(), Requester.MEDIA_TYPE_JSON);
     }
 }
