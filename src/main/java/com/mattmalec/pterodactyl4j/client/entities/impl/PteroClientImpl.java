@@ -16,21 +16,21 @@
 
 package com.mattmalec.pterodactyl4j.client.entities.impl;
 
-import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.PowerAction;
-import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
+import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.client.entities.Account;
 import com.mattmalec.pterodactyl4j.client.entities.ClientServer;
 import com.mattmalec.pterodactyl4j.client.entities.PteroClient;
 import com.mattmalec.pterodactyl4j.client.entities.Utilization;
 import com.mattmalec.pterodactyl4j.entities.P4J;
+import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.requests.Route;
+import com.mattmalec.pterodactyl4j.requests.action.PaginationAction;
+import com.mattmalec.pterodactyl4j.requests.action.impl.PaginationResponseImpl;
+import com.mattmalec.pterodactyl4j.utils.StreamUtils;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class PteroClientImpl implements PteroClient {
@@ -72,26 +72,9 @@ public class PteroClientImpl implements PteroClient {
     }
 
     @Override
-    public PteroAction<List<ClientServer>> retrieveServers() {
-        return PteroActionImpl.onExecute(api, () -> {
-            List<ClientServer> servers = new ArrayList<>();
-            JSONObject json = new PteroActionImpl<JSONObject>(api, Route.Client.LIST_SERVERS.compile("1"),
-                    (response, request) -> response.getObject()).execute();
-            long pages = json.getJSONObject("meta").getJSONObject("pagination").getLong("total_pages");
-            for (Object o : json.getJSONArray("data")) {
-                JSONObject server = new JSONObject(o.toString());
-                servers.add(new ClientServerImpl(server, this));
-            }
-            for (int i = 2; i <= pages; i++) {
-                JSONObject nextJson = new PteroActionImpl<JSONObject>(api, Route.Client.LIST_SERVERS.compile(Long.toUnsignedString(i)),
-                        (response, request) -> response.getObject()).execute();
-                for (Object o : nextJson.getJSONArray("data")) {
-                    JSONObject server = new JSONObject(o.toString());
-                    servers.add(new ClientServerImpl(server, this));
-                }
-            }
-            return Collections.unmodifiableList(servers);
-        });
+    public PaginationAction<ClientServer> retrieveServers() {
+        return PaginationResponseImpl.onPagination(api, Route.Client.LIST_SERVERS.compile(),
+                (object) -> new ClientServerImpl(object, this));
     }
 
     @Override
@@ -101,18 +84,17 @@ public class PteroClientImpl implements PteroClient {
     }
 
     @Override
-    public PteroAction<List<ClientServer>> retrieveServersByName(String name, boolean caseSensetive) {
+    public PteroAction<List<ClientServer>> retrieveServersByName(String name, boolean caseSensitive) {
         return PteroActionImpl.onExecute(api, () -> {
-            List<ClientServer> servers = retrieveServers().execute();
-            Stream<ClientServer> newServers = servers.stream();
+            Stream<ClientServer> servers = retrieveServers().stream();
 
-            if(caseSensetive) {
-                newServers = newServers.filter(s -> s.getName().contains(name));
+            if (caseSensitive) {
+                servers = servers.filter(s -> s.getName().contains(name));
             } else {
-                newServers = newServers.filter(s -> s.getName().toLowerCase().contains(name.toLowerCase()));
+                servers = servers.filter(s -> s.getName().toLowerCase().contains(name.toLowerCase()));
             }
 
-            return Collections.unmodifiableList(newServers.collect(Collectors.toList()));
+            return servers.collect(StreamUtils.toUnmodifiableList());
         });
     }
 }
