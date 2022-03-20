@@ -21,6 +21,8 @@ import com.mattmalec.pterodactyl4j.application.managers.LocationManager;
 import com.mattmalec.pterodactyl4j.application.managers.NodeManager;
 import com.mattmalec.pterodactyl4j.application.managers.ServerCreationAction;
 import com.mattmalec.pterodactyl4j.application.managers.UserManager;
+import com.mattmalec.pterodactyl4j.requests.action.PaginationAction;
+import com.mattmalec.pterodactyl4j.utils.StreamUtils;
 
 import java.util.List;
 
@@ -37,7 +39,7 @@ public interface PteroApplication {
 	 *
 	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationUser ApplicationUsers}
 	 */
-	PteroAction<List<ApplicationUser>> retrieveUsers();
+	PaginationAction<ApplicationUser> retrieveUsers();
 
 	/**
 	 * Retrieves an individual ApplicationUser represented by the provided id from Pterodactyl instance
@@ -81,7 +83,7 @@ public interface PteroApplication {
 	 *
 	 * @param  name
 	 *         The username
-	 * @param caseSensetive
+	 * @param caseSensitive
 	 * 		   True - If P4J should search using case sensitivity
 	 *
 	 * @throws com.mattmalec.pterodactyl4j.exceptions.LoginException
@@ -92,7 +94,7 @@ public interface PteroApplication {
 	 *
 	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationUser ApplicationUsers}
 	 */
-	PteroAction<List<ApplicationUser>> retrieveUsersByUsername(String name, boolean caseSensetive);
+	PteroAction<List<ApplicationUser>> retrieveUsersByUsername(String name, boolean caseSensitive);
 
 	/**
 	 * Retrieves ApplicationUsers matching the provided email from Pterodactyl instance
@@ -100,7 +102,7 @@ public interface PteroApplication {
 	 *
 	 * @param  email
 	 *         The email
-	 * @param caseSensetive
+	 * @param caseSensitive
 	 * 		   True - If P4J should search using case sensitivity
 	 *
 	 * @throws com.mattmalec.pterodactyl4j.exceptions.LoginException
@@ -111,7 +113,7 @@ public interface PteroApplication {
 	 *
 	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationUser ApplicationUsers}
 	 */
-	PteroAction<List<ApplicationUser>> retrieveUsersByEmail(String email, boolean caseSensetive);
+	PteroAction<List<ApplicationUser>> retrieveUsersByEmail(String email, boolean caseSensitive);
 
 	/**
 	 * Returns the {@link com.mattmalec.pterodactyl4j.application.managers.UserManager UserManager}, used to create, edit, and delete ApplicationUsers from the Pterodactyl instance
@@ -130,7 +132,7 @@ public interface PteroApplication {
 	 *
 	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.Node Nodes}
 	 */
-	PteroAction<List<Node>> retrieveNodes();
+	PaginationAction<Node> retrieveNodes();
 
 	/**
 	 * Retrieves an individual Node represented by the provided id from Pterodactyl instance
@@ -174,7 +176,7 @@ public interface PteroApplication {
 	 *
 	 * @param  name
 	 *         The name
-	 * @param caseSensetive
+	 * @param caseSensitive
 	 * 		   True - If P4J should search using case sensitivity
 	 *
 	 * @throws com.mattmalec.pterodactyl4j.exceptions.LoginException
@@ -182,7 +184,7 @@ public interface PteroApplication {
 	 *
 	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.Node Nodes}
 	 */
-	PteroAction<List<Node>> retrieveNodesByName(String name, boolean caseSensetive);
+	PteroAction<List<Node>> retrieveNodesByName(String name, boolean caseSensitive);
 
 	/**
 	 * Retrieves Nodes matching the provided {@link com.mattmalec.pterodactyl4j.application.entities.Location Location} from Pterodactyl instance
@@ -257,7 +259,7 @@ public interface PteroApplication {
 	 *
 	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link java.util.List List} of {@link ApplicationAllocation Allocations}
 	 */
-	PteroAction<List<ApplicationAllocation>> retrieveAllocationsByNode(Node node);
+	PaginationAction<ApplicationAllocation> retrieveAllocationsByNode(Node node);
 
 	/**
 	 * Retrieves all of the Allocations from the Pterodactyl instance
@@ -279,7 +281,7 @@ public interface PteroApplication {
 	 *
 	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.Location Locations}
 	 */
-	PteroAction<List<Location>> retrieveLocations();
+	PaginationAction<Location> retrieveLocations();
 
 	/**
 	 * Retrieves an individual Location represented by the provided id from Pterodactyl instance
@@ -324,7 +326,7 @@ public interface PteroApplication {
 	 * @param  name
 	 *         The short code
 	 *
-	 * @param caseSensetive
+	 * @param caseSensitive
 	 * 		   True - If P4J should search using case sensitivity
 	 *
 	 * @throws com.mattmalec.pterodactyl4j.exceptions.LoginException
@@ -332,7 +334,7 @@ public interface PteroApplication {
 	 *
 	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.Location Locations}
 	 */
-	PteroAction<List<Location>> retrieveLocationsByShortCode(String name, boolean caseSensetive);
+	PteroAction<List<Location>> retrieveLocationsByShortCode(String name, boolean caseSensitive);
 
 	/**
 	 * Returns the {@link com.mattmalec.pterodactyl4j.application.managers.LocationManager LocationManager}, used to create, edit, and delete Locations from the Pterodactyl instance
@@ -456,7 +458,7 @@ public interface PteroApplication {
 	 *
 	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationEgg ApplicationEggs}
 	 */
-	PteroAction<List<Nest>> retrieveNests();
+	PaginationAction<Nest> retrieveNests();
 
 	/**
 	 * Retrieves Nests matching the provided author from Pterodactyl instance
@@ -464,7 +466,7 @@ public interface PteroApplication {
 	 *
 	 * @param  author
 	 *         The email address of the author
-	 * @param caseSensetive
+	 * @param caseSensitive
 	 * 		   True - If P4J should search using case sensitivity
 	 *
 	 * @throws com.mattmalec.pterodactyl4j.exceptions.LoginException
@@ -472,7 +474,7 @@ public interface PteroApplication {
 	 *
 	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.Nest Nests}
 	 */
-	PteroAction<List<Nest>> retrieveNestsByAuthor(String author, boolean caseSensetive);
+	PteroAction<List<Nest>> retrieveNestsByAuthor(String author, boolean caseSensitive);
 
 	/**
 	 * Retrieves Nests matching the provided name from Pterodactyl instance
@@ -480,7 +482,7 @@ public interface PteroApplication {
 	 *
 	 * @param  name
 	 *         The name
-	 * @param caseSensetive
+	 * @param caseSensitive
 	 * 		   True - If P4J should search using case sensitivity
 	 *
 	 * @throws com.mattmalec.pterodactyl4j.exceptions.LoginException
@@ -488,7 +490,7 @@ public interface PteroApplication {
 	 *
 	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.Nest Nests}
 	 */
-	PteroAction<List<Nest>> retrieveNestsByName(String name, boolean caseSensetive);
+	PteroAction<List<Nest>> retrieveNestsByName(String name, boolean caseSensitive);
 
 	/**
 	 * Retrieves all of the ApplicationServers from the Pterodactyl instance
@@ -499,7 +501,7 @@ public interface PteroApplication {
 	 *
 	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServers}
 	 */
-	PteroAction<List<ApplicationServer>> retrieveServers();
+	PaginationAction<ApplicationServer> retrieveServers();
 
 	/**
 	 * Retrieves an individual ApplicationServer represented by the provided id from Pterodactyl instance
@@ -543,7 +545,7 @@ public interface PteroApplication {
 	 *
 	 * @param  name
 	 *         The name
-	 * @param caseSensetive
+	 * @param caseSensitive
 	 * 		   True - If P4J should search using case sensitivity
 	 *
 	 * @throws com.mattmalec.pterodactyl4j.exceptions.LoginException
@@ -551,7 +553,7 @@ public interface PteroApplication {
 	 *
 	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServers}
 	 */
-	PteroAction<List<ApplicationServer>> retrieveServersByName(String name, boolean caseSensetive);
+	PteroAction<List<ApplicationServer>> retrieveServersByName(String name, boolean caseSensitive);
 
 	/**
 	 * Retrieves ApplicationServers owned by the provided {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationUser ApplicationUser} from Pterodactyl instance
@@ -579,7 +581,11 @@ public interface PteroApplication {
 	 *
 	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServers}
 	 */
-	PteroAction<List<ApplicationServer>> retrieveServersByNode(Node node);
+	default PteroAction<List<ApplicationServer>> retrieveServersByNode(Node node) {
+		return retrieveServers().map(List::stream)
+				.map(stream -> stream.filter(s -> s.retrieveNode().map(ISnowflake::getIdLong).execute() == node.getIdLong())
+						.collect(StreamUtils.toUnmodifiableList()));
+	}
 
 	/**
 	 * Retrieves ApplicationServers in the provided {@link com.mattmalec.pterodactyl4j.application.entities.Location Location} from Pterodactyl instance
@@ -593,7 +599,12 @@ public interface PteroApplication {
 	 *
 	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServers}
 	 */
-	PteroAction<List<ApplicationServer>> retrieveServersByLocation(Location location);
+	default PteroAction<List<ApplicationServer>> retrieveServersByLocation(Location location) {
+		return retrieveServers().map(List::stream)
+				.map(stream -> stream.filter(s -> s.retrieveNode().flatMap(Node::retrieveLocation)
+								.map(ISnowflake::getIdLong).execute() == location.getIdLong())
+						.collect(StreamUtils.toUnmodifiableList()));
+	}
 
 	/**
 	 * Returns a {@link com.mattmalec.pterodactyl4j.application.managers.ServerCreationAction}, used to create servers on the Pterodactyl instance
