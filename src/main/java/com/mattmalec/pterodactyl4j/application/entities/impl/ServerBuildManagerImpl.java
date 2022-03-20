@@ -53,8 +53,8 @@ public class ServerBuildManagerImpl extends AbstractManagerBase implements Serve
     public ServerBuildManager setAllocation(ApplicationAllocation allocation) {
         Checks.notNull(allocation, "Allocation");
 
-        this.allocation = allocation.getIdLong();
         set |= ALLOCATION;
+        this.allocation = allocation.getIdLong();
         return this;
     }
 
