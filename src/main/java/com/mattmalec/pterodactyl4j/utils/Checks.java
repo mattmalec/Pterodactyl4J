@@ -39,6 +39,11 @@ public class Checks {
         }
     }
 
+    public static void notNegative(final int n, final String name) {
+        if (n < 0)
+            throw new IllegalArgumentException(name + " may not be negative!");
+    }
+
     public static void notNumeric(Object o, String name) {
         notNull(o, name);
         if(o instanceof String) {
