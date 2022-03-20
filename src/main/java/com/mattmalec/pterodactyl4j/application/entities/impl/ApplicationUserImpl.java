@@ -17,16 +17,19 @@
 package com.mattmalec.pterodactyl4j.application.entities.impl;
 
 import com.mattmalec.pterodactyl4j.PteroAction;
-import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationServer;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationUser;
 import com.mattmalec.pterodactyl4j.application.managers.UserAction;
+import com.mattmalec.pterodactyl4j.requests.CompletedPteroAction;
+import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.requests.Route;
-import com.mattmalec.pterodactyl4j.utils.Relationed;
 import org.json.JSONObject;
 
 import java.time.OffsetDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
 
 public class ApplicationUserImpl implements ApplicationUser {
 
@@ -91,26 +94,17 @@ public class ApplicationUserImpl implements ApplicationUser {
 	}
 
 	@Override
-	public Relationed<List<ApplicationServer>> getServers() {
-		ApplicationUserImpl user = this;
-		return new Relationed<List<ApplicationServer>>() {
-			@Override
-			public PteroAction<List<ApplicationServer>> retrieve() {
-				return impl.retrieveServersByOwner(user);
-			}
+	public PteroAction<List<ApplicationServer>> retrieveServers() {
+		if(!json.has("relationships"))
+			return impl.retrieveServersByOwner(this);
 
-			@Override
-			public Optional<List<ApplicationServer>> get() {
-				if(!json.has("relationships")) return Optional.empty();
-				List<ApplicationServer> servers = new ArrayList<>();
-				JSONObject json = relationships.getJSONObject("servers");
-				for(Object o : json.getJSONArray("data")) {
-					JSONObject server = new JSONObject(o.toString());
-					servers.add(new ApplicationServerImpl(impl, server));
-				}
-				return Optional.of(Collections.unmodifiableList(servers));
-			}
-		};
+		List<ApplicationServer> servers = new ArrayList<>();
+		JSONObject json = relationships.getJSONObject("servers");
+		for(Object o : json.getJSONArray("data")) {
+			JSONObject server = new JSONObject(o.toString());
+			servers.add(new ApplicationServerImpl(impl, server));
+		}
+		return new CompletedPteroAction<>(impl.getP4J(), Collections.unmodifiableList(servers));
 	}
 
 	@Override

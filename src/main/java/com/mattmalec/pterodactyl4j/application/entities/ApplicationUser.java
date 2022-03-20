@@ -40,7 +40,7 @@ public interface ApplicationUser extends User, ISnowflake {
 		return Locale.forLanguageTag(getLanguage());
 	}
 	boolean isRootAdmin();
-	Relationed<List<ApplicationServer>> getServers();
+	PteroAction<List<ApplicationServer>> retrieveServers();
 	UserAction edit();
 	PteroAction<Void> delete();
 
