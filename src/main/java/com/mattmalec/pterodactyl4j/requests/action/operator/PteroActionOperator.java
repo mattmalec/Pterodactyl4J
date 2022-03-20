@@ -28,7 +28,6 @@ public abstract class PteroActionOperator<I, O> implements PteroAction<O> {
     protected final PteroAction<I> action;
     protected long deadline = 0;
 
-
     public PteroActionOperator(PteroAction<I> action) {
         this.action = action;
     }
