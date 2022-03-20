@@ -26,8 +26,7 @@ import okio.Source;
 import java.io.IOException;
 
 // thank you jda
-public class BufferedRequestBody extends RequestBody
-{
+public class BufferedRequestBody extends RequestBody {
     private final Source source;
     private final MediaType type;
     private byte[] data;

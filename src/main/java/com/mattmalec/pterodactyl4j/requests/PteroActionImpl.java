@@ -25,7 +25,6 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
@@ -36,10 +35,10 @@ public class PteroActionImpl<T> implements PteroAction<T> {
     public static final Logger LOGGER = LoggerFactory.getLogger(PteroAction.class);
 
     private final P4J api;
-    private Route.CompiledRoute route;
-    private RequestBody data;
+    private final Route.CompiledRoute route;
+    private final RequestBody data;
     private long deadline = 0;
-    private BiFunction<Response, Request<T>, T> handler;
+    private final BiFunction<Response, Request<T>, T> handler;
 
     public static <T> DeferredPteroAction<T> onExecute(P4J api, Supplier<? extends T> supplier) {
         return new DeferredPteroAction<>(api, supplier);
@@ -62,7 +61,7 @@ public class PteroActionImpl<T> implements PteroAction<T> {
     }
 
     public PteroActionImpl(P4J api) {
-        this.api = api;
+        this(api, null);
     }
 
     public PteroActionImpl(P4J api, Route.CompiledRoute route) {

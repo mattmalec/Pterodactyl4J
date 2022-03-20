@@ -91,7 +91,7 @@ public class FileManagerImpl implements FileManager {
 
     @Override
     public PteroAction<Void> copy(File file) {
-        return new PteroActionImpl<>(impl.getP4J(), Route.Files.COPY_FILE.compile(server.getIdentifier()),
+        return PteroActionImpl.onRequestExecute(impl.getP4J(), Route.Files.COPY_FILE.compile(server.getIdentifier()),
                 PteroActionImpl.getRequestBody(new JSONObject().put("location", file.getPath())));
     }
 }
