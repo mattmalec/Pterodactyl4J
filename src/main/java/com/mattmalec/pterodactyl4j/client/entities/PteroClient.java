@@ -18,7 +18,7 @@ package com.mattmalec.pterodactyl4j.client.entities;
 
 import com.mattmalec.pterodactyl4j.PowerAction;
 import com.mattmalec.pterodactyl4j.PteroAction;
-import com.mattmalec.pterodactyl4j.application.entities.ApplicationServer;
+import com.mattmalec.pterodactyl4j.requests.action.PaginationAction;
 
 import java.util.List;
 
@@ -82,7 +82,7 @@ public interface PteroClient {
      *
      * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.client.entities.ClientServer ClientServers}
      */
-    PteroAction<List<ClientServer>> retrieveServers();
+    PaginationAction<ClientServer> retrieveServers();
 
     /**
      * Retrieves an individual ClientServer represented by the provided identifier from Pterodactyl instance
@@ -105,7 +105,7 @@ public interface PteroClient {
      *
      * @param  name
      *         The name
-     * @param caseSensetive
+     * @param caseSensitive
      * 		   True - If P4J should search using case sensitivity
      *
      * @throws com.mattmalec.pterodactyl4j.exceptions.LoginException
@@ -113,6 +113,6 @@ public interface PteroClient {
      *
      * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.client.entities.ClientServer ClientServers}
      */
-    PteroAction<List<ClientServer>> retrieveServersByName(String name, boolean caseSensetive);
+    PteroAction<List<ClientServer>> retrieveServersByName(String name, boolean caseSensitive);
 
 }
