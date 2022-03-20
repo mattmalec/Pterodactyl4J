@@ -248,6 +248,19 @@ public class Route {
 			return baseRoute.method;
 		}
 
+		public CompiledRoute withQueryParams(String... params) {
+			Checks.check(params.length >= 2, "Params length must be at least 2");
+			Checks.check(params.length % 2 == 0, "Params length must be a multiple of 2");
+
+			boolean hasQueryParams = compiledRoute.contains("?");
+
+			StringBuilder newRoute = new StringBuilder(compiledRoute);
+			for (int i = 0; i < params.length; i++)
+				newRoute.append(!hasQueryParams && i == 0 ? '?' : '&').append(params[i]).append('=').append(params[++i]);
+
+			return new CompiledRoute(baseRoute, newRoute.toString());
+		}
+
 	}
 	private static int countMatches(CharSequence seq, char c) {
 		int count = 0;
