@@ -17,10 +17,10 @@
 package com.mattmalec.pterodactyl4j.application.entities.impl;
 
 import com.mattmalec.pterodactyl4j.PteroAction;
-import com.mattmalec.pterodactyl4j.application.entities.ApplicationServer;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationEgg;
+import com.mattmalec.pterodactyl4j.application.entities.ApplicationServer;
 import com.mattmalec.pterodactyl4j.application.entities.Nest;
-import com.mattmalec.pterodactyl4j.utils.Relationed;
+import com.mattmalec.pterodactyl4j.requests.CompletedPteroAction;
 import org.json.JSONObject;
 
 import java.time.OffsetDateTime;
@@ -62,27 +62,19 @@ public class NestImpl implements Nest {
     }
 
     @Override
-    public Relationed<List<ApplicationEgg>> getEggs() {
-        NestImpl nest = this;
-        return new Relationed<List<ApplicationEgg>>() {
-            @Override
-            public PteroAction<List<ApplicationEgg>> retrieve() {
-                return impl.retrieveEggsByNest(nest);
-            }
+    public PteroAction<List<ApplicationEgg>> retrieveEggs() {
+        if(!json.has("relationships"))
+            return impl.retrieveEggsByNest(this);
 
-            @Override
-            public Optional<List<ApplicationEgg>> get() {
-                if(!json.has("relationships")) return Optional.empty();
-                List<ApplicationEgg> eggs = new ArrayList<>();
-                JSONObject json = relationships.getJSONObject("eggs");
-                if(json.isNull("attributes")) return Optional.empty();
-                for(Object o : json.getJSONArray("data")) {
-                    JSONObject egg = new JSONObject(o.toString());
-                    eggs.add(new ApplicationEggImpl(egg, impl));
-                }
-                return Optional.of(Collections.unmodifiableList(eggs));
-            }
-        };
+        List<ApplicationEgg> eggs = new ArrayList<>();
+        JSONObject json = relationships.getJSONObject("eggs");
+        if(json.isNull("attributes"))
+            return new CompletedPteroAction<>(impl.getP4J(), Collections.unmodifiableList(eggs));
+        for(Object o : json.getJSONArray("data")) {
+            JSONObject egg = new JSONObject(o.toString());
+            eggs.add(new ApplicationEggImpl(egg, impl));
+        }
+        return new CompletedPteroAction<>(impl.getP4J(), Collections.unmodifiableList(eggs));
     }
 
     @Override

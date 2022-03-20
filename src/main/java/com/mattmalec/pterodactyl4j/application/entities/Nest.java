@@ -17,7 +17,7 @@
 package com.mattmalec.pterodactyl4j.application.entities;
 
 
-import com.mattmalec.pterodactyl4j.utils.Relationed;
+import com.mattmalec.pterodactyl4j.PteroAction;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,7 +28,7 @@ public interface Nest extends ISnowflake {
 	String getAuthor();
 	String getName();
 	String getDescription();
-	Relationed<List<ApplicationEgg>> getEggs();
+	PteroAction<List<ApplicationEgg>> retrieveEggs();
 	Optional<List<ApplicationServer>> getServers();
 
 }
