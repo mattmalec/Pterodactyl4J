@@ -16,6 +16,8 @@
 
 package com.mattmalec.pterodactyl4j.requests;
 
+import com.mattmalec.pterodactyl4j.utils.Checks;
+
 import static com.mattmalec.pterodactyl4j.requests.Method.*;
 
 public class Route {
@@ -25,7 +27,7 @@ public class Route {
 
 	public static class Users {
 
-		public static final Route LIST_USERS  			= new Route(GET,    APPLICATION_PREFIX + "users?page={page}&include=servers");
+		public static final Route LIST_USERS  			= new Route(GET,    APPLICATION_PREFIX + "users?include=servers");
 		public static final Route GET_USER    			= new Route(GET,    APPLICATION_PREFIX + "users/{user_id}?include=servers");
 		public static final Route CREATE_USER 			= new Route(POST,   APPLICATION_PREFIX + "users");
 		public static final Route EDIT_USER   			= new Route(PATCH,  APPLICATION_PREFIX + "users/{user_id}");
@@ -35,13 +37,13 @@ public class Route {
 
 	public static class Nodes {
 
-		public static final Route LIST_NODES        	= new Route(GET,    APPLICATION_PREFIX + "nodes?page={page}&include=location,servers,allocations");
+		public static final Route LIST_NODES        	= new Route(GET,    APPLICATION_PREFIX + "nodes?include=location,servers,allocations");
 		public static final Route GET_NODE          	= new Route(GET,    APPLICATION_PREFIX + "nodes/{node_id}?include=location,servers,allocations");
 		public static final Route GET_CONFIGURATION     = new Route(GET,    APPLICATION_PREFIX + "nodes/{node_id}/configuration");
 		public static final Route CREATE_NODE       	= new Route(POST,   APPLICATION_PREFIX + "nodes?include=location,servers,allocations");
 		public static final Route EDIT_NODE         	= new Route(PATCH,  APPLICATION_PREFIX + "nodes/{node_id}");
 		public static final Route DELETE_NODE       	= new Route(DELETE, APPLICATION_PREFIX + "nodes/{node_id}");
-		public static final Route LIST_ALLOCATIONS  	= new Route(GET,    APPLICATION_PREFIX + "nodes/{node_id}/allocations?page={page}&include=server,node");
+		public static final Route LIST_ALLOCATIONS  	= new Route(GET,    APPLICATION_PREFIX + "nodes/{node_id}/allocations?include=server,node");
 		public static final Route CREATE_ALLOCATION 	= new Route(POST,   APPLICATION_PREFIX + "nodes/{node_id}/allocations");
 		public static final Route DELETE_ALLOCATION		= new Route(DELETE, APPLICATION_PREFIX + "nodes/{node_id}/allocations/{allocation_id}");
 
@@ -49,7 +51,7 @@ public class Route {
 
 	public static class Locations {
 
-		public static final Route LIST_LOCATIONS  		= new Route(GET,    APPLICATION_PREFIX + "locations?page={page}&include=nodes,servers");
+		public static final Route LIST_LOCATIONS  		= new Route(GET,    APPLICATION_PREFIX + "locations?include=nodes,servers");
 		public static final Route GET_LOCATION    		= new Route(GET,    APPLICATION_PREFIX + "locations/{location_id}?include=nodes,servers");
 		public static final Route CREATE_LOCATION 		= new Route(POST,   APPLICATION_PREFIX + "locations");
 		public static final Route EDIT_LOCATION   		= new Route(PATCH,  APPLICATION_PREFIX + "locations/{location_id}");
@@ -58,7 +60,7 @@ public class Route {
 
 	public static class Servers {
 
-		public static final Route LIST_SERVERS 			= new Route(GET,    APPLICATION_PREFIX + "servers?page={page}&include=allocations,user,subusers,nest,egg,location,node,databases");
+		public static final Route LIST_SERVERS 			= new Route(GET,    APPLICATION_PREFIX + "servers?include=allocations,user,subusers,nest,egg,location,node,databases");
 		public static final Route GET_SERVER 			= new Route(GET,    APPLICATION_PREFIX + "servers/{server_id}?include=allocations,user,subusers,nest,egg,location,node,databases");
 		public static final Route UPDATE_SERVER_DETAILS = new Route(PATCH,  APPLICATION_PREFIX + "servers/{server_id}/details");
 		public static final Route UPDATE_SERVER_BUILD   = new Route(PATCH,  APPLICATION_PREFIX + "servers/{server_id}/build");
@@ -74,7 +76,7 @@ public class Route {
 
 	public static class Nests {
 
-		public static final Route LIST_NESTS 			= new Route(GET, 	APPLICATION_PREFIX + "nests?page={page}&include=servers,eggs");
+		public static final Route LIST_NESTS 			= new Route(GET, 	APPLICATION_PREFIX + "nests?include=servers,eggs");
 		public static final Route GET_NEST 				= new Route(GET, 	APPLICATION_PREFIX + "nests/{nest_id}?include=servers,eggs");
 		public static final Route GET_EGGS 				= new Route(GET, 	APPLICATION_PREFIX + "nests/{nest_id}/eggs?include=variables,nest,servers");
 		public static final Route GET_EGG 				= new Route(GET, 	APPLICATION_PREFIX + "nests/{nest_id}/eggs/{egg_id}?include=variables,nest,servers");
@@ -86,7 +88,7 @@ public class Route {
 		public static final Route GET_UTILIZATION 		= new Route(GET,  	CLIENT_PREFIX + "servers/{server_id}/resources");
 		public static final Route SEND_COMMAND 			= new Route(POST, 	CLIENT_PREFIX + "servers/{server_id}/command");
 		public static final Route SET_POWER 			= new Route(POST, 	CLIENT_PREFIX + "servers/{server_id}/power");
-		public static final Route LIST_SERVERS 			= new Route(GET,  	CLIENT_PREFIX + "?page={page}&include=subusers,egg");
+		public static final Route LIST_SERVERS 			= new Route(GET,  	CLIENT_PREFIX + "?include=subusers,egg");
 		public static final Route GET_SERVER			= new Route(GET,	CLIENT_PREFIX + "servers/{server_id}?include=subusers,egg");
 		public static final Route GET_WEBSOCKET			= new Route(GET,    CLIENT_PREFIX + "servers/{server_id}/websocket");
 		public static final Route RENAME_SERVER			= new Route(POST, 	CLIENT_PREFIX + "servers/{server_id}/settings/rename");
@@ -120,7 +122,7 @@ public class Route {
 
 	public static class Backups {
 
-		public static final Route LIST_BACKUPS 			= new Route(GET, 	CLIENT_PREFIX + "servers/{server_id}/backups?page={page}");
+		public static final Route LIST_BACKUPS 			= new Route(GET, 	CLIENT_PREFIX + "servers/{server_id}/backups");
 		public static final Route GET_BACKUP 			= new Route(GET, 	CLIENT_PREFIX + "servers/{server_id}/backups/{identifier}");
 		public static final Route DOWNLOAD_BACKUP		= new Route(GET, 	CLIENT_PREFIX + "servers/{server_id}/backups/{identifier}/download");
 		public static final Route CREATE_BACKUP			= new Route(POST, 	CLIENT_PREFIX + "servers/{server_id}/backups");
