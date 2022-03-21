@@ -105,37 +105,19 @@ public class CreateServerImpl extends PteroActionImpl<ApplicationServer> impleme
 
 	@Override
 	public ServerCreationAction setMemory(long amount, DataType dataType) {
-		long trueAmount;
-		switch(dataType) {
-			case MB: trueAmount = amount;
-				break;
-			default: trueAmount = amount * dataType.getMbValue();
-		}
-		this.memory = trueAmount;
+		this.memory = convert(amount, dataType);
 		return this;
 	}
 
 	@Override
 	public ServerCreationAction setSwap(long amount, DataType dataType) {
-		long trueAmount;
-		switch(dataType) {
-			case MB: trueAmount = amount;
-				break;
-			default: trueAmount = amount * dataType.getMbValue();
-		}
-		this.swap = trueAmount;
+		this.swap = convert(amount, dataType);
 		return this;
 	}
 
 	@Override
 	public ServerCreationAction setDisk(long amount, DataType dataType) {
-		long trueAmount;
-		switch(dataType) {
-			case MB: trueAmount = amount;
-				break;
-			default: trueAmount = amount * dataType.getMbValue();
-		}
-		this.disk = trueAmount;
+		this.disk = convert(amount, dataType);
 		return this;
 	}
 
@@ -223,7 +205,11 @@ public class CreateServerImpl extends PteroActionImpl<ApplicationServer> impleme
 		Checks.check(memory > 4, "The minimum memory limit is 4 MB.");
 		Checks.notNull(owner, "Owner");
 		Checks.notNull(egg, "Egg and Nest");
-		Nest nest = egg.getNest().get().orElseGet(() -> egg.getNest().retrieve().execute());
+
+		if (defaultAllocation != null)
+			Checks.check(portRange == null && locations == null, "You need to set both a port range and Location, or set only an Allocation instead.");
+
+		Nest nest = egg.retrieveNest().execute();
 		Map<String, Object> env = new HashMap<>();
 		environment.forEach((k, v) -> env.put(k, v.get().orElse(null)));
 		egg.getDefaultVariableMap().orElseGet(() ->
@@ -264,5 +250,11 @@ public class CreateServerImpl extends PteroActionImpl<ApplicationServer> impleme
 				.put("start_on_completion", startOnCompletion)
 				.put("skip_scripts", skipScripts);
 		return getRequestBody(obj);
+	}
+
+	private long convert(long amount, DataType dataType) {
+		if (dataType != DataType.MB)
+			amount = amount * dataType.getMbValue();
+		return amount;
 	}
 }
