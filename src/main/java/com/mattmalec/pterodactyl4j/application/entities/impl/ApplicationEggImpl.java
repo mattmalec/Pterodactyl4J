@@ -21,7 +21,7 @@ import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationEgg;
 import com.mattmalec.pterodactyl4j.application.entities.Nest;
 import com.mattmalec.pterodactyl4j.application.entities.Script;
-import com.mattmalec.pterodactyl4j.utils.Relationed;
+import com.mattmalec.pterodactyl4j.requests.CompletedPteroAction;
 import org.json.JSONObject;
 
 import java.time.OffsetDateTime;
@@ -40,19 +40,11 @@ public class ApplicationEggImpl implements ApplicationEgg {
     }
 
     @Override
-    public Relationed<Nest> getNest() {
-        return new Relationed<Nest>() {
-            @Override
-            public PteroAction<Nest> retrieve() {
-                return impl.retrieveNestById(json.getLong("nest"));
-            }
+    public PteroAction<Nest> retrieveNest() {
+        if (!json.has("relationships"))
+            return impl.retrieveNestById(json.getLong("nest"));
 
-            @Override
-            public Optional<Nest> get() {
-                if(!json.has("relationships")) return Optional.empty();
-                return Optional.of(new NestImpl(relationships.getJSONObject("nest"), impl));
-            }
-        };
+        return new CompletedPteroAction<>(impl.getP4J(), new NestImpl(relationships.getJSONObject("nest"), impl));
     }
 
     @Override
