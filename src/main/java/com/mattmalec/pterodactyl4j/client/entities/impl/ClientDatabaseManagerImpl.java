@@ -42,7 +42,7 @@ public class ClientDatabaseManagerImpl implements ClientDatabaseManager {
     @Override
     public PteroAction<ClientDatabase> resetPassword(ClientDatabase database) {
         return PteroActionImpl.onRequestExecute(impl.getP4J(), Route.ClientDatabases.ROTATE_PASSWORD.compile(server.getIdentifier(), database.getId()),
-                (response, request) -> new ClientDatabaseImpl(response.getObject(), server));
+                (response, request) -> new ClientDatabaseImpl(response.getObject(), impl, server));
     }
 
     @Override

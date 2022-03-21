@@ -29,7 +29,7 @@ public class ClientDatabaseCreationActionImpl extends AbstractDatabaseAction<Cli
 
     public ClientDatabaseCreationActionImpl(ClientServer server, PteroClientImpl impl) {
         super(impl.getP4J(), Route.ClientDatabases.CREATE_DATABASE.compile(server.getIdentifier()),
-                (response, request) -> new ClientDatabaseImpl(response.getObject(), server));
+                (response, request) -> new ClientDatabaseImpl(response.getObject(), impl, server));
     }
 
     @Override

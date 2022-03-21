@@ -17,7 +17,6 @@
 package com.mattmalec.pterodactyl4j.entities;
 
 import com.mattmalec.pterodactyl4j.PteroAction;
-import com.mattmalec.pterodactyl4j.utils.Relationed;
 
 public interface Database {
 
@@ -26,7 +25,7 @@ public interface Database {
     String getRemote();
     int getMaxConnections();
 
-    Relationed<String> getPassword();
+    PteroAction<String> retrievePassword();
 
     PteroAction<Void> delete();
 
