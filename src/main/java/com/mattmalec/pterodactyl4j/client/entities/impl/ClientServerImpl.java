@@ -24,9 +24,11 @@ import com.mattmalec.pterodactyl4j.entities.FeatureLimit;
 import com.mattmalec.pterodactyl4j.entities.Limit;
 import com.mattmalec.pterodactyl4j.entities.impl.FeatureLimitImpl;
 import com.mattmalec.pterodactyl4j.entities.impl.LimitImpl;
+import com.mattmalec.pterodactyl4j.requests.CompletedPteroAction;
 import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.requests.Route;
-import com.mattmalec.pterodactyl4j.utils.Relationed;
+import com.mattmalec.pterodactyl4j.requests.action.PaginationAction;
+import com.mattmalec.pterodactyl4j.requests.action.impl.PaginationResponseImpl;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -143,21 +145,12 @@ public class ClientServerImpl implements ClientServer {
 	}
 
 	@Override
-	public Relationed<ClientSubuser> getSubuser(UUID uuid) {
-		return new Relationed<ClientSubuser>() {
-			@Override
-			public PteroAction<ClientSubuser> retrieve() {
-				return PteroActionImpl.onRequestExecute(impl.getP4J(),
-						Route.Subusers.GET_SUBUSER.compile(getIdentifier(), uuid.toString()),
-						(response, request) -> new ClientSubuserImpl(response.getObject()));
-			}
-
-			@Override
-			public Optional<ClientSubuser> get() {
-				if(getSubusers().isEmpty()) return Optional.empty();
-				return getSubusers().stream().filter(u -> u.getUUID().equals(uuid)).findFirst();
-			}
-		};
+	public PteroAction<ClientSubuser> retrieveSubuser(UUID uuid) {
+		if(getSubusers().isEmpty())
+			return PteroActionImpl.onRequestExecute(impl.getP4J(),
+					Route.Subusers.GET_SUBUSER.compile(getIdentifier(), uuid.toString()),
+					(response, request) -> new ClientSubuserImpl(response.getObject()));
+		return new CompletedPteroAction<>(impl.getP4J(), getSubusers().stream().filter(u -> u.getUUID().equals(uuid)).findFirst().get());
 	}
 
 	@Override
@@ -176,28 +169,9 @@ public class ClientServerImpl implements ClientServer {
 	}
 
 	@Override
-	public PteroAction<List<Backup>> retrieveBackups() {
-		return PteroActionImpl.onExecute(impl.getP4J(), () -> {
-			List<Backup> backups = new ArrayList<>();
-			JSONObject json = new PteroActionImpl<JSONObject>(impl.getP4J(),
-					Route.Backups.LIST_BACKUPS.compile(getIdentifier(), "1"),
-					(response, request) -> response.getObject()).execute();
-			long pages = json.getJSONObject("meta").getJSONObject("pagination").getLong("total_pages");
-			for (Object o : json.getJSONArray("data")) {
-				JSONObject backup = new JSONObject(o.toString());
-				backups.add(new BackupImpl(backup, this));
-			}
-			for (int i = 2; i <= pages; i++) {
-				JSONObject nextJson = new PteroActionImpl<JSONObject>(impl.getP4J(),
-						Route.Backups.LIST_BACKUPS.compile(getIdentifier(), Long.toUnsignedString(i)),
-						(response, request) -> response.getObject()).execute();
-				for (Object o : nextJson.getJSONArray("data")) {
-					JSONObject backup = new JSONObject(o.toString());
-					backups.add(new BackupImpl(backup, this));
-				}
-			}
-			return Collections.unmodifiableList(backups);
-		});
+	public PaginationAction<Backup> retrieveBackups() {
+		return PaginationResponseImpl.onPagination(impl.getP4J(), Route.Backups.LIST_BACKUPS.compile(getIdentifier()),
+				(object) -> new BackupImpl(object, this));
 	}
 
 	@Override
@@ -283,7 +257,7 @@ public class ClientServerImpl implements ClientServer {
 					List<ClientDatabase> databases = new ArrayList<>();
 					for (Object o : json.getJSONArray("data")) {
 						JSONObject database = new JSONObject(o.toString());
-						databases.add(new ClientDatabaseImpl(database, this));
+						databases.add(new ClientDatabaseImpl(database, impl, this));
 					}
 					return Collections.unmodifiableList(databases);
 				});
