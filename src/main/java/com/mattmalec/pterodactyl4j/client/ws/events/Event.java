@@ -53,13 +53,13 @@ public abstract class Event {
      * The {@link com.mattmalec.pterodactyl4j.client.entities.ClientServer} instance corresponding to this Event
      * <p><b>Note:</b> This is the server at the time of WebSocket creation,
      * if you need an updated version (like if the install state is changed), use
-     * {@link Event#retrieveServer()} or set {@link com.mattmalec.pterodactyl4j.client.managers.WebSocketBuilder#setEnableFreshServer(boolean) WebSocketBuilder.setEnableFreshServer()}
+     * {@link Event#retrieveServer()} or set {@link com.mattmalec.pterodactyl4j.client.managers.WebSocketBuilder#freshServer(boolean)} WebSocketBuilder.freshServer(enable)}
      * to true
      *
      * @return The corresponding {@link com.mattmalec.pterodactyl4j.client.entities.ClientServer} instance
      *
      * @see Event#retrieveServer()
-     * @see com.mattmalec.pterodactyl4j.client.managers.WebSocketBuilder#setEnableFreshServer(boolean) WebSocketBuilder.setEnableFreshServer()
+     * @see com.mattmalec.pterodactyl4j.client.managers.WebSocketBuilder#freshServer(boolean) WebSocketBuilder.freshServer(enable)
      */
     public ClientServer getServer() {
         return server;
