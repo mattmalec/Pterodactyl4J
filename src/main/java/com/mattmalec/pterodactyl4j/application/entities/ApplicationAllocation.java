@@ -17,7 +17,6 @@
 package com.mattmalec.pterodactyl4j.application.entities;
 
 import com.mattmalec.pterodactyl4j.entities.Allocation;
-import com.mattmalec.pterodactyl4j.utils.Relationed;
 
 import java.util.Optional;
 
@@ -25,7 +24,7 @@ public interface ApplicationAllocation extends Allocation {
 
 	boolean isAssigned();
 
-	Optional<Relationed<ApplicationServer>> getServer();
-	Optional<Relationed<Node>> getNode();
+	Optional<ApplicationServer> getServer();
+	Optional<Node> getNode();
 
 }
