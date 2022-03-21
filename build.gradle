@@ -54,9 +54,7 @@ javadoc {
         }
     }
 
-    exclude("com/mattmalec/pterodactyl4j/requests",
-
-            "com/mattmalec/pterodactyl4j/utils/Checks.java",
+    exclude("com/mattmalec/pterodactyl4j/utils/Checks.java",
             "com/mattmalec/pterodactyl4j/utils/ExceptionUtils.java",
             "com/mattmalec/pterodactyl4j/utils/LockUtils.java",
             "com/mattmalec/pterodactyl4j/utils/NamedThreadFactory.java",
