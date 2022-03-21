@@ -18,17 +18,16 @@ package com.mattmalec.pterodactyl4j.application.entities;
 
 import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.entities.Database;
-import com.mattmalec.pterodactyl4j.utils.Relationed;
 
 public interface ApplicationDatabase extends Database, ISnowflake {
 
-    Relationed<ApplicationServer> retrieveServer();
+    PteroAction<ApplicationServer> retrieveServer();
     long getServerIdLong();
     default String getServerId() {
         return Long.toUnsignedString(getServerIdLong());
     }
 
-    Relationed<DatabaseHost> getHost();
+    PteroAction<DatabaseHost> retrieveHost();
     long getHostIdLong();
     default String getHostId() {
         return Long.toUnsignedString(getHostIdLong());

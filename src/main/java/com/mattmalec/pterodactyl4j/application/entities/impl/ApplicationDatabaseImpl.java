@@ -20,11 +20,10 @@ import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationDatabase;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationServer;
 import com.mattmalec.pterodactyl4j.entities.impl.DatabasePasswordImpl;
-import com.mattmalec.pterodactyl4j.utils.Relationed;
+import com.mattmalec.pterodactyl4j.requests.CompletedPteroAction;
 import org.json.JSONObject;
 
 import java.time.OffsetDateTime;
-import java.util.Optional;
 
 public class ApplicationDatabaseImpl implements ApplicationDatabase {
 
@@ -41,18 +40,8 @@ public class ApplicationDatabaseImpl implements ApplicationDatabase {
     }
 
     @Override
-    public Relationed<ApplicationServer> retrieveServer() {
-        return new Relationed<ApplicationServer>() {
-            @Override
-            public PteroAction<ApplicationServer> retrieve() {
-                return impl.retrieveServerById(getServerIdLong());
-            }
-
-            @Override
-            public Optional<ApplicationServer> get() {
-                return Optional.of(server);
-            }
-        };
+    public PteroAction<ApplicationServer> retrieveServer() {
+        return new CompletedPteroAction<>(impl.getP4J(), server);
     }
 
     @Override
@@ -61,20 +50,11 @@ public class ApplicationDatabaseImpl implements ApplicationDatabase {
     }
 
     @Override
-    public Relationed<DatabaseHost> getHost() {
-        return new Relationed<DatabaseHost>() {
-            @Override
-            public PteroAction<DatabaseHost> retrieve() {
-                return server.retrieveDatabaseById(getIdLong())
-                        .map(ApplicationDatabase::getHost).map(Relationed::get).map(Optional::get);
-            }
-
-            @Override
-            public Optional<DatabaseHost> get() {
-                if (!json.has("relationships")) return Optional.empty();
-                return Optional.of(new ApplicationDatabaseHostImpl(relationships.getJSONObject("host"), impl));
-            }
-        };
+    public PteroAction<DatabaseHost> retrieveHost() {
+        if (!json.has("relationships"))
+            return server.retrieveDatabaseById(getIdLong())
+                    .flatMap(ApplicationDatabase::retrieveHost);
+        return new CompletedPteroAction<>(impl.getP4J(), new ApplicationDatabaseHostImpl(relationships.getJSONObject("host"), impl));
     }
 
     @Override
@@ -118,21 +98,10 @@ public class ApplicationDatabaseImpl implements ApplicationDatabase {
     }
 
     @Override
-    public Relationed<String> getPassword() {
-        return new Relationed<String>() {
-            @Override
-            public PteroAction<String> retrieve() {
-                return retrieveServer()
-                        .get().get().retrieveDatabaseById(getIdLong())
-                                .map(ApplicationDatabase::getPassword).map(Relationed::get).map(Optional::get);
-            }
-
-            @Override
-            public Optional<String> get() {
-                if (!json.has("relationships")) return Optional.empty();
-                return Optional.of(new DatabasePasswordImpl(relationships.getJSONObject("password")).getPassword());
-            }
-        };
+    public PteroAction<String> retrievePassword() {
+        if (!json.has("relationships"))
+            return server.retrieveDatabaseById(getIdLong()).flatMap(ApplicationDatabase::retrievePassword);
+        return new CompletedPteroAction<>(impl.getP4J(), new DatabasePasswordImpl(relationships.getJSONObject("password")).getPassword());
     }
 
     @Override
