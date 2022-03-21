@@ -520,7 +520,7 @@ public interface PaginationAction<T> extends PteroAction<List<T>>, Iterable<T> {
     CompletableFuture<?> forEachRemainingAsync(Procedure<? super T> action, Consumer<? super Throwable> failure);
 
     /**
-     * Iterates over all remaining entities until the provided action returns {@code false}!
+     * Iterates over all remaining entities until the provided action returns {@code false}
      * <br>Skipping past already cached entities to iterate all remaining entities of this PaginationAction.
      *
      * <p><b>This is a blocking operation that might take a while to complete</b>
