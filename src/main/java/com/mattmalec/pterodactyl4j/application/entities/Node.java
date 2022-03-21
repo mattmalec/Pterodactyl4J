@@ -19,17 +19,18 @@ package com.mattmalec.pterodactyl4j.application.entities;
 import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.application.managers.ApplicationAllocationManager;
 import com.mattmalec.pterodactyl4j.application.managers.NodeAction;
-import com.mattmalec.pterodactyl4j.utils.Relationed;
+import com.mattmalec.pterodactyl4j.requests.action.PaginationAction;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public interface Node extends ISnowflake {
 
 	boolean isPublic();
 	String getName();
 	String getDescription();
-	Relationed<Location> getLocation();
+	PteroAction<Location> retrieveLocation();
 	ApplicationAllocationManager getAllocationManager();
 	String getFQDN();
 	String getScheme();
@@ -52,11 +53,13 @@ public interface Node extends ISnowflake {
 	String getDaemonListenPort();
 	String getDaemonSFTPPort();
 	String getDaemonBase();
-	Relationed<List<ApplicationServer>> getServers();
-	Relationed<List<ApplicationAllocation>> getAllocations();
-	Relationed<List<ApplicationAllocation>> getAllocationsByPort(int port);
-	default Relationed<List<ApplicationAllocation>> getAllocationsByPort(String port) {
-		return getAllocationsByPort(Integer.parseUnsignedInt(port));
+	PteroAction<List<ApplicationServer>> retrieveServers();
+	PaginationAction<ApplicationAllocation> retrieveAllocations();
+	default PteroAction<List<ApplicationAllocation>> retrieveAllocationsByPort(int port) {
+		return retrieveAllocations().map(list -> list.stream().filter(a -> a.getPortInt() == port).collect(Collectors.toList()));
+	}
+	default PteroAction<List<ApplicationAllocation>> retrieveAllocationsByPort(String port) {
+		return retrieveAllocationsByPort(Integer.parseUnsignedInt(port));
 	}
 	PteroAction<Node.Configuration> retrieveConfiguration();
 

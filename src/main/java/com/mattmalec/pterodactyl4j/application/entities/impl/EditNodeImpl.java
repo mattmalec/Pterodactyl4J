@@ -16,6 +16,7 @@
 
 package com.mattmalec.pterodactyl4j.application.entities.impl;
 
+import com.mattmalec.pterodactyl4j.application.entities.Location;
 import com.mattmalec.pterodactyl4j.application.entities.Node;
 import com.mattmalec.pterodactyl4j.requests.Route;
 import com.mattmalec.pterodactyl4j.requests.action.AbstractNodeAction;
@@ -35,7 +36,7 @@ public class EditNodeImpl extends AbstractNodeAction {
 	protected RequestBody finalizeData() {
 		JSONObject json = new JSONObject();
 		json.put("name", name == null ? node.getName() : name);
-		json.put("location_id", location == null ? node.getLocation().retrieve().execute().getId() : location.getId());
+		json.put("location_id", location == null ? node.retrieveLocation().map(Location::getId).execute() : location.getId());
 		json.put("public", isPublic == null ? (node.isPublic() ? "1" : "0") : (isPublic ? "1" : "0"));
 		json.put("fqdn", fqdn == null ? node.getFQDN() : fqdn);
 		json.put("scheme", secure == null ? node.getScheme() : (secure ? "https" : "http"));

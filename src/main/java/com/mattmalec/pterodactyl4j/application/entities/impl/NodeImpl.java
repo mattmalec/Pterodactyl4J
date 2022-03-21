@@ -17,23 +17,23 @@
 package com.mattmalec.pterodactyl4j.application.entities.impl;
 
 import com.mattmalec.pterodactyl4j.PteroAction;
-import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationAllocation;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationServer;
 import com.mattmalec.pterodactyl4j.application.entities.Location;
 import com.mattmalec.pterodactyl4j.application.entities.Node;
 import com.mattmalec.pterodactyl4j.application.managers.ApplicationAllocationManager;
 import com.mattmalec.pterodactyl4j.application.managers.NodeAction;
+import com.mattmalec.pterodactyl4j.requests.CompletedPaginationAction;
+import com.mattmalec.pterodactyl4j.requests.CompletedPteroAction;
+import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.requests.Route;
-import com.mattmalec.pterodactyl4j.utils.Relationed;
+import com.mattmalec.pterodactyl4j.requests.action.PaginationAction;
 import org.json.JSONObject;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class NodeImpl implements Node {
 
@@ -68,19 +68,10 @@ public class NodeImpl implements Node {
 	}
 
 	@Override
-	public Relationed<Location> getLocation() {
-		return new Relationed<Location>() {
-			@Override
-			public PteroAction<Location> retrieve() {
-				return impl.retrieveLocationById(json.getLong("location_id"));
-			}
-
-			@Override
-			public Optional<Location> get() {
-				if(!json.has("relationships")) return Optional.empty();
-				return Optional.of(new LocationImpl(relationships.getJSONObject("location"), impl));
-			}
-		};
+	public PteroAction<Location> retrieveLocation() {
+		if(!json.has("relationships"))
+			return impl.retrieveLocationById(json.getLong("location_id"));
+		return new CompletedPteroAction<>(impl.getP4J(), new LocationImpl(relationships.getJSONObject("location"), impl));
 	}
 
 	@Override
@@ -153,69 +144,32 @@ public class NodeImpl implements Node {
 		return json.getString("daemon_base");
 	}
 
-
-
 	@Override
-	public Relationed<List<ApplicationServer>> getServers() {
-		NodeImpl node = this;
-		return new Relationed<List<ApplicationServer>>() {
-			@Override
-			public PteroAction<List<ApplicationServer>> retrieve() {
-				return impl.retrieveServersByNode(node);
-			}
+	public PteroAction<List<ApplicationServer>> retrieveServers() {
+		if(!json.has("relationships"))
+			return impl.retrieveServersByNode(this);
 
-			@Override
-			public Optional<List<ApplicationServer>> get() {
-				if(!json.has("relationships")) return Optional.empty();
-				List<ApplicationServer> servers = new ArrayList<>();
-				JSONObject json = relationships.getJSONObject("servers");
-				for(Object o : json.getJSONArray("data")) {
-					JSONObject server = new JSONObject(o.toString());
-					servers.add(new ApplicationServerImpl(impl, server));
-				}
-				return Optional.of(Collections.unmodifiableList(servers));
-			}
-		};
+		List<ApplicationServer> servers = new ArrayList<>();
+		JSONObject json = relationships.getJSONObject("servers");
+		for(Object o : json.getJSONArray("data")) {
+			JSONObject server = new JSONObject(o.toString());
+			servers.add(new ApplicationServerImpl(impl, server));
+		}
+		return new CompletedPteroAction<>(impl.getP4J(), Collections.unmodifiableList(servers));
 	}
 
 	@Override
-	public Relationed<List<ApplicationAllocation>> getAllocations() {
-		NodeImpl node = this;
-		return new Relationed<List<ApplicationAllocation>>() {
-			@Override
-			public PteroAction<List<ApplicationAllocation>> retrieve() {
-				return impl.retrieveAllocationsByNode(node);
-			}
+	public PaginationAction<ApplicationAllocation> retrieveAllocations() {
+		if(!json.has("relationships"))
+			return impl.retrieveAllocationsByNode(this);
 
-			@Override
-			public Optional<List<ApplicationAllocation>> get() {
-				if(!json.has("relationships")) return Optional.empty();
-				List<ApplicationAllocation> allocations = new ArrayList<>();
-				JSONObject json = relationships.getJSONObject("allocations");
-				for(Object o : json.getJSONArray("data")) {
-					JSONObject allocation = new JSONObject(o.toString());
-					allocations.add(new ApplicationAllocationImpl(allocation, impl));
-				}
-				return Optional.of(Collections.unmodifiableList(allocations));
-			}
-		};
-	}
-
-	@Override
-	public Relationed<List<ApplicationAllocation>> getAllocationsByPort(int port) {
-		return new Relationed<List<ApplicationAllocation>>() {
-			@Override
-			public PteroAction<List<ApplicationAllocation>> retrieve() {
-				return PteroActionImpl.onExecute(impl.getP4J(), () -> getAllocations().retrieve().execute().stream().filter(a -> a.getPortInt() == port).collect(Collectors.toList()));
-			}
-
-			@Override
-			public Optional<List<ApplicationAllocation>> get() {
-				if(!json.has("relationships")) return Optional.empty();
-				List<ApplicationAllocation> allocations = getAllocations().get().get();
-				return Optional.of(Collections.unmodifiableList(allocations.stream().filter(a -> a.getPortInt() == port).collect(Collectors.toList())));
-			}
-		};
+		List<ApplicationAllocation> allocations = new ArrayList<>();
+		JSONObject json = relationships.getJSONObject("allocations");
+		for(Object o : json.getJSONArray("data")) {
+			JSONObject allocation = new JSONObject(o.toString());
+			allocations.add(new ApplicationAllocationImpl(allocation, impl));
+		}
+		return new CompletedPaginationAction<>(impl.getP4J(), Collections.unmodifiableList(allocations));
 	}
 
 	@Override
