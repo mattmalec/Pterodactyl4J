@@ -240,7 +240,7 @@ public abstract class PaginationActionImpl<T> extends PteroActionImpl<List<T>> i
     }
 
     protected int getIteratorIndex() {
-        return iteratorIndex < cacheSize() ? iteratorIndex : -1;
+        return iteratorIndex < cacheSize() ? cacheSize() - iteratorIndex : -1;
     }
 
     protected List<T> getRemainingCache() {
@@ -261,7 +261,7 @@ public abstract class PaginationActionImpl<T> extends PteroActionImpl<List<T>> i
     }
 
     protected void updateIndex(T it, int index) {
-        iteratorIndex = cacheSize() - index;
+        iteratorIndex = index;
         if (!useCache)
             last = it;
     }
