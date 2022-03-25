@@ -84,10 +84,11 @@ public class StatsUpdateEvent extends Event {
         return stats.getLong("uptime");
     }
 
-    public String getUptimeFormatted(){
-        long second = (stats.getLong("uptime") / 1000) % 60;
-        long minute = (stats.getLong("uptime") / (1000 * 60)) % 60;
-        long hour = (stats.getLong("uptime") / (1000 * 60 * 60)) % 24;
+    public String getUptimeFormatted() {
+        long uptime = getUptime();
+        long second = (uptime / 1000) % 60;
+        long minute = (uptime / (1000 * 60)) % 60;
+        long hour = (uptime / (1000 * 60 * 60)) % 24;
         return String.format("%02d:%02d:%02d", hour, minute, second);
     }
 }
