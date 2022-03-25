@@ -45,7 +45,7 @@ public class DownloadableFile {
         CompletableFuture<InputStream> future = new CompletableFuture<>();
         Request req = new Request.Builder()
                 .url(url)
-                .addHeader("User-Agent", Requester.USER_AGENT)
+                .addHeader("User-Agent", p4j.getUserAgent())
                 .build();
 
         OkHttpClient requester = p4j.getHttpClient();

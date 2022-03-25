@@ -103,7 +103,7 @@ public class UploadFileActionImpl extends PteroActionImpl<Void> implements Uploa
 
         okhttp3.Request req = new okhttp3.Request.Builder()
                 .url(String.format("%s&directory=%s", url, directory.getPath()))
-                .addHeader("User-Agent", Requester.USER_AGENT)
+                .addHeader("User-Agent", p4j.getUserAgent())
                 .post(fileMultipart())
                 .build();
 

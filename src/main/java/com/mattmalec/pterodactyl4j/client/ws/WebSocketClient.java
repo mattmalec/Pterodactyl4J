@@ -89,6 +89,7 @@ public class WebSocketClient extends WebSocketListener implements Runnable {
                 (response, request) -> response.getObject().getJSONObject("data").getString("socket")).execute();
 
         Request req = new Request.Builder().url(url)
+                .header("User-Agent", client.getP4J().getUserAgent())
                 .header("Origin", client.getP4J().getApplicationUrl())
                 .build();
 

@@ -45,15 +45,15 @@ public class Requester {
 
     private static final String PTERODACTYL_API_PREFIX = "%s/api/";
 
-    public static final String USER_AGENT = "Pterodactyl4J (" + P4JInfo.VERSION + ")";
-
     private final RateLimiter rateLimiter;
     private final OkHttpClient client;
+    private final String userAgent;
 
     public Requester(P4J api) {
         this.api = api;
         this.rateLimiter = new RateLimiter(this, api);
         this.client = api.getHttpClient();
+        this.userAgent = api.getUserAgent();
     }
 
     public <T> void request(Request<T> request) {
@@ -100,7 +100,7 @@ public class Requester {
             builder.method(method, null);
 
         builder.header("Accept", "application/vnd.pterodactyl.v1+json")
-                .header("User-Agent", USER_AGENT);
+                .header("User-Agent", userAgent);
 
         if (api.getToken() == null || api.getToken().isEmpty())
             throw new LoginException("No authorization token was defined.");
