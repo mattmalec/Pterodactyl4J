@@ -34,7 +34,7 @@ public class TransferStatusEvent extends Event {
 		return TransferStatus.valueOf(status.toUpperCase());
 	}
 
-	enum TransferStatus {
+	public enum TransferStatus {
 		STARTING,
 		ARCHIVED,
 		SUCCESS,
