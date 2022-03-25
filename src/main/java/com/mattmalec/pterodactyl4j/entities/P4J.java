@@ -35,6 +35,7 @@ public interface P4J {
 	ScheduledExecutorService getRateLimitPool();
 	ExecutorService getSupplierPool();
 	OkHttpClient getWebSocketClient();
+	String getUserAgent();
 	PteroClient asClient();
 	PteroApplication asApplication();
 

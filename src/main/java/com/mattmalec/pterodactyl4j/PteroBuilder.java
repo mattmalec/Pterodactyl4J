@@ -40,6 +40,7 @@ public class PteroBuilder {
     private ScheduledExecutorService rateLimitPool = null;
     private ExecutorService supplierPool = null;
     private OkHttpClient webSocketClient = null;
+    private String userAgent = null;
 
     private PteroBuilder(String applicationUrl, String token) {
         this.applicationUrl = applicationUrl;
@@ -241,6 +242,36 @@ public class PteroBuilder {
     }
 
     /**
+     * Sets the user agent that will be used when P4J makes a Request
+     * using the {@link okhttp3.OkHttpClient OkHttpClient}
+     *
+     * @param userAgent
+     *        The user agent string
+     *
+     * @return The PteroBuilder instance. Useful for chaining.
+     *
+     * @see #setHttpClient(OkHttpClient)
+     * @see #setWebSocketClient(OkHttpClient)
+     */
+    public PteroBuilder setUserAgent(String userAgent) {
+        this.userAgent = userAgent;
+        return this;
+    }
+
+    /**
+     * The user agent that is currently being used when P4J makes a Request
+     * using the {@link okhttp3.OkHttpClient OkHttpClient}
+     *
+     * @return The user agent
+     *
+     * @see #setHttpClient(OkHttpClient)
+     * @see #setWebSocketClient(OkHttpClient)
+     */
+    public String getUserAgent() {
+        return this.userAgent;
+    }
+
+    /**
      * The URL of the Pterodactyl panel that is currently being used with P4J.
      *
      * @return The panel URL
@@ -273,8 +304,10 @@ public class PteroBuilder {
             this.supplierPool = Executors.newFixedThreadPool(3, new NamedThreadFactory("Supplier"));
         if (webSocketClient == null)
             this.webSocketClient = new OkHttpClient();
+        if (userAgent == null)
+            userAgent = "Pterodactyl4J (" + P4JInfo.VERSION + ")";
         return new P4JImpl(this.applicationUrl, this.token, this.httpClient, this.callbackPool, this.actionPool,
-                this.rateLimitPool, this.supplierPool, this.webSocketClient);
+                this.rateLimitPool, this.supplierPool, this.webSocketClient, this.userAgent);
     }
 
     /**

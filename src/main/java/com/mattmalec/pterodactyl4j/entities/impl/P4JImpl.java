@@ -38,9 +38,10 @@ public class P4JImpl implements P4J {
     private final ScheduledExecutorService rateLimitPool;
     private final ExecutorService supplierPool;
     private final OkHttpClient webSocketClient;
+    private final String userAgent;
 
     public P4JImpl(String applicationUrl, String token, OkHttpClient httpClient, ExecutorService callbackPool, ExecutorService actionPool,
-                   ScheduledExecutorService rateLimitPool, ExecutorService supplierPool, OkHttpClient webSocketClient) {
+                   ScheduledExecutorService rateLimitPool, ExecutorService supplierPool, OkHttpClient webSocketClient, String userAgent) {
         this.token = token;
         this.applicationUrl = applicationUrl;
         this.httpClient = httpClient;
@@ -49,6 +50,7 @@ public class P4JImpl implements P4J {
         this.rateLimitPool = rateLimitPool;
         this.supplierPool = supplierPool;
         this.webSocketClient = webSocketClient;
+        this.userAgent = userAgent;
         this.requester = new Requester(this);
     }
 
@@ -95,6 +97,11 @@ public class P4JImpl implements P4J {
     @Override
     public OkHttpClient getWebSocketClient() {
         return webSocketClient;
+    }
+
+    @Override
+    public String getUserAgent() {
+        return userAgent;
     }
 
     @Override
