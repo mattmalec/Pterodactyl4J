@@ -87,7 +87,11 @@ public class WebSocketClient extends WebSocketListener implements Runnable {
         String url = new PteroActionImpl<String>(client.getP4J(),
                 Route.Client.GET_WEBSOCKET.compile(server.getIdentifier()),
                 (response, request) -> response.getObject().getJSONObject("data").getString("socket")).execute();
-        Request req = new Request.Builder().url(url).build();
+
+        Request req = new Request.Builder().url(url)
+                .header("Origin", client.getP4J().getApplicationUrl())
+                .build();
+
         webSocketClient.newWebSocket(req, this);
     }
 
