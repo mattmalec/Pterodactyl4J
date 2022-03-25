@@ -20,10 +20,16 @@ import com.mattmalec.pterodactyl4j.client.entities.ClientServer;
 import com.mattmalec.pterodactyl4j.client.entities.impl.PteroClientImpl;
 import com.mattmalec.pterodactyl4j.client.managers.WebSocketManager;
 
-public class DisconnectingEvent extends DisconnectionEvent {
+public abstract class DisconnectionEvent extends ConnectionEvent {
 
-    public DisconnectingEvent(PteroClientImpl api, ClientServer server, WebSocketManager manager, boolean connected, int closeCode) {
-        super(api, server, manager, connected, closeCode);
+    protected final int closeCode;
+
+    public DisconnectionEvent(PteroClientImpl api, ClientServer server, WebSocketManager manager, boolean connected, int closeCode) {
+        super(api, server, manager, connected);
+        this.closeCode = closeCode;
     }
 
+    public int getCloseCode() {
+        return closeCode;
+    }
 }
