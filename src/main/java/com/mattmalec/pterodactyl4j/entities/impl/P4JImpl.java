@@ -22,6 +22,9 @@ import com.mattmalec.pterodactyl4j.client.entities.PteroClient;
 import com.mattmalec.pterodactyl4j.client.entities.impl.PteroClientImpl;
 import com.mattmalec.pterodactyl4j.entities.P4J;
 import com.mattmalec.pterodactyl4j.requests.Requester;
+import com.mattmalec.pterodactyl4j.utils.config.EndpointConfig;
+import com.mattmalec.pterodactyl4j.utils.config.SessionConfig;
+import com.mattmalec.pterodactyl4j.utils.config.ThreadingConfig;
 import okhttp3.OkHttpClient;
 
 import java.util.concurrent.ExecutorService;
@@ -29,34 +32,22 @@ import java.util.concurrent.ScheduledExecutorService;
 
 public class P4JImpl implements P4J {
 
-    private final String token;
-    private final String applicationUrl;
     private final Requester requester;
-    private final OkHttpClient httpClient;
-    private final ExecutorService callbackPool;
-    private final ExecutorService actionPool;
-    private final ScheduledExecutorService rateLimitPool;
-    private final ExecutorService supplierPool;
-    private final OkHttpClient webSocketClient;
-    private final String userAgent;
 
-    public P4JImpl(String applicationUrl, String token, OkHttpClient httpClient, ExecutorService callbackPool, ExecutorService actionPool,
-                   ScheduledExecutorService rateLimitPool, ExecutorService supplierPool, OkHttpClient webSocketClient, String userAgent) {
-        this.token = token;
-        this.applicationUrl = applicationUrl;
-        this.httpClient = httpClient;
-        this.callbackPool = callbackPool;
-        this.actionPool = actionPool;
-        this.rateLimitPool = rateLimitPool;
-        this.supplierPool = supplierPool;
-        this.webSocketClient = webSocketClient;
-        this.userAgent = userAgent;
+    private final EndpointConfig endpointConfig;
+    private final ThreadingConfig threadingConfig;
+    private final SessionConfig sessionConfig;
+
+    public P4JImpl(EndpointConfig endpointConfig, ThreadingConfig threadingConfig, SessionConfig sessionConfig) {
+        this.endpointConfig = endpointConfig;
+        this.threadingConfig = threadingConfig;
+        this.sessionConfig = sessionConfig;
         this.requester = new Requester(this);
     }
 
     @Override
     public String getToken() {
-        return this.token;
+        return endpointConfig.getToken();
     }
 
     @Override
@@ -66,42 +57,42 @@ public class P4JImpl implements P4J {
 
     @Override
     public String getApplicationUrl() {
-        return this.applicationUrl;
+        return endpointConfig.getUrl();
     }
 
     @Override
     public OkHttpClient getHttpClient() {
-        return httpClient;
+        return sessionConfig.getHttpClient();
     }
 
     @Override
     public ExecutorService getCallbackPool() {
-        return callbackPool;
+        return threadingConfig.getCallbackPool();
     }
 
     @Override
     public ExecutorService getActionPool() {
-        return actionPool;
+        return threadingConfig.getActionPool();
     }
 
     @Override
     public ScheduledExecutorService getRateLimitPool() {
-        return rateLimitPool;
+        return threadingConfig.getRateLimitPool();
     }
 
     @Override
     public ExecutorService getSupplierPool() {
-        return supplierPool;
+        return threadingConfig.getSupplierPool();
     }
 
     @Override
     public OkHttpClient getWebSocketClient() {
-        return webSocketClient;
+        return sessionConfig.getWebSocketClient();
     }
 
     @Override
     public String getUserAgent() {
-        return userAgent;
+        return sessionConfig.getUserAgent();
     }
 
     @Override

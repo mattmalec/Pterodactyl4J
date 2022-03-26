@@ -20,8 +20,9 @@ import com.mattmalec.pterodactyl4j.application.entities.PteroApplication;
 import com.mattmalec.pterodactyl4j.client.entities.PteroClient;
 import com.mattmalec.pterodactyl4j.entities.P4J;
 import com.mattmalec.pterodactyl4j.entities.impl.P4JImpl;
-import com.mattmalec.pterodactyl4j.utils.Checks;
-import com.mattmalec.pterodactyl4j.utils.NamedThreadFactory;
+import com.mattmalec.pterodactyl4j.utils.config.EndpointConfig;
+import com.mattmalec.pterodactyl4j.utils.config.SessionConfig;
+import com.mattmalec.pterodactyl4j.utils.config.ThreadingConfig;
 import okhttp3.OkHttpClient;
 
 import java.util.concurrent.*;
@@ -290,24 +291,15 @@ public class PteroBuilder {
     }
 
     private P4J build() {
-        Checks.notBlank(token, "API Key");
-        Checks.notBlank(applicationUrl, "Application URL");
-        if (httpClient == null)
-            this.httpClient = new OkHttpClient();
-        if (callbackPool == null)
-            this.callbackPool = ForkJoinPool.commonPool();
-        if (actionPool == null)
-            this.actionPool = Executors.newSingleThreadExecutor(new NamedThreadFactory("Action"));
-        if (rateLimitPool == null)
-            this.rateLimitPool = Executors.newScheduledThreadPool(5, new NamedThreadFactory("RateLimit"));
-        if (supplierPool == null)
-            this.supplierPool = Executors.newFixedThreadPool(3, new NamedThreadFactory("Supplier"));
-        if (webSocketClient == null)
-            this.webSocketClient = new OkHttpClient();
-        if (userAgent == null)
-            userAgent = "Pterodactyl4J (" + P4JInfo.VERSION + ")";
-        return new P4JImpl(this.applicationUrl, this.token, this.httpClient, this.callbackPool, this.actionPool,
-                this.rateLimitPool, this.supplierPool, this.webSocketClient, this.userAgent);
+        EndpointConfig endpointConfig = new EndpointConfig(applicationUrl, token);
+        ThreadingConfig threadingConfig = new ThreadingConfig();
+        threadingConfig.setCallbackPool(callbackPool);
+        threadingConfig.setActionPool(actionPool);
+        threadingConfig.setRateLimitPool(rateLimitPool);
+        threadingConfig.setSupplierPool(supplierPool);
+        SessionConfig sessionConfig = new SessionConfig(httpClient, webSocketClient);
+        sessionConfig.setUserAgent(userAgent);
+        return new P4JImpl(endpointConfig, threadingConfig, sessionConfig);
     }
 
     /**
