@@ -19,7 +19,7 @@ package com.mattmalec.pterodactyl4j.utils;
 
 import java.util.Collection;
 
-public class Checks {
+public final class Checks {
 
     public static void check(boolean expression, String message) {
         if (!expression)

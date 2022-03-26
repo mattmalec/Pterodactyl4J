@@ -16,7 +16,7 @@
 
 package com.mattmalec.pterodactyl4j.utils;
 
-public class ExceptionUtils {
+public final class ExceptionUtils {
 
     public static <T extends Throwable> T appendCause(T throwable, Throwable cause) {
         Throwable t = throwable;

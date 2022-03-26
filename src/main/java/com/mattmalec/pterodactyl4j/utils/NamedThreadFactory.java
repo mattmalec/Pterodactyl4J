@@ -18,7 +18,7 @@ package com.mattmalec.pterodactyl4j.utils;
 
 import java.util.concurrent.ThreadFactory;
 
-public class NamedThreadFactory implements ThreadFactory {
+public final class NamedThreadFactory implements ThreadFactory {
 
     private final String name;
 

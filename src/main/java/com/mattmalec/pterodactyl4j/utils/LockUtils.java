@@ -21,7 +21,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 // i love you jda
-public class LockUtils {
+public final class LockUtils {
 
     public static void locked(ReentrantLock lock, Runnable task) {
         try {
