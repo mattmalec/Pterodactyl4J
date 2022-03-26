@@ -20,7 +20,7 @@ import com.mattmalec.pterodactyl4j.PowerAction;
 import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.client.managers.*;
 import com.mattmalec.pterodactyl4j.entities.Server;
-import com.mattmalec.pterodactyl4j.requests.action.PaginationAction;
+import com.mattmalec.pterodactyl4j.requests.PaginationAction;
 
 import java.util.List;
 import java.util.Optional;

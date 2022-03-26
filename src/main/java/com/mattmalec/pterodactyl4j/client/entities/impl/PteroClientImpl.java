@@ -25,7 +25,7 @@ import com.mattmalec.pterodactyl4j.client.entities.Utilization;
 import com.mattmalec.pterodactyl4j.entities.P4J;
 import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.requests.Route;
-import com.mattmalec.pterodactyl4j.requests.action.PaginationAction;
+import com.mattmalec.pterodactyl4j.requests.PaginationAction;
 import com.mattmalec.pterodactyl4j.requests.action.impl.PaginationResponseImpl;
 import com.mattmalec.pterodactyl4j.utils.StreamUtils;
 import org.json.JSONObject;

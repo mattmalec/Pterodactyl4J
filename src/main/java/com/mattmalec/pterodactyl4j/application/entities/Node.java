@@ -19,7 +19,7 @@ package com.mattmalec.pterodactyl4j.application.entities;
 import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.application.managers.ApplicationAllocationManager;
 import com.mattmalec.pterodactyl4j.application.managers.NodeAction;
-import com.mattmalec.pterodactyl4j.requests.action.PaginationAction;
+import com.mattmalec.pterodactyl4j.requests.PaginationAction;
 
 import java.util.List;
 import java.util.UUID;

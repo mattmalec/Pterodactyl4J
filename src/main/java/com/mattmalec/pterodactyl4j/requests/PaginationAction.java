@@ -14,10 +14,9 @@
  *    limitations under the License.
  */
 
-package com.mattmalec.pterodactyl4j.requests.action;
+package com.mattmalec.pterodactyl4j.requests;
 
 import com.mattmalec.pterodactyl4j.PteroAction;
-import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.utils.Checks;
 import com.mattmalec.pterodactyl4j.utils.Procedure;
 import com.mattmalec.pterodactyl4j.utils.StreamUtils;

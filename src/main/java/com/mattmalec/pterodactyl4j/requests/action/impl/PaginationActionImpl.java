@@ -19,7 +19,7 @@ package com.mattmalec.pterodactyl4j.requests.action.impl;
 import com.mattmalec.pterodactyl4j.entities.P4J;
 import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.requests.Route;
-import com.mattmalec.pterodactyl4j.requests.action.PaginationAction;
+import com.mattmalec.pterodactyl4j.requests.PaginationAction;
 import com.mattmalec.pterodactyl4j.utils.Checks;
 import com.mattmalec.pterodactyl4j.utils.Procedure;
 import org.slf4j.Logger;
