@@ -35,11 +35,12 @@ public class PteroBuilder {
     private String applicationUrl;
     private String token;
 
-    private OkHttpClient httpClient = null;
     private ExecutorService actionPool = null;
     private ExecutorService callbackPool = null;
     private ScheduledExecutorService rateLimitPool = null;
     private ExecutorService supplierPool = null;
+
+    private OkHttpClient httpClient = null;
     private OkHttpClient webSocketClient = null;
     private String userAgent = null;
 
