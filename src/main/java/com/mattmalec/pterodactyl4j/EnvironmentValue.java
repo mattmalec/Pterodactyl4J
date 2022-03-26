@@ -77,7 +77,7 @@ public class EnvironmentValue<T> {
      *
      * @return An EnvironmentValue instance for the provided object
      */
-    public static EnvironmentValue<?> of(Object value) {
+    public static <T> EnvironmentValue<T> of(T value) {
         return new EnvironmentValue<>(value);
     }
 
@@ -88,9 +88,12 @@ public class EnvironmentValue<T> {
      *         The value to load
      *
      * @return An EnvironmentValue instance for the provided String
+     *
+     * @deprecated This will be removed in the next major release (non-beta). Use {@link EnvironmentValue#of(Object)} instead
      */
+    @Deprecated
     public static EnvironmentValue<String> ofString(String value) {
-        return new EnvironmentValue<>(value);
+        return of(value);
     }
 
     /**
@@ -100,9 +103,12 @@ public class EnvironmentValue<T> {
      *         The value to load
      *
      * @return An EnvironmentValue instance for the provided Integer
+     *
+     * @deprecated This will be removed in the next major release (non-beta). Use {@link EnvironmentValue#of(Object)} instead
      */
+    @Deprecated
     public static EnvironmentValue<Integer> ofInteger(int value) {
-        return new EnvironmentValue<>(value);
+        return of(value);
     }
 
     @Override
