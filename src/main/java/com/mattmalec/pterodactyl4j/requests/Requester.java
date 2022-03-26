@@ -16,7 +16,6 @@
 
 package com.mattmalec.pterodactyl4j.requests;
 
-import com.mattmalec.pterodactyl4j.P4JInfo;
 import com.mattmalec.pterodactyl4j.entities.P4J;
 import com.mattmalec.pterodactyl4j.exceptions.HttpException;
 import com.mattmalec.pterodactyl4j.exceptions.LoginException;

@@ -33,7 +33,6 @@ public class Response {
     private final okhttp3.Response rawResponse;
     private Exception exception;
 
-
     public Response(okhttp3.Response response, Exception exception) {
         this(response, response != null ? response.code() : ERROR_CODE, -1);
         this.exception = exception;
