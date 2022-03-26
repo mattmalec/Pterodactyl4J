@@ -40,7 +40,11 @@ public class UserReader
     {
     
       PteroApplication api = PteroBuilder.createApplication("https://pterodactyl.app", "abc123");
-      api.retrieveUsers().executeAsync(users -> users.forEach(u -> System.out.println(u.getFullName())));
+      api.retrieveUsers().forEachAsync(user -> 
+      {
+          System.out.println(u.getFullName());
+          return true;
+      });
       
     }
 }
@@ -57,8 +61,8 @@ public class ServerCreator
         ApplicationEgg egg = api.retrieveEggById(nest, "3").execute();
 
         Map<String, EnvironmentValue<?>> map = new HashMap<>();
-        map.put("SERVER_JARFILE", EnvironmentValue.ofString("server.jar"));
-        map.put("VERSION", EnvironmentValue.ofString("1.8.8"));
+        map.put("SERVER_JARFILE", EnvironmentValue.of("server.jar"));
+        map.put("VERSION", EnvironmentValue.of("1.8.8"));
 
         PteroAction<ApplicationServer> action = api.createServer()
                 .setName("My Server")
