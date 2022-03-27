@@ -20,11 +20,30 @@ import com.mattmalec.pterodactyl4j.entities.Allocation;
 
 import java.util.Optional;
 
+/**
+ * Represents an {@link Allocation} for an {@link ApplicationServer}.
+ */
 public interface ApplicationAllocation extends Allocation {
 
+	/**
+	 * Retrieve if the {@link ApplicationAllocation} is assigned.
+	 *
+	 * @return Whether the allocation is assigned
+	 */
 	boolean isAssigned();
 
+	/**
+	 * Retrieve the {@link ApplicationServer} this allocation is from.
+	 *
+	 * @return The server that contains this allocation
+	 */
 	Optional<ApplicationServer> getServer();
+
+	/**
+	 * Retrieve the {@link Node} this allocation is from.
+	 *
+	 * @return The node this contains this allocation
+	 */
 	Optional<Node> getNode();
 
 }

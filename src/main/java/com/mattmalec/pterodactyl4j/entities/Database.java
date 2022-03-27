@@ -18,19 +18,70 @@ package com.mattmalec.pterodactyl4j.entities;
 
 import com.mattmalec.pterodactyl4j.PteroAction;
 
+/**
+ * Represents a pterodactyl database.
+ */
 public interface Database {
 
+    /**
+     * Retrieve the name of the {@link Database}.
+     *
+     * @return Name
+     */
     String getName();
+
+    /**
+     * Retrieve the username of the {@link Database}.
+     *
+     * @return Username
+     */
     String getUserName();
+
+    /**
+     * Retrieve the remote of the {@link Database}.
+     *
+     * @return Remote
+     */
     String getRemote();
+
+    /**
+     * Retrieve the maximum amount of connections for this {@link Database}.
+     *
+     * @return Maximum amount of allowed connections.
+     */
     int getMaxConnections();
 
+    /**
+     * Retrieve the password for this {@link Database}.
+     *
+     * @return Password
+     */
     PteroAction<String> retrievePassword();
 
+    /**
+     * Deletes this database.
+     *
+     * @return Void
+     */
     PteroAction<Void> delete();
 
+    /**
+     * Represents a host for a {@link Database}.
+     */
     interface DatabaseHost {
+
+        /**
+         * Retrieve the address associated with this {@link DatabaseHost}.
+         *
+         * @return Address
+         */
         String getAddress();
+
+        /**
+         * Retrieve the port associated with this {@link DatabaseHost}.
+         *
+         * @return Port
+         */
         int getPort();
     }
 

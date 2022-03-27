@@ -16,21 +16,66 @@
 
 package com.mattmalec.pterodactyl4j.entities;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+/**
+ * Represents a pterodactyl allocation
+ */
 public interface Allocation {
 
+	/**
+	 * Retrieve the IP of this {@link Allocation}.
+	 *
+	 * @return Allocation ip
+	 */
+	@NotNull
 	String getIP();
 
+	/**
+	 * Retrieve the full (formatted) IP Address of this {@link Allocation}.
+	 *
+	 * @return Formatted address as <code>ADDRESS:PORT</code>
+	 */
+	@NotNull
 	default String getFullAddress() {
 		return String.format("%s:%d", getIP(), getPortInt());
 	}
 
+	/**
+	 * Retrieve the alias for this {@link Allocation}.
+	 *
+	 * @return Alias
+	 */
+	@Nullable
 	String getAlias();
+
+	/**
+	 * Retrieve notes for this {@link Allocation}
+	 *
+	 * @return Notes
+	 */
+	@Nullable
 	String getNotes();
 
-	default String getPort() { return Integer.toUnsignedString(getPortInt()); }
 	int getPortInt();
 
+	/**
+	 * Retrieve the port for this {@link Allocation} as a {@link String}.
+	 *
+	 * @return Port
+	 */
+	@NotNull
+	default String getPort() { return Integer.toUnsignedString(getPortInt()); }
+
 	long getIdLong();
+
+	/**
+	 * Retrieve the id for this {@link Allocation} as a {@link String}.
+	 *
+	 * @return Id
+	 */
+	@NotNull
 	default String getId() { return Long.toUnsignedString(getIdLong()); }
 
 }

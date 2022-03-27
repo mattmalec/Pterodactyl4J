@@ -18,12 +18,18 @@ package com.mattmalec.pterodactyl4j.application.entities;
 
 import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.application.managers.LocationAction;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+/**
+ * Represents a pterodactyl location.
+ */
 public interface Location extends ISnowflake {
 
+	@NotNull
 	String getShortCode();
+	@NotNull
 	String getDescription();
 	PteroAction<List<Node>> getNodes();
 	PteroAction<List<ApplicationServer>> getServers();

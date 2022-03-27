@@ -16,6 +16,8 @@
 
 package com.mattmalec.pterodactyl4j.application.entities;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.time.OffsetDateTime;
 
 /**
@@ -28,6 +30,7 @@ public interface ISnowflake {
 	 *
 	 * @return Never-null String containing the id.
 	 */
+	@NotNull
 	default String getId() { return Long.toUnsignedString(getIdLong()); }
 
 	/**
