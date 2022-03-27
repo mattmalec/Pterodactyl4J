@@ -20,12 +20,36 @@ import com.mattmalec.pterodactyl4j.entities.Egg;
 
 import java.util.List;
 
+/**
+ * Represents an {@link Egg} from a {@link ClientServer}.
+ */
 public interface ClientEgg extends Egg {
 
+    /**
+     * Retrieve a list of {@link EggVariable}s.
+     *
+     * @return List of variables
+     */
     List<EggVariable> getVariables();
 
+    /**
+     * Represents an {@link Egg.EggVariable} for a {@link ClientServer}
+     */
     interface EggVariable extends Egg.EggVariable {
+
+        /**
+         * Retrieve the server value of this {@link EggVariable}.
+         *
+         * @return Server value
+         */
         String getServerValue();
+
+        /**
+         * Retrieve if this {@link EggVariable} is editable.
+         *
+         * @return Whether this variable is editable
+         */
         boolean isEditable();
     }
+
 }

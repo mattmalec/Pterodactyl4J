@@ -20,6 +20,9 @@ import com.mattmalec.pterodactyl4j.EnvironmentValue;
 
 import java.util.Map;
 
+/**
+ * Represents a pterodactyl container.
+ */
 public interface Container {
 
 	/**

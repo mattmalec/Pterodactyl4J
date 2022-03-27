@@ -16,6 +16,9 @@
 
 package com.mattmalec.pterodactyl4j;
 
+/**
+ * Represents a servers state.
+ */
 public enum UtilizationState {
 
     OFFLINE,

@@ -19,11 +19,30 @@ package com.mattmalec.pterodactyl4j.client.entities;
 import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.entities.Allocation;
 
+/**
+ * Represents an {@link Allocation} for a {@link ClientServer}
+ */
 public interface ClientAllocation extends Allocation {
 
+	/**
+	 * Retrieve if this is the default {@link Allocation} for the server.
+	 *
+	 * @return Whether the allocation is the default one
+	 */
 	boolean isDefault();
+
+	/**
+	 * Set the note for this {@link Allocation}.
+	 *
+	 * @param note Note
+	 */
 	PteroAction<ClientAllocation> setNote(String note);
+
+	/**
+	 * Set if this {@link Allocation} should be the primary one.
+	 */
 	PteroAction<ClientAllocation> setPrimary();
+
 	PteroAction<Void> unassign();
 
 }

@@ -16,6 +16,11 @@
 
 package com.mattmalec.pterodactyl4j;
 
+/**
+ * Represents an action that can be sent to modify its power status.
+ *
+ * @see com.mattmalec.pterodactyl4j.client.entities.ClientServer#setPower(PowerAction)
+ */
 public enum PowerAction {
 
     START,
