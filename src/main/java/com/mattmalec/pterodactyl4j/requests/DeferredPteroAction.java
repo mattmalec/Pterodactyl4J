@@ -46,11 +46,8 @@ public class DeferredPteroAction<T> implements PteroAction<T> {
 
     @Override
     public void executeAsync(Consumer<? super T> success, Consumer<? super Throwable> failure) {
-        if (success == null)
-            PteroAction.getDefaultSuccess().accept(value);
-        else
             CompletableFuture.supplyAsync(value, api.getSupplierPool())
-                    .thenAcceptAsync(success);
+                    .thenAcceptAsync(success == null ? PteroAction.getDefaultSuccess() : success);
     }
 
     @Override
