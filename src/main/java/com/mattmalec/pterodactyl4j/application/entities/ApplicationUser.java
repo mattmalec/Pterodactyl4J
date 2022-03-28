@@ -25,28 +25,109 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
+/**
+ * Represents a pterodactyl {@link User}.
+ *
+ * @see PteroApplication#retrieveUserById(long)
+ * @see PteroApplication#retrieveUserById(String)
+ * @see PteroApplication#retrieveUsers()
+ * @see PteroApplication#retrieveUsersByEmail(String, boolean)
+ * @see PteroApplication#retrieveUsersByUsername(String, boolean)
+ */
 public interface ApplicationUser extends User, ISnowflake {
 
+	/**
+	 * Retrieve the first name of the {@link ApplicationUser}.
+	 *
+	 * @return First name
+	 */
 	String getFirstName();
+
+	/**
+	 * Retrieve the last name of the {@link ApplicationUser}.
+	 *
+	 * @return Last name
+	 */
 	String getLastName();
+
+	/**
+	 * Retrieve the FULL name of the {@link ApplicationUser}.
+	 * Formatted: FirstName LastName
+	 *
+	 * @return First and last name
+	 */
 	default String getFullName() {
 		return String.format("%s %s", getFirstName(), getLastName());
 	}
+
+	/**
+	 * Retrieve the external id of the {@link ApplicationUser}.
+	 *
+	 * @return External id
+	 */
 	String getExternalId();
+
+	/**
+	 * Retrieve the {@link UUID} of the {@link ApplicationUser}.
+	 *
+	 * @return Unique id
+	 */
 	UUID getUUID();
+
+	/**
+	 * Retrieve whether the {@link ApplicationUser} has two-factory authentication enabled.
+	 *
+	 * @return Whether 2fa is enabled
+	 */
 	boolean has2FA();
+
+	/**
+	 * Retrieve the language of the {@link ApplicationUser}.
+	 *
+	 * @return Language
+	 */
 	String getLanguage();
+
+	/**
+	 * Retrieve the {@link Locale} of the {@link ApplicationUser}.
+	 * This is derived from the {@link #getLanguage()}.
+	 *
+	 * @return Locale
+	 */
 	default Locale getLocale() {
 		return Locale.forLanguageTag(getLanguage());
 	}
+
+	/**
+	 * Retrieve whether this {@link ApplicationUser} is a root admin.
+	 *
+	 * @return Root admin status
+	 */
 	boolean isRootAdmin();
+
+	/**
+	 * Retrieve a {@link List} of {@link ApplicationServer}s associated with this {@link ApplicationUser}.
+	 *
+	 * @return List of servers
+	 */
 	PteroAction<List<ApplicationServer>> retrieveServers();
+
+	/**
+	 * Edit the {@link ApplicationUser}.
+	 *
+	 * @return Edit information on the user
+	 */
 	UserAction edit();
+
+	/**
+	 * Delete the {@link ApplicationUser}.
+	 *
+	 * @return Delete the user.
+	 */
 	PteroAction<Void> delete();
 
 	@Override
 	String toString();
-
 
 
 }

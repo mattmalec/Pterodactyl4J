@@ -34,7 +34,7 @@ import java.util.function.Predicate;
  * <br>This is used to offer users the ability to decide how P4J should limit a Request.
  *
  * <p>Methods that return an instance of PteroAction require an additional step
- * to complete the execution. Thus the user needs to append a follow-up method.
+ * to complete the execution. Thus, the user needs to append a follow-up method.
  *
  * <p>A default PteroAction is issued with the following operations:
  * <ul>

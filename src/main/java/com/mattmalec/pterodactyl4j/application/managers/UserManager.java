@@ -19,10 +19,45 @@ package com.mattmalec.pterodactyl4j.application.managers;
 import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationUser;
 
+/**
+ * Manager providing functionality for modifying an {@link ApplicationUser}.
+ *
+ * <p><b>Example</b>
+ * <pre>{@code
+ * manager.createUser()
+ *        .setFirstName("Matt")
+ *        .setLastName("Malec")
+ *        .setUserName("Matty")
+ *        .setEmail("example@gmail.com")
+ *        .executeAsync();
+ * }</pre>
+ *
+ * @see com.mattmalec.pterodactyl4j.application.entities.PteroApplication#getUserManager()
+ */
 public interface UserManager {
 
+	/**
+	 * Obtain a new instance of {@link UserAction} for CREATING a new {@link ApplicationUser}.
+	 *
+	 * @return User action instance
+	 * @see UserAction
+	 */
 	UserAction createUser();
+
+	/**
+	 * Obtain a new instance of {@link UserAction} for EDITING an {@link ApplicationUser}s information.
+	 *
+	 * @param user The {@link ApplicationUser} that will be edited
+	 * @return User action instance
+	 */
 	UserAction editUser(ApplicationUser user);
+
+	/**
+	 * Deletes the {@link ApplicationUser}.
+	 *
+	 * @param user The {@link ApplicationUser} to be deleted
+	 * @return Void
+	 */
 	PteroAction<Void> deleteUser(ApplicationUser user);
 
 }
