@@ -18,11 +18,66 @@ package com.mattmalec.pterodactyl4j.application.managers;
 
 import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationUser;
+import com.mattmalec.pterodactyl4j.application.entities.PteroApplication;
 
+/**
+ * Manager providing functionality to create, modify details for, and delete an
+ * {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationUser ApplicationUser}.
+ *
+ * <p><b>Example</b>
+ * <pre>{@code
+ * manager.createUser()
+ *     .setUserName("coolguy") // set the username
+ *     .setEmail("coolguy@example.com") // set the email
+ *     .setFirstName("Cool") // set the first name
+ *     .setLastName("Guy") // set the last name
+ *     .setPassword("coolguy123") // set the password
+ *     .executeAsync();
+ * }</pre>
+ *
+ * @see PteroApplication#getUserManager()
+ */
 public interface UserManager {
 
+	/**
+	 * Creates a new {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationUser ApplicationUser}.
+	 * <br>For this to be successful, the <b>Application API key</b> requires <b>Users</b> permission with <b>Read &amp; Write</b> access.
+	 *
+	 * @throws com.mattmalec.pterodactyl4j.exceptions.LoginException
+	 *         If the API key is incorrect or doesn't have the required permissions upon PteroAction execution
+	 *
+	 * @return A specific {@link com.mattmalec.pterodactyl4j.application.managers.UserAction UserAction}
+	 *         allowing to set fields for the new ApplicationUser before creating it
+	 */
 	UserAction createUser();
+
+	/**
+	 * Modifies an existing {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationUser ApplicationUser}.
+	 * <br>For this to be successful, the <b>Application API key</b> requires <b>Users</b> permission with <b>Read &amp; Write</b> access.
+	 *
+	 * @param user
+	 *        The target user of which to update
+	 *
+	 * @throws com.mattmalec.pterodactyl4j.exceptions.LoginException
+	 *         If the API key is incorrect or doesn't have the required permissions upon PteroAction execution
+	 *
+	 * @return A specific {@link com.mattmalec.pterodactyl4j.application.managers.UserAction UserAction}
+	 *         allowing to set fields for the existing ApplicationUser before updating it
+	 */
 	UserAction editUser(ApplicationUser user);
+
+	/**
+	 * Attempts to delete an existing {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationUser ApplicationUser}.
+	 * <br>For this to be successful, the <b>Application API key</b> requires <b>Users</b> permission with <b>Write</b> access.
+	 *
+	 * @param user
+	 *        The target user of which to delete
+	 *
+	 * @throws com.mattmalec.pterodactyl4j.exceptions.LoginException
+	 *         If the API key is incorrect or doesn't have the required permissions upon PteroAction execution
+	 *
+	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction}
+	 */
 	PteroAction<Void> deleteUser(ApplicationUser user);
 
 }
