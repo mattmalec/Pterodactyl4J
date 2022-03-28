@@ -19,68 +19,70 @@ package com.mattmalec.pterodactyl4j.entities;
 import com.mattmalec.pterodactyl4j.PteroAction;
 
 /**
- * Represents a pterodactyl database.
+ * Represents a Pterodactyl {@link com.mattmalec.pterodactyl4j.entities.Database Database}.
+ * This should contain all information provided from the Pterodactyl instance about an Database.
  */
 public interface Database {
 
     /**
-     * Retrieve the name of the {@link Database}.
+     * The human readable name of the Database.
      *
-     * @return Name
+     * @return Never-null String containing the Database's name.
      */
     String getName();
 
     /**
-     * Retrieve the username of the {@link Database}.
+     * The username used when connecting to the Database.
      *
-     * @return Username
+     * @return Never-null String containing the username
      */
     String getUserName();
 
     /**
-     * Retrieve the remote of the {@link Database}.
+     * The hosts allowed to connect to the Database.
      *
-     * @return Remote
+     * @return Never-null String containing the remote endpoint
      */
     String getRemote();
 
     /**
-     * Retrieve the maximum amount of connections for this {@link Database}.
+     * The maximum amount of connections allowed to connect to the Database.
      *
-     * @return Maximum amount of allowed connections.
+     * @return The maximum amount of connections.
      */
     int getMaxConnections();
 
     /**
-     * Retrieve the password for this {@link Database}.
+     * Retrieves the password used to connect to the Database.
      *
-     * @return Password
+     * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link java.lang.String String}
      */
     PteroAction<String> retrievePassword();
 
     /**
-     * Deletes this database.
+     * Delete this Database.
      *
-     * @return Void
+     * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction}
      */
     PteroAction<Void> delete();
 
     /**
-     * Represents a host for a {@link Database}.
+     * Represents the {@link com.mattmalec.pterodactyl4j.entities.Database.DatabaseHost DatabaseHost} associated
+     * with a {@link com.mattmalec.pterodactyl4j.entities.Database Database}.
      */
     interface DatabaseHost {
 
         /**
-         * Retrieve the address associated with this {@link DatabaseHost}.
+         * The endpoint used when connecting to this {@link DatabaseHost}.
          *
-         * @return Address
+         * @return Never-null String containing the host endpoint
          */
         String getAddress();
 
         /**
-         * Retrieve the port associated with this {@link DatabaseHost}.
+         * The port used when connecting to this {@link DatabaseHost}.
          *
-         * @return Port
+         * @return The port used for connecting to the host
          */
         int getPort();
     }
