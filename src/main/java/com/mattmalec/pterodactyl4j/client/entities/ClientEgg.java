@@ -42,7 +42,7 @@ public interface ClientEgg extends Egg {
          *
          * @return Server value
          */
-        String getServerValue();
+        EnvironmentValue<?> getServerValue();
 
         /**
          * Retrieve if this {@link EggVariable} is editable.

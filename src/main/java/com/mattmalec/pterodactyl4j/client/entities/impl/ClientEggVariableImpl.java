@@ -49,8 +49,8 @@ public class ClientEggVariableImpl implements ClientEgg.EggVariable {
     }
 
     @Override
-    public String getServerValue() {
-        return json.getString("server_value");
+    public EnvironmentValue<?> getServerValue() {
+        return EnvironmentValue.of(json.get("server_value"));
     }
 
     @Override
