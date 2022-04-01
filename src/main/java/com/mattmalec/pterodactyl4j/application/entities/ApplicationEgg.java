@@ -18,6 +18,9 @@ package com.mattmalec.pterodactyl4j.application.entities;
 
 import com.mattmalec.pterodactyl4j.EnvironmentValue;
 import com.mattmalec.pterodactyl4j.PteroAction;
+import com.mattmalec.pterodactyl4j.application.managers.ServerController;
+import com.mattmalec.pterodactyl4j.client.entities.ClientServer;
+import com.mattmalec.pterodactyl4j.client.managers.ClientServerManager;
 import com.mattmalec.pterodactyl4j.entities.Egg;
 
 import java.util.List;
@@ -25,88 +28,97 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * Represents an {@link Egg} from an {@link ApplicationServer}.
+ * Represents a Pterodactyl {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationEgg ApplicationEgg}.
+ * This should contain all information provided from the Pterodactyl instance about an ApplicationEgg.
  */
 public interface ApplicationEgg extends Egg, ISnowflake {
 
 	/**
-	 * Retrieve the {@link Nest} associated with this {@link ApplicationEgg}.
+	 * The Nest the ApplicationEgg is associated with
 	 *
-	 * @return Nest
+	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link com.mattmalec.pterodactyl4j.application.entities.Nest Nest}
 	 */
 	PteroAction<Nest> retrieveNest();
 
 	/**
-	 * Retrieve an {@link Optional} {@link List} of {@link EggVariable}s associated with this {@link ApplicationEgg}.
+	 * The egg variables assigned to the ApplicationEgg
 	 *
-	 * @return Optional list of egg variables
+	 * @return {@link java.util.Optional Optional} - Type {@link java.util.List List} of {@link EggVariable EggVariables}
 	 */
 	Optional<List<EggVariable>> getVariables();
 
 	/**
-	 * Retrieve an {@link Optional} {@link Map} of default variables associated with this {@link ApplicationEgg}.
+	 * The default variables for this ApplicationEgg
 	 *
-	 * @return Optional map of variables
+	 * @return {@link java.util.Optional Optional} - Type {@link java.util.Map Map} of {@link EnvironmentValue EnvironmentVariables}
 	 */
 	Optional<Map<String, EnvironmentValue<?>>> getDefaultVariableMap();
 
 	/**
-	 * Retrieve the author of this {@link ApplicationEgg}.
+	 * The immutable author of the ApplicationEgg formatted as an email address
 	 *
-	 * @return author
+	 * @return Never-null String containing the egg author's email
 	 */
 	String getAuthor();
 
 	/**
-	 * Retrieve the description of this {@link ApplicationEgg}.
+	 * The description of the ApplicationEgg
 	 *
-	 * @return description
+	 * @return Never-null String containing the egg's description
 	 */
 	String getDescription();
 
 	/**
-	 * Retrieve the docker image of this {@link ApplicationEgg}.
-	 * @return docker image
+	 * The Docker image associated with the ApplicationEgg
+	 *
+	 * @return Never-null String containing the egg's Docker image.
 	 */
 	String getDockerImage();
 
 	/**
-	 * Retrieve the stop command of this {@link ApplicationEgg}.
+	 * The stop command for the ApplicationEgg
+	 * <br>This is ran when a user executes {@link ClientServer#stop()} or hits the <code>Stop</code> button on the panel
 	 *
-	 * @return stop command
+	 * @return Never-null String containing the egg's stop command
 	 */
 	String getStopCommand();
 
 	/**
-	 * Retrieve the start-up command of this {@link ApplicationEgg}.
+	 * The start command for the ApplicationEgg
+	 * <br>This is ran when a user executes {@link ClientServer#start()} ()} or hits the <code>Start</code> button on the panel
 	 *
-	 * @return start-up command
+	 * @return Never-null String containing the egg's start command
 	 */
 	String getStartupCommand();
 
 	/**
-	 * Retrieve the installation script of this {@link ApplicationEgg}.
+	 * The installation script for this ApplicationEgg.
+	 * <br>This script is ran when a user installs a {@link com.mattmalec.pterodactyl4j.entities.Server Server} for the first time,
+	 * or triggers a reinstall
 	 *
-	 * @return installation script
+	 * @return Never-null installation script
+	 *
+	 * @see ClientServerManager#reinstall()
+	 * @see ServerController#reinstall()
 	 */
 	Script getInstallScript();
 
 	/**
-	 * Represents an {@link EggVariable} for an {@link ApplicationEgg}.
+	 * Represents an {@link EggVariable EggVariable} associated with an {@link ApplicationEgg}.
 	 */
 	interface EggVariable extends Egg.EggVariable, ISnowflake {
 
 		/**
-		 * Retrieve whether the {@link EggVariable} is viewable by the user.
+		 * Returns whether the {@link EggVariable EggVariable} is viewable by the end-user.
 		 *
-		 * @return Whether the variable is viewable by the user.
+		 * @return True - if the variable is viewable by the end-user.
 		 */
 		boolean isUserViewable();
 
 		/**
-		 * Retrieve whether the {@link EggVariable} is editable by the user.
+		 * Returns whether the {@link EggVariable EggVariable} is editable by the end-user.
 		 *
-		 * @return Whether the variable is editable by the user.
+		 * @return True - if the variable is editable by the end-user.
 		 */
 		boolean isUserEditable();
 	}
