@@ -21,7 +21,10 @@ import com.mattmalec.pterodactyl4j.EnvironmentValue;
 import java.util.Map;
 
 /**
- * Represents a pterodactyl container.
+ * Represents a Pterodactyl {@link com.mattmalec.pterodactyl4j.application.entities.Container Container}.
+ * This should contain all information provided from the Pterodactyl instance about an Container.
+ *
+ * @see ApplicationServer#getContainer()
  */
 public interface Container {
 
