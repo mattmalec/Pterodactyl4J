@@ -30,7 +30,6 @@ public interface ISnowflake {
 	 *
 	 * @return Never-null String containing the id.
 	 */
-	@NotNull
 	default String getId() { return Long.toUnsignedString(getIdLong()); }
 
 	/**
@@ -57,6 +56,5 @@ public interface ISnowflake {
 	 * @see    #getCreationDate()
 	 */
 	OffsetDateTime getUpdatedDate();
-
 
 }
