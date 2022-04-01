@@ -16,38 +16,40 @@
 
 package com.mattmalec.pterodactyl4j.client.entities;
 
+import com.mattmalec.pterodactyl4j.EnvironmentValue;
 import com.mattmalec.pterodactyl4j.entities.Egg;
 
 import java.util.List;
 
 /**
- * Represents an {@link Egg} from a {@link ClientServer}.
+ * Represents a Pterodactyl {@link com.mattmalec.pterodactyl4j.client.entities.ClientEgg ClientEgg}.
+ * This should contain all information provided from the Pterodactyl instance about a ClientEgg.
  */
 public interface ClientEgg extends Egg {
 
     /**
-     * Retrieve a list of {@link EggVariable}s.
+     * The egg variables assigned to the ClientEgg
      *
-     * @return List of variables
+     * @return {@link java.util.List List} - Type of {@link ClientEgg.EggVariable EggVariables}
      */
     List<EggVariable> getVariables();
 
     /**
-     * Represents an {@link Egg.EggVariable} for a {@link ClientServer}
+     * Represents an {@link ClientEgg.EggVariable EggVariable} associated with a {@link ClientEgg}.
      */
     interface EggVariable extends Egg.EggVariable {
 
         /**
-         * Retrieve the server value of this {@link EggVariable}.
+         * The server value of the EggVariable. This is the current value used by the server
          *
-         * @return Server value
+         * @return Never-null {@link com.mattmalec.pterodactyl4j.EnvironmentValue EnvironmentValue} containing the variable's server value.
          */
         EnvironmentValue<?> getServerValue();
 
         /**
-         * Retrieve if this {@link EggVariable} is editable.
+         * Returns whether the {@link ClientEgg.EggVariable EggVariable} is editable
          *
-         * @return Whether this variable is editable
+         * @return True - if the variable is editable
          */
         boolean isEditable();
     }
