@@ -23,19 +23,18 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 /**
- * Represents a pterodactyl location.
+ * Represents a Pterodactyl {@link com.mattmalec.pterodactyl4j.application.entities.Location Location}.
+ * This should contain all information provided from the Pterodactyl instance about a Location.
  */
 public interface Location extends ISnowflake {
 
-	@NotNull
 	String getShortCode();
-	@NotNull
 	String getDescription();
+
 	PteroAction<List<Node>> getNodes();
 	PteroAction<List<ApplicationServer>> getServers();
+
 	LocationAction edit();
 	PteroAction<Void> delete();
 
-	@Override
-	String toString();
 }
