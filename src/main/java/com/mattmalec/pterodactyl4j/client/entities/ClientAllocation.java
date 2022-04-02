@@ -20,29 +20,47 @@ import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.entities.Allocation;
 
 /**
- * Represents an {@link Allocation} for a {@link ClientServer}
+ * Represents a Pterodactyl {@link com.mattmalec.pterodactyl4j.client.entities.ClientAllocation ClientAllocation}.
+ * This should contain all information provided from the Pterodactyl instance about a ClientAllocation associated with its
+ * {@link com.mattmalec.pterodactyl4j.client.entities.ClientServer ClientServer}.
  */
 public interface ClientAllocation extends Allocation {
 
 	/**
-	 * Retrieve if this is the default {@link Allocation} for the server.
+	 * Returns if this is the default Allocation for the server.
 	 *
-	 * @return Whether the allocation is the default one
+	 * @return True - if the allocation is the default one
 	 */
 	boolean isDefault();
 
 	/**
-	 * Set the note for this {@link Allocation}.
+	 * Set the note for this Allocation.
 	 *
-	 * @param note Note
+	 * @param note
+	 *        The note for this Allocation
+	 *
+	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} -
+	 * Type {@link com.mattmalec.pterodactyl4j.client.entities.ClientAllocation ClientAllocation}
 	 */
 	PteroAction<ClientAllocation> setNote(String note);
 
 	/**
-	 * Set if this {@link Allocation} should be the primary one.
+	 * Set this Allocation as the default/primary Allocation for the
+	 * {@link com.mattmalec.pterodactyl4j.client.entities.ClientServer ClientServer}
+	 *
+	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} -
+	 * Type {@link com.mattmalec.pterodactyl4j.client.entities.ClientAllocation ClientAllocation}
 	 */
 	PteroAction<ClientAllocation> setPrimary();
 
+	/**
+	 * Unassign this Allocation.
+	 *
+	 * @throws IllegalArgumentException
+	 *         If the provided allocation is the default
+	 *
+	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction}
+	 */
 	PteroAction<Void> unassign();
 
 }
