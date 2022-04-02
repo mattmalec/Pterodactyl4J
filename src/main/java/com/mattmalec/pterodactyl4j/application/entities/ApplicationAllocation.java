@@ -21,28 +21,32 @@ import com.mattmalec.pterodactyl4j.entities.Allocation;
 import java.util.Optional;
 
 /**
- * Represents an {@link Allocation} for an {@link ApplicationServer}.
+ * Represents a Pterodactyl {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationAllocation ApplicationAllocation}.
+ * This should contain all information provided from the Pterodactyl instance about a ApplicationAllocation.
  */
 public interface ApplicationAllocation extends Allocation {
 
 	/**
-	 * Retrieve if the {@link ApplicationAllocation} is assigned.
+	 * Returns if this Allocation is assigned to an {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer}
 	 *
-	 * @return Whether the allocation is assigned
+	 * @return True - if the allocation is assigned
 	 */
 	boolean isAssigned();
 
 	/**
-	 * Retrieve the {@link ApplicationServer} this allocation is from.
+	 * The ApplicationServer associated with this Allocation
+	 * <br>This method will not return a present Optional if there are no available relationships or if the Allocation is not assigned
 	 *
-	 * @return The server that contains this allocation
+	 * @return {@link java.util.Optional Optional} - Type {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer}
 	 */
 	Optional<ApplicationServer> getServer();
 
+
 	/**
-	 * Retrieve the {@link Node} this allocation is from.
+	 * The {@link com.mattmalec.pterodactyl4j.application.entities.Node Node} associated with this Allocation
+	 * <br>This method will not return a present Optional if there are no available relationships
 	 *
-	 * @return The node this contains this allocation
+	 * @return {@link java.util.Optional Optional} - Type {@link com.mattmalec.pterodactyl4j.application.entities.Node Node}
 	 */
 	Optional<Node> getNode();
 
