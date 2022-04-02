@@ -16,8 +16,6 @@
 
 package com.mattmalec.pterodactyl4j.application.entities;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.time.OffsetDateTime;
 
 /**
