@@ -16,66 +16,76 @@
 
 package com.mattmalec.pterodactyl4j.entities;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import com.mattmalec.pterodactyl4j.client.entities.ClientAllocation;
 
 /**
- * Represents a pterodactyl allocation
+ * Represents a Pterodactyl {@link com.mattmalec.pterodactyl4j.entities.Allocation Allocation}.
+ * This should contain all information provided from the Pterodactyl instance about an Allocation.
  */
 public interface Allocation {
 
 	/**
-	 * Retrieve the IP of this {@link Allocation}.
+	 * The IP address of this Allocation
 	 *
-	 * @return Allocation ip
+	 * @return Never-null String containing the IP address of this Allocation
 	 */
-	@NotNull
 	String getIP();
 
 	/**
-	 * Retrieve the full (formatted) IP Address of this {@link Allocation}.
+	 * The socket address/endpoint for this Allocation
+	 * <p>This is the equivalent of calling
+	 * {@link java.lang.String#format(String, Object...) String.format}("%s:%d", allocation.getIP(), allocation.getPortInt())
 	 *
-	 * @return Formatted address as <code>ADDRESS:PORT</code>
+	 * @return Never-null String containing the socket address for this Allocation, for example 192.168.0.1:3000
 	 */
-	@NotNull
 	default String getFullAddress() {
-		return String.format("%s:%d", getIP(), getPortInt());
+		return getIP() + ":" + getPortInt();
 	}
 
 	/**
-	 * Retrieve the alias for this {@link Allocation}.
+	 * The alias for this Allocation
 	 *
-	 * @return Alias
+	 * @return Possibly-null String containing the allocation's alias
 	 */
-	@Nullable
 	String getAlias();
 
 	/**
-	 * Retrieve notes for this {@link Allocation}
+	 * The notes for this Allocation
+	 * <br>This is assigned by a user having control of the {@link com.mattmalec.pterodactyl4j.client.entities.ClientServer ClientServer}
+	 * currently utilizing the Allocation
 	 *
-	 * @return Notes
+	 * <p>This value can be modified using {@link ClientAllocation#setNote(String) ClientAllocation.setNote(String)}.
+	 *
+	 * @return Possibly-null String containing the allocation's notes
 	 */
-	@Nullable
 	String getNotes();
 
+	/**
+	 * The port used for connection with this Allocation
+	 *
+	 * @return The port
+	 */
 	int getPortInt();
 
 	/**
-	 * Retrieve the port for this {@link Allocation} as a {@link String}.
+	 * The port used for connection with this Allocation
 	 *
-	 * @return Port
+	 * @return Never-null String containing the port
 	 */
-	@NotNull
 	default String getPort() { return Integer.toUnsignedString(getPortInt()); }
 
+	/**
+	 * The id of this Allocation. This is unique to every Allocation and will never change.
+	 *
+	 * @return Long containing the id.
+	 */
 	long getIdLong();
 
 	/**
-	 * Retrieve the id for this {@link Allocation} as a {@link String}.
+	 * The id of this Allocation. This is unique to every Allocation and will never change.
 	 *
-	 * @return Id
+	 * @return Never-null String containing the id.
 	 */
-	@NotNull
 	default String getId() { return Long.toUnsignedString(getIdLong()); }
 
 }
