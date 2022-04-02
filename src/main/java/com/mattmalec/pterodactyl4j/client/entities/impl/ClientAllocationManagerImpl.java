@@ -22,6 +22,7 @@ import com.mattmalec.pterodactyl4j.client.entities.ClientServer;
 import com.mattmalec.pterodactyl4j.client.managers.ClientAllocationManager;
 import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.requests.Route;
+import com.mattmalec.pterodactyl4j.utils.Checks;
 import org.json.JSONObject;
 
 import static com.mattmalec.pterodactyl4j.requests.PteroActionImpl.getRequestBody;
@@ -48,6 +49,7 @@ public class ClientAllocationManagerImpl implements ClientAllocationManager {
 
     @Override
     public PteroAction<Void> unassignAllocation(ClientAllocation allocation) {
+        Checks.check(!allocation.isDefault(), "Cannot unassign default Allocation");
         return PteroActionImpl.onRequestExecute(impl.getP4J(),
                 Route.ClientAllocations.DELETE_ALLOCATION.compile(server.getIdentifier(), allocation.getId()));
     }
