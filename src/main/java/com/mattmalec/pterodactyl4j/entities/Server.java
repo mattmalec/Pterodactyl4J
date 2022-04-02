@@ -41,7 +41,7 @@ public interface Server {
 	/**
 	 * The human readable name of the Server.
 	 * <p>
-	 * This value can be modified using {@link com.mattmalec.pterodactyl4j.application.managers.ServerManager#setName(String) ServerManager.setName(String)}.
+	 * This value can be modified using {@link com.mattmalec.pterodactyl4j.application.managers.ServerDetailManager#setName(String) ServerDetailManager.setName(String)}.
 	 *
 	 * @return Never-null String containing the Servers's name.
 	 */
@@ -50,7 +50,7 @@ public interface Server {
 	/**
 	 * The description of the Server
 	 * <p>
-	 * This value can be modified using {@link com.mattmalec.pterodactyl4j.application.managers.ServerManager#setDescription(String) ServerManager#setDescription(String)}.
+	 * This value can be modified using {@link com.mattmalec.pterodactyl4j.application.managers.ServerDetailManager#setDescription(String) ServerDetailManager#setDescription(String)}.
 	 *
 	 * @return Possibly-null String containing the Servers's description.
 	 */
@@ -59,7 +59,7 @@ public interface Server {
 	/**
 	 * The server resource limits of the Server.
 	 * <p>
-	 * These values can be modified using the {@link com.mattmalec.pterodactyl4j.application.managers.ServerManager ServerManager}.
+	 * These values can be modified using the {@link com.mattmalec.pterodactyl4j.application.managers.ServerBuildManager ServerBuildManager}.
 	 *
 	 * @return Never-null {@link com.mattmalec.pterodactyl4j.entities.Limit} containing the Servers's resource limits.
 	 */
@@ -68,7 +68,7 @@ public interface Server {
 	/**
 	 * The feature limits of the Server.
 	 * <p>
-	 * These values can be modified using the {@link com.mattmalec.pterodactyl4j.application.managers.ServerManager ServerManager}.
+	 * These values can be modified using the {@link com.mattmalec.pterodactyl4j.application.managers.ServerBuildManager ServerBuildManager}.
 	 *
 	 * @return Never-null {@link com.mattmalec.pterodactyl4j.entities.FeatureLimit} containing the Servers's feature limits.
 	 */
