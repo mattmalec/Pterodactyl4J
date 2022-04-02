@@ -99,7 +99,7 @@ public interface PteroClient {
      *
      * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link com.mattmalec.pterodactyl4j.client.entities.ClientServer ClientServer}
      */
-    PteroAction<ClientServer> retrieveServerByIdentifier(@NotNull String identifier);
+    PteroAction<ClientServer> retrieveServerByIdentifier(String identifier);
 
     /**
      * Retrieves ClientServers matching the provided name from Pterodactyl instance
@@ -114,6 +114,6 @@ public interface PteroClient {
      *
      * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.client.entities.ClientServer ClientServers}
      */
-    PteroAction<List<ClientServer>> retrieveServersByName(@NotNull String name, boolean caseSensitive);
+    PteroAction<List<ClientServer>> retrieveServersByName(String name, boolean caseSensitive);
 
 }
