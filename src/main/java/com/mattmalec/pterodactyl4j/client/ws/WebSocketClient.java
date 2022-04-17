@@ -27,6 +27,7 @@ import com.mattmalec.pterodactyl4j.client.ws.events.connection.FailureEvent;
 import com.mattmalec.pterodactyl4j.client.ws.handle.*;
 import com.mattmalec.pterodactyl4j.requests.Route;
 import okhttp3.*;
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -82,7 +83,7 @@ public class WebSocketClient extends WebSocketListener implements Runnable {
     }
 
     public void connect() {
-        if(connected)
+        if (connected)
             throw new IllegalStateException("Client already connected");
         String url = new PteroActionImpl<String>(client.getP4J(),
                 Route.Client.GET_WEBSOCKET.compile(server.getIdentifier()),
@@ -106,7 +107,7 @@ public class WebSocketClient extends WebSocketListener implements Runnable {
     }
 
     public boolean send(String message) {
-        if(!connected)
+        if (!connected)
             throw new IllegalStateException("Client isn't connected to server websocket");
         return webSocket.send(message);
     }
@@ -116,7 +117,7 @@ public class WebSocketClient extends WebSocketListener implements Runnable {
     }
 
     public void sendAuthenticate(String token) {
-        if(!connected)
+        if (!connected)
             throw new IllegalStateException("Client isn't connected to server websocket");
         String t = Optional.ofNullable(token).orElseGet(() -> new PteroActionImpl<String>(client.getP4J(),
                 Route.Client.GET_WEBSOCKET.compile(server.getIdentifier()),
@@ -156,7 +157,7 @@ public class WebSocketClient extends WebSocketListener implements Runnable {
     }
 
     @Override
-    public void onOpen(WebSocket webSocket, Response response) {
+    public void onOpen(@NotNull WebSocket webSocket, @NotNull Response response) {
         connected = true;
         this.webSocket = webSocket;
         WEBSOCKET_LOG.info("Connected to websocket for server {}", server.getIdentifier());
@@ -165,26 +166,26 @@ public class WebSocketClient extends WebSocketListener implements Runnable {
     }
 
     @Override
-    public void onMessage(WebSocket webSocket, String text) {
+    public void onMessage(@NotNull WebSocket webSocket, @NotNull String text) {
         onEvent(new JSONObject(text));
     }
 
 
     @Override
-    public void onClosing(WebSocket webSocket, int code, String reason) {
+    public void onClosing(@NotNull WebSocket webSocket, int code, @NotNull String reason) {
         connected = false;
         manager.getEventManager().handle(new DisconnectingEvent(client, server, manager, connected, code));
 
     }
 
     @Override
-    public void onClosed(WebSocket webSocket, int code, String reason) {
+    public void onClosed(@NotNull WebSocket webSocket, int code, @NotNull String reason) {
         connected = false;
         manager.getEventManager().handle(new DisconnectedEvent(client, server, manager, connected, code));
     }
 
     @Override
-    public void onFailure(WebSocket webSocket, Throwable t, Response response) {
+    public void onFailure(@NotNull WebSocket webSocket, @NotNull Throwable t, Response response) {
         connected = false;
         WEBSOCKET_LOG.error(String.format("There was an error in the websocket for server %s", server.getIdentifier()), t);
         manager.getEventManager().handle(new FailureEvent(client, server, manager, connected, response, t));
