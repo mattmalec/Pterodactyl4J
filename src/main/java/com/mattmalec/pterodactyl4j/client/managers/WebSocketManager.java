@@ -27,12 +27,10 @@ public class WebSocketManager {
 
     private final WebSocketClient client;
     private final IClientListenerManager eventManager;
-    private final Thread thread;
 
     public WebSocketManager(PteroClientImpl api, ClientServer server, IClientListenerManager eventManager, boolean freshServer) {
         this.eventManager = eventManager;
         this.client = new WebSocketClient(api, server, freshServer, this);
-        this.thread = new Thread(client, "P4J-ClientWS");
         connect();
     }
 
@@ -41,13 +39,20 @@ public class WebSocketManager {
     }
 
     private void connect() {
+        Thread thread = new Thread(client, "P4J-ClientWS");
         thread.start();
+    }
+
+    public void reconnect() {
+        if (client.isConnected())
+            client.shutdown();
+
+        connect();
     }
 
     public void shutdown() {
         client.shutdown();
     }
-
 
     public void authenticate() {
         client.sendAuthenticate();
