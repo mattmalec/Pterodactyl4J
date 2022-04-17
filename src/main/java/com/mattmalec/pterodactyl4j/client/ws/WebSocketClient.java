@@ -151,6 +151,9 @@ public class WebSocketClient extends WebSocketListener implements Runnable {
         }
     }
 
+    public boolean isConnected() {
+        return connected;
+    }
 
     @Override
     public void onOpen(WebSocket webSocket, Response response) {
