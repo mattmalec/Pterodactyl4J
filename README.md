@@ -42,7 +42,7 @@ public class UserReader
       PteroApplication api = PteroBuilder.createApplication("https://pterodactyl.app", "abc123");
       api.retrieveUsers().forEachAsync(user -> 
       {
-          System.out.println(u.getFullName());
+          System.out.println(user.getFullName());
           return true;
       });
       
@@ -54,8 +54,8 @@ public class UserReader
 public class ServerCreator
 {
     public static void main(String[] args)
-    { 
-
+    {
+        PteroApplication api = PteroBuilder.createApplication("https://pterodactyl.app", "abc123");
         Nest nest = api.retrieveNestById("1").execute();
         Location location = api.retrieveLocationById("1").execute();
         ApplicationEgg egg = api.retrieveEggById(nest, "3").execute();
@@ -93,7 +93,7 @@ public class MyApp extends ClientSocketListenerAdapter
 
         PteroClient api = PteroBuilder.createClient("https://pterodactyl.app", "xyz321");
         // if there isn't another thread running, this won't execute. you'll need to grab the server synchronously
-       api.retrieveServerByIdentifier("39f09a87").map(ClientServer::getWebSocketBuilder)
+        api.retrieveServerByIdentifier("39f09a87").map(ClientServer::getWebSocketBuilder)
                .map(builder -> builder.addEventListeners(new MyApp())).executeAsync(WebSocketBuilder::build);
     
     }
