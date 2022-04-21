@@ -28,13 +28,11 @@ import com.mattmalec.pterodactyl4j.utils.AwaitableClientListener;
 public class WebSocketManager {
 
     private final PteroClientImpl api;
-    private final ClientServer server;
     private final WebSocketClient client;
     private final IClientListenerManager eventManager;
 
     public WebSocketManager(PteroClientImpl api, ClientServer server, IClientListenerManager eventManager, boolean freshServer) {
         this.api = api;
-        this.server = server;
         this.eventManager = eventManager;
         this.client = new WebSocketClient(api, server, freshServer, this);
         connect();
