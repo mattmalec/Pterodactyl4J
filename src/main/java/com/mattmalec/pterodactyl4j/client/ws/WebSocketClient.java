@@ -170,7 +170,6 @@ public class WebSocketClient extends WebSocketListener implements Runnable {
         onEvent(new JSONObject(text));
     }
 
-
     @Override
     public void onClosing(@NotNull WebSocket webSocket, int code, @NotNull String reason) {
         connected = false;
