@@ -21,14 +21,20 @@ import com.mattmalec.pterodactyl4j.client.entities.ClientServer;
 import com.mattmalec.pterodactyl4j.client.entities.impl.PteroClientImpl;
 import com.mattmalec.pterodactyl4j.client.ws.WebSocketAction;
 import com.mattmalec.pterodactyl4j.client.ws.WebSocketClient;
+import com.mattmalec.pterodactyl4j.client.ws.events.connection.DisconnectedEvent;
 import com.mattmalec.pterodactyl4j.client.ws.hooks.IClientListenerManager;
+import com.mattmalec.pterodactyl4j.utils.AwaitableClientListener;
 
 public class WebSocketManager {
 
+    private final PteroClientImpl api;
+    private final ClientServer server;
     private final WebSocketClient client;
     private final IClientListenerManager eventManager;
 
     public WebSocketManager(PteroClientImpl api, ClientServer server, IClientListenerManager eventManager, boolean freshServer) {
+        this.api = api;
+        this.server = server;
         this.eventManager = eventManager;
         this.client = new WebSocketClient(api, server, freshServer, this);
         connect();
@@ -44,10 +50,20 @@ public class WebSocketManager {
     }
 
     public void reconnect() {
-        if (client.isConnected())
+        if (client.isConnected()) {
+            AwaitableClientListener listener =
+                    AwaitableClientListener.create(DisconnectedEvent.class, api.getP4J().getSupplierPool());
+
+            eventManager.register(listener);
+
             client.shutdown();
 
-        connect();
+            listener.await(ignored -> {
+                eventManager.unregister(listener);
+                connect();
+            });
+
+        } else connect();
     }
 
     public void shutdown() {
