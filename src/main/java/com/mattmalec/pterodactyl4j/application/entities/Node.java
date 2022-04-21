@@ -20,6 +20,7 @@ import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.application.managers.ApplicationAllocationManager;
 import com.mattmalec.pterodactyl4j.application.managers.NodeAction;
 import com.mattmalec.pterodactyl4j.requests.PaginationAction;
+import com.mattmalec.pterodactyl4j.utils.StreamUtils;
 
 import java.util.List;
 import java.util.UUID;
@@ -56,16 +57,16 @@ public interface Node extends ISnowflake {
 	PteroAction<List<ApplicationServer>> retrieveServers();
 	PaginationAction<ApplicationAllocation> retrieveAllocations();
 	default PteroAction<List<ApplicationAllocation>> retrieveAllocationsByPort(int port) {
-		return retrieveAllocations().map(list -> list.stream().filter(a -> a.getPortInt() == port).collect(Collectors.toList()));
+		return retrieveAllocations().all().map(List::stream)
+				.map(stream -> stream.filter(a -> a.getPortInt() == port)
+						.collect(StreamUtils.toUnmodifiableList()));
 	}
 	default PteroAction<List<ApplicationAllocation>> retrieveAllocationsByPort(String port) {
 		return retrieveAllocationsByPort(Integer.parseUnsignedInt(port));
 	}
 	PteroAction<Node.Configuration> retrieveConfiguration();
-
 	NodeAction edit();
 	PteroAction<Void> delete();
-
 	interface Configuration {
 		boolean isDebug();
 		UUID getUUID();
