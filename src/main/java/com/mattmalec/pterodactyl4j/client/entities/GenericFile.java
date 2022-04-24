@@ -33,6 +33,10 @@ public interface GenericFile {
         return getSizeBytes() / (double) dataType.getByteValue();
     }
 
+    default String getSizeFormatted(DataType dataType) {
+        return String.format("%.2f %s", getSize(dataType), dataType.name());
+    }
+
     GenericFile.Permission getPermissions();
     boolean isFile();
     boolean isSymlink();
