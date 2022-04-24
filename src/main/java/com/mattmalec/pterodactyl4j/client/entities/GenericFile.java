@@ -30,7 +30,7 @@ public interface GenericFile {
 
     long getSizeBytes();
     default double getSize(DataType dataType) {
-        return getSizeBytes() / (dataType.getByteValue() * Math.pow(2, 20));
+        return getSizeBytes() / (double) dataType.getByteValue();
     }
 
     GenericFile.Permission getPermissions();
