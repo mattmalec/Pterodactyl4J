@@ -151,10 +151,10 @@ public class PteroActionImpl<T> implements PteroAction<T> {
     }
 
     public static RequestBody getRequestBody(JSONObject object) {
-        return object == null ? null : RequestBody.create(object.toString(), Requester.MEDIA_TYPE_JSON);
+        return object == null ? null : RequestBody.create(Requester.MEDIA_TYPE_JSON, object.toString());
     }
 
     public static RequestBody getRequestBody(JSONArray array) {
-        return array == null ? null : RequestBody.create(array.toString(), Requester.MEDIA_TYPE_JSON);
+        return array == null ? null : RequestBody.create(Requester.MEDIA_TYPE_JSON, array.toString());
     }
 }
