@@ -83,7 +83,7 @@ public interface PteroClient {
      *
      * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.client.entities.ClientServer ClientServers}
      */
-    PaginationAction<ClientServer> retrieveServers();
+    PaginationAction<ClientServer> retrieveServers(boolean listAdmin);
 
     /**
      * Retrieves an individual ClientServer represented by the provided identifier from Pterodactyl instance

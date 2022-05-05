@@ -88,6 +88,7 @@ public class Route {
 		public static final Route GET_UTILIZATION 		= new Route(GET,  	CLIENT_PREFIX + "servers/{server_id}/resources");
 		public static final Route SEND_COMMAND 			= new Route(POST, 	CLIENT_PREFIX + "servers/{server_id}/command");
 		public static final Route SET_POWER 			= new Route(POST, 	CLIENT_PREFIX + "servers/{server_id}/power");
+		public static final Route LIST_SERVERS_ADMIN    = new Route(GET,    CLIENT_PREFIX + "?include=subusers,egg&type=admin");
 		public static final Route LIST_SERVERS 			= new Route(GET,  	CLIENT_PREFIX + "?include=subusers,egg");
 		public static final Route GET_SERVER			= new Route(GET,	CLIENT_PREFIX + "servers/{server_id}?include=subusers,egg");
 		public static final Route GET_WEBSOCKET			= new Route(GET,    CLIENT_PREFIX + "servers/{server_id}/websocket");

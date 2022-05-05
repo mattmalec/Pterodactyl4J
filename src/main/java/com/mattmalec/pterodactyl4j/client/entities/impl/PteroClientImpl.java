@@ -71,10 +71,19 @@ public class PteroClientImpl implements PteroClient {
                 (response, request) -> new UtilizationImpl(response.getObject()));
     }
 
-    @Override
+
     public PaginationAction<ClientServer> retrieveServers() {
-        return PaginationResponseImpl.onPagination(api, Route.Client.LIST_SERVERS.compile(),
-                (object) -> new ClientServerImpl(object, this));
+        return retrieveServers(false);
+    }
+    @Override
+    public PaginationAction<ClientServer> retrieveServers(boolean listAdmin){
+        if(listAdmin){
+            return PaginationResponseImpl.onPagination(api, Route.Client.LIST_SERVERS_ADMIN.compile(),
+                    (object) -> new ClientServerImpl(object, this));
+        }else {
+            return PaginationResponseImpl.onPagination(api, Route.Client.LIST_SERVERS.compile(),
+                    (object) -> new ClientServerImpl(object, this));
+        }
     }
 
     @Override
