@@ -78,7 +78,7 @@ public class Request<T> {
                     onFailure(new ServerException("The server has encountered an Internal Server Error."));
                     break;
                 default:
-                    onFailure(new HttpException(String.format("Pterodactyl4J has encountered a %d error.", response.getCode()), response.getObject()));
+                    onFailure(new HttpException(String.format("Pterodactyl4J has encountered a %d error.", response.getCode()), response));
                     break;
             }
     }

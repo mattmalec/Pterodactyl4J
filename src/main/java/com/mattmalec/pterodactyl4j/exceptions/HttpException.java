@@ -16,12 +16,20 @@
 
 package com.mattmalec.pterodactyl4j.exceptions;
 
+import com.mattmalec.pterodactyl4j.requests.Response;
 import org.json.JSONObject;
 
 public class HttpException extends PteroException {
 
     public HttpException(String message) {
         super(message);
+    }
+
+    private static String create(String text, Response response) {
+        if (response.isEmpty())
+            return text;
+        else
+            return formatMessage(text, response.getObject());
     }
 
     private static String formatMessage(String text, JSONObject json) {
@@ -33,7 +41,7 @@ public class HttpException extends PteroException {
         return message.toString();
     }
 
-    public HttpException(String text, JSONObject json) {
-        super(formatMessage(text, json));
+    public HttpException(String text, Response response) {
+        super(create(text, response));
     }
 }
