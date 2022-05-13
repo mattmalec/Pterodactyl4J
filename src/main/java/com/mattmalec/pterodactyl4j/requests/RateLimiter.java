@@ -18,9 +18,9 @@ package com.mattmalec.pterodactyl4j.requests;
 
 import com.mattmalec.pterodactyl4j.entities.P4J;
 import com.mattmalec.pterodactyl4j.utils.LockUtils;
+import com.mattmalec.pterodactyl4j.utils.P4JLogger;
 import okhttp3.Headers;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -30,7 +30,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class RateLimiter implements Runnable {
 
-    public static final Logger RATELIMIT_LOG = LoggerFactory.getLogger(RateLimiter.class);
+    public static final Logger RATELIMIT_LOG = P4JLogger.getLogger(RateLimiter.class);
 
     private static final String RESET_HEADER = "X-RateLimit-Reset";
     private static final String LIMIT_HEADER = "X-RateLimit-Limit";

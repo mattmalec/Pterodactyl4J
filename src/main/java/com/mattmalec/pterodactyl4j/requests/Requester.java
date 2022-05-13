@@ -19,6 +19,7 @@ package com.mattmalec.pterodactyl4j.requests;
 import com.mattmalec.pterodactyl4j.entities.P4J;
 import com.mattmalec.pterodactyl4j.exceptions.HttpException;
 import com.mattmalec.pterodactyl4j.exceptions.LoginException;
+import com.mattmalec.pterodactyl4j.utils.P4JLogger;
 import okhttp3.Call;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -34,7 +35,7 @@ import java.net.SocketTimeoutException;
 public class Requester {
 
     private final P4J api;
-    private final Logger REQUESTER_LOG = LoggerFactory.getLogger(Requester.class);
+    private final Logger REQUESTER_LOG = P4JLogger.getLogger(Requester.class);
 
     public static final RequestBody EMPTY_BODY = RequestBody.create(null, new byte[0]);
 

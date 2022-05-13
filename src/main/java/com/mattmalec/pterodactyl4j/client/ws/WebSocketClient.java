@@ -16,7 +16,6 @@
 
 package com.mattmalec.pterodactyl4j.client.ws;
 
-import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.client.entities.ClientServer;
 import com.mattmalec.pterodactyl4j.client.entities.impl.PteroClientImpl;
 import com.mattmalec.pterodactyl4j.client.managers.WebSocketManager;
@@ -25,12 +24,13 @@ import com.mattmalec.pterodactyl4j.client.ws.events.connection.DisconnectedEvent
 import com.mattmalec.pterodactyl4j.client.ws.events.connection.DisconnectingEvent;
 import com.mattmalec.pterodactyl4j.client.ws.events.connection.FailureEvent;
 import com.mattmalec.pterodactyl4j.client.ws.handle.*;
+import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.requests.Route;
+import com.mattmalec.pterodactyl4j.utils.P4JLogger;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,7 +40,7 @@ public class WebSocketClient extends WebSocketListener implements Runnable {
 
     private final OkHttpClient webSocketClient;
 
-    public static final Logger WEBSOCKET_LOG = LoggerFactory.getLogger(WebSocketClient.class);
+    public static final Logger WEBSOCKET_LOG = P4JLogger.getLogger(WebSocketClient.class);
 
     private WebSocket webSocket;
     private final PteroClientImpl client;
