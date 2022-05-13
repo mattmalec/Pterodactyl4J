@@ -245,14 +245,15 @@ The builds are distributed using a Nexus instance
 Pterodactyl4J uses [SLF4J](https://www.slf4j.org/) to log its messages.
 
 That means you should add some SLF4J implementation to your build path in addition to P4J.
-If no implementation is found, the following message will be printed to the console when executing a request:
+If no implementation is found, following message will be printed to the console on startup:
 ```
 SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
 SLF4J: Defaulting to no-operation (NOP) logger implementation
 SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
 ```
 
-P4J does **NOT** offer a fallback logger in place of SLF4J. You need an implementation to receive contextual log messages.
+P4J currently offers a fallback logger if no SLF4J implementation is present. 
+I strongly recommend you use one though, as it improves speed and allows you to customize the output.
 
 The most popular implementations are [Log4j 2](https://logging.apache.org/log4j/2.x/) and [Logback](https://logback.qos.ch/)
 
@@ -278,7 +279,7 @@ This project requires **Java 8**.<br>
 All dependencies are managed automatically by Gradle.
 
  * OkHttp
-   * Version: **4.9.1**
+   * Version: **3.13.0**
    * [Github](https://github.com/square/okhttp)
    * [Maven Repository](https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp)
  * org.json
