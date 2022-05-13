@@ -43,11 +43,10 @@ public class Response {
         this.retryAfter = retryAfter;
         this.rawResponse = response;
 
-        if(response == null) {
+        if (response == null)
             this.body = null;
-        } else {
+        else
             body = response.body().byteStream();
-        }
     }
 
     public Response(long retryAfter) {
@@ -59,12 +58,15 @@ public class Response {
     }
 
     public boolean isEmpty() {
+        if (body == null)
+            return true;
+
         try {
             return body.read(new byte[0]) == -1;
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-        return false;
+        return true;
     }
 
     public String getRawObject() {

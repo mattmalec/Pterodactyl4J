@@ -131,13 +131,13 @@ public class PteroActionImpl<T> implements PteroAction<T> {
     }
 
     public void handleResponse(Response response, Request<T> request) {
-        if(response.isOk())
+        if (response.isOk())
             handleSuccess(response, request);
         else request.setOnFailure(response);
     }
 
     public void handleSuccess(Response response, Request<T> request) {
-        if(response.isEmpty())
+        if (response.isEmpty() || handler == null)
             request.onSuccess(null);
         else request.onSuccess(handler.apply(response, request));
     }
