@@ -1,7 +1,9 @@
 import org.apache.tools.ant.filters.ReplaceTokens
+
 plugins {
-    id 'java'
-    id 'maven'
+    id 'java-library'
+    id 'maven-publish'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
 
 sourceCompatibility = targetCompatibility = 1.8
@@ -20,15 +22,50 @@ dependencies {
     implementation 'org.jetbrains:annotations:23.0.0'
 }
 
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            repository(url: "https://repo.mattmalec.com/repository/releases") {
-                authentication(userName: System.getenv("jenkinsUsername"), password: System.getenv("jenkinsPassword"))
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+
+            version = version
+            artifactId = 'Pterodactyl4J'
+            groupId = 'com.mattmalec'
+
+            from components.java
+
+            pom {
+                name = project.name
+                description = 'Java wrapper for the API of Pterodactyl'
+                url = 'https://github.com/mattmalec/Pterodactyl4J'
+                licenses {
+                    license {
+                        name = 'The Apache Software License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'mattmalec'
+                        name = 'Matt Malec'
+                        email = 'matt@mattmalec.com'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:https://github.com/mattmalec/Pterodactyl4J'
+                    developerConnection = 'scm:git:ssh://github.com/mattmalec/Pterodactyl4J'
+                    url = 'https://github.com/mattmalec/Pterodactyl4J'
+                }
             }
-            pom.version = version
-            pom.artifactId = "Pterodactyl4J"
-            pom.groupId = "com.mattmalec"
+
+            repositories {
+                maven {
+                    name 'Jenkins'
+                    url  'https://repo.mattmalec.com/repository/releases'
+                    credentials {
+                        username = System.getenv('jenkinsUsername')
+                        password = System.getenv('jenkinsPassword')
+                    }
+                }
+            }
         }
     }
 }
@@ -90,8 +127,10 @@ task generateJavaSources(type: SourceTask) {
     dependsOn sourcesForRelease
 }
 
+shadowJar.archiveClassifier.set('withDependencies')
+
 task sourcesJar(type: Jar) {
-    classifier = 'sources'
+    archiveClassifier.set('sources')
     from ('src/main/java') {
         exclude '**/P4JInfo.java'
     }
@@ -100,13 +139,23 @@ task sourcesJar(type: Jar) {
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
+    archiveClassifier.set('javadoc')
     from javadoc.destinationDir
 }
 
 artifacts {
     archives javadocJar
     archives sourcesJar
+}
+
+build {
+    dependsOn jar
+    dependsOn javadocJar
+    dependsOn sourcesJar
+    dependsOn shadowJar
+
+    jar.mustRunAfter clean
+    shadowJar.mustRunAfter sourcesJar
 }
 
 compileJava {
