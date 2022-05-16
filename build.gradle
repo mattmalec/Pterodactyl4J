@@ -23,54 +23,6 @@ dependencies {
     implementation 'org.jetbrains:annotations:23.0.0'
 }
 
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-
-            version = version
-            artifactId = 'Pterodactyl4J'
-            groupId = 'com.mattmalec'
-
-            from components.java
-
-            pom {
-                name = project.name
-                description = 'Java wrapper for the API of Pterodactyl'
-                url = 'https://github.com/mattmalec/Pterodactyl4J'
-                licenses {
-                    license {
-                        name = 'The Apache Software License, Version 2.0'
-                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                    }
-                }
-                developers {
-                    developer {
-                        id = 'mattmalec'
-                        name = 'Matt Malec'
-                        email = 'matt@mattmalec.com'
-                    }
-                }
-                scm {
-                    connection = 'scm:git:https://github.com/mattmalec/Pterodactyl4J'
-                    developerConnection = 'scm:git:ssh://github.com/mattmalec/Pterodactyl4J'
-                    url = 'https://github.com/mattmalec/Pterodactyl4J'
-                }
-            }
-
-            repositories {
-                maven {
-                    name 'Jenkins'
-                    url  'https://repo.mattmalec.com/repository/releases'
-                    credentials {
-                        username = System.getenv('jenkinsUsername')
-                        password = System.getenv('jenkinsPassword')
-                    }
-                }
-            }
-        }
-    }
-}
-
 javadoc {
     failOnError = false
     options {
@@ -144,11 +96,6 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
     from javadoc.destinationDir
 }
 
-artifacts {
-    archives javadocJar
-    archives sourcesJar
-}
-
 build {
     dependsOn jar
     dependsOn javadocJar
@@ -176,5 +123,56 @@ class Version {
 
     String toString() {
         return "$major.${minor}_$build"
+    }
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+
+            version = version
+            artifactId = 'Pterodactyl4J'
+            groupId = 'com.mattmalec'
+
+            from components.java
+
+            artifact sourcesJar
+            artifact javadocJar
+
+            pom {
+                name = project.name
+                description = 'Java wrapper for the API of Pterodactyl'
+                url = 'https://github.com/mattmalec/Pterodactyl4J'
+                licenses {
+                    license {
+                        name = 'The Apache Software License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'mattmalec'
+                        name = 'Matt Malec'
+                        email = 'matt@mattmalec.com'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:https://github.com/mattmalec/Pterodactyl4J'
+                    developerConnection = 'scm:git:ssh://github.com/mattmalec/Pterodactyl4J'
+                    url = 'https://github.com/mattmalec/Pterodactyl4J'
+                }
+            }
+
+            repositories {
+                maven {
+                    name 'Jenkins'
+                    url  'https://repo.mattmalec.com/repository/releases'
+                    credentials {
+                        username = System.getenv('jenkinsUsername')
+                        password = System.getenv('jenkinsPassword')
+                    }
+                }
+            }
+        }
     }
 }
