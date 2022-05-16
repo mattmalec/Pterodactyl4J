@@ -16,9 +16,19 @@
 
 package com.mattmalec.pterodactyl4j.client.entities;
 
+/**
+ * Represents Pterodactyl {@link SFTP} connection info
+ */
 public interface SFTP {
-
+    /**
+     * Gets the host for the sftp connection
+     * @return host of the sftp connection
+     */
     String getIP();
+    /**
+     * Gets the ip for the sftp connection
+     * @return ip of the sftp connection
+     */
     int getPort();
 
 }

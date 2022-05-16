@@ -16,16 +16,33 @@
 
 package com.mattmalec.pterodactyl4j;
 
+/**
+ * Represents a format of data such as a {@link DataType#GB}
+ */
 public enum DataType {
 
 //	MB((byte) 0, 1,       "Megabyte"),
 //	GB((byte) 1, 1024,    "Gigabyte"),
 //	TB((byte) 2, 1048576, "Terabyte");
-
+	/**
+	 * DataType format for Bytes
+	 */
 	B ((byte) 0, 1,                  "Byte"),
+	/**
+	 * DataType format for Kilo-Bytes
+	 */
 	KB((byte) 1, 1024,               "Kilobyte"),
+	/**
+	 * DataType format for Mega-Bytes
+	 */
 	MB((byte) 2, 1048576,            "Megabyte"),
+	/**
+	 * DataType format for Giga-Bytes
+	 */
 	GB((byte) 3, 1_073_741_824,      "Gigabyte"),
+	/**
+	 * DataType format for Tera-Bytes
+	 */
 	TB((byte) 4, 1_099_511_627_776L, "Terabyte");
 
 	private final byte identifier;

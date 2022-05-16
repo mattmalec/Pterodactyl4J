@@ -18,32 +18,30 @@ package com.mattmalec.pterodactyl4j.client.entities;
 
 import com.mattmalec.pterodactyl4j.PowerAction;
 import com.mattmalec.pterodactyl4j.PteroAction;
+import com.mattmalec.pterodactyl4j.PteroBuilder;
 import com.mattmalec.pterodactyl4j.requests.PaginationAction;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+/**
+ * Represents the access to a user's server panel
+ * To build a {@link PteroClient} use {@link PteroBuilder#buildClient()}
+ */
 public interface PteroClient {
 
     /**
      * Retrieves the Pterodactyl user account belonging to the API key
      *
-     *
-     * @throws com.mattmalec.pterodactyl4j.exceptions.LoginException
-     *         If the API key is incorrect
-     *
      * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link com.mattmalec.pterodactyl4j.client.entities.Account Account}
+     * @throws com.mattmalec.pterodactyl4j.exceptions.LoginException If the API key is incorrect
      */
     PteroAction<Account> retrieveAccount();
 
     /**
      * Sets the power of a {@link com.mattmalec.pterodactyl4j.client.entities.ClientServer ClientServer}
      *
-     * @throws com.mattmalec.pterodactyl4j.exceptions.LoginException
-     *         If the API key is incorrect
-     *
      * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link Void}
-     *
+     * @throws com.mattmalec.pterodactyl4j.exceptions.LoginException If the API key is incorrect
      * @deprecated Use {@link ClientServer#setPower(PowerAction)} instead
      */
     @Deprecated
@@ -52,11 +50,8 @@ public interface PteroClient {
     /**
      * Sends a command to a {@link com.mattmalec.pterodactyl4j.client.entities.ClientServer ClientServer}
      *
-     * @throws com.mattmalec.pterodactyl4j.exceptions.LoginException
-     *         If the API key is incorrect
-     *
      * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link Void}
-     *
+     * @throws com.mattmalec.pterodactyl4j.exceptions.LoginException If the API key is incorrect
      * @deprecated Use {@link ClientServer#sendCommand(String)} instead
      */
     @Deprecated
@@ -65,11 +60,8 @@ public interface PteroClient {
     /**
      * Retrieves the utilization of a {@link com.mattmalec.pterodactyl4j.client.entities.ClientServer ClientServer}
      *
-     * @throws com.mattmalec.pterodactyl4j.exceptions.LoginException
-     *         If the API key is incorrect
-     *
      * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link com.mattmalec.pterodactyl4j.client.entities.Utilization Utilization}
-     *
+     * @throws com.mattmalec.pterodactyl4j.exceptions.LoginException If the API key is incorrect
      * @deprecated Use {@link ClientServer#retrieveUtilization()} instead
      */
     @Deprecated
@@ -78,41 +70,28 @@ public interface PteroClient {
     /**
      * Retrieves all of the ClientServers from the Pterodactyl instance
      *
-     * @throws com.mattmalec.pterodactyl4j.exceptions.LoginException
-     *         If the API key is incorrect
-     *
      * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.client.entities.ClientServer ClientServers}
+     * @throws com.mattmalec.pterodactyl4j.exceptions.LoginException If the API key is incorrect
      */
     PaginationAction<ClientServer> retrieveServers();
 
     /**
      * Retrieves an individual ClientServer represented by the provided identifier from Pterodactyl instance
      *
-     * @param  identifier
-     *         The server identifier (first 8 characters of the uuid)
-     *
-     * @throws com.mattmalec.pterodactyl4j.exceptions.LoginException
-     *         If the API key is incorrect
-     *
-     * @throws com.mattmalec.pterodactyl4j.exceptions.NotFoundException
-     * 		   If the server cannot be found
-     *
+     * @param identifier The server identifier (first 8 characters of the uuid)
      * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link com.mattmalec.pterodactyl4j.client.entities.ClientServer ClientServer}
+     * @throws com.mattmalec.pterodactyl4j.exceptions.LoginException    If the API key is incorrect
+     * @throws com.mattmalec.pterodactyl4j.exceptions.NotFoundException If the server cannot be found
      */
     PteroAction<ClientServer> retrieveServerByIdentifier(String identifier);
 
     /**
      * Retrieves ClientServers matching the provided name from Pterodactyl instance
      *
-     * @param  name
-     *         The name
-     * @param caseSensitive
-     * 		   True - If P4J should search using case sensitivity
-     *
-     * @throws com.mattmalec.pterodactyl4j.exceptions.LoginException
-     *         If the API key is incorrect
-     *
+     * @param name          The name
+     * @param caseSensitive True - If P4J should search using case sensitivity
      * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.client.entities.ClientServer ClientServers}
+     * @throws com.mattmalec.pterodactyl4j.exceptions.LoginException If the API key is incorrect
      */
     PteroAction<List<ClientServer>> retrieveServersByName(String name, boolean caseSensitive);
 
