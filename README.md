@@ -21,9 +21,6 @@ P4J strives to provide a clean and full wrapping of the Pterodactyl REST API for
 > <br /><br />Please make sure you are verifying that commits from my [GitHub user](https://github.com/mattmalec)
 > are signed using my GPG key.
 
-> :warning: My Discord account has been disabled for an unknown reason. If you need immediate assistance, please find me
-> on Telegram [here](https://t.me/Pterodactyl4J) or open an issue, as I'm unavailable on Discord.
-
 ## Creating the PteroApplication/PteroClient Object
 
 Creating the PteroApplication or PteroClient object is done via the PteroBuilder class. Depending on your use case, the PteroApplication/PteroClient object is created by calling `createApplication` or `createClient`. Make sure to set your application URL and token as necessary. 
