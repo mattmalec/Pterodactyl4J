@@ -16,6 +16,12 @@ P4J strives to provide a clean and full wrapping of the Pterodactyl REST API for
 <br />P4J fully wraps the application and the client API for the Pterodactyl panel.
 <br />**NOTE**: This is an unofficial wrapper. Do not expect the Pterodactyl community to provide support for this wrapper.
 
+> :warning: **My Discord account was unexpectedly disabled.** While I work to regain access,
+> you can find me on Telegram [here](https://t.me/Pterodactyl4J). 
+> <br />
+> <br />Please make sure you are verifying that commits from my [GitHub user](https://github.com/mattmalec)
+> are signed using my GPG key.
+
 ## Creating the PteroApplication/PteroClient Object
 
 Creating the PteroApplication or PteroClient object is done via the PteroBuilder class. Depending on your use case, the PteroApplication/PteroClient object is created by calling `createApplication` or `createClient`. Make sure to set your application URL and token as necessary. 
