@@ -18,9 +18,11 @@ P4J strives to provide a clean and full wrapping of the Pterodactyl REST API for
 
 > :warning: **My Discord account was unexpectedly disabled.** While I work to regain access,
 > you can find me on Telegram [here](https://t.me/Pterodactyl4J). 
-> <br />
-> <br />Please make sure you are verifying that commits from my [GitHub user](https://github.com/mattmalec)
+> <br /><br />Please make sure you are verifying that commits from my [GitHub user](https://github.com/mattmalec)
 > are signed using my GPG key.
+
+> :warning: My Discord account has been disabled for an unknown reason. If you need immediate assistance, please find me
+> on Telegram [here](https://t.me/Pterodactyl4J) or open an issue, as I'm unavailable on Discord.
 
 ## Creating the PteroApplication/PteroClient Object
 
