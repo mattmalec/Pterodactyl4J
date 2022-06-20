@@ -71,7 +71,7 @@ public class PteroClientImpl implements PteroClient {
         return PteroActionImpl.onRequestExecute(api,Route.Client.GET_UTILIZATION.compile(server.getIdentifier()),
                 (response, request) -> new UtilizationImpl(response.getObject()));
     }
-    
+
     public PaginationAction<ClientServer> retrieveServers() {
         return retrieveServers(ClientTypes.NONE);
     }
