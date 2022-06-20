@@ -16,6 +16,7 @@
 
 package com.mattmalec.pterodactyl4j.client.entities.impl;
 
+import com.mattmalec.pterodactyl4j.ClientTypes;
 import com.mattmalec.pterodactyl4j.PowerAction;
 import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.client.entities.Account;
@@ -70,21 +71,17 @@ public class PteroClientImpl implements PteroClient {
         return PteroActionImpl.onRequestExecute(api,Route.Client.GET_UTILIZATION.compile(server.getIdentifier()),
                 (response, request) -> new UtilizationImpl(response.getObject()));
     }
-
-
+    
     public PaginationAction<ClientServer> retrieveServers() {
-        return retrieveServers(false);
+        return retrieveServers(ClientTypes.NONE);
     }
     @Override
-    public PaginationAction<ClientServer> retrieveServers(boolean listAdmin){
-        if(listAdmin){
-            return PaginationResponseImpl.onPagination(api, Route.Client.LIST_SERVERS_ADMIN.compile(),
-                    (object) -> new ClientServerImpl(object, this));
-        }else {
-            return PaginationResponseImpl.onPagination(api, Route.Client.LIST_SERVERS.compile(),
-                    (object) -> new ClientServerImpl(object, this));
-        }
+    public PaginationAction<ClientServer> retrieveServers(ClientTypes type) {
+        return PaginationResponseImpl.onPagination(api, Route.Client.LIST_SERVERS.compile(type.toString()),
+                (object) -> new ClientServerImpl(object, this));
     }
+
+
 
     @Override
     public PteroAction<ClientServer> retrieveServerByIdentifier(String identifier) {
