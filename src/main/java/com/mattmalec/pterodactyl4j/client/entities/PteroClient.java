@@ -86,7 +86,9 @@ public interface PteroClient {
 
     PaginationAction<ClientServer> retrieveServers(ClientType type);
 
-    PaginationAction<ClientServer> retrieveServers();
+    default PaginationAction<ClientServer> retrieveServers(){
+        return retrieveServers(ClientType.NONE);
+    }
 
     /**
      * Retrieves an individual ClientServer represented by the provided identifier from Pterodactyl instance
