@@ -6,7 +6,7 @@ public enum ClientType {
     ADMIN_ALL("admin-all"),
     ADMIN("admin");
     private final String type;
-    ClientType(String type){
+    ClientType(String type) {
         this.type = type;
     }
 
