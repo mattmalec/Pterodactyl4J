@@ -17,8 +17,8 @@
 package com.mattmalec.pterodactyl4j.client.ws.hooks;
 
 import com.mattmalec.pterodactyl4j.client.ws.events.Event;
+import com.mattmalec.pterodactyl4j.utils.P4JLogger;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -27,7 +27,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class InterfacedClientListenerManager implements IClientListenerManager {
 
-    private static final Logger LISTENER_LOG = LoggerFactory.getLogger(ClientSocketListener.class);
+    private static final Logger LISTENER_LOG = P4JLogger.getLogger(ClientSocketListener.class);
 
     private final List<ClientSocketListener> listeners = new CopyOnWriteArrayList<>();
 

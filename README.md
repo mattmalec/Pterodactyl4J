@@ -16,6 +16,11 @@ P4J strives to provide a clean and full wrapping of the Pterodactyl REST API for
 <br />P4J fully wraps the application and the client API for the Pterodactyl panel.
 <br />**NOTE**: This is an unofficial wrapper. Do not expect the Pterodactyl community to provide support for this wrapper.
 
+> :warning: **My Discord account was unexpectedly disabled.** While I work to regain access,
+> you can find me on Telegram [here](https://t.me/Pterodactyl4J). 
+> <br /><br />Please make sure you are verifying that commits from my [GitHub user](https://github.com/mattmalec)
+> are signed using my GPG key.
+
 ## Creating the PteroApplication/PteroClient Object
 
 Creating the PteroApplication or PteroClient object is done via the PteroBuilder class. Depending on your use case, the PteroApplication/PteroClient object is created by calling `createApplication` or `createClient`. Make sure to set your application URL and token as necessary. 
@@ -245,14 +250,15 @@ The builds are distributed using a Nexus instance
 Pterodactyl4J uses [SLF4J](https://www.slf4j.org/) to log its messages.
 
 That means you should add some SLF4J implementation to your build path in addition to P4J.
-If no implementation is found, the following message will be printed to the console when executing a request:
+If no implementation is found, following message will be printed to the console on startup:
 ```
 SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
 SLF4J: Defaulting to no-operation (NOP) logger implementation
 SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
 ```
 
-P4J does **NOT** offer a fallback logger in place of SLF4J. You need an implementation to receive contextual log messages.
+P4J currently offers a fallback logger if no SLF4J implementation is present. 
+I strongly recommend you use one though, as it improves speed and allows you to customize the output.
 
 The most popular implementations are [Log4j 2](https://logging.apache.org/log4j/2.x/) and [Logback](https://logback.qos.ch/)
 
@@ -278,7 +284,7 @@ This project requires **Java 8**.<br>
 All dependencies are managed automatically by Gradle.
 
  * OkHttp
-   * Version: **4.9.1**
+   * Version: **3.13.0**
    * [Github](https://github.com/square/okhttp)
    * [Maven Repository](https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp)
  * org.json

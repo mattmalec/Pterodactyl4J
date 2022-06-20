@@ -17,13 +17,13 @@
 package com.mattmalec.pterodactyl4j.requests.action.impl;
 
 import com.mattmalec.pterodactyl4j.entities.P4J;
+import com.mattmalec.pterodactyl4j.requests.PaginationAction;
 import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.requests.Route;
-import com.mattmalec.pterodactyl4j.requests.PaginationAction;
 import com.mattmalec.pterodactyl4j.utils.Checks;
+import com.mattmalec.pterodactyl4j.utils.P4JLogger;
 import com.mattmalec.pterodactyl4j.utils.Procedure;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -35,7 +35,7 @@ import java.util.function.Consumer;
 
 public abstract class PaginationActionImpl<T> extends PteroActionImpl<List<T>> implements PaginationAction<T> {
 
-    protected static final Logger PAGINATION_LOG = LoggerFactory.getLogger(PaginationAction.class);
+    protected static final Logger PAGINATION_LOG = P4JLogger.getLogger(PaginationAction.class);
 
     protected final List<T> cached = new CopyOnWriteArrayList<>();
     protected final int minLimit;

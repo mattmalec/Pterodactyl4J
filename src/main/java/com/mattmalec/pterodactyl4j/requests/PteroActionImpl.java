@@ -19,11 +19,11 @@ package com.mattmalec.pterodactyl4j.requests;
 import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.entities.P4J;
 import com.mattmalec.pterodactyl4j.exceptions.PteroException;
+import com.mattmalec.pterodactyl4j.utils.P4JLogger;
 import okhttp3.RequestBody;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.CompletionException;
 import java.util.function.BiFunction;
@@ -32,7 +32,7 @@ import java.util.function.Supplier;
 
 public class PteroActionImpl<T> implements PteroAction<T> {
 
-    public static final Logger LOGGER = LoggerFactory.getLogger(PteroAction.class);
+    public static final Logger LOGGER = P4JLogger.getLogger(PteroAction.class);
 
     private final P4J api;
     private final Route.CompiledRoute route;
@@ -131,13 +131,13 @@ public class PteroActionImpl<T> implements PteroAction<T> {
     }
 
     public void handleResponse(Response response, Request<T> request) {
-        if(response.isOk())
+        if (response.isOk())
             handleSuccess(response, request);
         else request.setOnFailure(response);
     }
 
     public void handleSuccess(Response response, Request<T> request) {
-        if(response.isEmpty())
+        if (response.isEmpty() || handler == null)
             request.onSuccess(null);
         else request.onSuccess(handler.apply(response, request));
     }
