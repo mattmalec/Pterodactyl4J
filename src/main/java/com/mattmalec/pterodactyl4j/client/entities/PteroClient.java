@@ -16,11 +16,10 @@
 
 package com.mattmalec.pterodactyl4j.client.entities;
 
-import com.mattmalec.pterodactyl4j.ClientTypes;
+import com.mattmalec.pterodactyl4j.ClientType;
 import com.mattmalec.pterodactyl4j.PowerAction;
 import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.requests.PaginationAction;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -85,7 +84,9 @@ public interface PteroClient {
      * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.client.entities.ClientServer ClientServers}
      */
 
-    PaginationAction<ClientServer> retrieveServers(ClientTypes type);
+    PaginationAction<ClientServer> retrieveServers(ClientType type);
+
+    PaginationAction<ClientServer> retrieveServers();
 
     /**
      * Retrieves an individual ClientServer represented by the provided identifier from Pterodactyl instance
