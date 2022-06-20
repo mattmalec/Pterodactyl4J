@@ -74,11 +74,8 @@ public class PteroClientImpl implements PteroClient {
 
     @Override
     public PaginationAction<ClientServer> retrieveServers(ClientType type) {
-        if(type == ClientType.NONE){
-            return PaginationResponseImpl.onPagination(api, Route.Client.LIST_SERVERS.compile(),
-                    (object) -> new ClientServerImpl(object, this));
-
-        }else  return PaginationResponseImpl.onPagination(api, Route.Client.LIST_SERVERS.compile().withQueryParams("type", type.toString()),
+        Route.CompiledRoute route =  Route.Client.LIST_SERVERS.compile();
+        return PaginationResponseImpl.onPagination(api, type == ClientType.NONE ? route : route.withQueryParams("type", type.toString()),
                 (object) -> new ClientServerImpl(object, this));
 
     }
