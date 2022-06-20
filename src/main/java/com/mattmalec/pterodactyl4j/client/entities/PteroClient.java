@@ -76,14 +76,16 @@ public interface PteroClient {
     PteroAction<Utilization> retrieveUtilization(ClientServer server);
 
     /**
-     * Retrieves all of the ClientServers from the Pterodactyl instance
+     * Retrieves all the ClientServers from the Pterodactyl instance
+     *
+     * @param type
+     *        Type for the appended type parameter (NONE, ADMIN, ADMIN-ALL, OWNER)
      *
      * @throws com.mattmalec.pterodactyl4j.exceptions.LoginException
      *         If the API key is incorrect
      *
      * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.client.entities.ClientServer ClientServers}
      */
-
     PaginationAction<ClientServer> retrieveServers(ClientType type);
 
     default PaginationAction<ClientServer> retrieveServers() {
