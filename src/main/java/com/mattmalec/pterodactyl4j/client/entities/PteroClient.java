@@ -86,7 +86,7 @@ public interface PteroClient {
 
     PaginationAction<ClientServer> retrieveServers(ClientType type);
 
-    default PaginationAction<ClientServer> retrieveServers(){
+    default PaginationAction<ClientServer> retrieveServers() {
         return retrieveServers(ClientType.NONE);
     }
 
