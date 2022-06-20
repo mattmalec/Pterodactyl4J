@@ -5,6 +5,7 @@ public enum ClientType {
     OWNER("owner"),
     ADMIN_ALL("admin-all"),
     ADMIN("admin");
+    
     private final String type;
     ClientType(String type) {
         this.type = type;
