@@ -16,10 +16,10 @@
 
 package com.mattmalec.pterodactyl4j.client.entities;
 
+import com.mattmalec.pterodactyl4j.ClientType;
 import com.mattmalec.pterodactyl4j.PowerAction;
 import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.requests.PaginationAction;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -76,14 +76,21 @@ public interface PteroClient {
     PteroAction<Utilization> retrieveUtilization(ClientServer server);
 
     /**
-     * Retrieves all of the ClientServers from the Pterodactyl instance
+     * Retrieves all the ClientServers from the Pterodactyl instance
+     *
+     * @param type
+     *        Type for the appended type parameter (NONE, ADMIN, ADMIN-ALL, OWNER)
      *
      * @throws com.mattmalec.pterodactyl4j.exceptions.LoginException
      *         If the API key is incorrect
      *
      * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.client.entities.ClientServer ClientServers}
      */
-    PaginationAction<ClientServer> retrieveServers();
+    PaginationAction<ClientServer> retrieveServers(ClientType type);
+
+    default PaginationAction<ClientServer> retrieveServers() {
+        return retrieveServers(ClientType.NONE);
+    }
 
     /**
      * Retrieves an individual ClientServer represented by the provided identifier from Pterodactyl instance

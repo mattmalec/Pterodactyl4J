@@ -16,6 +16,7 @@
 
 package com.mattmalec.pterodactyl4j.client.entities.impl;
 
+import com.mattmalec.pterodactyl4j.ClientType;
 import com.mattmalec.pterodactyl4j.PowerAction;
 import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.client.entities.Account;
@@ -72,10 +73,14 @@ public class PteroClientImpl implements PteroClient {
     }
 
     @Override
-    public PaginationAction<ClientServer> retrieveServers() {
-        return PaginationResponseImpl.onPagination(api, Route.Client.LIST_SERVERS.compile(),
+    public PaginationAction<ClientServer> retrieveServers(ClientType type) {
+        Route.CompiledRoute route =  Route.Client.LIST_SERVERS.compile();
+        return PaginationResponseImpl.onPagination(api, type == ClientType.NONE ? route : route.withQueryParams("type", type.toString()),
                 (object) -> new ClientServerImpl(object, this));
+
     }
+
+
 
     @Override
     public PteroAction<ClientServer> retrieveServerByIdentifier(String identifier) {
