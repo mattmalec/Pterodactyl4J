@@ -63,15 +63,18 @@ public class NestImpl implements Nest {
 
     @Override
     public PteroAction<List<ApplicationEgg>> retrieveEggs() {
-        if(!json.has("relationships"))
+        if (!json.has("relationships"))
             return impl.retrieveEggsByNest(this);
 
         List<ApplicationEgg> eggs = new ArrayList<>();
         JSONObject json = relationships.getJSONObject("eggs");
-        if(json.isNull("attributes"))
-            return new CompletedPteroAction<>(impl.getP4J(), Collections.unmodifiableList(eggs));
-        for(Object o : json.getJSONArray("data")) {
+
+        for (Object o : json.getJSONArray("data")) {
             JSONObject egg = new JSONObject(o.toString());
+
+            if (egg.isNull("attributes"))
+                continue;
+
             eggs.add(new ApplicationEggImpl(egg, impl));
         }
         return new CompletedPteroAction<>(impl.getP4J(), Collections.unmodifiableList(eggs));
