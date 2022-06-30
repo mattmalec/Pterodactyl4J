@@ -82,12 +82,18 @@ public class NestImpl implements Nest {
 
     @Override
     public Optional<List<ApplicationServer>> getServers() {
-        if(!json.has("relationships")) return Optional.empty();
+        if (!json.has("relationships"))
+            return Optional.empty();
+
         List<ApplicationServer> servers = new ArrayList<>();
         JSONObject json = relationships.getJSONObject("servers");
-        if(json.isNull("attributes")) return Optional.empty();
-        for(Object o : json.getJSONArray("data")) {
+
+        for (Object o : json.getJSONArray("data")) {
             JSONObject server = new JSONObject(o.toString());
+
+            if (server.isNull("attributes"))
+                continue;
+
             servers.add(new ApplicationServerImpl(impl, server));
         }
         return Optional.of(Collections.unmodifiableList(servers));
