@@ -22,11 +22,31 @@ import com.mattmalec.pterodactyl4j.entities.User;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
+/**
+ * Represents a sub-user pm a {@link ClientServer}
+ */
 public interface ClientSubuser extends User, IPermissionHolder {
-
+    /**
+     * Gets the avatar link of the {@link ClientSubuser}
+     *
+     * @return link to image of the avatar
+     */
     String getImage();
+
+    /**
+     * Checks if the {@link ClientSubuser} has 2fa enabled
+     *
+     * @return whether the user has 2fa enabled
+     */
     boolean has2FA();
+
+    /**
+     * Gets the uuid of the {@link ClientSubuser}
+     *
+     * @return uuid of {@link ClientSubuser}
+     */
     UUID getUUID();
+
     OffsetDateTime getCreationDate();
 
 }

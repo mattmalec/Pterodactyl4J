@@ -22,6 +22,9 @@ import com.mattmalec.pterodactyl4j.PteroAction;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Represents a Pterodactyl {@link Nest}
+ */
 public interface Nest extends ISnowflake {
 
 	String getUUID();

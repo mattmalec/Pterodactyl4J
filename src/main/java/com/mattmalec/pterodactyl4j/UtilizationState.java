@@ -17,18 +17,29 @@
 package com.mattmalec.pterodactyl4j;
 
 /**
- * Represents a servers state.
+ * Represents a server's state.
  */
 public enum UtilizationState {
-
+    /**
+     * Represents when the server is offline
+     */
     OFFLINE,
+    /**
+     * Represents when the server is in the process of starting up
+     */
     STARTING,
+    /**
+     * Represents when the server is online
+     */
     RUNNING,
+    /**
+     * Represents when the server is shutting down
+     */
     STOPPING;
 
     public static UtilizationState of(String s) {
-        for(UtilizationState state : values()) {
-            if(state.name().equalsIgnoreCase(s)) {
+        for (UtilizationState state : values()) {
+            if (state.name().equalsIgnoreCase(s)) {
                 return state;
             }
         }
