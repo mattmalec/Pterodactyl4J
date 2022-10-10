@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@
 package com.mattmalec.pterodactyl4j.entities;
 
 import com.mattmalec.pterodactyl4j.EnvironmentValue;
-
 import java.util.UUID;
 
 /**
@@ -26,60 +25,59 @@ import java.util.UUID;
  */
 public interface Egg {
 
-    /**
-     * The human readable name of the Egg.
-     *
-     * @return Never-null String containing the Egg's name.
-     */
-    String getName();
+	/**
+	 * The human readable name of the Egg.
+	 *
+	 * @return Never-null String containing the Egg's name.
+	 */
+	String getName();
 
-    /**
-     * The UUID of the Egg.
-     *
-     * @return Never-null {@link java.util.UUID} containing the Egg's UUID.
-     */
-    UUID getUUID();
+	/**
+	 * The UUID of the Egg.
+	 *
+	 * @return Never-null {@link java.util.UUID} containing the Egg's UUID.
+	 */
+	UUID getUUID();
 
-    /**
-     * Represents a Pterodactyl {@link com.mattmalec.pterodactyl4j.entities.Egg.EggVariable EggVariable}.
-     * This should contain all information provided from the Egg about its variables.
-     */
-    interface EggVariable  {
+	/**
+	 * Represents a Pterodactyl {@link com.mattmalec.pterodactyl4j.entities.Egg.EggVariable EggVariable}.
+	 * This should contain all information provided from the Egg about its variables.
+	 */
+	interface EggVariable {
 
-        /**
-         * The human readable name of the variable.
-         *
-         * @return Never-null String containing the variable's name.
-         */
-        String getName();
+		/**
+		 * The human readable name of the variable.
+		 *
+		 * @return Never-null String containing the variable's name.
+		 */
+		String getName();
 
-        /**
-         * The description of the Server
-         *
-         * @return Never-null String containing the variable's description.
-         */
-        String getDescription();
+		/**
+		 * The description of the Server
+		 *
+		 * @return Never-null String containing the variable's description.
+		 */
+		String getDescription();
 
-        /**
-         * The key of the variable
-         *
-         * @return Never-null String containing the variable's key.
-         */
-        String getEnvironmentVariable();
+		/**
+		 * The key of the variable
+		 *
+		 * @return Never-null String containing the variable's key.
+		 */
+		String getEnvironmentVariable();
 
-        /**
-         * The default value of the variable
-         *
-         * @return Never-null {@link com.mattmalec.pterodactyl4j.EnvironmentValue EnvironmentValue} containing the variable's default value.
-         */
-        EnvironmentValue<?> getDefaultValue();
+		/**
+		 * The default value of the variable
+		 *
+		 * @return Never-null {@link com.mattmalec.pterodactyl4j.EnvironmentValue EnvironmentValue} containing the variable's default value.
+		 */
+		EnvironmentValue<?> getDefaultValue();
 
-        /**
-         * The Laravel validation rules of the variable's value
-         *
-         * @return Never-null String containing the variable's validation rules.
-         */
-        String getRules();
-    }
-
+		/**
+		 * The Laravel validation rules of the variable's value
+		 *
+		 * @return Never-null String containing the variable's validation rules.
+		 */
+		String getRules();
+	}
 }

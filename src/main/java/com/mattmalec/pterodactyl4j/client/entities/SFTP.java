@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ package com.mattmalec.pterodactyl4j.client.entities;
 
 public interface SFTP {
 
-    String getIP();
-    int getPort();
+	String getIP();
 
+	int getPort();
 }

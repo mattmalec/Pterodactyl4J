@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,15 +16,14 @@
 
 package com.mattmalec.pterodactyl4j.application.entities.impl;
 
-import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationAllocation;
 import com.mattmalec.pterodactyl4j.application.entities.Node;
+import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.requests.Route;
 import com.mattmalec.pterodactyl4j.requests.action.AbstractAllocationAction;
+import java.util.function.Consumer;
 import okhttp3.RequestBody;
 import org.json.JSONObject;
-
-import java.util.function.Consumer;
 
 public class EditAllocationImpl extends AbstractAllocationAction {
 
@@ -39,15 +38,15 @@ public class EditAllocationImpl extends AbstractAllocationAction {
 
 	@Override
 	public Void execute() {
-		PteroActionImpl.onRequestExecute(impl.getP4J(),
-				Route.Nodes.DELETE_ALLOCATION.compile(allocation.getId())).execute();
+		PteroActionImpl.onRequestExecute(impl.getP4J(), Route.Nodes.DELETE_ALLOCATION.compile(allocation.getId()))
+				.execute();
 		return super.execute();
 	}
 
 	@Override
 	public void executeAsync(Consumer<? super Void> success, Consumer<? super Throwable> failure) {
-		PteroActionImpl.onRequestExecute(impl.getP4J(),
-				Route.Nodes.DELETE_ALLOCATION.compile(allocation.getId())).executeAsync();
+		PteroActionImpl.onRequestExecute(impl.getP4J(), Route.Nodes.DELETE_ALLOCATION.compile(allocation.getId()))
+				.executeAsync();
 		super.executeAsync(success, failure);
 	}
 

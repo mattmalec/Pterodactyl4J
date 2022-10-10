@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -25,70 +25,72 @@ import org.json.JSONObject;
 
 public class StatsUpdateEvent extends Event {
 
-    private final JSONObject stats;
+	private final JSONObject stats;
 
-    public StatsUpdateEvent(PteroClientImpl api, ClientServer server, WebSocketManager manager, JSONObject stats) {
-        super(api, server, manager);
-        this.stats = stats;
-    }
+	public StatsUpdateEvent(PteroClientImpl api, ClientServer server, WebSocketManager manager, JSONObject stats) {
+		super(api, server, manager);
+		this.stats = stats;
+	}
 
-    public UtilizationState getState() {
-        return UtilizationState.of(stats.getString("state"));
-    }
+	public UtilizationState getState() {
+		return UtilizationState.of(stats.getString("state"));
+	}
 
-    public long getMemory() {
-        return stats.getLong("memory_bytes");
-    }
+	public long getMemory() {
+		return stats.getLong("memory_bytes");
+	}
 
-    public String getMemoryFormatted(DataType dataType) {
-        return String.format("%.2f %s", getMemory() / (dataType.getMbValue() * Math.pow(2, 20)), dataType.name());
-    }
+	public String getMemoryFormatted(DataType dataType) {
+		return String.format("%.2f %s", getMemory() / (dataType.getMbValue() * Math.pow(2, 20)), dataType.name());
+	}
 
-    public long getMaxMemory() {
-        return stats.getLong("memory_limit_bytes");
-    }
+	public long getMaxMemory() {
+		return stats.getLong("memory_limit_bytes");
+	}
 
-    public String getMaxMemoryFormatted(DataType dataType) {
-        return String.format("%.2f %s", getMaxMemory() / (dataType.getMbValue() * Math.pow(2, 20)), dataType.name());
-    }
+	public String getMaxMemoryFormatted(DataType dataType) {
+		return String.format("%.2f %s", getMaxMemory() / (dataType.getMbValue() * Math.pow(2, 20)), dataType.name());
+	}
 
-    public long getDisk() {
-        return stats.getLong("disk_bytes");
-    }
+	public long getDisk() {
+		return stats.getLong("disk_bytes");
+	}
 
-    public String getDiskFormatted(DataType dataType) {
-        return String.format("%.2f %s", getDisk() / (dataType.getMbValue() * Math.pow(2, 20)), dataType.name());
-    }
+	public String getDiskFormatted(DataType dataType) {
+		return String.format("%.2f %s", getDisk() / (dataType.getMbValue() * Math.pow(2, 20)), dataType.name());
+	}
 
-    public double getCPU() {
-        return stats.getDouble("cpu_absolute");
-    }
+	public double getCPU() {
+		return stats.getDouble("cpu_absolute");
+	}
 
-    public long getNetworkIngress() {
-        return stats.getJSONObject("network").getLong("rx_bytes");
-    }
+	public long getNetworkIngress() {
+		return stats.getJSONObject("network").getLong("rx_bytes");
+	}
 
-    public String getNetworkIngressFormatted(DataType dataType) {
-        return String.format("%.2f %s", getNetworkIngress() / (dataType.getMbValue() * Math.pow(2, 20)), dataType.name());
-    }
+	public String getNetworkIngressFormatted(DataType dataType) {
+		return String.format(
+				"%.2f %s", getNetworkIngress() / (dataType.getMbValue() * Math.pow(2, 20)), dataType.name());
+	}
 
-    public long getNetworkEgress() {
-        return stats.getJSONObject("network").getLong("tx_bytes");
-    }
+	public long getNetworkEgress() {
+		return stats.getJSONObject("network").getLong("tx_bytes");
+	}
 
-    public String getNetworkEgressFormatted(DataType dataType) {
-        return String.format("%.2f %s", getNetworkEgress() / (dataType.getMbValue() * Math.pow(2, 20)), dataType.name());
-    }
+	public String getNetworkEgressFormatted(DataType dataType) {
+		return String.format(
+				"%.2f %s", getNetworkEgress() / (dataType.getMbValue() * Math.pow(2, 20)), dataType.name());
+	}
 
-    public long getUptime() {
-        return stats.getLong("uptime");
-    }
+	public long getUptime() {
+		return stats.getLong("uptime");
+	}
 
-    public String getUptimeFormatted() {
-        long uptime = getUptime();
-        long second = (uptime / 1000) % 60;
-        long minute = (uptime / (1000 * 60)) % 60;
-        long hour = (uptime / (1000 * 60 * 60)) % 24;
-        return String.format("%02d:%02d:%02d", hour, minute, second);
-    }
+	public String getUptimeFormatted() {
+		long uptime = getUptime();
+		long second = (uptime / 1000) % 60;
+		long minute = (uptime / (1000 * 60)) % 60;
+		long hour = (uptime / (1000 * 60 * 60)) % 24;
+		return String.format("%02d:%02d:%02d", hour, minute, second);
+	}
 }

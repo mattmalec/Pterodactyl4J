@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -25,15 +25,14 @@ import com.mattmalec.pterodactyl4j.application.managers.ApplicationAllocationMan
 import com.mattmalec.pterodactyl4j.application.managers.NodeAction;
 import com.mattmalec.pterodactyl4j.requests.CompletedPaginationAction;
 import com.mattmalec.pterodactyl4j.requests.CompletedPteroAction;
+import com.mattmalec.pterodactyl4j.requests.PaginationAction;
 import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.requests.Route;
-import com.mattmalec.pterodactyl4j.requests.PaginationAction;
-import org.json.JSONObject;
-
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import org.json.JSONObject;
 
 public class NodeImpl implements Node {
 
@@ -69,9 +68,9 @@ public class NodeImpl implements Node {
 
 	@Override
 	public PteroAction<Location> retrieveLocation() {
-		if(!json.has("relationships"))
-			return impl.retrieveLocationById(json.getLong("location_id"));
-		return new CompletedPteroAction<>(impl.getP4J(), new LocationImpl(relationships.getJSONObject("location"), impl));
+		if (!json.has("relationships")) return impl.retrieveLocationById(json.getLong("location_id"));
+		return new CompletedPteroAction<>(
+				impl.getP4J(), new LocationImpl(relationships.getJSONObject("location"), impl));
 	}
 
 	@Override
@@ -146,12 +145,11 @@ public class NodeImpl implements Node {
 
 	@Override
 	public PteroAction<List<ApplicationServer>> retrieveServers() {
-		if(!json.has("relationships"))
-			return impl.retrieveServersByNode(this);
+		if (!json.has("relationships")) return impl.retrieveServersByNode(this);
 
 		List<ApplicationServer> servers = new ArrayList<>();
 		JSONObject json = relationships.getJSONObject("servers");
-		for(Object o : json.getJSONArray("data")) {
+		for (Object o : json.getJSONArray("data")) {
 			JSONObject server = new JSONObject(o.toString());
 			servers.add(new ApplicationServerImpl(impl, server));
 		}
@@ -160,12 +158,11 @@ public class NodeImpl implements Node {
 
 	@Override
 	public PaginationAction<ApplicationAllocation> retrieveAllocations() {
-		if(!json.has("relationships"))
-			return impl.retrieveAllocationsByNode(this);
+		if (!json.has("relationships")) return impl.retrieveAllocationsByNode(this);
 
 		List<ApplicationAllocation> allocations = new ArrayList<>();
 		JSONObject json = relationships.getJSONObject("allocations");
-		for(Object o : json.getJSONArray("data")) {
+		for (Object o : json.getJSONArray("data")) {
 			JSONObject allocation = new JSONObject(o.toString());
 			allocations.add(new ApplicationAllocationImpl(allocation, impl));
 		}
@@ -174,7 +171,9 @@ public class NodeImpl implements Node {
 
 	@Override
 	public PteroAction<Configuration> retrieveConfiguration() {
-		return PteroActionImpl.onRequestExecute(impl.getP4J(), Route.Nodes.GET_CONFIGURATION.compile(getId()),
+		return PteroActionImpl.onRequestExecute(
+				impl.getP4J(),
+				Route.Nodes.GET_CONFIGURATION.compile(getId()),
 				(response, request) -> new NodeConfigurationImpl(response.getObject()));
 	}
 

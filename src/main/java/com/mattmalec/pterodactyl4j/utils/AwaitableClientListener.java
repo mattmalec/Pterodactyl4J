@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -18,41 +18,38 @@ package com.mattmalec.pterodactyl4j.utils;
 
 import com.mattmalec.pterodactyl4j.client.ws.events.Event;
 import com.mattmalec.pterodactyl4j.client.ws.hooks.ClientSocketListener;
-
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.function.Consumer;
 
 public class AwaitableClientListener implements ClientSocketListener {
 
-    private final Class<? extends Event> awaitedEvent;
-    private final ExecutorService executor;
-    private final CountDownLatch latch = new CountDownLatch(1);
+	private final Class<? extends Event> awaitedEvent;
+	private final ExecutorService executor;
+	private final CountDownLatch latch = new CountDownLatch(1);
 
-    private AwaitableClientListener(Class<? extends Event> event, ExecutorService executor) {
-        this.awaitedEvent = event;
-        this.executor = executor;
-    }
+	private AwaitableClientListener(Class<? extends Event> event, ExecutorService executor) {
+		this.awaitedEvent = event;
+		this.executor = executor;
+	}
 
-    public static AwaitableClientListener create(Class<? extends Event> event, ExecutorService executor) {
-        return new AwaitableClientListener(event, executor);
-    }
+	public static AwaitableClientListener create(Class<? extends Event> event, ExecutorService executor) {
+		return new AwaitableClientListener(event, executor);
+	}
 
-    @Override
-    public void onEvent(Event event) {
-        if (event.getClass().isAssignableFrom(awaitedEvent))
-            latch.countDown();
-    }
+	@Override
+	public void onEvent(Event event) {
+		if (event.getClass().isAssignableFrom(awaitedEvent)) latch.countDown();
+	}
 
-    public void await(Consumer<?> success) {
-        executor.submit(() -> {
-            try {
-                latch.await();
-                success.accept(null);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        });
-    }
-
+	public void await(Consumer<?> success) {
+		executor.submit(() -> {
+			try {
+				latch.await();
+				success.accept(null);
+			} catch (InterruptedException e) {
+				throw new RuntimeException(e);
+			}
+		});
+	}
 }

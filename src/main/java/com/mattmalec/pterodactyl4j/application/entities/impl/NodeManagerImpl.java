@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -17,32 +17,32 @@
 package com.mattmalec.pterodactyl4j.application.entities.impl;
 
 import com.mattmalec.pterodactyl4j.PteroAction;
-import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.application.entities.Node;
 import com.mattmalec.pterodactyl4j.application.managers.NodeAction;
 import com.mattmalec.pterodactyl4j.application.managers.NodeManager;
+import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.requests.Route;
 
 public class NodeManagerImpl implements NodeManager {
 
-    private final PteroApplicationImpl impl;
+	private final PteroApplicationImpl impl;
 
-    public NodeManagerImpl(PteroApplicationImpl impl) {
-        this.impl = impl;
-    }
+	public NodeManagerImpl(PteroApplicationImpl impl) {
+		this.impl = impl;
+	}
 
-    @Override
-    public NodeAction createNode() {
-        return new CreateNodeImpl(impl);
-    }
+	@Override
+	public NodeAction createNode() {
+		return new CreateNodeImpl(impl);
+	}
 
-    @Override
-    public NodeAction editNode(Node node) {
-        return new EditNodeImpl(impl, node);
-    }
+	@Override
+	public NodeAction editNode(Node node) {
+		return new EditNodeImpl(impl, node);
+	}
 
-    @Override
-    public PteroAction<Void> deleteNode(Node node) {
-        return PteroActionImpl.onRequestExecute(impl.getP4J(), Route.Nodes.DELETE_NODE.compile(node.getId()));
-    }
+	@Override
+	public PteroAction<Void> deleteNode(Node node) {
+		return PteroActionImpl.onRequestExecute(impl.getP4J(), Route.Nodes.DELETE_NODE.compile(node.getId()));
+	}
 }

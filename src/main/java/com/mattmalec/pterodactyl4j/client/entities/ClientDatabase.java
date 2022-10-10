@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -21,9 +21,9 @@ import com.mattmalec.pterodactyl4j.entities.Database;
 
 public interface ClientDatabase extends Database {
 
-    String getId();
-    Database.DatabaseHost getHost();
+	String getId();
 
-    PteroAction<ClientDatabase> resetPassword();
+	Database.DatabaseHost getHost();
 
+	PteroAction<ClientDatabase> resetPassword();
 }

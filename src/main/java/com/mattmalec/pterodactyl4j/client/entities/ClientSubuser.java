@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -18,15 +18,16 @@ package com.mattmalec.pterodactyl4j.client.entities;
 
 import com.mattmalec.pterodactyl4j.entities.IPermissionHolder;
 import com.mattmalec.pterodactyl4j.entities.User;
-
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
 public interface ClientSubuser extends User, IPermissionHolder {
 
-    String getImage();
-    boolean has2FA();
-    UUID getUUID();
-    OffsetDateTime getCreationDate();
+	String getImage();
 
+	boolean has2FA();
+
+	UUID getUUID();
+
+	OffsetDateTime getCreationDate();
 }

@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -18,29 +18,39 @@ package com.mattmalec.pterodactyl4j.client.entities;
 
 import com.mattmalec.pterodactyl4j.DataType;
 import com.mattmalec.pterodactyl4j.PteroAction;
-
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 
 public interface Backup {
 
-    UUID getUUID();
-    String getName();
-    String getChecksum();
-    boolean isSuccessful();
-    boolean isLocked();
-    long getSize();
-    default String getSizeFormatted(DataType dataType) {
-        return String.format("%.2f %s", getSize() / (dataType.getMbValue() * Math.pow(2, 20)), dataType.name());
-    }
-    List<String> getIgnoredFiles();
-    PteroAction<String> retrieveDownloadUrl();
-    OffsetDateTime getTimeCompleted();
-    OffsetDateTime getTimeCreated();
+	UUID getUUID();
 
-    PteroAction<Backup> toggleLock();
-    PteroAction<Void> restore();
-    PteroAction<Void> delete();
+	String getName();
 
+	String getChecksum();
+
+	boolean isSuccessful();
+
+	boolean isLocked();
+
+	long getSize();
+
+	default String getSizeFormatted(DataType dataType) {
+		return String.format("%.2f %s", getSize() / (dataType.getMbValue() * Math.pow(2, 20)), dataType.name());
+	}
+
+	List<String> getIgnoredFiles();
+
+	PteroAction<String> retrieveDownloadUrl();
+
+	OffsetDateTime getTimeCompleted();
+
+	OffsetDateTime getTimeCreated();
+
+	PteroAction<Backup> toggleLock();
+
+	PteroAction<Void> restore();
+
+	PteroAction<Void> delete();
 }

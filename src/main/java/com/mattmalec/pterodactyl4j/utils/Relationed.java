@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@ package com.mattmalec.pterodactyl4j.utils;
 
 import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationAllocation;
-
 import java.util.Optional;
 
 /**
@@ -45,36 +44,35 @@ import java.util.Optional;
  */
 public abstract class Relationed<T> {
 
-    /**
-     * Retrieves the entity using its id
-     * <br>This will retrieve the relationed entity using its id instead of using the object from the entity's relationships
-     *
-     * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type of the relationed entity
-     *
-     * @see Relationed#get()
-     **/
-    public abstract PteroAction<T> retrieve();
+	/**
+	 * Retrieves the entity using its id
+	 * <br>This will retrieve the relationed entity using its id instead of using the object from the entity's relationships
+	 *
+	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type of the relationed entity
+	 *
+	 * @see Relationed#get()
+	 **/
+	public abstract PteroAction<T> retrieve();
 
-    /**
-     * Gets the entity from the object's relationships
-     * <br>This will get the relationed entity from the relationship object instead of retrieving using the id.
-     *
-     * <p>Note if the optional is not present, you'll need to retrieve the object using {@link Relationed#retrieve()}
-     *
-     * @return Possibly-present {@link java.util.Optional Optional} - Type of the relationed entity
-     *
-     * @see Relationed#retrieve()
-     **/
-    public abstract Optional<T> get();
+	/**
+	 * Gets the entity from the object's relationships
+	 * <br>This will get the relationed entity from the relationship object instead of retrieving using the id.
+	 *
+	 * <p>Note if the optional is not present, you'll need to retrieve the object using {@link Relationed#retrieve()}
+	 *
+	 * @return Possibly-present {@link java.util.Optional Optional} - Type of the relationed entity
+	 *
+	 * @see Relationed#retrieve()
+	 **/
+	public abstract Optional<T> get();
 
-    /**
-     * Whether the entity is available in the object's relationships
-     * <br>This will always be false if you're attempting to get a relationship from a relationship object
-     *
-     * @return True, if the entity is present
-     */
-    public boolean isPresent() {
-        return get().isPresent();
-    }
-
+	/**
+	 * Whether the entity is available in the object's relationships
+	 * <br>This will always be false if you're attempting to get a relationship from a relationship object
+	 *
+	 * @return True, if the entity is present
+	 */
+	public boolean isPresent() {
+		return get().isPresent();
+	}
 }

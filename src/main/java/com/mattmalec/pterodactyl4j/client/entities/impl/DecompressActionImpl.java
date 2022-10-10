@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -26,20 +26,18 @@ import org.json.JSONObject;
 
 public class DecompressActionImpl extends PteroActionImpl<Void> {
 
-    private final File compressedFile;
+	private final File compressedFile;
 
-    public DecompressActionImpl(ClientServer server, File compressedFile, PteroClientImpl impl) {
-        super(impl.getP4J(), Route.Files.DECOMPRESS_FILE.compile(server.getIdentifier()));
-        this.compressedFile = compressedFile;
-    }
+	public DecompressActionImpl(ClientServer server, File compressedFile, PteroClientImpl impl) {
+		super(impl.getP4J(), Route.Files.DECOMPRESS_FILE.compile(server.getIdentifier()));
+		this.compressedFile = compressedFile;
+	}
 
-    @Override
-    protected RequestBody finalizeData() {
-        Checks.notNull(compressedFile, "Compressed File");
+	@Override
+	protected RequestBody finalizeData() {
+		Checks.notNull(compressedFile, "Compressed File");
 
-        JSONObject json = new JSONObject()
-                .put("file", compressedFile.getPath())
-                .put("root", "/");
-        return getRequestBody(json);
-    }
+		JSONObject json = new JSONObject().put("file", compressedFile.getPath()).put("root", "/");
+		return getRequestBody(json);
+	}
 }

@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -20,18 +20,17 @@ package com.mattmalec.pterodactyl4j;
  * Represents a servers state.
  */
 public enum UtilizationState {
+	OFFLINE,
+	STARTING,
+	RUNNING,
+	STOPPING;
 
-    OFFLINE,
-    STARTING,
-    RUNNING,
-    STOPPING;
-
-    public static UtilizationState of(String s) {
-        for(UtilizationState state : values()) {
-            if(state.name().equalsIgnoreCase(s)) {
-                return state;
-            }
-        }
-        return UtilizationState.OFFLINE;
-    }
+	public static UtilizationState of(String s) {
+		for (UtilizationState state : values()) {
+			if (state.name().equalsIgnoreCase(s)) {
+				return state;
+			}
+		}
+		return UtilizationState.OFFLINE;
+	}
 }

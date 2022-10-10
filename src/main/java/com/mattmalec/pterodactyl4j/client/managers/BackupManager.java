@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -21,10 +21,13 @@ import com.mattmalec.pterodactyl4j.client.entities.Backup;
 
 public interface BackupManager {
 
-    BackupAction createBackup();
-    PteroAction<String> retrieveDownloadUrl(Backup backup);
-    PteroAction<Void> restoreBackup(Backup backup);
-    PteroAction<Backup> toggleLock(Backup backup);
-    PteroAction<Void> deleteBackup(Backup backup);
+	BackupAction createBackup();
 
+	PteroAction<String> retrieveDownloadUrl(Backup backup);
+
+	PteroAction<Void> restoreBackup(Backup backup);
+
+	PteroAction<Backup> toggleLock(Backup backup);
+
+	PteroAction<Void> deleteBackup(Backup backup);
 }

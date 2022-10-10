@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -27,33 +27,31 @@ import org.json.JSONObject;
 
 public class CreateDirectoryActionImpl extends PteroActionImpl<Void> implements CreateDirectoryAction {
 
-    private String name;
-    private Directory rootDirectory;
+	private String name;
+	private Directory rootDirectory;
 
-    public CreateDirectoryActionImpl(ClientServer server, PteroClientImpl impl) {
-        super(impl.getP4J(), Route.Files.CREATE_FOLDER.compile(server.getIdentifier()));
-    }
+	public CreateDirectoryActionImpl(ClientServer server, PteroClientImpl impl) {
+		super(impl.getP4J(), Route.Files.CREATE_FOLDER.compile(server.getIdentifier()));
+	}
 
-    @Override
-    public CreateDirectoryAction setName(String name) {
-        this.name = name;
-        return this;
-    }
+	@Override
+	public CreateDirectoryAction setName(String name) {
+		this.name = name;
+		return this;
+	}
 
-    @Override
-    public CreateDirectoryAction setRoot(Directory directory) {
-        this.rootDirectory = directory;
-        return this;
-    }
+	@Override
+	public CreateDirectoryAction setRoot(Directory directory) {
+		this.rootDirectory = directory;
+		return this;
+	}
 
-    @Override
-    protected RequestBody finalizeData() {
-        Checks.notBlank(name, "Directory Name");
-        Checks.notNull(rootDirectory, "Root Directory");
+	@Override
+	protected RequestBody finalizeData() {
+		Checks.notBlank(name, "Directory Name");
+		Checks.notNull(rootDirectory, "Root Directory");
 
-        JSONObject json = new JSONObject()
-                .put("name", name)
-                .put("root", rootDirectory.getPath());
-        return getRequestBody(json);
-    }
+		JSONObject json = new JSONObject().put("name", name).put("root", rootDirectory.getPath());
+		return getRequestBody(json);
+	}
 }

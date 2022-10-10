@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -17,40 +17,39 @@
 package com.mattmalec.pterodactyl4j.client.entities.impl;
 
 import com.mattmalec.pterodactyl4j.client.entities.ClientEgg;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+import org.json.JSONObject;
 
 public class ClientEggImpl implements ClientEgg {
 
-    private final JSONObject json;
-    private final JSONObject variables;
+	private final JSONObject json;
+	private final JSONObject variables;
 
-    public ClientEggImpl(JSONObject json, JSONObject variables) {
-        this.json = json.getJSONObject("attributes");
-        this.variables = variables;
-    }
+	public ClientEggImpl(JSONObject json, JSONObject variables) {
+		this.json = json.getJSONObject("attributes");
+		this.variables = variables;
+	}
 
-    @Override
-    public String getName() {
-        return json.getString("name");
-    }
+	@Override
+	public String getName() {
+		return json.getString("name");
+	}
 
-    @Override
-    public UUID getUUID() {
-        return UUID.fromString(json.getString("uuid"));
-    }
+	@Override
+	public UUID getUUID() {
+		return UUID.fromString(json.getString("uuid"));
+	}
 
-    @Override
-    public List<EggVariable> getVariables() {
-        List<EggVariable> variables = new ArrayList<>();
-        for(Object o : this.variables.getJSONArray("data")) {
-            JSONObject variable = new JSONObject(o.toString());
-            variables.add(new ClientEggVariableImpl(variable));
-        }
-        return Collections.unmodifiableList(variables);
-    }
+	@Override
+	public List<EggVariable> getVariables() {
+		List<EggVariable> variables = new ArrayList<>();
+		for (Object o : this.variables.getJSONArray("data")) {
+			JSONObject variable = new JSONObject(o.toString());
+			variables.add(new ClientEggVariableImpl(variable));
+		}
+		return Collections.unmodifiableList(variables);
+	}
 }

@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -24,22 +24,22 @@ import org.json.JSONObject;
 
 public class CreateUserImpl extends AbstractUserAction {
 
-    public CreateUserImpl(PteroApplicationImpl impl) {
-        super(impl, Route.Users.CREATE_USER.compile());
-    }
-    
-    @Override
-    protected RequestBody finalizeData() {
-        Checks.notBlank(userName, "Username");
-        Checks.notBlank(email, "Email");
-        Checks.notBlank(firstName, "First name");
-        Checks.notBlank(lastName, "Last name");
-        JSONObject json = new JSONObject();
-        json.put("username", userName);
-        json.put("email", email);
-        json.put("first_name", firstName);
-        json.put("last_name", lastName);
-        json.put("password", password);
-        return getRequestBody(json);
-    }
+	public CreateUserImpl(PteroApplicationImpl impl) {
+		super(impl, Route.Users.CREATE_USER.compile());
+	}
+
+	@Override
+	protected RequestBody finalizeData() {
+		Checks.notBlank(userName, "Username");
+		Checks.notBlank(email, "Email");
+		Checks.notBlank(firstName, "First name");
+		Checks.notBlank(lastName, "Last name");
+		JSONObject json = new JSONObject();
+		json.put("username", userName);
+		json.put("email", email);
+		json.put("first_name", firstName);
+		json.put("last_name", lastName);
+		json.put("password", password);
+		return getRequestBody(json);
+	}
 }

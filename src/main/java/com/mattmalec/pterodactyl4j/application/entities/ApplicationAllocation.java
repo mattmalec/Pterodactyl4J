@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@
 package com.mattmalec.pterodactyl4j.application.entities;
 
 import com.mattmalec.pterodactyl4j.entities.Allocation;
-
 import java.util.Optional;
 
 /**
@@ -41,7 +40,6 @@ public interface ApplicationAllocation extends Allocation {
 	 */
 	Optional<ApplicationServer> getServer();
 
-
 	/**
 	 * The {@link com.mattmalec.pterodactyl4j.application.entities.Node Node} associated with this Allocation
 	 * <br>This method will not return a present Optional if there are no available relationships
@@ -49,5 +47,4 @@ public interface ApplicationAllocation extends Allocation {
 	 * @return {@link java.util.Optional Optional} - Type {@link com.mattmalec.pterodactyl4j.application.entities.Node Node}
 	 */
 	Optional<Node> getNode();
-
 }

@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -25,50 +25,52 @@ import com.mattmalec.pterodactyl4j.utils.Checks;
 import okhttp3.RequestBody;
 import org.json.JSONObject;
 
-public class ApplicationDatabaseCreationActionImpl extends AbstractDatabaseAction<ApplicationDatabase> implements ApplicationDatabaseCreationAction {
+public class ApplicationDatabaseCreationActionImpl extends AbstractDatabaseAction<ApplicationDatabase>
+		implements ApplicationDatabaseCreationAction {
 
-    private long host;
+	private long host;
 
-    public ApplicationDatabaseCreationActionImpl(ApplicationServer server, PteroApplicationImpl impl) {
-        super(impl.getP4J(), Route.Databases.CREATE_DATABASE.compile(server.getId()),
-                (response, request) -> new ApplicationDatabaseImpl(response.getObject(), server, impl));
-    }
+	public ApplicationDatabaseCreationActionImpl(ApplicationServer server, PteroApplicationImpl impl) {
+		super(
+				impl.getP4J(),
+				Route.Databases.CREATE_DATABASE.compile(server.getId()),
+				(response, request) -> new ApplicationDatabaseImpl(response.getObject(), server, impl));
+	}
 
-    @Override
-    public ApplicationDatabaseCreationAction setName(String name) {
-        this.name = name;
-        return this;
-    }
+	@Override
+	public ApplicationDatabaseCreationAction setName(String name) {
+		this.name = name;
+		return this;
+	}
 
-    @Override
-    public ApplicationDatabaseCreationAction setRemote(String remote) {
-        this.remote = remote;
-        return this;
-    }
+	@Override
+	public ApplicationDatabaseCreationAction setRemote(String remote) {
+		this.remote = remote;
+		return this;
+	}
 
-    @Override
-    public ApplicationDatabaseCreationAction setHost(long id) {
-        this.host = id;
-        return this;
-    }
+	@Override
+	public ApplicationDatabaseCreationAction setHost(long id) {
+		this.host = id;
+		return this;
+	}
 
+	@Override
+	protected RequestBody finalizeData() {
+		Checks.notBlank(name, "Database Name");
+		Checks.check(name.length() >= 1 && name.length() <= 48, "Database Name must be between 1-48 characters long");
 
-    @Override
-    protected RequestBody finalizeData() {
-        Checks.notBlank(name, "Database Name");
-        Checks.check(name.length() >= 1 && name.length() <= 48, "Database Name must be between 1-48 characters long");
+		Checks.notBlank(remote, "Remote Connection String");
+		Checks.check(
+				remote.length() >= 1 && remote.length() <= 15,
+				"Remote Connection String must be between 1-15 characters long");
 
-        Checks.notBlank(remote, "Remote Connection String");
-        Checks.check(remote.length() >= 1 && remote.length() <= 15, "Remote Connection String must be between 1-15 characters long");
+		Checks.notNumeric(host, "Database Host");
+		Checks.check(host > 0, "The Database Host id cannot be less than 0");
 
-        Checks.notNumeric(host, "Database Host");
-        Checks.check(host > 0, "The Database Host id cannot be less than 0");
+		JSONObject json =
+				new JSONObject().put("database", name).put("remote", remote).put("host", host);
 
-        JSONObject json = new JSONObject()
-                .put("database", name)
-                .put("remote", remote)
-                .put("host", host);
-
-        return getRequestBody(json);
-    }
+		return getRequestBody(json);
+	}
 }

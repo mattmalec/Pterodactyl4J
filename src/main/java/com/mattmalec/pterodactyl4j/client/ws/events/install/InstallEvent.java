@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -23,15 +23,14 @@ import com.mattmalec.pterodactyl4j.client.ws.events.Event;
 
 public abstract class InstallEvent extends Event {
 
-    private final boolean installed;
+	private final boolean installed;
 
-    public InstallEvent(PteroClientImpl api, ClientServer server, WebSocketManager manager, boolean installed) {
-        super(api, server, manager);
-        this.installed = installed;
-    }
+	public InstallEvent(PteroClientImpl api, ClientServer server, WebSocketManager manager, boolean installed) {
+		super(api, server, manager);
+		this.installed = installed;
+	}
 
-    public boolean isInstalled() {
-        return installed;
-    }
-
+	public boolean isInstalled() {
+		return installed;
+	}
 }

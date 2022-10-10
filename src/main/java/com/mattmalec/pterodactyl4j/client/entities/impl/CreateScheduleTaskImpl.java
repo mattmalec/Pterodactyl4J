@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -24,7 +24,9 @@ import com.mattmalec.pterodactyl4j.requests.action.AbstractScheduleTaskAction;
 public class CreateScheduleTaskImpl extends AbstractScheduleTaskAction {
 
 	public CreateScheduleTaskImpl(ClientServer server, Schedule schedule, PteroClientImpl impl) {
-		super(impl, schedule, Route.Schedules.CREATE_TASK.compile(server.getUUID().toString(), schedule.getId()));
+		super(
+				impl,
+				schedule,
+				Route.Schedules.CREATE_TASK.compile(server.getUUID().toString(), schedule.getId()));
 	}
-
 }

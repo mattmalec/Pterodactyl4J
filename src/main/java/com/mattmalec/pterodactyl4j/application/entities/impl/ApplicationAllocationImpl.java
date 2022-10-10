@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -19,9 +19,8 @@ package com.mattmalec.pterodactyl4j.application.entities.impl;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationAllocation;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationServer;
 import com.mattmalec.pterodactyl4j.application.entities.Node;
-import org.json.JSONObject;
-
 import java.util.Optional;
+import org.json.JSONObject;
 
 public class ApplicationAllocationImpl implements ApplicationAllocation {
 
@@ -68,7 +67,7 @@ public class ApplicationAllocationImpl implements ApplicationAllocation {
 
 	@Override
 	public Optional<ApplicationServer> getServer() {
-		if(!isAssigned() || !json.has("relationships")) return Optional.empty();
+		if (!isAssigned() || !json.has("relationships")) return Optional.empty();
 		return Optional.of(new ApplicationServerImpl(impl, relationships.getJSONObject("server")));
 	}
 

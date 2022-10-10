@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -20,141 +20,140 @@ import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.entities.P4J;
 import com.mattmalec.pterodactyl4j.exceptions.PteroException;
 import com.mattmalec.pterodactyl4j.utils.P4JLogger;
+import java.util.concurrent.CompletionException;
+import java.util.function.BiFunction;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 import okhttp3.RequestBody;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 
-import java.util.concurrent.CompletionException;
-import java.util.function.BiFunction;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
-
 public class PteroActionImpl<T> implements PteroAction<T> {
 
-    public static final Logger LOGGER = P4JLogger.getLogger(PteroAction.class);
+	public static final Logger LOGGER = P4JLogger.getLogger(PteroAction.class);
 
-    private final P4J api;
-    private final Route.CompiledRoute route;
-    private final RequestBody data;
-    private long deadline = 0;
-    private final BiFunction<Response, Request<T>, T> handler;
+	private final P4J api;
+	private final Route.CompiledRoute route;
+	private final RequestBody data;
+	private long deadline = 0;
+	private final BiFunction<Response, Request<T>, T> handler;
 
-    public static <T> DeferredPteroAction<T> onExecute(P4J api, Supplier<? extends T> supplier) {
-        return new DeferredPteroAction<>(api, supplier);
-    }
+	public static <T> DeferredPteroAction<T> onExecute(P4J api, Supplier<? extends T> supplier) {
+		return new DeferredPteroAction<>(api, supplier);
+	}
 
-    public static <T> PteroActionImpl<T> onRequestExecute(P4J api, Route.CompiledRoute route) {
-        return new PteroActionImpl<>(api, route);
-    }
+	public static <T> PteroActionImpl<T> onRequestExecute(P4J api, Route.CompiledRoute route) {
+		return new PteroActionImpl<>(api, route);
+	}
 
-    public static <T> PteroActionImpl<T> onRequestExecute(P4J api, Route.CompiledRoute route, RequestBody data) {
-        return new PteroActionImpl<>(api, route, data);
-    }
+	public static <T> PteroActionImpl<T> onRequestExecute(P4J api, Route.CompiledRoute route, RequestBody data) {
+		return new PteroActionImpl<>(api, route, data);
+	}
 
-    public static <T> PteroActionImpl<T> onRequestExecute(P4J api, Route.CompiledRoute route, BiFunction<Response, Request<T>, T> handler) {
-        return new PteroActionImpl<>(api, route, handler);
-    }
+	public static <T> PteroActionImpl<T> onRequestExecute(
+			P4J api, Route.CompiledRoute route, BiFunction<Response, Request<T>, T> handler) {
+		return new PteroActionImpl<>(api, route, handler);
+	}
 
-    public static <T> PteroActionImpl<T> onRequestExecute(P4J api, Route.CompiledRoute route, RequestBody data, BiFunction<Response, Request<T>, T> handler) {
-        return new PteroActionImpl<>(api, route, data, handler);
-    }
+	public static <T> PteroActionImpl<T> onRequestExecute(
+			P4J api, Route.CompiledRoute route, RequestBody data, BiFunction<Response, Request<T>, T> handler) {
+		return new PteroActionImpl<>(api, route, data, handler);
+	}
 
-    public PteroActionImpl(P4J api) {
-        this(api, null);
-    }
+	public PteroActionImpl(P4J api) {
+		this(api, null);
+	}
 
-    public PteroActionImpl(P4J api, Route.CompiledRoute route) {
-        this(api, route, null, null);
-    }
+	public PteroActionImpl(P4J api, Route.CompiledRoute route) {
+		this(api, route, null, null);
+	}
 
-    public PteroActionImpl(P4J api, Route.CompiledRoute route, RequestBody data) {
-        this(api, route, data, null);
-    }
+	public PteroActionImpl(P4J api, Route.CompiledRoute route, RequestBody data) {
+		this(api, route, data, null);
+	}
 
-    public PteroActionImpl(P4J api, Route.CompiledRoute route, BiFunction<Response, Request<T>, T> handler) {
-        this(api, route, null, handler);
-    }
+	public PteroActionImpl(P4J api, Route.CompiledRoute route, BiFunction<Response, Request<T>, T> handler) {
+		this(api, route, null, handler);
+	}
 
-    public PteroActionImpl(P4J api, Route.CompiledRoute route, RequestBody data, BiFunction<Response, Request<T>, T> handler) {
-        this.api = api;
-        this.route = route;
-        this.data = data;
-        this.handler = handler;
-    }
+	public PteroActionImpl(
+			P4J api, Route.CompiledRoute route, RequestBody data, BiFunction<Response, Request<T>, T> handler) {
+		this.api = api;
+		this.route = route;
+		this.data = data;
+		this.handler = handler;
+	}
 
-    public static final Consumer<Object> DEFAULT_SUCCESS = o -> {};
-    public static final Consumer<? super Throwable> DEFAULT_FAILURE = t -> System.err.printf("Action execute returned failure: %s%n", t.getMessage());
+	public static final Consumer<Object> DEFAULT_SUCCESS = o -> {};
+	public static final Consumer<? super Throwable> DEFAULT_FAILURE =
+			t -> System.err.printf("Action execute returned failure: %s%n", t.getMessage());
 
-    @Override
-    public T execute(boolean shouldQueue) {
-        Route.CompiledRoute route = finalizeRoute();
-        RequestBody data = finalizeData();
-        try {
-            return new RequestFuture<>(this, route, data, shouldQueue, deadline).join();
-        } catch (CompletionException ex) {
-            if (ex.getCause() != null) {
-                Throwable cause = ex.getCause();
-                if (cause instanceof PteroException)
-                    throw (PteroException) cause.fillInStackTrace();
-            }
-            throw ex;
-        }
-    }
+	@Override
+	public T execute(boolean shouldQueue) {
+		Route.CompiledRoute route = finalizeRoute();
+		RequestBody data = finalizeData();
+		try {
+			return new RequestFuture<>(this, route, data, shouldQueue, deadline).join();
+		} catch (CompletionException ex) {
+			if (ex.getCause() != null) {
+				Throwable cause = ex.getCause();
+				if (cause instanceof PteroException) throw (PteroException) cause.fillInStackTrace();
+			}
+			throw ex;
+		}
+	}
 
-    @Override
-    public void executeAsync(Consumer<? super T> success, Consumer<? super Throwable> failure) {
-        Route.CompiledRoute route = finalizeRoute();
-        if (success == null)
-            success = DEFAULT_SUCCESS;
-        if (failure == null)
-            failure = DEFAULT_FAILURE;
+	@Override
+	public void executeAsync(Consumer<? super T> success, Consumer<? super Throwable> failure) {
+		Route.CompiledRoute route = finalizeRoute();
+		if (success == null) success = DEFAULT_SUCCESS;
+		if (failure == null) failure = DEFAULT_FAILURE;
 
-        Consumer<? super T> finalizedSuccess = success;
-        Consumer<? super Throwable> finalizedFailure = failure;
+		Consumer<? super T> finalizedSuccess = success;
+		Consumer<? super Throwable> finalizedFailure = failure;
 
-        api.getActionPool().submit(() -> {
-            RequestBody data = finalizeData();
-            api.getRequester().request(new Request<>(this, finalizedSuccess, finalizedFailure, route, data, true, deadline));
-        });
-    }
+		api.getActionPool().submit(() -> {
+			RequestBody data = finalizeData();
+			api.getRequester()
+					.request(new Request<>(this, finalizedSuccess, finalizedFailure, route, data, true, deadline));
+		});
+	}
 
-    @Override
-    public PteroAction<T> deadline(long timestamp) {
-        this.deadline = timestamp;
-        return this;
-    }
+	@Override
+	public PteroAction<T> deadline(long timestamp) {
+		this.deadline = timestamp;
+		return this;
+	}
 
-    @Override
-    public P4J getP4J() {
-        return api;
-    }
+	@Override
+	public P4J getP4J() {
+		return api;
+	}
 
-    public void handleResponse(Response response, Request<T> request) {
-        if (response.isOk())
-            handleSuccess(response, request);
-        else request.setOnFailure(response);
-    }
+	public void handleResponse(Response response, Request<T> request) {
+		if (response.isOk()) handleSuccess(response, request);
+		else request.setOnFailure(response);
+	}
 
-    public void handleSuccess(Response response, Request<T> request) {
-        if (response.isEmpty() || handler == null)
-            request.onSuccess(null);
-        else request.onSuccess(handler.apply(response, request));
-    }
+	public void handleSuccess(Response response, Request<T> request) {
+		if (response.isEmpty() || handler == null) request.onSuccess(null);
+		else request.onSuccess(handler.apply(response, request));
+	}
 
-    protected RequestBody finalizeData() {
-        return data;
-    }
+	protected RequestBody finalizeData() {
+		return data;
+	}
 
-    protected Route.CompiledRoute finalizeRoute() {
-        return route;
-    }
+	protected Route.CompiledRoute finalizeRoute() {
+		return route;
+	}
 
-    public static RequestBody getRequestBody(JSONObject object) {
-        return object == null ? null : RequestBody.create(Requester.MEDIA_TYPE_JSON, object.toString());
-    }
+	public static RequestBody getRequestBody(JSONObject object) {
+		return object == null ? null : RequestBody.create(Requester.MEDIA_TYPE_JSON, object.toString());
+	}
 
-    public static RequestBody getRequestBody(JSONArray array) {
-        return array == null ? null : RequestBody.create(Requester.MEDIA_TYPE_JSON, array.toString());
-    }
+	public static RequestBody getRequestBody(JSONArray array) {
+		return array == null ? null : RequestBody.create(Requester.MEDIA_TYPE_JSON, array.toString());
+	}
 }

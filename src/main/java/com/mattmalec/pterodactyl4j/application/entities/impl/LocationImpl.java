@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -24,12 +24,11 @@ import com.mattmalec.pterodactyl4j.application.managers.LocationAction;
 import com.mattmalec.pterodactyl4j.requests.CompletedPteroAction;
 import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.requests.Route;
-import org.json.JSONObject;
-
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import org.json.JSONObject;
 
 public class LocationImpl implements Location {
 
@@ -55,12 +54,11 @@ public class LocationImpl implements Location {
 
 	@Override
 	public PteroAction<List<Node>> getNodes() {
-		if (!json.has("relationships"))
-			return impl.retrieveNodesByLocation(this);
+		if (!json.has("relationships")) return impl.retrieveNodesByLocation(this);
 
 		List<Node> nodes = new ArrayList<>();
 		JSONObject json = relationships.getJSONObject("nodes");
-		for(Object o : json.getJSONArray("data")) {
+		for (Object o : json.getJSONArray("data")) {
 			JSONObject node = new JSONObject(o.toString());
 			nodes.add(new NodeImpl(node, impl));
 		}
@@ -69,12 +67,11 @@ public class LocationImpl implements Location {
 
 	@Override
 	public PteroAction<List<ApplicationServer>> getServers() {
-		if (!json.has("relationships"))
-			return impl.retrieveServersByLocation(this);
+		if (!json.has("relationships")) return impl.retrieveServersByLocation(this);
 
 		List<ApplicationServer> servers = new ArrayList<>();
 		JSONObject json = relationships.getJSONObject("servers");
-		for(Object o : json.getJSONArray("data")) {
+		for (Object o : json.getJSONArray("data")) {
 			JSONObject server = new JSONObject(o.toString());
 			servers.add(new ApplicationServerImpl(impl, server));
 		}
@@ -94,7 +91,6 @@ public class LocationImpl implements Location {
 	@Override
 	public OffsetDateTime getUpdatedDate() {
 		return OffsetDateTime.parse(json.optString("updated_at"));
-
 	}
 
 	@Override

@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -18,27 +18,25 @@ package com.mattmalec.pterodactyl4j.client.managers;
 
 import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.utils.Checks;
-
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
 
 public interface UploadFileAction extends PteroAction<Void> {
 
-    UploadFileAction addFile(InputStream data, String name);
+	UploadFileAction addFile(InputStream data, String name);
 
-    default UploadFileAction addFile(byte[] data, String name) {
-        Checks.notNull(data, "Data");
-        return addFile(new ByteArrayInputStream(data), name);
-    }
+	default UploadFileAction addFile(byte[] data, String name) {
+		Checks.notNull(data, "Data");
+		return addFile(new ByteArrayInputStream(data), name);
+	}
 
-    default UploadFileAction addFile(final File file) {
-        Checks.notNull(file, "File");
-        return addFile(file, file.getName());
-    }
+	default UploadFileAction addFile(final File file) {
+		Checks.notNull(file, "File");
+		return addFile(file, file.getName());
+	}
 
-    UploadFileAction addFile(File file, String name);
-    UploadFileAction clearFiles();
+	UploadFileAction addFile(File file, String name);
 
-
+	UploadFileAction clearFiles();
 }

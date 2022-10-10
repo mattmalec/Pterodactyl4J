@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -30,62 +30,61 @@ import com.mattmalec.pterodactyl4j.client.managers.WebSocketManager;
  */
 public abstract class Event {
 
-    private final PteroClientImpl api;
-    private final ClientServer server;
-    private final WebSocketManager manager;
+	private final PteroClientImpl api;
+	private final ClientServer server;
+	private final WebSocketManager manager;
 
-    public Event(PteroClientImpl api, ClientServer server, WebSocketManager manager) {
-        this.api = api;
-        this.server = server;
-        this.manager = manager;
-    }
+	public Event(PteroClientImpl api, ClientServer server, WebSocketManager manager) {
+		this.api = api;
+		this.server = server;
+		this.manager = manager;
+	}
 
-    /**
-     * The current {@link com.mattmalec.pterodactyl4j.client.entities.PteroClient} instance corresponding to this Event
-     *
-     * @return The corresponding {@link com.mattmalec.pterodactyl4j.client.entities.PteroClient} instance
-     */
-    public PteroClient getClient() {
-        return api;
-    }
+	/**
+	 * The current {@link com.mattmalec.pterodactyl4j.client.entities.PteroClient} instance corresponding to this Event
+	 *
+	 * @return The corresponding {@link com.mattmalec.pterodactyl4j.client.entities.PteroClient} instance
+	 */
+	public PteroClient getClient() {
+		return api;
+	}
 
-    /**
-     * The {@link com.mattmalec.pterodactyl4j.client.entities.ClientServer} instance corresponding to this Event
-     * <p><b>Note:</b> This is the server at the time of WebSocket creation,
-     * if you need an updated version (like if the install state is changed), use
-     * {@link Event#retrieveServer()} or set {@link com.mattmalec.pterodactyl4j.client.managers.WebSocketBuilder#freshServer(boolean)} WebSocketBuilder.freshServer(enable)}
-     * to true
-     *
-     * @return The corresponding {@link com.mattmalec.pterodactyl4j.client.entities.ClientServer} instance
-     *
-     * @see Event#retrieveServer()
-     * @see com.mattmalec.pterodactyl4j.client.managers.WebSocketBuilder#freshServer(boolean) WebSocketBuilder.freshServer(enable)
-     */
-    public ClientServer getServer() {
-        return server;
-    }
+	/**
+	 * The {@link com.mattmalec.pterodactyl4j.client.entities.ClientServer} instance corresponding to this Event
+	 * <p><b>Note:</b> This is the server at the time of WebSocket creation,
+	 * if you need an updated version (like if the install state is changed), use
+	 * {@link Event#retrieveServer()} or set {@link com.mattmalec.pterodactyl4j.client.managers.WebSocketBuilder#freshServer(boolean)} WebSocketBuilder.freshServer(enable)}
+	 * to true
+	 *
+	 * @return The corresponding {@link com.mattmalec.pterodactyl4j.client.entities.ClientServer} instance
+	 *
+	 * @see Event#retrieveServer()
+	 * @see com.mattmalec.pterodactyl4j.client.managers.WebSocketBuilder#freshServer(boolean) WebSocketBuilder.freshServer(enable)
+	 */
+	public ClientServer getServer() {
+		return server;
+	}
 
-    /**
-     * The {@link com.mattmalec.pterodactyl4j.client.entities.ClientServer} instance corresponding to this Event
-     * <p>This method should only be used if you need updated information. If you only need basic information (like the name),
-     * use {@link Event#getServer()}
-     *
-     * @return The corresponding {@link com.mattmalec.pterodactyl4j.client.entities.ClientServer} instance
-     *
-     * @see Event#getServer()
-     */
-    public PteroAction<ClientServer> retrieveServer() {
-        return api.retrieveServerByIdentifier(server.getIdentifier());
-    }
+	/**
+	 * The {@link com.mattmalec.pterodactyl4j.client.entities.ClientServer} instance corresponding to this Event
+	 * <p>This method should only be used if you need updated information. If you only need basic information (like the name),
+	 * use {@link Event#getServer()}
+	 *
+	 * @return The corresponding {@link com.mattmalec.pterodactyl4j.client.entities.ClientServer} instance
+	 *
+	 * @see Event#getServer()
+	 */
+	public PteroAction<ClientServer> retrieveServer() {
+		return api.retrieveServerByIdentifier(server.getIdentifier());
+	}
 
-    /**
-     * The current {@link com.mattmalec.pterodactyl4j.client.managers.WebSocketManager} instance corresponding to this Event
-     * <p>This method is useful if you need to send a command or power response to a given Event
-     *
-     * @return The corresponding {@link com.mattmalec.pterodactyl4j.client.managers.WebSocketManager} instance
-     */
-    public WebSocketManager getWebSocketManager() {
-        return manager;
-    }
-
+	/**
+	 * The current {@link com.mattmalec.pterodactyl4j.client.managers.WebSocketManager} instance corresponding to this Event
+	 * <p>This method is useful if you need to send a command or power response to a given Event
+	 *
+	 * @return The corresponding {@link com.mattmalec.pterodactyl4j.client.managers.WebSocketManager} instance
+	 */
+	public WebSocketManager getWebSocketManager() {
+		return manager;
+	}
 }

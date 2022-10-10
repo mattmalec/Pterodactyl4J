@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -21,71 +21,70 @@ import com.mattmalec.pterodactyl4j.client.managers.APIKeyAction;
 import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.requests.Route;
 import com.mattmalec.pterodactyl4j.utils.Checks;
-import okhttp3.RequestBody;
-import org.json.JSONObject;
-
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import okhttp3.RequestBody;
+import org.json.JSONObject;
 
 public class CreateAPIKeyImpl extends PteroActionImpl<APIKey> implements APIKeyAction {
 
-    private String description;
-    private final Set<String> allowedIps;
+	private String description;
+	private final Set<String> allowedIps;
 
-    public CreateAPIKeyImpl(PteroClientImpl impl) {
-        super(impl.getP4J(), Route.Accounts.CREATE_API_KEY.compile(),
-                (response, request) -> new APIKeyImpl(response.getObject(), impl));
-        this.allowedIps = new HashSet<>();
-    }
+	public CreateAPIKeyImpl(PteroClientImpl impl) {
+		super(
+				impl.getP4J(),
+				Route.Accounts.CREATE_API_KEY.compile(),
+				(response, request) -> new APIKeyImpl(response.getObject(), impl));
+		this.allowedIps = new HashSet<>();
+	}
 
-    @Override
-    public APIKeyAction setDescription(String description) {
-        this.description = description;
-        return this;
-    }
+	@Override
+	public APIKeyAction setDescription(String description) {
+		this.description = description;
+		return this;
+	}
 
-    @Override
-    public APIKeyAction setAllowedIps(String... ips) {
-        allowedIps.clear();
-        return addAllowedIps(ips);
-    }
+	@Override
+	public APIKeyAction setAllowedIps(String... ips) {
+		allowedIps.clear();
+		return addAllowedIps(ips);
+	}
 
-    @Override
-    public APIKeyAction addAllowedIps(String... ips) {
-        allowedIps.addAll(Arrays.asList(ips));
-        return this;
-    }
+	@Override
+	public APIKeyAction addAllowedIps(String... ips) {
+		allowedIps.addAll(Arrays.asList(ips));
+		return this;
+	}
 
-    @Override
-    public APIKeyAction addAllowedIp(String ip) {
-        allowedIps.add(ip);
-        return this;
-    }
+	@Override
+	public APIKeyAction addAllowedIp(String ip) {
+		allowedIps.add(ip);
+		return this;
+	}
 
-    @Override
-    public APIKeyAction removeAllowedIp(String ip) {
-        allowedIps.remove(ip);
-        return this;
-    }
+	@Override
+	public APIKeyAction removeAllowedIp(String ip) {
+		allowedIps.remove(ip);
+		return this;
+	}
 
-    @Override
-    public APIKeyAction removeAllowedIps(String... ips) {
-        Arrays.asList(ips).forEach(allowedIps::remove);
-        return this;
-    }
+	@Override
+	public APIKeyAction removeAllowedIps(String... ips) {
+		Arrays.asList(ips).forEach(allowedIps::remove);
+		return this;
+	}
 
-    @Override
-    protected RequestBody finalizeData() {
-        Checks.notBlank(description, "Description");
-        Checks.check(description.length() <= 500, "The description cannot be over 500 characters");
+	@Override
+	protected RequestBody finalizeData() {
+		Checks.notBlank(description, "Description");
+		Checks.check(description.length() <= 500, "The description cannot be over 500 characters");
 
-        JSONObject json = new JSONObject()
-                .put("description", description);
+		JSONObject json = new JSONObject().put("description", description);
 
-        if (!allowedIps.isEmpty())
-            json.put("allowed_ips", allowedIps);
+		if (!allowedIps.isEmpty()) json.put("allowed_ips", allowedIps);
 
-        return getRequestBody(json);
-    }
+		return getRequestBody(json);
+	}
 }

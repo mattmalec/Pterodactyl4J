@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -23,12 +23,12 @@ import com.mattmalec.pterodactyl4j.client.ws.events.install.InstallCompletedEven
 
 public class InstallCompletedHandler extends ClientSocketHandler {
 
-    public InstallCompletedHandler(PteroClientImpl client, ClientServer server, WebSocketManager manager) {
-        super(client, server, manager);
-    }
+	public InstallCompletedHandler(PteroClientImpl client, ClientServer server, WebSocketManager manager) {
+		super(client, server, manager);
+	}
 
-    @Override
-    public void handleInternally(String content) {
-        getManager().getEventManager().handle(new InstallCompletedEvent(getClient(), getServer(), getManager(), true));
-    }
+	@Override
+	public void handleInternally(String content) {
+		getManager().getEventManager().handle(new InstallCompletedEvent(getClient(), getServer(), getManager(), true));
+	}
 }

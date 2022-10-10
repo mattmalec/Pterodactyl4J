@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -18,12 +18,10 @@ package com.mattmalec.pterodactyl4j.utils;
 
 public final class ExceptionUtils {
 
-    public static <T extends Throwable> T appendCause(T throwable, Throwable cause) {
-        Throwable t = throwable;
-        while (t.getCause() != null)
-            t = t.getCause();
-        t.initCause(cause);
-        return throwable;
-    }
-
+	public static <T extends Throwable> T appendCause(T throwable, Throwable cause) {
+		Throwable t = throwable;
+		while (t.getCause() != null) t = t.getCause();
+		t.initCause(cause);
+		return throwable;
+	}
 }

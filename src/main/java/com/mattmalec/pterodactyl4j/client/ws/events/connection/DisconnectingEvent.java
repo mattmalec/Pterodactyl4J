@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -22,8 +22,8 @@ import com.mattmalec.pterodactyl4j.client.managers.WebSocketManager;
 
 public class DisconnectingEvent extends DisconnectionEvent {
 
-    public DisconnectingEvent(PteroClientImpl api, ClientServer server, WebSocketManager manager, boolean connected, int closeCode) {
-        super(api, server, manager, connected, closeCode);
-    }
-
+	public DisconnectingEvent(
+			PteroClientImpl api, ClientServer server, WebSocketManager manager, boolean connected, int closeCode) {
+		super(api, server, manager, connected, closeCode);
+	}
 }

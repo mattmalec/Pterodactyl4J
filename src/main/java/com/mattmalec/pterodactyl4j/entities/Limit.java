@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -19,25 +19,34 @@ package com.mattmalec.pterodactyl4j.entities;
 public interface Limit {
 
 	long getMemoryLong();
+
 	default String getMemory() {
 		return Long.toUnsignedString(getMemoryLong());
 	}
+
 	long getSwapLong();
+
 	default String getSwap() {
 		return Long.toUnsignedString(getSwapLong());
 	}
+
 	long getDiskLong();
+
 	default String getDisk() {
 		return Long.toUnsignedString(getDiskLong());
 	}
+
 	long getIOLong();
+
 	default String getIO() {
 		return Long.toUnsignedString(getIOLong());
 	}
+
 	long getCPULong();
+
 	default String getCPU() {
 		return Long.toUnsignedString(getCPULong());
 	}
-	String getThreads();
 
+	String getThreads();
 }

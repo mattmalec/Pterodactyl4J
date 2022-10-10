@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,25 +16,28 @@
 
 package com.mattmalec.pterodactyl4j.requests;
 
-import okhttp3.RequestBody;
-
 import java.util.concurrent.CompletableFuture;
+import okhttp3.RequestBody;
 
 public class RequestFuture<T> extends CompletableFuture<T> {
 
-    private final Request<T> request;
+	private final Request<T> request;
 
-    public RequestFuture(PteroActionImpl<T> action, Route.CompiledRoute route, RequestBody requestBody, boolean shouldQueue, long deadline) {
-        this.request = new Request<>(action, this::complete, this::completeExceptionally, route, requestBody, shouldQueue, deadline);
-        action.getP4J().getRequester().request(this.request);
-    }
+	public RequestFuture(
+			PteroActionImpl<T> action,
+			Route.CompiledRoute route,
+			RequestBody requestBody,
+			boolean shouldQueue,
+			long deadline) {
+		this.request = new Request<>(
+				action, this::complete, this::completeExceptionally, route, requestBody, shouldQueue, deadline);
+		action.getP4J().getRequester().request(this.request);
+	}
 
-    @Override
-    public boolean cancel(final boolean mayInterrupt) {
-        if (this.request != null)
-            this.request.cancel();
+	@Override
+	public boolean cancel(final boolean mayInterrupt) {
+		if (this.request != null) this.request.cancel();
 
-        return (!isDone() && !isCancelled()) && super.cancel(mayInterrupt);
-    }
-
+		return (!isDone() && !isCancelled()) && super.cancel(mayInterrupt);
+	}
 }

@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -33,8 +33,7 @@ public class CreateAllocationImpl extends AbstractAllocationAction {
 	protected RequestBody finalizeData() {
 		JSONObject json = new JSONObject();
 		Checks.notBlank(ip, "IP");
-		if (alias != null)
-			Checks.check(alias.length() <= 191, "Allocation alias cannot be longer than 191 characters");
+		if (alias != null) Checks.check(alias.length() <= 191, "Allocation alias cannot be longer than 191 characters");
 
 		json.put("ip", ip);
 		json.put("alias", alias);

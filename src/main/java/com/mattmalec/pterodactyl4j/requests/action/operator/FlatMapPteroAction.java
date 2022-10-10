@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@
 package com.mattmalec.pterodactyl4j.requests.action.operator;
 
 import com.mattmalec.pterodactyl4j.PteroAction;
-
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -26,33 +25,32 @@ import java.util.function.Predicate;
 
 public class FlatMapPteroAction<I, O> extends PteroActionOperator<I, O> {
 
-    private final Function<? super I, ? extends PteroAction<O>> function;
-    private final Predicate<? super I> condition;
+	private final Function<? super I, ? extends PteroAction<O>> function;
+	private final Predicate<? super I> condition;
 
-    public FlatMapPteroAction(PteroAction<I> action,
-                              Predicate<? super I> condition, Function<? super I, ? extends PteroAction<O>> function) {
-        super(action);
-        this.function = function;
-        this.condition = condition;
-    }
+	public FlatMapPteroAction(
+			PteroAction<I> action,
+			Predicate<? super I> condition,
+			Function<? super I, ? extends PteroAction<O>> function) {
+		super(action);
+		this.function = function;
+		this.condition = condition;
+	}
 
+	@Override
+	public void executeAsync(Consumer<? super O> success, Consumer<? super Throwable> failure) {
+		action.executeAsync(
+				(result) -> {
+					if (condition != null && !condition.test(result)) return;
+					PteroAction<O> then = function.apply(result);
+					if (then == null) doFailure(failure, new IllegalStateException("FlatMap operand is null"));
+					else then.executeAsync(success, failure);
+				},
+				failure);
+	}
 
-    @Override
-    public void executeAsync(Consumer<? super O> success, Consumer<? super Throwable> failure) {
-        action.executeAsync((result) -> {
-            if (condition != null && !condition.test(result))
-                return;
-            PteroAction<O> then = function.apply(result);
-            if (then == null)
-                doFailure(failure, new IllegalStateException("FlatMap operand is null"));
-            else
-                then.executeAsync(success, failure);
-        }, failure);
-    }
-
-    @Override
-    public O execute(boolean shouldQueue) {
-        return function.apply(action.execute(shouldQueue)).execute(shouldQueue);
-    }
-
+	@Override
+	public O execute(boolean shouldQueue) {
+		return function.apply(action.execute(shouldQueue)).execute(shouldQueue);
+	}
 }

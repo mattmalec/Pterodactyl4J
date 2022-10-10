@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -17,11 +17,11 @@
 package com.mattmalec.pterodactyl4j.client.entities.impl;
 
 import com.mattmalec.pterodactyl4j.PteroAction;
-import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.client.entities.ClientServer;
 import com.mattmalec.pterodactyl4j.client.entities.Schedule;
 import com.mattmalec.pterodactyl4j.client.managers.ScheduleTaskAction;
 import com.mattmalec.pterodactyl4j.client.managers.ScheduleTaskManager;
+import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.requests.Route;
 
 public class ScheduleTaskManagerImpl implements ScheduleTaskManager {
@@ -48,7 +48,8 @@ public class ScheduleTaskManagerImpl implements ScheduleTaskManager {
 
 	@Override
 	public PteroAction<Void> deleteTask(Schedule.ScheduleTask task) {
-		return PteroActionImpl.onRequestExecute(impl.getP4J(),
+		return PteroActionImpl.onRequestExecute(
+				impl.getP4J(),
 				Route.Schedules.DELETE_TASK.compile(server.getUUID().toString(), schedule.getId(), task.getId()));
 	}
 }

@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -19,39 +19,38 @@ package com.mattmalec.pterodactyl4j.requests;
 import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.entities.P4J;
 import com.mattmalec.pterodactyl4j.exceptions.RateLimitedException;
-
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class DeferredPteroAction<T> implements PteroAction<T> {
 
-    private final P4J api;
-    private final Supplier<? extends T> value;
+	private final P4J api;
+	private final Supplier<? extends T> value;
 
-    public DeferredPteroAction(P4J api, Supplier<? extends T> value) {
-        this.api = api;
-        this.value = value;
-    }
+	public DeferredPteroAction(P4J api, Supplier<? extends T> value) {
+		this.api = api;
+		this.value = value;
+	}
 
-    @Override
-    public P4J getP4J() {
-        return api;
-    }
+	@Override
+	public P4J getP4J() {
+		return api;
+	}
 
-    @Override
-    public T execute(boolean shouldQueue) throws RateLimitedException {
-        return value.get();
-    }
+	@Override
+	public T execute(boolean shouldQueue) throws RateLimitedException {
+		return value.get();
+	}
 
-    @Override
-    public void executeAsync(Consumer<? super T> success, Consumer<? super Throwable> failure) {
-            CompletableFuture.supplyAsync(value, api.getSupplierPool())
-                    .thenAcceptAsync(success == null ? PteroAction.getDefaultSuccess() : success);
-    }
+	@Override
+	public void executeAsync(Consumer<? super T> success, Consumer<? super Throwable> failure) {
+		CompletableFuture.supplyAsync(value, api.getSupplierPool())
+				.thenAcceptAsync(success == null ? PteroAction.getDefaultSuccess() : success);
+	}
 
-    @Override
-    public PteroAction<T> deadline(long timestamp) {
-        return this;
-    }
+	@Override
+	public PteroAction<T> deadline(long timestamp) {
+		return this;
+	}
 }

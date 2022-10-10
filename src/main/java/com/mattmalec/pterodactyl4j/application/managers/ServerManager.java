@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -24,7 +24,6 @@ import com.mattmalec.pterodactyl4j.application.entities.ApplicationEgg;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationServer;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationUser;
 import com.mattmalec.pterodactyl4j.client.entities.ClientServer;
-
 import java.util.Map;
 
 /**
@@ -263,7 +262,7 @@ public class ServerManager {
 	 * {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer} - The updated server
 	 *
 	 * @deprecated This will be removed in the next major release (non-beta). Use {@link ServerBuildManager#setThreads(String)} instead
-
+	 *
 	 */
 	@Deprecated
 	public PteroAction<ApplicationServer> setThreads(String cores) {

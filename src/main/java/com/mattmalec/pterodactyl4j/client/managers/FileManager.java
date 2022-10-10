@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -23,18 +23,25 @@ import com.mattmalec.pterodactyl4j.client.entities.File;
 
 public interface FileManager {
 
-    CreateDirectoryAction createDirectory();
-    PteroAction<Void> createFile(Directory directory, String name, String content);
+	CreateDirectoryAction createDirectory();
 
-    UploadFileAction upload(Directory directory);
-    RenameAction rename();
-    CompressAction compress();
-    PteroAction<Void> decompress(File compressedFile);
-    DeleteAction delete();
+	PteroAction<Void> createFile(Directory directory, String name, String content);
 
-    PteroAction<String> retrieveContent(File file);
-    PteroAction<DownloadableFile> retrieveDownload(File file);
-    PteroAction<Void> write(File file, String content);
-    PteroAction<Void> copy(File file);
+	UploadFileAction upload(Directory directory);
 
+	RenameAction rename();
+
+	CompressAction compress();
+
+	PteroAction<Void> decompress(File compressedFile);
+
+	DeleteAction delete();
+
+	PteroAction<String> retrieveContent(File file);
+
+	PteroAction<DownloadableFile> retrieveDownload(File file);
+
+	PteroAction<Void> write(File file, String content);
+
+	PteroAction<Void> copy(File file);
 }

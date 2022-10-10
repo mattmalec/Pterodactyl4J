@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -19,24 +19,33 @@ package com.mattmalec.pterodactyl4j.entities;
 import com.mattmalec.pterodactyl4j.application.entities.PteroApplication;
 import com.mattmalec.pterodactyl4j.client.entities.PteroClient;
 import com.mattmalec.pterodactyl4j.requests.Requester;
-import okhttp3.OkHttpClient;
-
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ScheduledExecutorService;
+import okhttp3.OkHttpClient;
 
 public interface P4J {
 
 	String getToken();
-	Requester getRequester();
-	String getApplicationUrl();
-	OkHttpClient getHttpClient();
-	ExecutorService getCallbackPool();
-	ExecutorService getActionPool();
-	ScheduledExecutorService getRateLimitPool();
-	ExecutorService getSupplierPool();
-	OkHttpClient getWebSocketClient();
-	String getUserAgent();
-	PteroClient asClient();
-	PteroApplication asApplication();
 
+	Requester getRequester();
+
+	String getApplicationUrl();
+
+	OkHttpClient getHttpClient();
+
+	ExecutorService getCallbackPool();
+
+	ExecutorService getActionPool();
+
+	ScheduledExecutorService getRateLimitPool();
+
+	ExecutorService getSupplierPool();
+
+	OkHttpClient getWebSocketClient();
+
+	String getUserAgent();
+
+	PteroClient asClient();
+
+	PteroApplication asApplication();
 }

@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -19,10 +19,9 @@ package com.mattmalec.pterodactyl4j.client.entities.impl;
 import com.mattmalec.pterodactyl4j.PowerAction;
 import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.client.entities.Schedule;
-import org.json.JSONObject;
-
 import java.time.OffsetDateTime;
 import java.util.Optional;
+import org.json.JSONObject;
 
 public class ScheduleTaskImpl implements Schedule.ScheduleTask {
 
@@ -61,7 +60,7 @@ public class ScheduleTaskImpl implements Schedule.ScheduleTask {
 
 	@Override
 	public Optional<PowerAction> getPowerPayload() {
-		if(getAction() == ScheduleAction.COMMAND) return Optional.empty();
+		if (getAction() == ScheduleAction.COMMAND) return Optional.empty();
 		return Optional.of(PowerAction.valueOf(json.getString("payload").toUpperCase()));
 	}
 

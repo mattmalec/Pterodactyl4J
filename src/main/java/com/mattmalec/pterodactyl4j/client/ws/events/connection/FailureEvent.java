@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -19,10 +19,9 @@ package com.mattmalec.pterodactyl4j.client.ws.events.connection;
 import com.mattmalec.pterodactyl4j.client.entities.ClientServer;
 import com.mattmalec.pterodactyl4j.client.entities.impl.PteroClientImpl;
 import com.mattmalec.pterodactyl4j.client.managers.WebSocketManager;
+import java.io.IOException;
 import okhttp3.Response;
 import org.json.JSONObject;
-
-import java.io.IOException;
 
 /**
  * Indicates that P4J encountered a Throwable that could not be forwarded to another end-user frontend.
@@ -31,42 +30,47 @@ import java.io.IOException;
  */
 public class FailureEvent extends ConnectionEvent {
 
-    private final Response response;
-    private final Throwable throwable;
+	private final Response response;
+	private final Throwable throwable;
 
-    public FailureEvent(PteroClientImpl api, ClientServer server, WebSocketManager manager, boolean connected, Response response, Throwable throwable) {
-        super(api, server, manager, connected);
-        this.response = response;
-        this.throwable = throwable;
-    }
+	public FailureEvent(
+			PteroClientImpl api,
+			ClientServer server,
+			WebSocketManager manager,
+			boolean connected,
+			Response response,
+			Throwable throwable) {
+		super(api, server, manager, connected);
+		this.response = response;
+		this.throwable = throwable;
+	}
 
-    /**
-     * The cause Throwable for this event.
-     * <br>There are several types of Throwable instances that can be expected here.
-     *
-     * <p>For instance, if the Throwable is a type of {@link java.io.EOFException EOFException}, that means P4J unexpectedly
-     * lost connection to Wings.
-     *
-     * <p>If the Throwable is a type of {@link java.net.ConnectException ConnectException}, that means P4J was not
-     * able to reach Wings
-     *
-     * @return The cause
-     */
-    public Throwable getThrowable() {
-        return throwable;
-    }
+	/**
+	 * The cause Throwable for this event.
+	 * <br>There are several types of Throwable instances that can be expected here.
+	 *
+	 * <p>For instance, if the Throwable is a type of {@link java.io.EOFException EOFException}, that means P4J unexpectedly
+	 * lost connection to Wings.
+	 *
+	 * <p>If the Throwable is a type of {@link java.net.ConnectException ConnectException}, that means P4J was not
+	 * able to reach Wings
+	 *
+	 * @return The cause
+	 */
+	public Throwable getThrowable() {
+		return throwable;
+	}
 
-    /**
-     * Read the response body of the event, deserialized as a {@link org.json.JSONObject JSONObject}
-     * <br>There normally isn't a case when calling this method is necessary.
-     *
-     * @throws IOException
-     *         If the provided response body cannot be deserialized
-     *
-     * @return The response body
-     */
-    public JSONObject getResponse() throws IOException {
-        return new JSONObject(response.body().string());
-    }
-
+	/**
+	 * Read the response body of the event, deserialized as a {@link org.json.JSONObject JSONObject}
+	 * <br>There normally isn't a case when calling this method is necessary.
+	 *
+	 * @throws IOException
+	 *         If the provided response body cannot be deserialized
+	 *
+	 * @return The response body
+	 */
+	public JSONObject getResponse() throws IOException {
+		return new JSONObject(response.body().string());
+	}
 }

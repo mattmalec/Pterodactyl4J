@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -25,83 +25,82 @@ import com.mattmalec.pterodactyl4j.requests.Requester;
 import com.mattmalec.pterodactyl4j.utils.config.EndpointConfig;
 import com.mattmalec.pterodactyl4j.utils.config.SessionConfig;
 import com.mattmalec.pterodactyl4j.utils.config.ThreadingConfig;
-import okhttp3.OkHttpClient;
-
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ScheduledExecutorService;
+import okhttp3.OkHttpClient;
 
 public class P4JImpl implements P4J {
 
-    private final Requester requester;
+	private final Requester requester;
 
-    private final EndpointConfig endpointConfig;
-    private final ThreadingConfig threadingConfig;
-    private final SessionConfig sessionConfig;
+	private final EndpointConfig endpointConfig;
+	private final ThreadingConfig threadingConfig;
+	private final SessionConfig sessionConfig;
 
-    public P4JImpl(EndpointConfig endpointConfig, ThreadingConfig threadingConfig, SessionConfig sessionConfig) {
-        this.endpointConfig = endpointConfig;
-        this.threadingConfig = threadingConfig;
-        this.sessionConfig = sessionConfig;
-        this.requester = new Requester(this);
-    }
+	public P4JImpl(EndpointConfig endpointConfig, ThreadingConfig threadingConfig, SessionConfig sessionConfig) {
+		this.endpointConfig = endpointConfig;
+		this.threadingConfig = threadingConfig;
+		this.sessionConfig = sessionConfig;
+		this.requester = new Requester(this);
+	}
 
-    @Override
-    public String getToken() {
-        return endpointConfig.getToken();
-    }
+	@Override
+	public String getToken() {
+		return endpointConfig.getToken();
+	}
 
-    @Override
-    public Requester getRequester() {
-        return requester;
-    }
+	@Override
+	public Requester getRequester() {
+		return requester;
+	}
 
-    @Override
-    public String getApplicationUrl() {
-        return endpointConfig.getUrl();
-    }
+	@Override
+	public String getApplicationUrl() {
+		return endpointConfig.getUrl();
+	}
 
-    @Override
-    public OkHttpClient getHttpClient() {
-        return sessionConfig.getHttpClient();
-    }
+	@Override
+	public OkHttpClient getHttpClient() {
+		return sessionConfig.getHttpClient();
+	}
 
-    @Override
-    public ExecutorService getCallbackPool() {
-        return threadingConfig.getCallbackPool();
-    }
+	@Override
+	public ExecutorService getCallbackPool() {
+		return threadingConfig.getCallbackPool();
+	}
 
-    @Override
-    public ExecutorService getActionPool() {
-        return threadingConfig.getActionPool();
-    }
+	@Override
+	public ExecutorService getActionPool() {
+		return threadingConfig.getActionPool();
+	}
 
-    @Override
-    public ScheduledExecutorService getRateLimitPool() {
-        return threadingConfig.getRateLimitPool();
-    }
+	@Override
+	public ScheduledExecutorService getRateLimitPool() {
+		return threadingConfig.getRateLimitPool();
+	}
 
-    @Override
-    public ExecutorService getSupplierPool() {
-        return threadingConfig.getSupplierPool();
-    }
+	@Override
+	public ExecutorService getSupplierPool() {
+		return threadingConfig.getSupplierPool();
+	}
 
-    @Override
-    public OkHttpClient getWebSocketClient() {
-        return sessionConfig.getWebSocketClient();
-    }
+	@Override
+	public OkHttpClient getWebSocketClient() {
+		return sessionConfig.getWebSocketClient();
+	}
 
-    @Override
-    public String getUserAgent() {
-        return sessionConfig.getUserAgent();
-    }
+	@Override
+	public String getUserAgent() {
+		return sessionConfig.getUserAgent();
+	}
 
-    @Override
-    public PteroApplication asApplication() {
-        return new PteroApplicationImpl(this);
-    }
+	@Override
+	public PteroApplication asApplication() {
+		return new PteroApplicationImpl(this);
+	}
 
-    @Override
-    public PteroClient asClient() {
-        return new PteroClientImpl(this);
-    }
+	@Override
+	public PteroClient asClient() {
+		return new PteroClientImpl(this);
+	}
 }

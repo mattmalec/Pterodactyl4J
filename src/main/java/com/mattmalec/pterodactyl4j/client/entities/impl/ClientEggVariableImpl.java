@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -22,44 +22,44 @@ import org.json.JSONObject;
 
 public class ClientEggVariableImpl implements ClientEgg.EggVariable {
 
-    private final JSONObject json;
+	private final JSONObject json;
 
-    public ClientEggVariableImpl(JSONObject json) {
-        this.json = json.getJSONObject("attributes");
-    }
+	public ClientEggVariableImpl(JSONObject json) {
+		this.json = json.getJSONObject("attributes");
+	}
 
-    @Override
-    public String getName() {
-        return json.getString("name");
-    }
+	@Override
+	public String getName() {
+		return json.getString("name");
+	}
 
-    @Override
-    public String getDescription() {
-        return json.getString("description");
-    }
+	@Override
+	public String getDescription() {
+		return json.getString("description");
+	}
 
-    @Override
-    public String getEnvironmentVariable() {
-        return json.getString("env_variable");
-    }
+	@Override
+	public String getEnvironmentVariable() {
+		return json.getString("env_variable");
+	}
 
-    @Override
-    public EnvironmentValue<?> getDefaultValue() {
-        return EnvironmentValue.of(json.get("default_value"));
-    }
+	@Override
+	public EnvironmentValue<?> getDefaultValue() {
+		return EnvironmentValue.of(json.get("default_value"));
+	}
 
-    @Override
-    public EnvironmentValue<?> getServerValue() {
-        return EnvironmentValue.of(json.get("server_value"));
-    }
+	@Override
+	public EnvironmentValue<?> getServerValue() {
+		return EnvironmentValue.of(json.get("server_value"));
+	}
 
-    @Override
-    public boolean isEditable() {
-        return json.getBoolean("is_editable");
-    }
+	@Override
+	public boolean isEditable() {
+		return json.getBoolean("is_editable");
+	}
 
-    @Override
-    public String getRules() {
-        return json.getString("rules");
-    }
+	@Override
+	public String getRules() {
+		return json.getString("rules");
+	}
 }

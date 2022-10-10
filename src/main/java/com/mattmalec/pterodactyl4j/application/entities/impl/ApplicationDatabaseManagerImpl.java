@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -26,26 +26,28 @@ import com.mattmalec.pterodactyl4j.requests.Route;
 
 public class ApplicationDatabaseManagerImpl implements ApplicationDatabaseManager {
 
-    private final ApplicationServer server;
-    private final PteroApplicationImpl impl;
+	private final ApplicationServer server;
+	private final PteroApplicationImpl impl;
 
-    public ApplicationDatabaseManagerImpl(ApplicationServer server, PteroApplicationImpl impl) {
-        this.server = server;
-        this.impl = impl;
-    }
+	public ApplicationDatabaseManagerImpl(ApplicationServer server, PteroApplicationImpl impl) {
+		this.server = server;
+		this.impl = impl;
+	}
 
-    @Override
-    public ApplicationDatabaseCreationAction createDatabase() {
-        return new ApplicationDatabaseCreationActionImpl(server, impl);
-    }
+	@Override
+	public ApplicationDatabaseCreationAction createDatabase() {
+		return new ApplicationDatabaseCreationActionImpl(server, impl);
+	}
 
-    @Override
-    public PteroAction<Void> resetPassword(ApplicationDatabase database) {
-        return PteroActionImpl.onRequestExecute(impl.getP4J(), Route.Databases.RESET_PASSWORD.compile(server.getId(), database.getId()));
-    }
+	@Override
+	public PteroAction<Void> resetPassword(ApplicationDatabase database) {
+		return PteroActionImpl.onRequestExecute(
+				impl.getP4J(), Route.Databases.RESET_PASSWORD.compile(server.getId(), database.getId()));
+	}
 
-    @Override
-    public PteroAction<Void> deleteDatabase(ApplicationDatabase database) {
-        return PteroActionImpl.onRequestExecute(impl.getP4J(), Route.Databases.DELETE_DATABASE.compile(server.getId(), database.getId()));
-    }
+	@Override
+	public PteroAction<Void> deleteDatabase(ApplicationDatabase database) {
+		return PteroActionImpl.onRequestExecute(
+				impl.getP4J(), Route.Databases.DELETE_DATABASE.compile(server.getId(), database.getId()));
+	}
 }

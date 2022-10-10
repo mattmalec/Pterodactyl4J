@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -21,7 +21,6 @@ import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationEgg;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationServer;
 import com.mattmalec.pterodactyl4j.client.entities.ClientServer;
-
 import java.util.Map;
 
 /**
@@ -39,93 +38,92 @@ import java.util.Map;
  */
 public interface ServerStartupManager extends PteroAction<ApplicationServer> {
 
-    // The following bits are used internally, but are here in case something user-facing is added in the future
-    
-    long STARTUP_COMMAND = 0x1;
-    long ENVIRONMENT = 0x2;
-    long EGG = 0x4;
-    long IMAGE = 0x8;
-    long SKIP_SCRIPTS = 0x10;
+	// The following bits are used internally, but are here in case something user-facing is added in the future
 
-    /**
-     * Sets the start up command of this {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer}.
-     *
-     * @param  command
-     *         The new startup command for the server
-     *
-     * @throws IllegalArgumentException
-     *         If the provided command is {@code null}
-     *
-     * @return The {@link com.mattmalec.pterodactyl4j.application.managers.ServerStartupManager ServerStartupManager}
-     * instance, useful for chaining
-     */
-    ServerStartupManager setStartupCommand(String command);
+	long STARTUP_COMMAND = 0x1;
+	long ENVIRONMENT = 0x2;
+	long EGG = 0x4;
+	long IMAGE = 0x8;
+	long SKIP_SCRIPTS = 0x10;
 
-    /**
-     * Sets the egg environment variables of this {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer}.
-     * <br>This method will not remove any existing environment variables, it will only replace them.
-     *
-     * @param  environment
-     *         The updated map
-     *
-     * @throws IllegalArgumentException
-     *         If the provided environment map is {@code null}
-     *
-     * @return The {@link com.mattmalec.pterodactyl4j.application.managers.ServerStartupManager ServerStartupManager}
-     * instance, useful for chaining
-     *
-     * @see EnvironmentValue
-     */
-    ServerStartupManager setEnvironment(Map<String, EnvironmentValue<?>> environment);
+	/**
+	 * Sets the start up command of this {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer}.
+	 *
+	 * @param  command
+	 *         The new startup command for the server
+	 *
+	 * @throws IllegalArgumentException
+	 *         If the provided command is {@code null}
+	 *
+	 * @return The {@link com.mattmalec.pterodactyl4j.application.managers.ServerStartupManager ServerStartupManager}
+	 * instance, useful for chaining
+	 */
+	ServerStartupManager setStartupCommand(String command);
 
-    /**
-     * Sets the egg to use with this {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer}.
-     *
-     * <p><b>Note:</b> You will need to restart the server for the changes to take effect.
-     *
-     * @param  egg
-     *         The new egg for the server
-     *
-     * @throws IllegalArgumentException
-     *         If the provided egg is {@code null}
-     *
-     * @return The {@link com.mattmalec.pterodactyl4j.application.managers.ServerStartupManager ServerStartupManager}
-     * instance, useful for chaining
-     *
-     * @see ClientServer#restart()
-     */
-    ServerStartupManager setEgg(ApplicationEgg egg);
+	/**
+	 * Sets the egg environment variables of this {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer}.
+	 * <br>This method will not remove any existing environment variables, it will only replace them.
+	 *
+	 * @param  environment
+	 *         The updated map
+	 *
+	 * @throws IllegalArgumentException
+	 *         If the provided environment map is {@code null}
+	 *
+	 * @return The {@link com.mattmalec.pterodactyl4j.application.managers.ServerStartupManager ServerStartupManager}
+	 * instance, useful for chaining
+	 *
+	 * @see EnvironmentValue
+	 */
+	ServerStartupManager setEnvironment(Map<String, EnvironmentValue<?>> environment);
 
-    /**
-     * Sets the Docker image for the {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer} to use.
-     *
-     * <p><b>Note:</b> You will need to restart the server for the changes to take effect.
-     *
-     * @param  dockerImage
-     *         The new Docker image for the server
-     *
-     * @throws IllegalArgumentException
-     *         If the provided image is {@code null} or longer then 191 characters
-     *
-     * @return The {@link com.mattmalec.pterodactyl4j.application.managers.ServerStartupManager ServerStartupManager}
-     * instance, useful for chaining
-     *
-     * @see ClientServer#restart()
-     */
-    ServerStartupManager setImage(String dockerImage);
+	/**
+	 * Sets the egg to use with this {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer}.
+	 *
+	 * <p><b>Note:</b> You will need to restart the server for the changes to take effect.
+	 *
+	 * @param  egg
+	 *         The new egg for the server
+	 *
+	 * @throws IllegalArgumentException
+	 *         If the provided egg is {@code null}
+	 *
+	 * @return The {@link com.mattmalec.pterodactyl4j.application.managers.ServerStartupManager ServerStartupManager}
+	 * instance, useful for chaining
+	 *
+	 * @see ClientServer#restart()
+	 */
+	ServerStartupManager setEgg(ApplicationEgg egg);
 
-    /**
-     * Enables/Disables Pterodactyl to run the egg install scripts for {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer}.
-     * <p><b>Note:</b> This will have no effect on a server that's already installed, so it's here for consistancy.
-     *
-     * <p>Default: <b>disabled (false)</b>
-     *
-     * @param  skipScripts
-     *         True - will not run egg install scripts
-     *
-     * @return The {@link com.mattmalec.pterodactyl4j.application.managers.ServerStartupManager ServerStartupManager}
-     * instance, useful for chaining
-     */
-    ServerStartupManager setSkipScripts(boolean skipScripts);
+	/**
+	 * Sets the Docker image for the {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer} to use.
+	 *
+	 * <p><b>Note:</b> You will need to restart the server for the changes to take effect.
+	 *
+	 * @param  dockerImage
+	 *         The new Docker image for the server
+	 *
+	 * @throws IllegalArgumentException
+	 *         If the provided image is {@code null} or longer then 191 characters
+	 *
+	 * @return The {@link com.mattmalec.pterodactyl4j.application.managers.ServerStartupManager ServerStartupManager}
+	 * instance, useful for chaining
+	 *
+	 * @see ClientServer#restart()
+	 */
+	ServerStartupManager setImage(String dockerImage);
 
+	/**
+	 * Enables/Disables Pterodactyl to run the egg install scripts for {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServer}.
+	 * <p><b>Note:</b> This will have no effect on a server that's already installed, so it's here for consistancy.
+	 *
+	 * <p>Default: <b>disabled (false)</b>
+	 *
+	 * @param  skipScripts
+	 *         True - will not run egg install scripts
+	 *
+	 * @return The {@link com.mattmalec.pterodactyl4j.application.managers.ServerStartupManager ServerStartupManager}
+	 * instance, useful for chaining
+	 */
+	ServerStartupManager setSkipScripts(boolean skipScripts);
 }

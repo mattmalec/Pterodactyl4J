@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -23,13 +23,12 @@ import com.mattmalec.pterodactyl4j.application.managers.UserAction;
 import com.mattmalec.pterodactyl4j.requests.CompletedPteroAction;
 import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.requests.Route;
-import org.json.JSONObject;
-
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+import org.json.JSONObject;
 
 public class ApplicationUserImpl implements ApplicationUser {
 
@@ -95,12 +94,11 @@ public class ApplicationUserImpl implements ApplicationUser {
 
 	@Override
 	public PteroAction<List<ApplicationServer>> retrieveServers() {
-		if(!json.has("relationships"))
-			return impl.retrieveServersByOwner(this);
+		if (!json.has("relationships")) return impl.retrieveServersByOwner(this);
 
 		List<ApplicationServer> servers = new ArrayList<>();
 		JSONObject json = relationships.getJSONObject("servers");
-		for(Object o : json.getJSONArray("data")) {
+		for (Object o : json.getJSONArray("data")) {
 			JSONObject server = new JSONObject(o.toString());
 			servers.add(new ApplicationServerImpl(impl, server));
 		}

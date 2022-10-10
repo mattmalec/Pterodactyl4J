@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -27,10 +27,9 @@ import com.mattmalec.pterodactyl4j.entities.impl.LimitImpl;
 import com.mattmalec.pterodactyl4j.requests.CompletedPteroAction;
 import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.requests.Route;
-import org.json.JSONObject;
-
 import java.time.OffsetDateTime;
 import java.util.*;
+import org.json.JSONObject;
 
 public class ApplicationServerImpl implements ApplicationServer {
 
@@ -86,10 +85,10 @@ public class ApplicationServerImpl implements ApplicationServer {
 
 	@Override
 	public PteroAction<ApplicationUser> retrieveOwner() {
-		if(!json.has("relationships"))
-			return impl.retrieveUserById(getOwnerIdLong());
+		if (!json.has("relationships")) return impl.retrieveUserById(getOwnerIdLong());
 
-		return new CompletedPteroAction<>(impl.getP4J(), new ApplicationUserImpl(relationships.getJSONObject("user"), impl));
+		return new CompletedPteroAction<>(
+				impl.getP4J(), new ApplicationUserImpl(relationships.getJSONObject("user"), impl));
 	}
 
 	@Override
@@ -99,8 +98,7 @@ public class ApplicationServerImpl implements ApplicationServer {
 
 	@Override
 	public PteroAction<Node> retrieveNode() {
-		if (!json.has("relationships"))
-			return impl.retrieveNodeById(getNodeIdLong());
+		if (!json.has("relationships")) return impl.retrieveNodeById(getNodeIdLong());
 
 		return new CompletedPteroAction<>(impl.getP4J(), new NodeImpl(relationships.getJSONObject("node"), impl));
 	}
@@ -112,10 +110,10 @@ public class ApplicationServerImpl implements ApplicationServer {
 
 	@Override
 	public Optional<List<ApplicationAllocation>> getAllocations() {
-		if(!json.has("relationships")) return Optional.empty();
+		if (!json.has("relationships")) return Optional.empty();
 		List<ApplicationAllocation> allocations = new ArrayList<>();
 		JSONObject json = relationships.getJSONObject("allocations");
-		for(Object o : json.getJSONArray("data")) {
+		for (Object o : json.getJSONArray("data")) {
 			JSONObject allocation = new JSONObject(o.toString());
 			allocations.add(new ApplicationAllocationImpl(allocation, impl));
 		}
@@ -124,13 +122,14 @@ public class ApplicationServerImpl implements ApplicationServer {
 
 	@Override
 	public PteroAction<ApplicationAllocation> retrieveDefaultAllocation() {
-		if (!json.has("relationships"))
-			return impl.retrieveAllocationById(getDefaultAllocationIdLong());
+		if (!json.has("relationships")) return impl.retrieveAllocationById(getDefaultAllocationIdLong());
 
 		Optional<ApplicationAllocation> defaultAllocation = getAllocations().get().stream()
-				.filter(a -> a.getIdLong() == getDefaultAllocationIdLong()).findFirst();
+				.filter(a -> a.getIdLong() == getDefaultAllocationIdLong())
+				.findFirst();
 
-		return defaultAllocation.map(allocation -> new CompletedPteroAction<>(impl.getP4J(), allocation))
+		return defaultAllocation
+				.map(allocation -> new CompletedPteroAction<>(impl.getP4J(), allocation))
 				.orElse(new CompletedPteroAction<>(impl.getP4J(), new AssertionError("Unreachable")));
 	}
 
@@ -141,8 +140,7 @@ public class ApplicationServerImpl implements ApplicationServer {
 
 	@Override
 	public PteroAction<Nest> retrieveNest() {
-		if (!json.has("relationships"))
-			return impl.retrieveNestById(getNestIdLong());
+		if (!json.has("relationships")) return impl.retrieveNestById(getNestIdLong());
 
 		return new CompletedPteroAction<>(impl.getP4J(), new NestImpl(relationships.getJSONObject("nest"), impl));
 	}
@@ -154,10 +152,10 @@ public class ApplicationServerImpl implements ApplicationServer {
 
 	@Override
 	public PteroAction<ApplicationEgg> retrieveEgg() {
-		if (!json.has("relationships"))
-			return impl.retrieveEggById(getNestId(), getEggId());
+		if (!json.has("relationships")) return impl.retrieveEggById(getNestId(), getEggId());
 
-		return new CompletedPteroAction<>(impl.getP4J(), new ApplicationEggImpl(relationships.getJSONObject("egg"), impl));
+		return new CompletedPteroAction<>(
+				impl.getP4J(), new ApplicationEggImpl(relationships.getJSONObject("egg"), impl));
 	}
 
 	@Override
@@ -167,8 +165,7 @@ public class ApplicationServerImpl implements ApplicationServer {
 
 	@Override
 	public ServerStatus getStatus() {
-		if (json.isNull("status"))
-			return ServerStatus.UNKNOWN;
+		if (json.isNull("status")) return ServerStatus.UNKNOWN;
 		return ServerStatus.valueOf(json.getString("status").toUpperCase());
 	}
 
@@ -200,7 +197,9 @@ public class ApplicationServerImpl implements ApplicationServer {
 	@Override
 	public PteroAction<List<ApplicationDatabase>> retrieveDatabases() {
 		if (!json.has("relationships"))
-			return PteroActionImpl.onRequestExecute(impl.getP4J(), Route.Databases.LIST_DATABASES.compile(getId()),
+			return PteroActionImpl.onRequestExecute(
+					impl.getP4J(),
+					Route.Databases.LIST_DATABASES.compile(getId()),
 					(response, request) -> handleDatabases(response.getObject()));
 
 		return new CompletedPteroAction<>(impl.getP4J(), handleDatabases(relationships.getJSONObject("databases")));
@@ -217,7 +216,9 @@ public class ApplicationServerImpl implements ApplicationServer {
 
 	@Override
 	public PteroAction<ApplicationDatabase> retrieveDatabaseById(String id) {
-		return PteroActionImpl.onRequestExecute(impl.getP4J(), Route.Databases.GET_DATABASE.compile(getId(), id),
+		return PteroActionImpl.onRequestExecute(
+				impl.getP4J(),
+				Route.Databases.GET_DATABASE.compile(getId(), id),
 				(response, request) -> new ApplicationDatabaseImpl(response.getObject(), this, impl));
 	}
 

@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -21,74 +21,74 @@ import com.mattmalec.pterodactyl4j.client.entities.ClientDatabase;
 import com.mattmalec.pterodactyl4j.client.entities.ClientServer;
 import com.mattmalec.pterodactyl4j.entities.impl.DatabasePasswordImpl;
 import com.mattmalec.pterodactyl4j.requests.CompletedPteroAction;
-import org.json.JSONObject;
-
 import java.util.Optional;
+import org.json.JSONObject;
 
 public class ClientDatabaseImpl implements ClientDatabase {
 
-    private final JSONObject json;
-    private final JSONObject relationships;
+	private final JSONObject json;
+	private final JSONObject relationships;
 
-    private final PteroClientImpl impl;
-    private final ClientServer server;
+	private final PteroClientImpl impl;
+	private final ClientServer server;
 
-    public ClientDatabaseImpl(JSONObject json, PteroClientImpl impl, ClientServer server) {
-        this.json = json.getJSONObject("attributes");
-        this.relationships = json.getJSONObject("attributes").optJSONObject("relationships");
-        this.impl = impl;
-        this.server = server;
-    }
+	public ClientDatabaseImpl(JSONObject json, PteroClientImpl impl, ClientServer server) {
+		this.json = json.getJSONObject("attributes");
+		this.relationships = json.getJSONObject("attributes").optJSONObject("relationships");
+		this.impl = impl;
+		this.server = server;
+	}
 
-    @Override
-    public String getId() {
-        return json.getString("id");
-    }
+	@Override
+	public String getId() {
+		return json.getString("id");
+	}
 
-    @Override
-    public DatabaseHost getHost() {
-        return new ClientDatabaseHostImpl(json.getJSONObject("host"));
-    }
+	@Override
+	public DatabaseHost getHost() {
+		return new ClientDatabaseHostImpl(json.getJSONObject("host"));
+	}
 
-    @Override
-    public String getName() {
-        return json.getString("name");
-    }
+	@Override
+	public String getName() {
+		return json.getString("name");
+	}
 
-    @Override
-    public String getUserName() {
-        return json.getString("username");
-    }
+	@Override
+	public String getUserName() {
+		return json.getString("username");
+	}
 
-    @Override
-    public String getRemote() {
-        return json.getString("connections_from");
-    }
+	@Override
+	public String getRemote() {
+		return json.getString("connections_from");
+	}
 
-    @Override
-    public int getMaxConnections() {
-        return json.optInt("max_connections");
-    }
+	@Override
+	public int getMaxConnections() {
+		return json.optInt("max_connections");
+	}
 
-    @Override
-    public PteroAction<String> retrievePassword() {
-        if (!json.has("relationships"))
-            return server.retrieveDatabaseById(getId()).map(Optional::get).flatMap(ClientDatabase::retrievePassword);
-        return new CompletedPteroAction<>(impl.getP4J(), new DatabasePasswordImpl(relationships.getJSONObject("password")).getPassword());
-    }
+	@Override
+	public PteroAction<String> retrievePassword() {
+		if (!json.has("relationships"))
+			return server.retrieveDatabaseById(getId()).map(Optional::get).flatMap(ClientDatabase::retrievePassword);
+		return new CompletedPteroAction<>(
+				impl.getP4J(), new DatabasePasswordImpl(relationships.getJSONObject("password")).getPassword());
+	}
 
-    @Override
-    public PteroAction<ClientDatabase> resetPassword() {
-        return server.getDatabaseManager().resetPassword(this);
-    }
+	@Override
+	public PteroAction<ClientDatabase> resetPassword() {
+		return server.getDatabaseManager().resetPassword(this);
+	}
 
-    @Override
-    public PteroAction<Void> delete() {
-        return server.getDatabaseManager().deleteDatabase(this);
-    }
+	@Override
+	public PteroAction<Void> delete() {
+		return server.getDatabaseManager().deleteDatabase(this);
+	}
 
-    @Override
-    public String toString() {
-        return json.toString(4);
-    }
+	@Override
+	public String toString() {
+		return json.toString(4);
+	}
 }

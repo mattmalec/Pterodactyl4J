@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -20,7 +20,6 @@ import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.client.managers.APIKeyAction;
 import com.mattmalec.pterodactyl4j.client.managers.AccountManager;
 import com.mattmalec.pterodactyl4j.entities.User;
-
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -28,27 +27,34 @@ import java.util.stream.Stream;
 
 public interface Account extends User {
 
-    String getFirstName();
-    String getLastName();
-    default String getFullName() {
-        return String.format("%s %s", getFirstName(), getLastName());
-    }
-    long getId();
-    boolean isRootAdmin();
-    String getLanguage();
-    default Locale getLocale() {
-        return Locale.forLanguageTag(getLanguage());
-    }
+	String getFirstName();
 
-    PteroAction<List<APIKey>> retrieveAPIKeys();
+	String getLastName();
 
-    default PteroAction<Optional<APIKey>> retrieveAPIKeyByIdentifier(String identifier) {
-        return retrieveAPIKeys().map(List::stream)
-                .map(stream -> stream.filter(key -> key.getIdentifier().equals(identifier))).map(Stream::findFirst);
-    }
+	default String getFullName() {
+		return String.format("%s %s", getFirstName(), getLastName());
+	}
 
-    APIKeyAction createAPIKey();
+	long getId();
 
-    AccountManager getManager();
+	boolean isRootAdmin();
 
+	String getLanguage();
+
+	default Locale getLocale() {
+		return Locale.forLanguageTag(getLanguage());
+	}
+
+	PteroAction<List<APIKey>> retrieveAPIKeys();
+
+	default PteroAction<Optional<APIKey>> retrieveAPIKeyByIdentifier(String identifier) {
+		return retrieveAPIKeys()
+				.map(List::stream)
+				.map(stream -> stream.filter(key -> key.getIdentifier().equals(identifier)))
+				.map(Stream::findFirst);
+	}
+
+	APIKeyAction createAPIKey();
+
+	AccountManager getManager();
 }

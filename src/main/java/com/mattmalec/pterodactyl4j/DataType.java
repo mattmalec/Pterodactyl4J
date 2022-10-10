@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -18,14 +18,14 @@ package com.mattmalec.pterodactyl4j;
 
 public enum DataType {
 
-//	MB((byte) 0, 1,       "Megabyte"),
-//	GB((byte) 1, 1024,    "Gigabyte"),
-//	TB((byte) 2, 1048576, "Terabyte");
+	//	MB((byte) 0, 1,       "Megabyte"),
+	//	GB((byte) 1, 1024,    "Gigabyte"),
+	//	TB((byte) 2, 1048576, "Terabyte");
 
-	B ((byte) 0, 1,                  "Byte"),
-	KB((byte) 1, 1024,               "Kilobyte"),
-	MB((byte) 2, 1048576,            "Megabyte"),
-	GB((byte) 3, 1_073_741_824,      "Gigabyte"),
+	B((byte) 0, 1, "Byte"),
+	KB((byte) 1, 1024, "Kilobyte"),
+	MB((byte) 2, 1048576, "Megabyte"),
+	GB((byte) 3, 1_073_741_824, "Gigabyte"),
 	TB((byte) 4, 1_099_511_627_776L, "Terabyte");
 
 	private final byte identifier;
@@ -39,8 +39,8 @@ public enum DataType {
 	}
 
 	public static DataType getByIdentifier(byte identifier) {
-		for(DataType dataType : values()) {
-			if(dataType.getIdentifier() == identifier) {
+		for (DataType dataType : values()) {
+			if (dataType.getIdentifier() == identifier) {
 				return dataType;
 			}
 		}
@@ -62,5 +62,4 @@ public enum DataType {
 	public String getFriendlyName() {
 		return friendlyName;
 	}
-
 }

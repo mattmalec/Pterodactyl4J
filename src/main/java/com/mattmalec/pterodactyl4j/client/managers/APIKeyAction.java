@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -21,14 +21,15 @@ import com.mattmalec.pterodactyl4j.client.entities.APIKey;
 
 public interface APIKeyAction extends PteroAction<APIKey> {
 
-    APIKeyAction setDescription(String description);
+	APIKeyAction setDescription(String description);
 
-    APIKeyAction setAllowedIps(String... ips);
+	APIKeyAction setAllowedIps(String... ips);
 
-    APIKeyAction addAllowedIps(String... ips);
-    APIKeyAction addAllowedIp(String ip);
+	APIKeyAction addAllowedIps(String... ips);
 
-    APIKeyAction removeAllowedIp(String ip);
-    APIKeyAction removeAllowedIps(String... ips);
+	APIKeyAction addAllowedIp(String ip);
 
+	APIKeyAction removeAllowedIp(String ip);
+
+	APIKeyAction removeAllowedIps(String... ips);
 }

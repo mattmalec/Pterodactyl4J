@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -21,16 +21,14 @@ import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.requests.Request;
 import com.mattmalec.pterodactyl4j.requests.Response;
 import com.mattmalec.pterodactyl4j.requests.Route;
-
 import java.util.function.BiFunction;
 
 public abstract class AbstractDatabaseAction<T> extends PteroActionImpl<T> {
 
-    protected String name;
-    protected String remote;
+	protected String name;
+	protected String remote;
 
-    public AbstractDatabaseAction(P4J api, Route.CompiledRoute route, BiFunction<Response, Request<T>, T> handler) {
-        super(api, route, handler);
-    }
-
+	public AbstractDatabaseAction(P4J api, Route.CompiledRoute route, BiFunction<Response, Request<T>, T> handler) {
+		super(api, route, handler);
+	}
 }

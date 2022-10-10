@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -23,17 +23,16 @@ import com.mattmalec.pterodactyl4j.application.managers.NodeManager;
 import com.mattmalec.pterodactyl4j.application.managers.ServerCreationAction;
 import com.mattmalec.pterodactyl4j.application.managers.UserManager;
 import com.mattmalec.pterodactyl4j.entities.P4J;
+import com.mattmalec.pterodactyl4j.requests.PaginationAction;
 import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.requests.Route;
-import com.mattmalec.pterodactyl4j.requests.PaginationAction;
 import com.mattmalec.pterodactyl4j.requests.action.impl.PaginationResponseImpl;
 import com.mattmalec.pterodactyl4j.utils.StreamUtils;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
+import org.json.JSONObject;
 
 public class PteroApplicationImpl implements PteroApplication {
 
@@ -48,14 +47,16 @@ public class PteroApplicationImpl implements PteroApplication {
 	}
 
 	public PteroAction<ApplicationUser> retrieveUserById(String id) {
-		return PteroActionImpl.onRequestExecute(api, Route.Users.GET_USER.compile(id),
+		return PteroActionImpl.onRequestExecute(
+				api,
+				Route.Users.GET_USER.compile(id),
 				(response, request) -> new ApplicationUserImpl(response.getObject(), this));
 	}
 
 	@Override
 	public PaginationAction<ApplicationUser> retrieveUsers() {
-		return PaginationResponseImpl.onPagination(api, Route.Users.LIST_USERS.compile(),
-				(object) -> new ApplicationUserImpl(object, this));
+		return PaginationResponseImpl.onPagination(
+				api, Route.Users.LIST_USERS.compile(), (object) -> new ApplicationUserImpl(object, this));
 	}
 
 	@Override
@@ -95,14 +96,14 @@ public class PteroApplicationImpl implements PteroApplication {
 
 	@Override
 	public PaginationAction<Node> retrieveNodes() {
-		return PaginationResponseImpl.onPagination(api, Route.Nodes.LIST_NODES.compile(),
-				(object) -> new NodeImpl(object, this));
+		return PaginationResponseImpl.onPagination(
+				api, Route.Nodes.LIST_NODES.compile(), (object) -> new NodeImpl(object, this));
 	}
 
 	@Override
 	public PteroAction<Node> retrieveNodeById(String id) {
-		return PteroActionImpl.onRequestExecute(api, Route.Nodes.GET_NODE.compile(id),
-				(response, request) -> new NodeImpl(response.getObject(), this));
+		return PteroActionImpl.onRequestExecute(
+				api, Route.Nodes.GET_NODE.compile(id), (response, request) -> new NodeImpl(response.getObject(), this));
 	}
 
 	@Override
@@ -122,8 +123,8 @@ public class PteroApplicationImpl implements PteroApplication {
 
 	@Override
 	public PteroAction<List<Node>> retrieveNodesByLocation(Location location) {
-		return retrieveNodes().all().map(List::stream).map(stream -> 
-				stream.filter(n -> n.retrieveLocation().map(ISnowflake::getIdLong).execute() == location.getIdLong())
+		return retrieveNodes().all().map(List::stream).map(stream -> stream.filter(
+						n -> n.retrieveLocation().map(ISnowflake::getIdLong).execute() == location.getIdLong())
 				.collect(StreamUtils.toUnmodifiableList()));
 	}
 
@@ -134,10 +135,11 @@ public class PteroApplicationImpl implements PteroApplication {
 
 	@Override
 	public PaginationAction<ApplicationAllocation> retrieveAllocationsByNode(Node node) {
-		return PaginationResponseImpl.onPagination(api, Route.Nodes.LIST_ALLOCATIONS.compile(node.getId()),
+		return PaginationResponseImpl.onPagination(
+				api,
+				Route.Nodes.LIST_ALLOCATIONS.compile(node.getId()),
 				(object) -> new ApplicationAllocationImpl(object, this));
 	}
-
 
 	@Override
 	public PteroAction<List<ApplicationAllocation>> retrieveAllocations() {
@@ -153,21 +155,26 @@ public class PteroApplicationImpl implements PteroApplication {
 
 	@Override
 	public PteroAction<ApplicationAllocation> retrieveAllocationById(String id) {
-		return retrieveAllocations().map(List::stream)
-				.map(stream -> stream.filter(a -> a.getId().equals(id)).findFirst().orElse(null));
+		return retrieveAllocations()
+				.map(List::stream)
+				.map(stream ->
+						stream.filter(a -> a.getId().equals(id)).findFirst().orElse(null));
 	}
 
 	@Override
 	public PteroAction<ApplicationEgg> retrieveEggById(Nest nest, String id) {
-		return PteroActionImpl.onRequestExecute(api, Route.Nests.GET_EGG.compile(nest.getId(), id),
+		return PteroActionImpl.onRequestExecute(
+				api,
+				Route.Nests.GET_EGG.compile(nest.getId(), id),
 				(response, request) -> new ApplicationEggImpl(response.getObject(), this));
 	}
 
 	protected PteroAction<ApplicationEgg> retrieveEggById(String nest, String egg) {
-		return PteroActionImpl.onRequestExecute(api, Route.Nests.GET_EGG.compile(nest, egg),
+		return PteroActionImpl.onRequestExecute(
+				api,
+				Route.Nests.GET_EGG.compile(nest, egg),
 				(response, request) -> new ApplicationEggImpl(response.getObject(), this));
 	}
-
 
 	@Override
 	public PteroAction<List<ApplicationEgg>> retrieveEggs() {
@@ -183,8 +190,8 @@ public class PteroApplicationImpl implements PteroApplication {
 
 	@Override
 	public PteroAction<List<ApplicationEgg>> retrieveEggsByNest(Nest nest) {
-		return PteroActionImpl.onRequestExecute(api,
-				Route.Nests.GET_EGGS.compile(nest.getId()), (response, request) -> {
+		return PteroActionImpl.onRequestExecute(
+				api, Route.Nests.GET_EGGS.compile(nest.getId()), (response, request) -> {
 					List<ApplicationEgg> eggs = new ArrayList<>();
 					JSONObject json = response.getObject();
 					for (Object o : json.getJSONArray("data")) {
@@ -197,14 +204,14 @@ public class PteroApplicationImpl implements PteroApplication {
 
 	@Override
 	public PteroAction<Nest> retrieveNestById(String id) {
-		return PteroActionImpl.onRequestExecute(api, Route.Nests.GET_NEST.compile(id),
-				(response, request) -> new NestImpl(response.getObject(), this));
+		return PteroActionImpl.onRequestExecute(
+				api, Route.Nests.GET_NEST.compile(id), (response, request) -> new NestImpl(response.getObject(), this));
 	}
 
 	@Override
 	public PaginationAction<Nest> retrieveNests() {
-		return PaginationResponseImpl.onPagination(api, Route.Nests.LIST_NESTS.compile(),
-				(object) -> new NestImpl(object, this));
+		return PaginationResponseImpl.onPagination(
+				api, Route.Nests.LIST_NESTS.compile(), (object) -> new NestImpl(object, this));
 	}
 
 	@Override
@@ -239,21 +246,23 @@ public class PteroApplicationImpl implements PteroApplication {
 
 	@Override
 	public PaginationAction<Location> retrieveLocations() {
-		return PaginationResponseImpl.onPagination(api, Route.Locations.LIST_LOCATIONS.compile(),
-				(object) -> new LocationImpl(object, this));
+		return PaginationResponseImpl.onPagination(
+				api, Route.Locations.LIST_LOCATIONS.compile(), (object) -> new LocationImpl(object, this));
 	}
 
 	@Override
 	public PteroAction<Location> retrieveLocationById(String id) {
-		return PteroActionImpl.onRequestExecute(api, Route.Locations.GET_LOCATION.compile(id),
+		return PteroActionImpl.onRequestExecute(
+				api,
+				Route.Locations.GET_LOCATION.compile(id),
 				((response, request) -> new LocationImpl(response.getObject(), this)));
 	}
 
 	@Override
 	public PteroAction<List<Location>> retrieveLocationsByShortCode(String name, boolean caseSensitive) {
-		return retrieveLocations().all().map(List::stream)
-				.map(stream -> stream.filter(l -> StreamUtils.compareString(l.getShortCode(), name, caseSensitive))
-						.collect(StreamUtils.toUnmodifiableList()));
+		return retrieveLocations().all().map(List::stream).map(stream -> stream.filter(
+						l -> StreamUtils.compareString(l.getShortCode(), name, caseSensitive))
+				.collect(StreamUtils.toUnmodifiableList()));
 	}
 
 	@Override
@@ -263,30 +272,31 @@ public class PteroApplicationImpl implements PteroApplication {
 
 	@Override
 	public PaginationAction<ApplicationServer> retrieveServers() {
-		return PaginationResponseImpl.onPagination(api, Route.Servers.LIST_SERVERS.compile(),
-				(object) -> new ApplicationServerImpl(this, object));
+		return PaginationResponseImpl.onPagination(
+				api, Route.Servers.LIST_SERVERS.compile(), (object) -> new ApplicationServerImpl(this, object));
 	}
 
 	@Override
 	public PteroAction<ApplicationServer> retrieveServerById(String id) {
-		return PteroActionImpl.onRequestExecute(api, Route.Servers.GET_SERVER.compile(id),
+		return PteroActionImpl.onRequestExecute(
+				api,
+				Route.Servers.GET_SERVER.compile(id),
 				(response, request) -> new ApplicationServerImpl(this, response.getObject()));
 	}
 
 	@Override
 	public PteroAction<List<ApplicationServer>> retrieveServersByName(String name, boolean caseSensitive) {
-		return retrieveServers().all().map(List::stream)
-				.map(stream -> stream.filter(s -> StreamUtils.compareString(s.getName(), name, caseSensitive))
-						.collect(StreamUtils.toUnmodifiableList()));
+		return retrieveServers().all().map(List::stream).map(stream -> stream.filter(
+						s -> StreamUtils.compareString(s.getName(), name, caseSensitive))
+				.collect(StreamUtils.toUnmodifiableList()));
 	}
 
 	@Override
 	public PteroAction<List<ApplicationServer>> retrieveServersByOwner(ApplicationUser user) {
-		return retrieveServers().all().map(List::stream)
-				.map(stream -> stream.filter(s -> s.retrieveOwner().map(ISnowflake::getIdLong).execute() == user.getIdLong())
-						.collect(StreamUtils.toUnmodifiableList()));
+		return retrieveServers().all().map(List::stream).map(stream -> stream.filter(
+						s -> s.retrieveOwner().map(ISnowflake::getIdLong).execute() == user.getIdLong())
+				.collect(StreamUtils.toUnmodifiableList()));
 	}
-
 
 	@Override
 	public ServerCreationAction createServer() {

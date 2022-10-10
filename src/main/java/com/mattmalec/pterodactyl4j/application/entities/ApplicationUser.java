@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -19,8 +19,6 @@ package com.mattmalec.pterodactyl4j.application.entities;
 import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.application.managers.UserAction;
 import com.mattmalec.pterodactyl4j.entities.User;
-import com.mattmalec.pterodactyl4j.utils.Relationed;
-
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
@@ -28,25 +26,33 @@ import java.util.UUID;
 public interface ApplicationUser extends User, ISnowflake {
 
 	String getFirstName();
+
 	String getLastName();
+
 	default String getFullName() {
 		return String.format("%s %s", getFirstName(), getLastName());
 	}
+
 	String getExternalId();
+
 	UUID getUUID();
+
 	boolean has2FA();
+
 	String getLanguage();
+
 	default Locale getLocale() {
 		return Locale.forLanguageTag(getLanguage());
 	}
+
 	boolean isRootAdmin();
+
 	PteroAction<List<ApplicationServer>> retrieveServers();
+
 	UserAction edit();
+
 	PteroAction<Void> delete();
 
 	@Override
 	String toString();
-
-
-
 }

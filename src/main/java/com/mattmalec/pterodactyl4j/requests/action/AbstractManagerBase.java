@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -24,17 +24,17 @@ import com.mattmalec.pterodactyl4j.requests.Route;
 
 public abstract class AbstractManagerBase extends PteroActionImpl<ApplicationServer> {
 
-    protected long set = 0;
+	protected long set = 0;
 
-    public AbstractManagerBase(PteroApplicationImpl impl, Route.CompiledRoute route) {
-        super(impl.getP4J(), route, (response, request) -> new ApplicationServerImpl(impl, response.getObject()));
-    }
+	public AbstractManagerBase(PteroApplicationImpl impl, Route.CompiledRoute route) {
+		super(impl.getP4J(), route, (response, request) -> new ApplicationServerImpl(impl, response.getObject()));
+	}
 
-    protected boolean shouldUpdate(long bit) {
-        return (set & bit) == bit;
-    }
+	protected boolean shouldUpdate(long bit) {
+		return (set & bit) == bit;
+	}
 
-    protected void reset() {
-        this.set = 0;
-    }
+	protected void reset() {
+		this.set = 0;
+	}
 }

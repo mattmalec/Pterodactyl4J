@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@
 package com.mattmalec.pterodactyl4j.requests.action.operator;
 
 import com.mattmalec.pterodactyl4j.PteroAction;
-
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -25,21 +24,21 @@ import java.util.function.Function;
 
 public class MapPteroAction<I, O> extends PteroActionOperator<I, O> {
 
-    private final Function<? super I, ? extends O> function;
+	private final Function<? super I, ? extends O> function;
 
-    public MapPteroAction(PteroAction<I> action, Function<? super I, ? extends O> function) {
-        super(action);
-        this.function = function;
-    }
+	public MapPteroAction(PteroAction<I> action, Function<? super I, ? extends O> function) {
+		super(action);
+		this.function = function;
+	}
 
-    @Override
-    public void executeAsync(Consumer<? super O> success, Consumer<? super Throwable> failure) {
-        action.executeAsync((result) -> doSuccess(success, function.apply(result)), (error) -> doFailure(failure, error));
-    }
+	@Override
+	public void executeAsync(Consumer<? super O> success, Consumer<? super Throwable> failure) {
+		action.executeAsync(
+				(result) -> doSuccess(success, function.apply(result)), (error) -> doFailure(failure, error));
+	}
 
-    @Override
-    public O execute(boolean shouldQueue) {
-        return function.apply(action.execute(shouldQueue));
-    }
-
+	@Override
+	public O execute(boolean shouldQueue) {
+		return function.apply(action.execute(shouldQueue));
+	}
 }

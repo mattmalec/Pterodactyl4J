@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -17,12 +17,11 @@
 package com.mattmalec.pterodactyl4j.entities;
 
 import com.mattmalec.pterodactyl4j.Permission;
-
 import java.util.EnumSet;
 
 public interface IPermissionHolder {
 
-    EnumSet<Permission> getPermissions();
-    boolean hasPermission(Permission... permission);
+	EnumSet<Permission> getPermissions();
 
+	boolean hasPermission(Permission... permission);
 }

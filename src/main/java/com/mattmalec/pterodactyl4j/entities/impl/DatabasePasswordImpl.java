@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -20,13 +20,13 @@ import org.json.JSONObject;
 
 public class DatabasePasswordImpl {
 
-    private final JSONObject json;
+	private final JSONObject json;
 
-    public DatabasePasswordImpl(JSONObject json) {
-        this.json = json.getJSONObject("attributes");
-    }
+	public DatabasePasswordImpl(JSONObject json) {
+		this.json = json.getJSONObject("attributes");
+	}
 
-    public String getPassword() {
-        return json.getString("password");
-    }
+	public String getPassword() {
+		return json.getString("password");
+	}
 }

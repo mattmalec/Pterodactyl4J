@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -22,9 +22,9 @@ import com.mattmalec.pterodactyl4j.client.entities.GenericFile;
 
 public interface CompressAction extends PteroAction<File> {
 
-    CompressAction addFile(GenericFile file);
-    CompressAction addFiles(GenericFile file, GenericFile... files);
+	CompressAction addFile(GenericFile file);
 
-    CompressAction clearFiles();
+	CompressAction addFiles(GenericFile file, GenericFile... files);
 
+	CompressAction clearFiles();
 }

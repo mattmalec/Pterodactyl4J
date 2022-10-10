@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -22,7 +22,6 @@ import com.mattmalec.pterodactyl4j.application.managers.ServerController;
 import com.mattmalec.pterodactyl4j.client.entities.ClientServer;
 import com.mattmalec.pterodactyl4j.client.managers.ClientServerManager;
 import com.mattmalec.pterodactyl4j.entities.Egg;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -122,5 +121,4 @@ public interface ApplicationEgg extends Egg, ISnowflake {
 		 */
 		boolean isUserEditable();
 	}
-
 }

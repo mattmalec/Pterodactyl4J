@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -25,14 +25,13 @@ import com.mattmalec.pterodactyl4j.entities.Limit;
 import com.mattmalec.pterodactyl4j.entities.impl.FeatureLimitImpl;
 import com.mattmalec.pterodactyl4j.entities.impl.LimitImpl;
 import com.mattmalec.pterodactyl4j.requests.CompletedPteroAction;
+import com.mattmalec.pterodactyl4j.requests.PaginationAction;
 import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.requests.Route;
-import com.mattmalec.pterodactyl4j.requests.PaginationAction;
 import com.mattmalec.pterodactyl4j.requests.action.impl.PaginationResponseImpl;
+import java.util.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.util.*;
 
 public class ClientServerImpl implements ClientServer {
 
@@ -99,8 +98,7 @@ public class ClientServerImpl implements ClientServer {
 	@Override
 	public Set<String> getEggFeatures() {
 		JSONArray features = json.getJSONArray("egg_features");
-		if (features.length() == 0)
-			return Collections.emptySet();
+		if (features.length() == 0) return Collections.emptySet();
 
 		Set<String> eggFeatures = new HashSet<>();
 		features.forEach(o -> eggFeatures.add(o.toString()));
@@ -132,12 +130,11 @@ public class ClientServerImpl implements ClientServer {
 		return new WebSocketBuilder(impl, this);
 	}
 
-
 	@Override
 	public List<ClientSubuser> getSubusers() {
 		List<ClientSubuser> subusers = new ArrayList<>();
 		JSONObject json = relationships.getJSONObject("subusers");
-		for(Object o : json.getJSONArray("data")) {
+		for (Object o : json.getJSONArray("data")) {
 			JSONObject subuser = new JSONObject(o.toString());
 			subusers.add(new ClientSubuserImpl(subuser));
 		}
@@ -146,11 +143,17 @@ public class ClientServerImpl implements ClientServer {
 
 	@Override
 	public PteroAction<ClientSubuser> retrieveSubuser(UUID uuid) {
-		if(getSubusers().isEmpty())
-			return PteroActionImpl.onRequestExecute(impl.getP4J(),
+		if (getSubusers().isEmpty())
+			return PteroActionImpl.onRequestExecute(
+					impl.getP4J(),
 					Route.Subusers.GET_SUBUSER.compile(getIdentifier(), uuid.toString()),
 					(response, request) -> new ClientSubuserImpl(response.getObject()));
-		return new CompletedPteroAction<>(impl.getP4J(), getSubusers().stream().filter(u -> u.getUUID().equals(uuid)).findFirst().get());
+		return new CompletedPteroAction<>(
+				impl.getP4J(),
+				getSubusers().stream()
+						.filter(u -> u.getUUID().equals(uuid))
+						.findFirst()
+						.get());
 	}
 
 	@Override
@@ -170,13 +173,16 @@ public class ClientServerImpl implements ClientServer {
 
 	@Override
 	public PaginationAction<Backup> retrieveBackups() {
-		return PaginationResponseImpl.onPagination(impl.getP4J(), Route.Backups.LIST_BACKUPS.compile(getIdentifier()),
+		return PaginationResponseImpl.onPagination(
+				impl.getP4J(),
+				Route.Backups.LIST_BACKUPS.compile(getIdentifier()),
 				(object) -> new BackupImpl(object, this));
 	}
 
 	@Override
 	public PteroAction<Backup> retrieveBackup(UUID uuid) {
-		return PteroActionImpl.onRequestExecute(impl.getP4J(),
+		return PteroActionImpl.onRequestExecute(
+				impl.getP4J(),
 				Route.Backups.GET_BACKUP.compile(getIdentifier(), uuid.toString()),
 				(response, request) -> new BackupImpl(response.getObject(), this));
 	}
@@ -188,8 +194,8 @@ public class ClientServerImpl implements ClientServer {
 
 	@Override
 	public PteroAction<List<Schedule>> retrieveSchedules() {
-		return PteroActionImpl.onRequestExecute(impl.getP4J(),
-				Route.Schedules.LIST_SCHEDULES.compile(getIdentifier()), (response, request) -> {
+		return PteroActionImpl.onRequestExecute(
+				impl.getP4J(), Route.Schedules.LIST_SCHEDULES.compile(getIdentifier()), (response, request) -> {
 					JSONObject json = response.getObject();
 					List<Schedule> schedules = new ArrayList<>();
 					for (Object o : json.getJSONArray("data")) {
@@ -202,7 +208,8 @@ public class ClientServerImpl implements ClientServer {
 
 	@Override
 	public PteroAction<Schedule> retrieveSchedule(String id) {
-		return PteroActionImpl.onRequestExecute(impl.getP4J(),
+		return PteroActionImpl.onRequestExecute(
+				impl.getP4J(),
 				Route.Schedules.GET_SCHEDULE.compile(getIdentifier(), id),
 				(response, request) -> new ScheduleImpl(response.getObject(), this, impl));
 	}
@@ -214,22 +221,24 @@ public class ClientServerImpl implements ClientServer {
 
 	@Override
 	public PteroAction<Utilization> retrieveUtilization() {
-		return PteroActionImpl.onRequestExecute(impl.getP4J(), Route.Client.GET_UTILIZATION.compile(getIdentifier()),
+		return PteroActionImpl.onRequestExecute(
+				impl.getP4J(),
+				Route.Client.GET_UTILIZATION.compile(getIdentifier()),
 				(response, request) -> new UtilizationImpl(response.getObject()));
 	}
 
 	@Override
 	public PteroAction<Void> setPower(PowerAction powerAction) {
 		JSONObject obj = new JSONObject().put("signal", powerAction.name().toLowerCase());
-		return PteroActionImpl.onRequestExecute(impl.getP4J(),
-				Route.Client.SET_POWER.compile(getIdentifier()), PteroActionImpl.getRequestBody(obj));
+		return PteroActionImpl.onRequestExecute(
+				impl.getP4J(), Route.Client.SET_POWER.compile(getIdentifier()), PteroActionImpl.getRequestBody(obj));
 	}
 
 	@Override
 	public PteroAction<Void> sendCommand(String command) {
 		JSONObject obj = new JSONObject().put("command", command);
-		return PteroActionImpl.onRequestExecute(impl.getP4J(),
-				Route.Client.SEND_COMMAND.compile(getIdentifier()), PteroActionImpl.getRequestBody(obj));
+		return PteroActionImpl.onRequestExecute(
+				impl.getP4J(), Route.Client.SEND_COMMAND.compile(getIdentifier()), PteroActionImpl.getRequestBody(obj));
 	}
 
 	@Override
@@ -239,20 +248,24 @@ public class ClientServerImpl implements ClientServer {
 
 	@Override
 	public PteroAction<Directory> retrieveDirectory(String path) {
-		return PteroActionImpl.onRequestExecute(impl.getP4J(), Route.Files.LIST_FILES.compile(getIdentifier(), path),
+		return PteroActionImpl.onRequestExecute(
+				impl.getP4J(),
+				Route.Files.LIST_FILES.compile(getIdentifier(), path),
 				(response, request) -> new RootDirectoryImpl(response.getObject(), path, this));
 	}
 
 	@Override
 	public PteroAction<Directory> retrieveDirectory(Directory previousDirectory, Directory directory) {
-		return PteroActionImpl.onRequestExecute(impl.getP4J(), Route.Files.LIST_FILES.compile(getIdentifier(), directory.getPath()),
+		return PteroActionImpl.onRequestExecute(
+				impl.getP4J(),
+				Route.Files.LIST_FILES.compile(getIdentifier(), directory.getPath()),
 				(response, request) -> new DirectoryImpl(response.getObject(), directory, this));
 	}
 
 	@Override
 	public PteroAction<List<ClientDatabase>> retrieveDatabases() {
-		return PteroActionImpl.onRequestExecute(impl.getP4J(),
-				Route.ClientDatabases.LIST_DATABASES.compile(getIdentifier()), (response, request) -> {
+		return PteroActionImpl.onRequestExecute(
+				impl.getP4J(), Route.ClientDatabases.LIST_DATABASES.compile(getIdentifier()), (response, request) -> {
 					JSONObject json = response.getObject();
 					List<ClientDatabase> databases = new ArrayList<>();
 					for (Object o : json.getJSONArray("data")) {
@@ -272,7 +285,7 @@ public class ClientServerImpl implements ClientServer {
 	public List<ClientAllocation> getAllocations() {
 		List<ClientAllocation> allocations = new ArrayList<>();
 		JSONObject json = relationships.getJSONObject("allocations");
-		for(Object o : json.getJSONArray("data")) {
+		for (Object o : json.getJSONArray("data")) {
 			JSONObject allocation = new JSONObject(o.toString());
 			allocations.add(new ClientAllocationImpl(allocation, this));
 		}

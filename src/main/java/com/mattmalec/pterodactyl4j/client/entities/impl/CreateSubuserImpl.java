@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -21,32 +21,35 @@ import com.mattmalec.pterodactyl4j.client.managers.SubuserCreationAction;
 import com.mattmalec.pterodactyl4j.requests.Route;
 import com.mattmalec.pterodactyl4j.requests.action.AbstractSubuserAction;
 import com.mattmalec.pterodactyl4j.utils.Checks;
+import java.util.stream.Collectors;
 import okhttp3.RequestBody;
 import org.json.JSONObject;
 
-import java.util.stream.Collectors;
-
 public class CreateSubuserImpl extends AbstractSubuserAction implements SubuserCreationAction {
 
-    private String email;
+	private String email;
 
-    public CreateSubuserImpl(ClientServer server, PteroClientImpl impl) {
-        super(impl, Route.Subusers.CREATE_SUBUSER.compile(server.getUUID().toString()));
-    }
+	public CreateSubuserImpl(ClientServer server, PteroClientImpl impl) {
+		super(impl, Route.Subusers.CREATE_SUBUSER.compile(server.getUUID().toString()));
+	}
 
-    @Override
-    public SubuserCreationAction setEmail(String email) {
-        this.email = email;
-        return this;
-    }
+	@Override
+	public SubuserCreationAction setEmail(String email) {
+		this.email = email;
+		return this;
+	}
 
-    @Override
-    protected RequestBody finalizeData() {
-        Checks.notBlank(this.email, "Email");
-        Checks.notEmpty(this.permissions, "Permissions");
-        JSONObject json = new JSONObject()
-                .put("email", email)
-                .put("permissions", permissions.stream().map(permission -> permission.getRaw()).collect(Collectors.toList()));
-        return getRequestBody(json);
-    }
+	@Override
+	protected RequestBody finalizeData() {
+		Checks.notBlank(this.email, "Email");
+		Checks.notEmpty(this.permissions, "Permissions");
+		JSONObject json = new JSONObject()
+				.put("email", email)
+				.put(
+						"permissions",
+						permissions.stream()
+								.map(permission -> permission.getRaw())
+								.collect(Collectors.toList()));
+		return getRequestBody(json);
+	}
 }

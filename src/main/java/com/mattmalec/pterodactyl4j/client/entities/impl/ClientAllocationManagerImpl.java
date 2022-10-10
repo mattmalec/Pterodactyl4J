@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,6 +16,8 @@
 
 package com.mattmalec.pterodactyl4j.client.entities.impl;
 
+import static com.mattmalec.pterodactyl4j.requests.PteroActionImpl.getRequestBody;
+
 import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.client.entities.ClientAllocation;
 import com.mattmalec.pterodactyl4j.client.entities.ClientServer;
@@ -25,46 +27,48 @@ import com.mattmalec.pterodactyl4j.requests.Route;
 import com.mattmalec.pterodactyl4j.utils.Checks;
 import org.json.JSONObject;
 
-import static com.mattmalec.pterodactyl4j.requests.PteroActionImpl.getRequestBody;
-
 public class ClientAllocationManagerImpl implements ClientAllocationManager {
 
-    private final ClientServer server;
-    private final PteroClientImpl impl;
+	private final ClientServer server;
+	private final PteroClientImpl impl;
 
-    public ClientAllocationManagerImpl(ClientServer server, PteroClientImpl impl) {
-        this.server = server;
-        this.impl = impl;
-    }
+	public ClientAllocationManagerImpl(ClientServer server, PteroClientImpl impl) {
+		this.server = server;
+		this.impl = impl;
+	}
 
-    @Override
-    public PteroAction<ClientAllocation> setNote(ClientAllocation allocation, String note) {
-        JSONObject json = new JSONObject()
-                .put("notes", note);
+	@Override
+	public PteroAction<ClientAllocation> setNote(ClientAllocation allocation, String note) {
+		JSONObject json = new JSONObject().put("notes", note);
 
-        return PteroActionImpl.onRequestExecute(impl.getP4J(),
-                Route.ClientAllocations.SET_NOTE.compile(server.getIdentifier(), allocation.getId()),
-                getRequestBody(json), (response, request) -> new ClientAllocationImpl(response.getObject(), server));
-    }
+		return PteroActionImpl.onRequestExecute(
+				impl.getP4J(),
+				Route.ClientAllocations.SET_NOTE.compile(server.getIdentifier(), allocation.getId()),
+				getRequestBody(json),
+				(response, request) -> new ClientAllocationImpl(response.getObject(), server));
+	}
 
-    @Override
-    public PteroAction<Void> unassignAllocation(ClientAllocation allocation) {
-        Checks.check(!allocation.isDefault(), "Cannot unassign default Allocation");
-        return PteroActionImpl.onRequestExecute(impl.getP4J(),
-                Route.ClientAllocations.DELETE_ALLOCATION.compile(server.getIdentifier(), allocation.getId()));
-    }
+	@Override
+	public PteroAction<Void> unassignAllocation(ClientAllocation allocation) {
+		Checks.check(!allocation.isDefault(), "Cannot unassign default Allocation");
+		return PteroActionImpl.onRequestExecute(
+				impl.getP4J(),
+				Route.ClientAllocations.DELETE_ALLOCATION.compile(server.getIdentifier(), allocation.getId()));
+	}
 
-    @Override
-    public PteroAction<ClientAllocation> assignAllocation() {
-        return PteroActionImpl.onRequestExecute(impl.getP4J(),
-                Route.ClientAllocations.ASSIGN_ALLOCATION.compile(server.getIdentifier()),
-                (response, request) -> new ClientAllocationImpl(response.getObject(), server));
-    }
+	@Override
+	public PteroAction<ClientAllocation> assignAllocation() {
+		return PteroActionImpl.onRequestExecute(
+				impl.getP4J(),
+				Route.ClientAllocations.ASSIGN_ALLOCATION.compile(server.getIdentifier()),
+				(response, request) -> new ClientAllocationImpl(response.getObject(), server));
+	}
 
-    @Override
-    public PteroAction<ClientAllocation> setPrimary(ClientAllocation allocation) {
-        return PteroActionImpl.onRequestExecute(impl.getP4J(),
-                Route.ClientAllocations.SET_PRIMARY.compile(server.getIdentifier(), allocation.getId()),
-                (response, request) -> new ClientAllocationImpl(response.getObject(), server));
-    }
+	@Override
+	public PteroAction<ClientAllocation> setPrimary(ClientAllocation allocation) {
+		return PteroActionImpl.onRequestExecute(
+				impl.getP4J(),
+				Route.ClientAllocations.SET_PRIMARY.compile(server.getIdentifier(), allocation.getId()),
+				(response, request) -> new ClientAllocationImpl(response.getObject(), server));
+	}
 }

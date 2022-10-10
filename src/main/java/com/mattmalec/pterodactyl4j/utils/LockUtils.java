@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -23,23 +23,21 @@ import java.util.concurrent.locks.ReentrantLock;
 // i love you jda
 public final class LockUtils {
 
-    public static void locked(ReentrantLock lock, Runnable task) {
-        try {
-            tryLock(lock);
-            task.run();
-        } finally {
-            if (lock.isHeldByCurrentThread())
-                lock.unlock();
-        }
-    }
+	public static void locked(ReentrantLock lock, Runnable task) {
+		try {
+			tryLock(lock);
+			task.run();
+		} finally {
+			if (lock.isHeldByCurrentThread()) lock.unlock();
+		}
+	}
 
-    public static void tryLock(Lock lock) {
-        try {
-            if (!lock.tryLock() && !lock.tryLock(10, TimeUnit.SECONDS))
-                throw new IllegalStateException("Could not acquire lock in a reasonable timeframe! (10 seconds)");
-        } catch (InterruptedException e) {
-            throw new IllegalStateException("Unable to acquire lock while thread is interrupted!");
-        }
-    }
-
+	public static void tryLock(Lock lock) {
+		try {
+			if (!lock.tryLock() && !lock.tryLock(10, TimeUnit.SECONDS))
+				throw new IllegalStateException("Could not acquire lock in a reasonable timeframe! (10 seconds)");
+		} catch (InterruptedException e) {
+			throw new IllegalStateException("Unable to acquire lock while thread is interrupted!");
+		}
+	}
 }

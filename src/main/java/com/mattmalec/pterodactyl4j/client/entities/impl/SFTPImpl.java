@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -21,19 +21,19 @@ import org.json.JSONObject;
 
 public class SFTPImpl implements SFTP {
 
-    private final JSONObject json;
+	private final JSONObject json;
 
-    public SFTPImpl(JSONObject json) {
-        this.json = json;
-    }
+	public SFTPImpl(JSONObject json) {
+		this.json = json;
+	}
 
-    @Override
-    public String getIP() {
-        return json.getString("ip");
-    }
+	@Override
+	public String getIP() {
+		return json.getString("ip");
+	}
 
-    @Override
-    public int getPort() {
-        return json.getInt("port");
-    }
+	@Override
+	public int getPort() {
+		return json.getInt("port");
+	}
 }

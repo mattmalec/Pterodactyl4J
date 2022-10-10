@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -23,12 +23,11 @@ import java.util.stream.Collectors;
 
 public final class StreamUtils {
 
-    public static <T> Collector<T, ?, List<T>> toUnmodifiableList() {
-        return Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList);
-    }
+	public static <T> Collector<T, ?, List<T>> toUnmodifiableList() {
+		return Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList);
+	}
 
-    public static boolean compareString(String a, String b, boolean caseSensitive) {
-        return caseSensitive ? a.equals(b) : a.equalsIgnoreCase(b);
-    }
-
+	public static boolean compareString(String a, String b, boolean caseSensitive) {
+		return caseSensitive ? a.equals(b) : a.equalsIgnoreCase(b);
+	}
 }

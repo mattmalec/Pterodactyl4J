@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -18,19 +18,18 @@ package com.mattmalec.pterodactyl4j.application.entities.impl;
 
 import com.mattmalec.pterodactyl4j.DataType;
 import com.mattmalec.pterodactyl4j.EnvironmentValue;
-import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.application.entities.*;
 import com.mattmalec.pterodactyl4j.application.managers.ServerCreationAction;
+import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.requests.Route;
 import com.mattmalec.pterodactyl4j.utils.Checks;
-import okhttp3.RequestBody;
-import org.json.JSONObject;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import okhttp3.RequestBody;
+import org.json.JSONObject;
 
 public class CreateServerImpl extends PteroActionImpl<ApplicationServer> implements ServerCreationAction {
 
@@ -61,7 +60,9 @@ public class CreateServerImpl extends PteroActionImpl<ApplicationServer> impleme
 	private final PteroApplicationImpl impl;
 
 	public CreateServerImpl(PteroApplicationImpl impl) {
-		super(impl.getP4J(), Route.Servers.CREATE_SERVER.compile(),
+		super(
+				impl.getP4J(),
+				Route.Servers.CREATE_SERVER.compile(),
 				(response, request) -> new ApplicationServerImpl(impl, response.getObject()));
 		this.environment = new HashMap<>();
 		this.impl = impl;
@@ -194,7 +195,8 @@ public class CreateServerImpl extends PteroActionImpl<ApplicationServer> impleme
 	}
 
 	@Override
-	public ServerCreationAction setAllocations(ApplicationAllocation defaultAllocation, Collection<ApplicationAllocation> additionalAllocations) {
+	public ServerCreationAction setAllocations(
+			ApplicationAllocation defaultAllocation, Collection<ApplicationAllocation> additionalAllocations) {
 		this.defaultAllocation = defaultAllocation;
 		this.additionalAllocations = additionalAllocations;
 		return this;
@@ -207,17 +209,26 @@ public class CreateServerImpl extends PteroActionImpl<ApplicationServer> impleme
 		Checks.notNull(egg, "Egg and Nest");
 
 		if (defaultAllocation != null)
-			Checks.check(portRange == null && locations == null, "You need to set both a port range and Location, or set only an Allocation instead.");
+			Checks.check(
+					portRange == null && locations == null,
+					"You need to set both a port range and Location, or set only an Allocation instead.");
 
 		Nest nest = egg.retrieveNest().execute();
 		Map<String, Object> env = new HashMap<>();
 		environment.forEach((k, v) -> env.put(k, v.get().orElse(null)));
-		egg.getDefaultVariableMap().orElseGet(() ->
-				impl.retrieveEggById(nest, egg.getId()).execute().getDefaultVariableMap().get())
+		egg.getDefaultVariableMap()
+				.orElseGet(() -> impl.retrieveEggById(nest, egg.getId())
+						.execute()
+						.getDefaultVariableMap()
+						.get())
 				.forEach((k, v) -> env.putIfAbsent(k, v.get().orElse(null)));
 		JSONObject featureLimits = new JSONObject()
 				.put("databases", databases)
-				.put("allocations", allocations == 0 && additionalAllocations != null ? additionalAllocations.size() + 1 : allocations)
+				.put(
+						"allocations",
+						allocations == 0 && additionalAllocations != null
+								? additionalAllocations.size() + 1
+								: allocations)
 				.put("backups", backups);
 		JSONObject limits = new JSONObject()
 				.put("memory", memory)
@@ -228,12 +239,27 @@ public class CreateServerImpl extends PteroActionImpl<ApplicationServer> impleme
 				.put("threads", threads);
 		JSONObject allocation = new JSONObject()
 				.put("default", defaultAllocation != null ? defaultAllocation.getIdLong() : null)
-				.put("additional", (additionalAllocations != null && additionalAllocations.size() != 0) ?
-						additionalAllocations.stream().map(ApplicationAllocation::getIdLong).collect(Collectors.toList()) : null);
+				.put(
+						"additional",
+						(additionalAllocations != null && additionalAllocations.size() != 0)
+								? additionalAllocations.stream()
+										.map(ApplicationAllocation::getIdLong)
+										.collect(Collectors.toList())
+								: null);
 		JSONObject deploy = new JSONObject()
-				.put("locations", locations != null ? locations.stream().map(ISnowflake::getIdLong).collect(Collectors.toList()) : null)
+				.put(
+						"locations",
+						locations != null
+								? locations.stream().map(ISnowflake::getIdLong).collect(Collectors.toList())
+								: null)
 				.put("dedicated_ip", useDedicatedIP)
-				.put("port_range", portRange != null ? portRange.stream().map(Integer::toUnsignedString).collect(Collectors.toList()) : null);
+				.put(
+						"port_range",
+						portRange != null
+								? portRange.stream()
+										.map(Integer::toUnsignedString)
+										.collect(Collectors.toList())
+								: null);
 		JSONObject obj = new JSONObject()
 				.put("name", name)
 				.put("description", description)
@@ -253,8 +279,7 @@ public class CreateServerImpl extends PteroActionImpl<ApplicationServer> impleme
 	}
 
 	private long convert(long amount, DataType dataType) {
-		if (dataType != DataType.MB)
-			amount = amount * dataType.getMbValue();
+		if (dataType != DataType.MB) amount = amount * dataType.getMbValue();
 		return amount;
 	}
 }

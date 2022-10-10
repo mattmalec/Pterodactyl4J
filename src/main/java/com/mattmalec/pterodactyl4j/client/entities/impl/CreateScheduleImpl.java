@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -26,7 +26,10 @@ import org.json.JSONObject;
 public class CreateScheduleImpl extends AbstractScheduleAction {
 
 	public CreateScheduleImpl(ClientServer server, PteroClientImpl impl) {
-		super(impl, server, Route.Schedules.CREATE_SCHEDULE.compile(server.getUUID().toString()));
+		super(
+				impl,
+				server,
+				Route.Schedules.CREATE_SCHEDULE.compile(server.getUUID().toString()));
 	}
 
 	@Override

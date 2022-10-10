@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -20,7 +20,6 @@ import com.mattmalec.pterodactyl4j.PowerAction;
 import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.application.entities.ISnowflake;
 import com.mattmalec.pterodactyl4j.client.managers.ScheduleTaskManager;
-
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -28,24 +27,40 @@ import java.util.Optional;
 public interface Schedule extends ISnowflake {
 
 	String getName();
+
 	Cron getCron();
+
 	boolean isActive();
+
 	boolean isProcessing();
+
 	boolean isOnlyWhenServerIsOnline();
+
 	Optional<OffsetDateTime> getLastRunDate();
+
 	OffsetDateTime getNextRunDate();
+
 	List<ScheduleTask> getTasks();
+
 	ScheduleTaskManager getTaskManager();
+
 	PteroAction<Void> delete();
 
 	interface ScheduleTask extends ISnowflake {
 		int getSequenceId();
+
 		ScheduleAction getAction();
+
 		Optional<PowerAction> getPowerPayload();
+
 		String getPayload();
+
 		boolean isQueued();
+
 		boolean isContinueOnFailure();
+
 		long getTimeOffset();
+
 		PteroAction<Void> delete();
 
 		enum ScheduleAction {

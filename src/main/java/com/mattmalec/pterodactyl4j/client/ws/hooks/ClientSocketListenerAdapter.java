@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -35,93 +35,85 @@ import com.mattmalec.pterodactyl4j.client.ws.events.transfer.TransferStatusEvent
 
 public abstract class ClientSocketListenerAdapter implements ClientSocketListener {
 
-    public void onStatusUpdate(StatusUpdateEvent event) {}
-    public void onStatsUpdate(StatsUpdateEvent event) {}
-    public void onAuthSuccess(AuthSuccessEvent event) {}
+	public void onStatusUpdate(StatusUpdateEvent event) {}
 
-    public void onOutput(OutputEvent event) {}
-    public void onConsoleOutput(ConsoleOutputEvent event) {}
-    public void onInstallOutput(InstallOutputEvent event) {}
-    public void onDaemonMessage(DaemonMessageEvent event) {}
+	public void onStatsUpdate(StatsUpdateEvent event) {}
 
-    public void onInstallUpdate(InstallEvent event) {}
-    public void onInstallStarted(InstallStartedEvent event) {}
-    public void onInstallCompleted(InstallCompletedEvent event) {}
+	public void onAuthSuccess(AuthSuccessEvent event) {}
 
-    public void onTransferLog(TransferLogEvent event) {}
-    public void onTransferStatusUpdate(TransferStatusEvent event) {}
+	public void onOutput(OutputEvent event) {}
 
-    public void onBackupCompleted(BackupCompletedEvent event) {}
+	public void onConsoleOutput(ConsoleOutputEvent event) {}
 
-    public void onConnectionUpdate(ConnectionEvent event) {}
-    public void onConnected(ConnectedEvent event) {}
-    public void onDisconnecting(DisconnectingEvent event) {}
-    public void onDisconnected(DisconnectedEvent event) {}
-    public void onFailure(FailureEvent event) {}
+	public void onInstallOutput(InstallOutputEvent event) {}
 
+	public void onDaemonMessage(DaemonMessageEvent event) {}
 
-    public void onDaemonError(DaemonErrorEvent event) {}
-    public void onJWTError(JWTErrorEvent event) {}
+	public void onInstallUpdate(InstallEvent event) {}
 
-    public void onTokenUpdate(TokenEvent event) {}
-    public void onTokenExpiring(TokenExpiringEvent event) {}
-    public void onTokenExpired(TokenExpiredEvent event) {}
+	public void onInstallStarted(InstallStartedEvent event) {}
 
-    public void onGenericEvent(Event event) {}
+	public void onInstallCompleted(InstallCompletedEvent event) {}
 
-    @Override
-    public final void onEvent(Event event) {
-        onGenericEvent(event);
-        if (event instanceof StatusUpdateEvent)
-            onStatusUpdate((StatusUpdateEvent) event);
-        else if (event instanceof StatsUpdateEvent)
-            onStatsUpdate((StatsUpdateEvent) event);
-        else if (event instanceof AuthSuccessEvent)
-            onAuthSuccess((AuthSuccessEvent) event);
-        else if (event instanceof ConsoleOutputEvent)
-            onConsoleOutput((ConsoleOutputEvent) event);
-        else if (event instanceof InstallOutputEvent)
-            onInstallOutput((InstallOutputEvent) event);
-        else if (event instanceof DaemonMessageEvent)
-            onDaemonMessage((DaemonMessageEvent) event);
-        else if (event instanceof TransferLogEvent)
-            onTransferLog((TransferLogEvent) event);
-        else if (event instanceof TransferStatusEvent)
-            onTransferStatusUpdate((TransferStatusEvent) event);
-        else if (event instanceof BackupCompletedEvent)
-            onBackupCompleted((BackupCompletedEvent) event);
-        else if (event instanceof InstallStartedEvent)
-            onInstallStarted((InstallStartedEvent) event);
-        else if (event instanceof InstallCompletedEvent)
-            onInstallCompleted((InstallCompletedEvent) event);
-        else if (event instanceof ConnectedEvent)
-            onConnected((ConnectedEvent) event);
-        else if (event instanceof DisconnectingEvent)
-            onDisconnecting((DisconnectingEvent) event);
-        else if (event instanceof DisconnectedEvent)
-            onDisconnected((DisconnectedEvent) event);
-        else if (event instanceof FailureEvent)
-            onFailure((FailureEvent) event);
-        else if (event instanceof DaemonErrorEvent)
-            onDaemonError((DaemonErrorEvent) event);
-        else if (event instanceof JWTErrorEvent)
-            onJWTError((JWTErrorEvent) event);
-        else if (event instanceof TokenExpiringEvent)
-            onTokenExpiring((TokenExpiringEvent) event);
-        else if (event instanceof TokenExpiredEvent) {
-            onTokenExpired((TokenExpiredEvent) event);
-        }
+	public void onTransferLog(TransferLogEvent event) {}
 
-        if (event instanceof OutputEvent)
-            onOutput((OutputEvent) event);
+	public void onTransferStatusUpdate(TransferStatusEvent event) {}
 
-        if (event instanceof InstallEvent)
-            onInstallUpdate((InstallEvent) event);
+	public void onBackupCompleted(BackupCompletedEvent event) {}
 
-        if (event instanceof ConnectionEvent)
-            onConnectionUpdate((ConnectionEvent) event);
+	public void onConnectionUpdate(ConnectionEvent event) {}
 
-        if (event instanceof TokenEvent)
-            onTokenUpdate((TokenEvent) event);
-    }
+	public void onConnected(ConnectedEvent event) {}
+
+	public void onDisconnecting(DisconnectingEvent event) {}
+
+	public void onDisconnected(DisconnectedEvent event) {}
+
+	public void onFailure(FailureEvent event) {}
+
+	public void onDaemonError(DaemonErrorEvent event) {}
+
+	public void onJWTError(JWTErrorEvent event) {}
+
+	public void onTokenUpdate(TokenEvent event) {}
+
+	public void onTokenExpiring(TokenExpiringEvent event) {}
+
+	public void onTokenExpired(TokenExpiredEvent event) {}
+
+	public void onGenericEvent(Event event) {}
+
+	@Override
+	public final void onEvent(Event event) {
+		onGenericEvent(event);
+		if (event instanceof StatusUpdateEvent) onStatusUpdate((StatusUpdateEvent) event);
+		else if (event instanceof StatsUpdateEvent) onStatsUpdate((StatsUpdateEvent) event);
+		else if (event instanceof AuthSuccessEvent) onAuthSuccess((AuthSuccessEvent) event);
+		else if (event instanceof ConsoleOutputEvent) onConsoleOutput((ConsoleOutputEvent) event);
+		else if (event instanceof InstallOutputEvent) onInstallOutput((InstallOutputEvent) event);
+		else if (event instanceof DaemonMessageEvent) onDaemonMessage((DaemonMessageEvent) event);
+		else if (event instanceof TransferLogEvent) onTransferLog((TransferLogEvent) event);
+		else if (event instanceof TransferStatusEvent) onTransferStatusUpdate((TransferStatusEvent) event);
+		else if (event instanceof BackupCompletedEvent) onBackupCompleted((BackupCompletedEvent) event);
+		else if (event instanceof InstallStartedEvent) onInstallStarted((InstallStartedEvent) event);
+		else if (event instanceof InstallCompletedEvent) onInstallCompleted((InstallCompletedEvent) event);
+		else if (event instanceof ConnectedEvent) onConnected((ConnectedEvent) event);
+		else if (event instanceof DisconnectingEvent) onDisconnecting((DisconnectingEvent) event);
+		else if (event instanceof DisconnectedEvent) onDisconnected((DisconnectedEvent) event);
+		else if (event instanceof FailureEvent) onFailure((FailureEvent) event);
+		else if (event instanceof DaemonErrorEvent) onDaemonError((DaemonErrorEvent) event);
+		else if (event instanceof JWTErrorEvent) onJWTError((JWTErrorEvent) event);
+		else if (event instanceof TokenExpiringEvent) onTokenExpiring((TokenExpiringEvent) event);
+		else if (event instanceof TokenExpiredEvent) {
+			onTokenExpired((TokenExpiredEvent) event);
+		}
+
+		if (event instanceof OutputEvent) onOutput((OutputEvent) event);
+
+		if (event instanceof InstallEvent) onInstallUpdate((InstallEvent) event);
+
+		if (event instanceof ConnectionEvent) onConnectionUpdate((ConnectionEvent) event);
+
+		if (event instanceof TokenEvent) onTokenUpdate((TokenEvent) event);
+	}
 }

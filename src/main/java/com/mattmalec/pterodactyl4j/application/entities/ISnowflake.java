@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -28,7 +28,9 @@ public interface ISnowflake {
 	 *
 	 * @return Never-null String containing the id.
 	 */
-	default String getId() { return Long.toUnsignedString(getIdLong()); }
+	default String getId() {
+		return Long.toUnsignedString(getIdLong());
+	}
 
 	/**
 	 * The Snowflake id of this entity. This is unique to every entity and will never change.
@@ -54,5 +56,4 @@ public interface ISnowflake {
 	 * @see    #getCreationDate()
 	 */
 	OffsetDateTime getUpdatedDate();
-
 }

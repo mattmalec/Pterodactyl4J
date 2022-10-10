@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -19,6 +19,5 @@ package com.mattmalec.pterodactyl4j.utils;
 @FunctionalInterface
 public interface Procedure<T> {
 
-    boolean execute(T value);
-
+	boolean execute(T value);
 }

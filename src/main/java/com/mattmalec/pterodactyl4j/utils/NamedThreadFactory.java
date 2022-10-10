@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -20,16 +20,16 @@ import java.util.concurrent.ThreadFactory;
 
 public final class NamedThreadFactory implements ThreadFactory {
 
-    private final String name;
+	private final String name;
 
-    public NamedThreadFactory(String name) {
-        this.name = name;
-    }
+	public NamedThreadFactory(String name) {
+		this.name = name;
+	}
 
-    @Override
-    public Thread newThread(Runnable r) {
-        Thread thread = new Thread(r, String.format("P4J-%s-Worker", name));
-        thread.setDaemon(true);
-        return thread;
-    }
+	@Override
+	public Thread newThread(Runnable r) {
+		Thread thread = new Thread(r, String.format("P4J-%s-Worker", name));
+		thread.setDaemon(true);
+		return thread;
+	}
 }

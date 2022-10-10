@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -24,21 +24,21 @@ import org.json.JSONObject;
 
 public class EditUserImpl extends AbstractUserAction {
 
-    private final ApplicationUser user;
+	private final ApplicationUser user;
 
-    public EditUserImpl(ApplicationUser user, PteroApplicationImpl impl) {
-        super(impl, Route.Users.EDIT_USER.compile(user.getId()));
-        this.user = user;
-    }
+	public EditUserImpl(ApplicationUser user, PteroApplicationImpl impl) {
+		super(impl, Route.Users.EDIT_USER.compile(user.getId()));
+		this.user = user;
+	}
 
-    @Override
-    protected RequestBody finalizeData() {
-        JSONObject json = new JSONObject();
-        json.put("username", userName == null ? user.getUserName() : userName);
-        json.put("email", email == null ? user.getEmail() : email);
-        json.put("first_name", firstName == null ? user.getFirstName() : firstName);
-        json.put("last_name", lastName == null ? user.getLastName() : lastName);
-        json.put("password", password);
-        return getRequestBody(json);
-    }
+	@Override
+	protected RequestBody finalizeData() {
+		JSONObject json = new JSONObject();
+		json.put("username", userName == null ? user.getUserName() : userName);
+		json.put("email", email == null ? user.getEmail() : email);
+		json.put("first_name", firstName == null ? user.getFirstName() : firstName);
+		json.put("last_name", lastName == null ? user.getLastName() : lastName);
+		json.put("password", password);
+		return getRequestBody(json);
+	}
 }

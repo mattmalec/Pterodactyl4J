@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -23,12 +23,12 @@ import com.mattmalec.pterodactyl4j.client.ws.events.transfer.TransferLogEvent;
 
 public class TransferLogHandler extends ClientSocketHandler {
 
-    public TransferLogHandler(PteroClientImpl client, ClientServer server, WebSocketManager manager) {
-        super(client, server, manager);
-    }
+	public TransferLogHandler(PteroClientImpl client, ClientServer server, WebSocketManager manager) {
+		super(client, server, manager);
+	}
 
-    @Override
-    public void handleInternally(String content) {
-        getManager().getEventManager().handle(new TransferLogEvent(getClient(), getServer(), getManager(), content));
-    }
+	@Override
+	public void handleInternally(String content) {
+		getManager().getEventManager().handle(new TransferLogEvent(getClient(), getServer(), getManager(), content));
+	}
 }

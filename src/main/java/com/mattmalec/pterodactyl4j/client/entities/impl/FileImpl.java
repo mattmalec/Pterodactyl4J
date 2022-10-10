@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -25,35 +25,35 @@ import org.json.JSONObject;
 
 public class FileImpl extends GenericFileImpl implements File {
 
-    private final FileManager fileManager;
+	private final FileManager fileManager;
 
-    public FileImpl(JSONObject json, String context, ClientServer server) {
-        super(json, context, server);
-        this.fileManager = server.getFileManager();
-    }
+	public FileImpl(JSONObject json, String context, ClientServer server) {
+		super(json, context, server);
+		this.fileManager = server.getFileManager();
+	}
 
-    @Override
-    public PteroAction<String> retrieveContent() {
-        return fileManager.retrieveContent(this);
-    }
+	@Override
+	public PteroAction<String> retrieveContent() {
+		return fileManager.retrieveContent(this);
+	}
 
-    @Override
-    public PteroAction<DownloadableFile> retrieveDownload() {
-        return fileManager.retrieveDownload(this);
-    }
+	@Override
+	public PteroAction<DownloadableFile> retrieveDownload() {
+		return fileManager.retrieveDownload(this);
+	}
 
-    @Override
-    public PteroAction<Void> write(String content) {
-        return fileManager.write(this, content);
-    }
+	@Override
+	public PteroAction<Void> write(String content) {
+		return fileManager.write(this, content);
+	}
 
-    @Override
-    public PteroAction<Void> copy() {
-        return fileManager.copy(this);
-    }
+	@Override
+	public PteroAction<Void> copy() {
+		return fileManager.copy(this);
+	}
 
-    @Override
-    public PteroAction<Void> decompress() {
-        return fileManager.decompress(this);
-    }
+	@Override
+	public PteroAction<Void> decompress() {
+		return fileManager.decompress(this);
+	}
 }

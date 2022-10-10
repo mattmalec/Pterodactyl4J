@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -23,7 +23,6 @@ import com.mattmalec.pterodactyl4j.application.managers.ServerCreationAction;
 import com.mattmalec.pterodactyl4j.application.managers.UserManager;
 import com.mattmalec.pterodactyl4j.requests.PaginationAction;
 import com.mattmalec.pterodactyl4j.utils.StreamUtils;
-
 import java.util.List;
 
 /**
@@ -582,9 +581,9 @@ public interface PteroApplication {
 	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServers}
 	 */
 	default PteroAction<List<ApplicationServer>> retrieveServersByNode(Node node) {
-		return retrieveServers().map(List::stream)
-				.map(stream -> stream.filter(s -> s.retrieveNode().map(ISnowflake::getIdLong).execute() == node.getIdLong())
-						.collect(StreamUtils.toUnmodifiableList()));
+		return retrieveServers().map(List::stream).map(stream -> stream.filter(
+						s -> s.retrieveNode().map(ISnowflake::getIdLong).execute() == node.getIdLong())
+				.collect(StreamUtils.toUnmodifiableList()));
 	}
 
 	/**
@@ -600,10 +599,12 @@ public interface PteroApplication {
 	 * @return {@link com.mattmalec.pterodactyl4j.PteroAction PteroAction} - Type {@link java.util.List List} of {@link com.mattmalec.pterodactyl4j.application.entities.ApplicationServer ApplicationServers}
 	 */
 	default PteroAction<List<ApplicationServer>> retrieveServersByLocation(Location location) {
-		return retrieveServers().map(List::stream)
-				.map(stream -> stream.filter(s -> s.retrieveNode().flatMap(Node::retrieveLocation)
-								.map(ISnowflake::getIdLong).execute() == location.getIdLong())
-						.collect(StreamUtils.toUnmodifiableList()));
+		return retrieveServers().map(List::stream).map(stream -> stream.filter(s -> s.retrieveNode()
+								.flatMap(Node::retrieveLocation)
+								.map(ISnowflake::getIdLong)
+								.execute()
+						== location.getIdLong())
+				.collect(StreamUtils.toUnmodifiableList()));
 	}
 
 	/**
@@ -614,6 +615,4 @@ public interface PteroApplication {
 	 * @return The ServerAction used to create servers
 	 */
 	ServerCreationAction createServer();
-
-
 }

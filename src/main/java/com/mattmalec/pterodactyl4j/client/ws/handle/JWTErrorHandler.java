@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -24,17 +24,17 @@ import com.mattmalec.pterodactyl4j.client.ws.events.error.JWTErrorEvent;
 
 public class JWTErrorHandler extends ClientSocketHandler {
 
-    private final WebSocketClient webSocket;
+	private final WebSocketClient webSocket;
 
-    public JWTErrorHandler(PteroClientImpl client, ClientServer server, WebSocketManager manager, WebSocketClient webSocket) {
-        super(client, server, manager);
-        this.webSocket = webSocket;
-    }
+	public JWTErrorHandler(
+			PteroClientImpl client, ClientServer server, WebSocketManager manager, WebSocketClient webSocket) {
+		super(client, server, manager);
+		this.webSocket = webSocket;
+	}
 
-    @Override
-    public void handleInternally(String content) {
-        if (content.equals("jwt: exp claim is invalid"))
-            webSocket.sendAuthenticate();
-        getManager().getEventManager().handle(new JWTErrorEvent(getClient(), getServer(), getManager(), content));
-    }
+	@Override
+	public void handleInternally(String content) {
+		if (content.equals("jwt: exp claim is invalid")) webSocket.sendAuthenticate();
+		getManager().getEventManager().handle(new JWTErrorEvent(getClient(), getServer(), getManager(), content));
+	}
 }

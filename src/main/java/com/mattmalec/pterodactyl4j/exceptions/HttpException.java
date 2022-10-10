@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -21,27 +21,25 @@ import org.json.JSONObject;
 
 public class HttpException extends PteroException {
 
-    public HttpException(String message) {
-        super(message);
-    }
+	public HttpException(String message) {
+		super(message);
+	}
 
-    private static String create(String text, Response response) {
-        if (response.isEmpty())
-            return text;
-        else
-            return formatMessage(text, response.getObject());
-    }
+	private static String create(String text, Response response) {
+		if (response.isEmpty()) return text;
+		else return formatMessage(text, response.getObject());
+	}
 
-    private static String formatMessage(String text, JSONObject json) {
-        StringBuilder message = new StringBuilder(text + "\n\n");
-        for(Object o : json.getJSONArray("errors")) {
-            JSONObject obj = new JSONObject(o.toString());
-            message.append("\t- ").append(obj.getString("detail")).append("\n");
-        }
-        return message.toString();
-    }
+	private static String formatMessage(String text, JSONObject json) {
+		StringBuilder message = new StringBuilder(text + "\n\n");
+		for (Object o : json.getJSONArray("errors")) {
+			JSONObject obj = new JSONObject(o.toString());
+			message.append("\t- ").append(obj.getString("detail")).append("\n");
+		}
+		return message.toString();
+	}
 
-    public HttpException(String text, Response response) {
-        super(create(text, response));
-    }
+	public HttpException(String text, Response response) {
+		super(create(text, response));
+	}
 }

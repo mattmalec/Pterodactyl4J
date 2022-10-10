@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -19,162 +19,167 @@ package com.mattmalec.pterodactyl4j.requests;
 import com.mattmalec.pterodactyl4j.entities.P4J;
 import com.mattmalec.pterodactyl4j.utils.LockUtils;
 import com.mattmalec.pterodactyl4j.utils.P4JLogger;
-import okhttp3.Headers;
-import org.slf4j.Logger;
-
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.*;
 import java.util.concurrent.locks.ReentrantLock;
+import okhttp3.Headers;
+import org.slf4j.Logger;
 
 public class RateLimiter implements Runnable {
 
-    public static final Logger RATELIMIT_LOG = P4JLogger.getLogger(RateLimiter.class);
+	public static final Logger RATELIMIT_LOG = P4JLogger.getLogger(RateLimiter.class);
 
-    private static final String RESET_HEADER = "X-RateLimit-Reset";
-    private static final String LIMIT_HEADER = "X-RateLimit-Limit";
-    private static final String RETRY_AFTER_HEADER = "Retry-After";
-    private static final String REMAINING_HEADER = "X-RateLimit-Remaining";
+	private static final String RESET_HEADER = "X-RateLimit-Reset";
+	private static final String LIMIT_HEADER = "X-RateLimit-Limit";
+	private static final String RETRY_AFTER_HEADER = "Retry-After";
+	private static final String REMAINING_HEADER = "X-RateLimit-Remaining";
 
-    private final Requester requester;
-    private final ScheduledExecutorService scheduler;
+	private final Requester requester;
+	private final ScheduledExecutorService scheduler;
 
-    private final Queue<Request<?>> requests = new ConcurrentLinkedQueue<>();
-    private final Map<RateLimiter, Future<?>> rateLimitQueue = new ConcurrentHashMap<>();
+	private final Queue<Request<?>> requests = new ConcurrentLinkedQueue<>();
+	private final Map<RateLimiter, Future<?>> rateLimitQueue = new ConcurrentHashMap<>();
 
-    private long reset = 0;
-    private int limit = 1;
-    private long retryAfter = 0;
-    private int remaining = 1;
-    
-    private final ReentrantLock lock = new ReentrantLock();
+	private long reset = 0;
+	private int limit = 1;
+	private long retryAfter = 0;
+	private int remaining = 1;
 
-    public RateLimiter(Requester requester, P4J api) {
-        this.requester = requester;
-        this.scheduler = api.getRateLimitPool();
-    }
+	private final ReentrantLock lock = new ReentrantLock();
 
-    public void queueRequest(Request<?> request) {
-        LockUtils.locked(lock, () -> {
-            requests.offer(request);
-            runQueue();
-        });
-    }
+	public RateLimiter(Requester requester, P4J api) {
+		this.requester = requester;
+		this.scheduler = api.getRateLimitPool();
+	}
 
-    public Long handleResponse(Request<?> request, okhttp3.Response response) {
-        lock.lock();
-        try {
-            updateRequest(request, response);
-            if (response.code() == 429)
-                return getRateLimit();
-            else return null;
-        } finally {
-            lock.unlock();
-        }
-    }
+	public void queueRequest(Request<?> request) {
+		LockUtils.locked(lock, () -> {
+			requests.offer(request);
+			runQueue();
+		});
+	}
 
-    private void updateRequest(Request<?> request, okhttp3.Response response) {
-        LockUtils.locked(lock, () -> {
-            try {
-                Headers headers = response.headers();
-                long now = getNow();
-                if (response.code() == 429) {
-                    String retryAfterHeader = headers.get(RETRY_AFTER_HEADER);
-                    long retryAfter = parseLong(retryAfterHeader) * 1000;
-                    RATELIMIT_LOG.warn("Encountered 429 on route {} Retry-After: {} ms", request.getRoute().getCompiledRoute(), retryAfter);
-                }
+	public Long handleResponse(Request<?> request, okhttp3.Response response) {
+		lock.lock();
+		try {
+			updateRequest(request, response);
+			if (response.code() == 429) return getRateLimit();
+			else return null;
+		} finally {
+			lock.unlock();
+		}
+	}
 
-                String limitHeader = headers.get(LIMIT_HEADER);
-                String remainingHeader = headers.get(REMAINING_HEADER);
-                String retryAfterHeader = headers.get(RETRY_AFTER_HEADER);
-                String resetHeader = headers.get(RESET_HEADER);
+	private void updateRequest(Request<?> request, okhttp3.Response response) {
+		LockUtils.locked(lock, () -> {
+			try {
+				Headers headers = response.headers();
+				long now = getNow();
+				if (response.code() == 429) {
+					String retryAfterHeader = headers.get(RETRY_AFTER_HEADER);
+					long retryAfter = parseLong(retryAfterHeader) * 1000;
+					RATELIMIT_LOG.warn(
+							"Encountered 429 on route {} Retry-After: {} ms",
+							request.getRoute().getCompiledRoute(),
+							retryAfter);
+				}
 
-                this.limit = (int) Math.max(1L, parseLong(limitHeader));
-                this.remaining = (int) parseLong(remainingHeader);
-                this.retryAfter = parseDouble(retryAfterHeader);
-                this.reset = parseDouble(resetHeader);
-                RATELIMIT_LOG.trace("Updated to ({}/{}, {})", this.remaining, this.limit, this.reset - now);
-            } catch (Exception e) {
-                RATELIMIT_LOG.error("Encountered Exception while updating the rate limiter. Route: {} Code: {} Headers:\n{}",
-                        request.getRoute().getBaseRoute(), response.code(), response.headers());
-            }
-        });
-    }
-    private void runQueue() {
-        LockUtils.locked(lock, () -> rateLimitQueue.computeIfAbsent(this, k ->
-            scheduler.schedule(this, getRateLimit(), TimeUnit.MILLISECONDS)));
-    }
+				String limitHeader = headers.get(LIMIT_HEADER);
+				String remainingHeader = headers.get(REMAINING_HEADER);
+				String retryAfterHeader = headers.get(RETRY_AFTER_HEADER);
+				String resetHeader = headers.get(RESET_HEADER);
 
-    private void cancel(Iterator<Request<?>> it, Request<?> request) {
-        request.onCancelled();
-        it.remove();
-    }
+				this.limit = (int) Math.max(1L, parseLong(limitHeader));
+				this.remaining = (int) parseLong(remainingHeader);
+				this.retryAfter = parseDouble(retryAfterHeader);
+				this.reset = parseDouble(resetHeader);
+				RATELIMIT_LOG.trace("Updated to ({}/{}, {})", this.remaining, this.limit, this.reset - now);
+			} catch (Exception e) {
+				RATELIMIT_LOG.error(
+						"Encountered Exception while updating the rate limiter. Route: {} Code: {} Headers:\n{}",
+						request.getRoute().getBaseRoute(),
+						response.code(),
+						response.headers());
+			}
+		});
+	}
 
-    private boolean isSkipped(Iterator<Request<?>> it, Request<?> request) {
-        if (request.isSkipped()) {
-            cancel(it, request);
-            return true;
-        }
-        return false;
-    }
+	private void runQueue() {
+		LockUtils.locked(
+				lock,
+				() -> rateLimitQueue.computeIfAbsent(
+						this, k -> scheduler.schedule(this, getRateLimit(), TimeUnit.MILLISECONDS)));
+	}
 
-    private void backoff() {
-        LockUtils.locked(lock, () -> {
-            rateLimitQueue.remove(this);
-            if (!requests.isEmpty()) runQueue();
-        });
-    }
+	private void cancel(Iterator<Request<?>> it, Request<?> request) {
+		request.onCancelled();
+		it.remove();
+	}
 
-    @Override
-    public void run() {
-        RATELIMIT_LOG.trace("Rate limiter is running {} requests", requests.size());
+	private boolean isSkipped(Iterator<Request<?>> it, Request<?> request) {
+		if (request.isSkipped()) {
+			cancel(it, request);
+			return true;
+		}
+		return false;
+	}
 
-        Iterator<Request<?>> iterator = requests.iterator();
-        while (iterator.hasNext()) {
-            Long rateLimit = getRateLimit();
-            if (rateLimit > 0L) {
-                RATELIMIT_LOG.debug("Backing off {} ms", rateLimit);
-                break;
-            }
+	private void backoff() {
+		LockUtils.locked(lock, () -> {
+			rateLimitQueue.remove(this);
+			if (!requests.isEmpty()) runQueue();
+		});
+	}
 
-            Request<?> request = iterator.next();
+	@Override
+	public void run() {
+		RATELIMIT_LOG.trace("Rate limiter is running {} requests", requests.size());
 
-            if (isSkipped(iterator, request))
-                continue;
+		Iterator<Request<?>> iterator = requests.iterator();
+		while (iterator.hasNext()) {
+			Long rateLimit = getRateLimit();
+			if (rateLimit > 0L) {
+				RATELIMIT_LOG.debug("Backing off {} ms", rateLimit);
+				break;
+			}
 
-            try {
-                rateLimit = requester.execute(request);
-                if (rateLimit != null)
-                    break;
-                iterator.remove();
-            } catch (Exception ex) {
-                RATELIMIT_LOG.error("Encountered exception trying to execute request");
-                ex.printStackTrace();
-                break;
-            }
-        }
-        backoff();
-    }
+			Request<?> request = iterator.next();
 
-    public long getRateLimit() {
-        long now = getNow();
-        if (reset <= now) {
-            remaining = limit;
-            return 0L;
-        }
-        return remaining < 1 ? retryAfter : 0L;
-    }
+			if (isSkipped(iterator, request)) continue;
 
-    public long getNow() {
-        return System.currentTimeMillis();
-    }
+			try {
+				rateLimit = requester.execute(request);
+				if (rateLimit != null) break;
+				iterator.remove();
+			} catch (Exception ex) {
+				RATELIMIT_LOG.error("Encountered exception trying to execute request");
+				ex.printStackTrace();
+				break;
+			}
+		}
+		backoff();
+	}
 
-    private long parseLong(String input) {
-        return input == null ? 0L : Long.parseLong(input);
-    }
+	public long getRateLimit() {
+		long now = getNow();
+		if (reset <= now) {
+			remaining = limit;
+			return 0L;
+		}
+		return remaining < 1 ? retryAfter : 0L;
+	}
 
-    private long parseDouble(String input) {
-        return input == null ? 0L : (long) (Double.parseDouble(input) * 1000);
-    }
+	public long getNow() {
+		return System.currentTimeMillis();
+	}
+
+	private long parseLong(String input) {
+		return input == null ? 0L : Long.parseLong(input);
+	}
+
+	private long parseDouble(String input) {
+		return input == null ? 0L : (long) (Double.parseDouble(input) * 1000);
+	}
 }

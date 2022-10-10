@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -17,9 +17,9 @@
 package com.mattmalec.pterodactyl4j.application.managers;
 
 import com.mattmalec.pterodactyl4j.PteroAction;
-import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationServer;
 import com.mattmalec.pterodactyl4j.application.entities.impl.PteroApplicationImpl;
+import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.requests.Route;
 
 public class ServerController {
@@ -45,8 +45,10 @@ public class ServerController {
 	}
 
 	public PteroAction<Void> delete(boolean withForce) {
-		return PteroActionImpl.onRequestExecute(impl.getP4J(), withForce ?
-				Route.Servers.FORCE_DELETE_SERVER.compile(server.getId()) :
-				Route.Servers.SAFE_DELETE_SERVER.compile(server.getId()));
+		return PteroActionImpl.onRequestExecute(
+				impl.getP4J(),
+				withForce
+						? Route.Servers.FORCE_DELETE_SERVER.compile(server.getId())
+						: Route.Servers.SAFE_DELETE_SERVER.compile(server.getId()));
 	}
 }

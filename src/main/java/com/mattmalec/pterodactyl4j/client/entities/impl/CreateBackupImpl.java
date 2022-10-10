@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -21,41 +21,41 @@ import com.mattmalec.pterodactyl4j.client.entities.ClientServer;
 import com.mattmalec.pterodactyl4j.client.managers.BackupAction;
 import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.requests.Route;
+import java.util.List;
 import okhttp3.RequestBody;
 import org.json.JSONObject;
 
-import java.util.List;
-
 public class CreateBackupImpl extends PteroActionImpl<Backup> implements BackupAction {
 
-    private String name;
-    private List<String> files;
+	private String name;
+	private List<String> files;
 
-    public CreateBackupImpl(ClientServer server, PteroClientImpl impl) {
-        super(impl.getP4J(), Route.Backups.CREATE_BACKUP.compile(server.getIdentifier()),
-                (response, request) -> new BackupImpl(response.getObject(), server));
-    }
+	public CreateBackupImpl(ClientServer server, PteroClientImpl impl) {
+		super(
+				impl.getP4J(),
+				Route.Backups.CREATE_BACKUP.compile(server.getIdentifier()),
+				(response, request) -> new BackupImpl(response.getObject(), server));
+	}
 
-    @Override
-    public BackupAction setName(String name) {
-        this.name = name;
-        return this;
-    }
+	@Override
+	public BackupAction setName(String name) {
+		this.name = name;
+		return this;
+	}
 
-    @Override
-    public BackupAction setIgnoredFiles(List<String> files) {
-        this.files = files;
-        return this;
-    }
+	@Override
+	public BackupAction setIgnoredFiles(List<String> files) {
+		this.files = files;
+		return this;
+	}
 
-    @Override
-    protected RequestBody finalizeData() {
-        if(name != null && name.length() > 191)
-            throw new IllegalArgumentException("The name cannot be over 191 characters");
+	@Override
+	protected RequestBody finalizeData() {
+		if (name != null && name.length() > 191)
+			throw new IllegalArgumentException("The name cannot be over 191 characters");
 
-        JSONObject json = new JSONObject()
-                .put("name", name)
-                .put("ignored", files == null ? "" : String.join("\n", files));
-        return getRequestBody(json);
-    }
+		JSONObject json =
+				new JSONObject().put("name", name).put("ignored", files == null ? "" : String.join("\n", files));
+		return getRequestBody(json);
+	}
 }

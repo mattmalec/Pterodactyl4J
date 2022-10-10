@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -24,18 +24,18 @@ import org.json.JSONObject;
 
 public class EditLocationImpl extends AbstractLocationAction {
 
-    private final Location location;
+	private final Location location;
 
-    EditLocationImpl(Location location, PteroApplicationImpl impl) {
-        super(impl, Route.Locations.EDIT_LOCATION.compile(location.getId()));
-        this.location = location;
-    }
+	EditLocationImpl(Location location, PteroApplicationImpl impl) {
+		super(impl, Route.Locations.EDIT_LOCATION.compile(location.getId()));
+		this.location = location;
+	}
 
-    @Override
-    protected RequestBody finalizeData() {
-        JSONObject json = new JSONObject();
-        json.put("short", shortCode == null ? location.getShortCode() : shortCode);
-        json.put("long", description == null ? location.getDescription() : description);
-        return getRequestBody(json);
-    }
+	@Override
+	protected RequestBody finalizeData() {
+		JSONObject json = new JSONObject();
+		json.put("short", shortCode == null ? location.getShortCode() : shortCode);
+		json.put("long", description == null ? location.getDescription() : description);
+		return getRequestBody(json);
+	}
 }

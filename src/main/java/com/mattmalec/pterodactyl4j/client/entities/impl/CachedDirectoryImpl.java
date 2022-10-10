@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -18,19 +18,17 @@ package com.mattmalec.pterodactyl4j.client.entities.impl;
 
 import com.mattmalec.pterodactyl4j.client.entities.ClientServer;
 import com.mattmalec.pterodactyl4j.client.entities.GenericFile;
-import org.json.JSONObject;
-
 import java.util.List;
+import org.json.JSONObject;
 
 public class CachedDirectoryImpl extends DirectoryImpl {
 
-    public CachedDirectoryImpl(JSONObject json, GenericFile genericFile, ClientServer server) {
-        super(json, genericFile, server);
-    }
+	public CachedDirectoryImpl(JSONObject json, GenericFile genericFile, ClientServer server) {
+		super(json, genericFile, server);
+	}
 
-    @Override
-    public List<GenericFile> getFiles() {
-       throw new UnsupportedOperationException("You need to Directory#into(Directory) this object to get the files");
-    }
-
+	@Override
+	public List<GenericFile> getFiles() {
+		throw new UnsupportedOperationException("You need to Directory#into(Directory) this object to get the files");
+	}
 }

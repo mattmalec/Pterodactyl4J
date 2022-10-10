@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -24,82 +24,86 @@ import com.mattmalec.pterodactyl4j.client.entities.ClientServer;
 import com.mattmalec.pterodactyl4j.client.entities.PteroClient;
 import com.mattmalec.pterodactyl4j.client.entities.Utilization;
 import com.mattmalec.pterodactyl4j.entities.P4J;
+import com.mattmalec.pterodactyl4j.requests.PaginationAction;
 import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.requests.Route;
-import com.mattmalec.pterodactyl4j.requests.PaginationAction;
 import com.mattmalec.pterodactyl4j.requests.action.impl.PaginationResponseImpl;
 import com.mattmalec.pterodactyl4j.utils.StreamUtils;
-import org.json.JSONObject;
-
 import java.util.List;
 import java.util.stream.Stream;
+import org.json.JSONObject;
 
 public class PteroClientImpl implements PteroClient {
 
-    private final P4J api;
+	private final P4J api;
 
-    public PteroClientImpl(P4J api) {
-        this.api = api;
-    }
+	public PteroClientImpl(P4J api) {
+		this.api = api;
+	}
 
-    public P4J getP4J() {
-        return api;
-    }
+	public P4J getP4J() {
+		return api;
+	}
 
-    @Override
-    public PteroAction<Account> retrieveAccount() {
-        return PteroActionImpl.onRequestExecute(api, Route.Accounts.GET_ACCOUNT.compile(), (
-                response, request) -> new AccountImpl(response.getObject(), this));
-    }
+	@Override
+	public PteroAction<Account> retrieveAccount() {
+		return PteroActionImpl.onRequestExecute(
+				api,
+				Route.Accounts.GET_ACCOUNT.compile(),
+				(response, request) -> new AccountImpl(response.getObject(), this));
+	}
 
-    @Override
-    public PteroAction<Void> setPower(ClientServer server, PowerAction powerAction) {
-        JSONObject obj = new JSONObject().put("signal", powerAction.name().toLowerCase());
-        return PteroActionImpl.onRequestExecute(api,
-                Route.Client.SET_POWER.compile(server.getIdentifier()), PteroActionImpl.getRequestBody(obj));
-    }
+	@Override
+	public PteroAction<Void> setPower(ClientServer server, PowerAction powerAction) {
+		JSONObject obj = new JSONObject().put("signal", powerAction.name().toLowerCase());
+		return PteroActionImpl.onRequestExecute(
+				api, Route.Client.SET_POWER.compile(server.getIdentifier()), PteroActionImpl.getRequestBody(obj));
+	}
 
-    @Override
-    public PteroAction<Void> sendCommand(ClientServer server, String command) {
-        JSONObject obj = new JSONObject().put("command", command);
-        return PteroActionImpl.onRequestExecute(api,
-                Route.Client.SEND_COMMAND.compile(server.getIdentifier()), PteroActionImpl.getRequestBody(obj));
-    }
+	@Override
+	public PteroAction<Void> sendCommand(ClientServer server, String command) {
+		JSONObject obj = new JSONObject().put("command", command);
+		return PteroActionImpl.onRequestExecute(
+				api, Route.Client.SEND_COMMAND.compile(server.getIdentifier()), PteroActionImpl.getRequestBody(obj));
+	}
 
-    @Override
-    public PteroAction<Utilization> retrieveUtilization(ClientServer server) {
-        return PteroActionImpl.onRequestExecute(api,Route.Client.GET_UTILIZATION.compile(server.getIdentifier()),
-                (response, request) -> new UtilizationImpl(response.getObject()));
-    }
+	@Override
+	public PteroAction<Utilization> retrieveUtilization(ClientServer server) {
+		return PteroActionImpl.onRequestExecute(
+				api,
+				Route.Client.GET_UTILIZATION.compile(server.getIdentifier()),
+				(response, request) -> new UtilizationImpl(response.getObject()));
+	}
 
-    @Override
-    public PaginationAction<ClientServer> retrieveServers(ClientType type) {
-        Route.CompiledRoute route =  Route.Client.LIST_SERVERS.compile();
-        return PaginationResponseImpl.onPagination(api, type == ClientType.NONE ? route : route.withQueryParams("type", type.toString()),
-                (object) -> new ClientServerImpl(object, this));
+	@Override
+	public PaginationAction<ClientServer> retrieveServers(ClientType type) {
+		Route.CompiledRoute route = Route.Client.LIST_SERVERS.compile();
+		return PaginationResponseImpl.onPagination(
+				api,
+				type == ClientType.NONE ? route : route.withQueryParams("type", type.toString()),
+				(object) -> new ClientServerImpl(object, this));
+	}
 
-    }
+	@Override
+	public PteroAction<ClientServer> retrieveServerByIdentifier(String identifier) {
+		return PteroActionImpl.onRequestExecute(
+				api,
+				Route.Client.GET_SERVER.compile(identifier),
+				(response, request) -> new ClientServerImpl(response.getObject(), this));
+	}
 
+	@Override
+	public PteroAction<List<ClientServer>> retrieveServersByName(String name, boolean caseSensitive) {
+		return PteroActionImpl.onExecute(api, () -> {
+			Stream<ClientServer> servers = retrieveServers().stream();
 
+			if (caseSensitive) {
+				servers = servers.filter(s -> s.getName().contains(name));
+			} else {
+				servers = servers.filter(s -> s.getName().toLowerCase().contains(name.toLowerCase()));
+			}
 
-    @Override
-    public PteroAction<ClientServer> retrieveServerByIdentifier(String identifier) {
-        return PteroActionImpl.onRequestExecute(api, Route.Client.GET_SERVER.compile(identifier),
-                (response, request) -> new ClientServerImpl(response.getObject(), this));
-    }
-
-    @Override
-    public PteroAction<List<ClientServer>> retrieveServersByName(String name, boolean caseSensitive) {
-        return PteroActionImpl.onExecute(api, () -> {
-            Stream<ClientServer> servers = retrieveServers().stream();
-
-            if (caseSensitive) {
-                servers = servers.filter(s -> s.getName().contains(name));
-            } else {
-                servers = servers.filter(s -> s.getName().toLowerCase().contains(name.toLowerCase()));
-            }
-
-            return servers.collect(StreamUtils.toUnmodifiableList());
-        });
-    }
+			return servers.collect(StreamUtils.toUnmodifiableList());
+		});
+	}
 }

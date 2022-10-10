@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -28,7 +28,10 @@ public class EditScheduleImpl extends AbstractScheduleAction {
 	private final Schedule schedule;
 
 	public EditScheduleImpl(ClientServer server, Schedule schedule, PteroClientImpl impl) {
-		super(impl, server, Route.Schedules.UPDATE_SCHEDULE.compile(server.getUUID().toString(), schedule.getId()));
+		super(
+				impl,
+				server,
+				Route.Schedules.UPDATE_SCHEDULE.compile(server.getUUID().toString(), schedule.getId()));
 		this.schedule = schedule;
 	}
 
@@ -37,12 +40,44 @@ public class EditScheduleImpl extends AbstractScheduleAction {
 		JSONObject json = new JSONObject()
 				.put("name", name == null ? schedule.getName() : name)
 				.put("is_active", active == null ? schedule.isActive() : active)
-				.put("only_when_online", whenServerIsOnline == null ? schedule.isOnlyWhenServerIsOnline() : whenServerIsOnline)
-				.put("minute", minute == null ? ((cron == null || cron.getMinute() == null) ? schedule.getCron().getMinute() : cron.getMinute()) : minute)
-				.put("hour", hour == null ? ((cron == null || cron.getHour() == null) ? schedule.getCron().getHour() : cron.getHour()) : hour)
-				.put("day_of_week", dayOfWeek == null ? ((cron == null || cron.getDayOfWeek() == null) ? schedule.getCron().getDayOfWeek() : cron.getDayOfWeek()) : dayOfWeek)
-				.put("day_of_month", dayOfMonth == null ? ((cron == null || cron.getDayOfMonth() == null) ? schedule.getCron().getDayOfMonth() : cron.getDayOfMonth()) : dayOfMonth)
-				.put("month", month == null ? ((cron == null || cron.getMonth() == null) ? schedule.getCron().getMonth() : cron.getMonth()) : month);
+				.put(
+						"only_when_online",
+						whenServerIsOnline == null ? schedule.isOnlyWhenServerIsOnline() : whenServerIsOnline)
+				.put(
+						"minute",
+						minute == null
+								? ((cron == null || cron.getMinute() == null)
+										? schedule.getCron().getMinute()
+										: cron.getMinute())
+								: minute)
+				.put(
+						"hour",
+						hour == null
+								? ((cron == null || cron.getHour() == null)
+										? schedule.getCron().getHour()
+										: cron.getHour())
+								: hour)
+				.put(
+						"day_of_week",
+						dayOfWeek == null
+								? ((cron == null || cron.getDayOfWeek() == null)
+										? schedule.getCron().getDayOfWeek()
+										: cron.getDayOfWeek())
+								: dayOfWeek)
+				.put(
+						"day_of_month",
+						dayOfMonth == null
+								? ((cron == null || cron.getDayOfMonth() == null)
+										? schedule.getCron().getDayOfMonth()
+										: cron.getDayOfMonth())
+								: dayOfMonth)
+				.put(
+						"month",
+						month == null
+								? ((cron == null || cron.getMonth() == null)
+										? schedule.getCron().getMonth()
+										: cron.getMonth())
+								: month);
 
 		return getRequestBody(json);
 	}

@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@
 package com.mattmalec.pterodactyl4j.utils.config;
 
 import com.mattmalec.pterodactyl4j.utils.NamedThreadFactory;
-
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
@@ -25,49 +24,45 @@ import java.util.concurrent.ScheduledExecutorService;
 
 public final class ThreadingConfig {
 
-    private ExecutorService callbackPool;
-    private ExecutorService actionPool;
-    private ExecutorService supplierPool;
-    private ScheduledExecutorService rateLimitPool;
+	private ExecutorService callbackPool;
+	private ExecutorService actionPool;
+	private ExecutorService supplierPool;
+	private ScheduledExecutorService rateLimitPool;
 
-    public ExecutorService getCallbackPool() {
-        return callbackPool;
-    }
+	public ExecutorService getCallbackPool() {
+		return callbackPool;
+	}
 
-    public ExecutorService getActionPool() {
-        return actionPool;
-    }
+	public ExecutorService getActionPool() {
+		return actionPool;
+	}
 
-    public ExecutorService getSupplierPool() {
-        return supplierPool;
-    }
+	public ExecutorService getSupplierPool() {
+		return supplierPool;
+	}
 
-    public ScheduledExecutorService getRateLimitPool() {
-        return rateLimitPool;
-    }
+	public ScheduledExecutorService getRateLimitPool() {
+		return rateLimitPool;
+	}
 
-    public void setCallbackPool(ExecutorService callbackPool) {
-        if (callbackPool == null)
-            callbackPool = ForkJoinPool.commonPool();
-        this.callbackPool = callbackPool;
-    }
+	public void setCallbackPool(ExecutorService callbackPool) {
+		if (callbackPool == null) callbackPool = ForkJoinPool.commonPool();
+		this.callbackPool = callbackPool;
+	}
 
-    public void setActionPool(ExecutorService actionPool) {
-        if (actionPool == null)
-            actionPool = Executors.newSingleThreadExecutor(new NamedThreadFactory("Action"));
-        this.actionPool = actionPool;
-    }
+	public void setActionPool(ExecutorService actionPool) {
+		if (actionPool == null) actionPool = Executors.newSingleThreadExecutor(new NamedThreadFactory("Action"));
+		this.actionPool = actionPool;
+	}
 
-    public void setSupplierPool(ExecutorService supplierPool) {
-        if (supplierPool == null)
-            supplierPool = Executors.newFixedThreadPool(3, new NamedThreadFactory("Supplier"));
-        this.supplierPool = supplierPool;
-    }
+	public void setSupplierPool(ExecutorService supplierPool) {
+		if (supplierPool == null) supplierPool = Executors.newFixedThreadPool(3, new NamedThreadFactory("Supplier"));
+		this.supplierPool = supplierPool;
+	}
 
-    public void setRateLimitPool(ScheduledExecutorService rateLimitPool) {
-        if (rateLimitPool == null)
-            rateLimitPool = Executors.newScheduledThreadPool(5, new NamedThreadFactory("RateLimit"));
-        this.rateLimitPool = rateLimitPool;
-    }
-
+	public void setRateLimitPool(ScheduledExecutorService rateLimitPool) {
+		if (rateLimitPool == null)
+			rateLimitPool = Executors.newScheduledThreadPool(5, new NamedThreadFactory("RateLimit"));
+		this.rateLimitPool = rateLimitPool;
+	}
 }

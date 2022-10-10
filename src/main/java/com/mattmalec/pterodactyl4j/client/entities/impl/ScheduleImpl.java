@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -21,13 +21,12 @@ import com.mattmalec.pterodactyl4j.client.entities.ClientServer;
 import com.mattmalec.pterodactyl4j.client.entities.Cron;
 import com.mattmalec.pterodactyl4j.client.entities.Schedule;
 import com.mattmalec.pterodactyl4j.client.managers.ScheduleTaskManager;
-import org.json.JSONObject;
-
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import org.json.JSONObject;
 
 public class ScheduleImpl implements Schedule {
 
@@ -86,7 +85,7 @@ public class ScheduleImpl implements Schedule {
 
 	@Override
 	public Optional<OffsetDateTime> getLastRunDate() {
-		if(json.isNull("last_run_at")) return Optional.empty();
+		if (json.isNull("last_run_at")) return Optional.empty();
 		return Optional.of(OffsetDateTime.parse(json.getString("last_run_at")));
 	}
 
@@ -98,7 +97,7 @@ public class ScheduleImpl implements Schedule {
 	@Override
 	public List<ScheduleTask> getTasks() {
 		List<ScheduleTask> tasks = new ArrayList<>();
-		for(Object o : this.tasks.getJSONArray("data")) {
+		for (Object o : this.tasks.getJSONArray("data")) {
 			JSONObject task = new JSONObject(o.toString());
 			tasks.add(new ScheduleTaskImpl(task, this));
 		}

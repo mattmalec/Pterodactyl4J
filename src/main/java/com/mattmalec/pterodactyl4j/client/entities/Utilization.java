@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@ package com.mattmalec.pterodactyl4j.client.entities;
 
 import com.mattmalec.pterodactyl4j.DataType;
 import com.mattmalec.pterodactyl4j.UtilizationState;
-
 import java.time.Duration;
 
 public interface Utilization {
@@ -36,17 +35,18 @@ public interface Utilization {
 		double minutes = Math.floor(remainder / 60 % 60);
 		double seconds = remainder % 60;
 
-		if (days > 0)
-			return String.format("%.0fd %.0fh %.0fm %.0fs", days, hours, minutes, seconds);
-		else
-			return String.format("%.0fh %.0fm %.0fs", hours, minutes, seconds);
+		if (days > 0) return String.format("%.0fd %.0fh %.0fm %.0fs", days, hours, minutes, seconds);
+		else return String.format("%.0fh %.0fm %.0fs", hours, minutes, seconds);
 	}
 
 	long getMemory();
+
 	default String getMemoryFormatted(DataType dataType) {
 		return String.format("%.2f %s", getMemory() / (dataType.getMbValue() * Math.pow(2, 20)), dataType.name());
 	}
+
 	long getDisk();
+
 	default String getDiskFormatted(DataType dataType) {
 		return String.format("%.2f %s", getDisk() / (dataType.getMbValue() * Math.pow(2, 20)), dataType.name());
 	}
@@ -54,15 +54,18 @@ public interface Utilization {
 	double getCPU();
 
 	long getNetworkIngress();
+
 	default String getNetworkIngressFormatted(DataType dataType) {
-		return String.format("%.2f %s", getNetworkIngress() / (dataType.getMbValue() * Math.pow(2, 20)), dataType.name());
+		return String.format(
+				"%.2f %s", getNetworkIngress() / (dataType.getMbValue() * Math.pow(2, 20)), dataType.name());
 	}
 
 	long getNetworkEgress();
+
 	default String getNetworkEgressFormatted(DataType dataType) {
-		return String.format("%.2f %s", getNetworkEgress() / (dataType.getMbValue() * Math.pow(2, 20)), dataType.name());
+		return String.format(
+				"%.2f %s", getNetworkEgress() / (dataType.getMbValue() * Math.pow(2, 20)), dataType.name());
 	}
 
 	boolean isSuspended();
-
 }

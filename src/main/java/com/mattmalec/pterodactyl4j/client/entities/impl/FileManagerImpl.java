@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -27,71 +27,84 @@ import org.json.JSONObject;
 
 public class FileManagerImpl implements FileManager {
 
-    private final ClientServer server;
-    private final PteroClientImpl impl;
+	private final ClientServer server;
+	private final PteroClientImpl impl;
 
-    public FileManagerImpl(ClientServer server, PteroClientImpl impl) {
-        this.server = server;
-        this.impl = impl;
-    }
+	public FileManagerImpl(ClientServer server, PteroClientImpl impl) {
+		this.server = server;
+		this.impl = impl;
+	}
 
-    @Override
-    public CreateDirectoryAction createDirectory() {
-        return new CreateDirectoryActionImpl(server, impl);
-    }
+	@Override
+	public CreateDirectoryAction createDirectory() {
+		return new CreateDirectoryActionImpl(server, impl);
+	}
 
-    @Override
-    public PteroAction<Void> createFile(Directory directory, String name, String content) {
-        return PteroActionImpl.onRequestExecute(impl.getP4J(), Route.Files.WRITE_FILE.compile(server.getIdentifier(), directory.getPath() + "/" + name),
-                RequestBody.create(Requester.MEDIA_TYPE_PLAIN, content));
-    }
+	@Override
+	public PteroAction<Void> createFile(Directory directory, String name, String content) {
+		return PteroActionImpl.onRequestExecute(
+				impl.getP4J(),
+				Route.Files.WRITE_FILE.compile(server.getIdentifier(), directory.getPath() + "/" + name),
+				RequestBody.create(Requester.MEDIA_TYPE_PLAIN, content));
+	}
 
-    @Override
-    public UploadFileAction upload(Directory directory) {
-        return new UploadFileActionImpl(server, directory, impl);
-    }
+	@Override
+	public UploadFileAction upload(Directory directory) {
+		return new UploadFileActionImpl(server, directory, impl);
+	}
 
-    @Override
-    public RenameAction rename() {
-        return new RenameActionImpl(server, impl);
-    }
+	@Override
+	public RenameAction rename() {
+		return new RenameActionImpl(server, impl);
+	}
 
-    @Override
-    public CompressAction compress() {
-        return new CompressActionImpl(server, impl);
-    }
+	@Override
+	public CompressAction compress() {
+		return new CompressActionImpl(server, impl);
+	}
 
-    @Override
-    public PteroAction<Void> decompress(File compressedFile) {
-        return new DecompressActionImpl(server, compressedFile, impl);
-    }
+	@Override
+	public PteroAction<Void> decompress(File compressedFile) {
+		return new DecompressActionImpl(server, compressedFile, impl);
+	}
 
-    @Override
-    public DeleteAction delete() {
-        return new DeleteActionImpl(server, impl);
-    }
+	@Override
+	public DeleteAction delete() {
+		return new DeleteActionImpl(server, impl);
+	}
 
-    @Override
-    public PteroAction<String> retrieveContent(File file) {
-        return PteroActionImpl.onRequestExecute(impl.getP4J(), Route.Files.GET_CONTENTS.compile(server.getIdentifier(), file.getPath()),
-                (response, request) -> response.getRawObject());
-    }
+	@Override
+	public PteroAction<String> retrieveContent(File file) {
+		return PteroActionImpl.onRequestExecute(
+				impl.getP4J(),
+				Route.Files.GET_CONTENTS.compile(server.getIdentifier(), file.getPath()),
+				(response, request) -> response.getRawObject());
+	}
 
-    @Override
-    public PteroAction<DownloadableFile> retrieveDownload(File file) {
-        return PteroActionImpl.onRequestExecute(impl.getP4J(), Route.Files.DOWNLOAD_FILE.compile(server.getIdentifier(), file.getPath()),
-                (response, request) -> new DownloadableFile(impl.getP4J(), file, response.getObject().getJSONObject("attributes").getString("url")));
-    }
+	@Override
+	public PteroAction<DownloadableFile> retrieveDownload(File file) {
+		return PteroActionImpl.onRequestExecute(
+				impl.getP4J(),
+				Route.Files.DOWNLOAD_FILE.compile(server.getIdentifier(), file.getPath()),
+				(response, request) -> new DownloadableFile(
+						impl.getP4J(),
+						file,
+						response.getObject().getJSONObject("attributes").getString("url")));
+	}
 
-    @Override
-    public PteroAction<Void> write(File file, String content) {
-        return PteroActionImpl.onRequestExecute(impl.getP4J(), Route.Files.WRITE_FILE.compile(server.getIdentifier(), file.getPath()),
-                RequestBody.create(Requester.MEDIA_TYPE_PLAIN, content));
-    }
+	@Override
+	public PteroAction<Void> write(File file, String content) {
+		return PteroActionImpl.onRequestExecute(
+				impl.getP4J(),
+				Route.Files.WRITE_FILE.compile(server.getIdentifier(), file.getPath()),
+				RequestBody.create(Requester.MEDIA_TYPE_PLAIN, content));
+	}
 
-    @Override
-    public PteroAction<Void> copy(File file) {
-        return PteroActionImpl.onRequestExecute(impl.getP4J(), Route.Files.COPY_FILE.compile(server.getIdentifier()),
-                PteroActionImpl.getRequestBody(new JSONObject().put("location", file.getPath())));
-    }
+	@Override
+	public PteroAction<Void> copy(File file) {
+		return PteroActionImpl.onRequestExecute(
+				impl.getP4J(),
+				Route.Files.COPY_FILE.compile(server.getIdentifier()),
+				PteroActionImpl.getRequestBody(new JSONObject().put("location", file.getPath())));
+	}
 }

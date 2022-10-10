@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -23,14 +23,14 @@ import com.mattmalec.pterodactyl4j.client.ws.events.Event;
 
 public class JWTErrorEvent extends Event {
 
-    private final String message;
+	private final String message;
 
-    public JWTErrorEvent(PteroClientImpl api, ClientServer server, WebSocketManager manager, String message) {
-        super(api, server, manager);
-        this.message = message;
-    }
+	public JWTErrorEvent(PteroClientImpl api, ClientServer server, WebSocketManager manager, String message) {
+		super(api, server, manager);
+		this.message = message;
+	}
 
-    public String getMessage() {
-        return message;
-    }
+	public String getMessage() {
+		return message;
+	}
 }

@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -20,37 +20,40 @@ import org.json.JSONObject;
 
 public class PaginatedEntity {
 
-    private final int total;
-    private final int entitiesPerPage;
-    private final int currentPage;
-    private final int totalPages;
+	private final int total;
+	private final int entitiesPerPage;
+	private final int currentPage;
+	private final int totalPages;
 
-    private PaginatedEntity(int total, int entitiesPerPage, int currentPage, int totalPages) {
-        this.total = total;
-        this.entitiesPerPage = entitiesPerPage;
-        this.currentPage = currentPage;
-        this.totalPages = totalPages;
-    }
+	private PaginatedEntity(int total, int entitiesPerPage, int currentPage, int totalPages) {
+		this.total = total;
+		this.entitiesPerPage = entitiesPerPage;
+		this.currentPage = currentPage;
+		this.totalPages = totalPages;
+	}
 
-    public static PaginatedEntity create(JSONObject json) {
-        JSONObject object = json.getJSONObject("meta").getJSONObject("pagination");
-        return new PaginatedEntity(object.getInt("total"), object.getInt("per_page"),
-                object.getInt("current_page"), object.getInt("total_pages"));
-    }
+	public static PaginatedEntity create(JSONObject json) {
+		JSONObject object = json.getJSONObject("meta").getJSONObject("pagination");
+		return new PaginatedEntity(
+				object.getInt("total"),
+				object.getInt("per_page"),
+				object.getInt("current_page"),
+				object.getInt("total_pages"));
+	}
 
-    public int getTotal() {
-        return total;
-    }
+	public int getTotal() {
+		return total;
+	}
 
-    public int getEntitiesPerPage() {
-        return entitiesPerPage;
-    }
+	public int getEntitiesPerPage() {
+		return entitiesPerPage;
+	}
 
-    public int getCurrentPage() {
-        return currentPage;
-    }
+	public int getCurrentPage() {
+		return currentPage;
+	}
 
-    public int getTotalPages() {
-        return totalPages;
-    }
+	public int getTotalPages() {
+		return totalPages;
+	}
 }

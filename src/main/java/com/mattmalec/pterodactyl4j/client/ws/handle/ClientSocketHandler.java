@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -22,33 +22,32 @@ import com.mattmalec.pterodactyl4j.client.managers.WebSocketManager;
 
 public abstract class ClientSocketHandler {
 
-    private final PteroClientImpl client;
-    private ClientServer server;
-    private final WebSocketManager manager;
+	private final PteroClientImpl client;
+	private ClientServer server;
+	private final WebSocketManager manager;
 
-    public ClientSocketHandler(PteroClientImpl client, ClientServer server, WebSocketManager manager) {
-        this.client = client;
-        this.server = server;
-        this.manager = manager;
-    }
+	public ClientSocketHandler(PteroClientImpl client, ClientServer server, WebSocketManager manager) {
+		this.client = client;
+		this.server = server;
+		this.manager = manager;
+	}
 
-    protected PteroClientImpl getClient() {
-        return client;
-    }
+	protected PteroClientImpl getClient() {
+		return client;
+	}
 
-    public ClientSocketHandler setServer(ClientServer server) {
-        this.server = server;
-        return this;
-    }
+	public ClientSocketHandler setServer(ClientServer server) {
+		this.server = server;
+		return this;
+	}
 
-    protected ClientServer getServer() {
-        return server;
-    }
+	protected ClientServer getServer() {
+		return server;
+	}
 
-    protected WebSocketManager getManager() {
-        return manager;
-    }
+	protected WebSocketManager getManager() {
+		return manager;
+	}
 
-    public abstract void handleInternally(String content);
-
+	public abstract void handleInternally(String content);
 }

@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -17,21 +17,22 @@
 package com.mattmalec.pterodactyl4j.client.entities;
 
 import com.mattmalec.pterodactyl4j.PteroAction;
-
 import java.time.OffsetDateTime;
 import java.util.Set;
 
 public interface APIKey {
 
-    String getIdentifier();
-    String getDescription();
-    Set<String> getAllowedIps();
+	String getIdentifier();
 
-    OffsetDateTime getLastUsedDate();
-    OffsetDateTime getCreationDate();
+	String getDescription();
 
-    String getToken();
+	Set<String> getAllowedIps();
 
-    PteroAction<Void> delete();
+	OffsetDateTime getLastUsedDate();
 
+	OffsetDateTime getCreationDate();
+
+	String getToken();
+
+	PteroAction<Void> delete();
 }

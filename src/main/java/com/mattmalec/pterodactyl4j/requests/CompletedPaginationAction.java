@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -20,62 +20,55 @@ import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.entities.P4J;
 import com.mattmalec.pterodactyl4j.exceptions.RateLimitedException;
 import com.mattmalec.pterodactyl4j.requests.action.impl.PaginationActionImpl;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
 public class CompletedPaginationAction<T> extends PaginationActionImpl<T> {
 
-    private final P4J api;
-    protected final List<T> value;
-    protected final Throwable error;
+	private final P4J api;
+	protected final List<T> value;
+	protected final Throwable error;
 
-    public CompletedPaginationAction(P4J api, List<T> value, Throwable error) {
-        super(api);
-        this.api = api;
-        this.value = value;
-        this.error = error;
-    }
+	public CompletedPaginationAction(P4J api, List<T> value, Throwable error) {
+		super(api);
+		this.api = api;
+		this.value = value;
+		this.error = error;
+	}
 
-    public CompletedPaginationAction(P4J api, List<T> value) {
-        this(api, value, null);
-    }
+	public CompletedPaginationAction(P4J api, List<T> value) {
+		this(api, value, null);
+	}
 
-    @Override
-    public P4J getP4J() {
-        return api;
-    }
+	@Override
+	public P4J getP4J() {
+		return api;
+	}
 
-    @Override
-    public List<T> execute(boolean shouldQueue) throws RateLimitedException {
-        if (error != null) {
-            if (error instanceof RateLimitedException)
-                throw (RateLimitedException) error;
-            if (error instanceof RuntimeException)
-                throw (RuntimeException) error;
-            throw new IllegalStateException(error);
-        }
-        return value;
-    }
+	@Override
+	public List<T> execute(boolean shouldQueue) throws RateLimitedException {
+		if (error != null) {
+			if (error instanceof RateLimitedException) throw (RateLimitedException) error;
+			if (error instanceof RuntimeException) throw (RuntimeException) error;
+			throw new IllegalStateException(error);
+		}
+		return value;
+	}
 
-    @Override
-    public void executeAsync(Consumer<? super List<T>> success, Consumer<? super Throwable> failure) {
-        if (error == null) {
-            if (success == null)
-                PteroAction.getDefaultSuccess().accept(value);
-            else
-                success.accept(value);
-        } else {
-            if (failure == null)
-                PteroAction.getDefaultFailure().accept(error);
-            else
-                failure.accept(error);
-        }
-    }
+	@Override
+	public void executeAsync(Consumer<? super List<T>> success, Consumer<? super Throwable> failure) {
+		if (error == null) {
+			if (success == null) PteroAction.getDefaultSuccess().accept(value);
+			else success.accept(value);
+		} else {
+			if (failure == null) PteroAction.getDefaultFailure().accept(error);
+			else failure.accept(error);
+		}
+	}
 
-    @Override
-    public PaginationIterator<T> iterator() {
-        return new PaginationIterator<>(value, Collections::emptyList);
-    }
+	@Override
+	public PaginationIterator<T> iterator() {
+		return new PaginationIterator<>(value, Collections::emptyList);
+	}
 }

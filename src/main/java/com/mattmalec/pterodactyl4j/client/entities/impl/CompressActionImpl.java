@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -22,17 +22,16 @@ import com.mattmalec.pterodactyl4j.client.entities.GenericFile;
 import com.mattmalec.pterodactyl4j.client.managers.CompressAction;
 import com.mattmalec.pterodactyl4j.requests.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.requests.Route;
-import okhttp3.RequestBody;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import okhttp3.RequestBody;
+import org.json.JSONObject;
 
 public class CompressActionImpl extends PteroActionImpl<File> implements CompressAction {
 
-    private final List<GenericFile> files;
+	private final List<GenericFile> files;
 
 	public CompressActionImpl(ClientServer server, PteroClientImpl impl) {
 		super(
@@ -42,36 +41,32 @@ public class CompressActionImpl extends PteroActionImpl<File> implements Compres
 		this.files = new ArrayList<>();
 	}
 
-    @Override
-    public CompressAction addFile(GenericFile file) {
-        files.add(file);
-        return this;
-    }
+	@Override
+	public CompressAction addFile(GenericFile file) {
+		files.add(file);
+		return this;
+	}
 
-    @Override
-    public CompressAction addFiles(GenericFile file, GenericFile... files) {
-        this.files.add(file);
+	@Override
+	public CompressAction addFiles(GenericFile file, GenericFile... files) {
+		this.files.add(file);
 
-        if (files.length > 0)
-            this.files.addAll(Arrays.asList(files));
+		if (files.length > 0) this.files.addAll(Arrays.asList(files));
 
-        return this;
-    }
+		return this;
+	}
 
-    @Override
-    public CompressAction clearFiles() {
-        files.clear();
-        return this;
-    }
+	@Override
+	public CompressAction clearFiles() {
+		files.clear();
+		return this;
+	}
 
-    @Override
-    protected RequestBody finalizeData() {
-        List<String> array = files.stream()
-                .map(GenericFile::getPath).collect(Collectors.toList());
+	@Override
+	protected RequestBody finalizeData() {
+		List<String> array = files.stream().map(GenericFile::getPath).collect(Collectors.toList());
 
-        JSONObject json = new JSONObject()
-                .put("root", "/")
-                .put("files", array);
-        return getRequestBody(json);
-    }
+		JSONObject json = new JSONObject().put("root", "/").put("files", array);
+		return getRequestBody(json);
+	}
 }

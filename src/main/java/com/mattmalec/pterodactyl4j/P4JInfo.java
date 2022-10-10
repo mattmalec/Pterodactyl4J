@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -21,11 +21,11 @@ package com.mattmalec.pterodactyl4j;
  */
 public class P4JInfo {
 
-    public static final String VERSION_MAJOR = "@MAJOR@";
-    public static final String VERSION_MINOR = "@MINOR@";
-    public static final String VERSION_BUILD = "@BUILD@";
+	public static final String VERSION_MAJOR = "@MAJOR@";
+	public static final String VERSION_MINOR = "@MINOR@";
+	public static final String VERSION_BUILD = "@BUILD@";
 
-    public static final String VERSION = VERSION_MAJOR.startsWith("@") ? "DEV" :
-            String.format("%s.%s_%s", VERSION_MAJOR, VERSION_MINOR, VERSION_BUILD);
-
+	public static final String VERSION = VERSION_MAJOR.startsWith("@")
+			? "DEV"
+			: String.format("%s.%s_%s", VERSION_MAJOR, VERSION_MINOR, VERSION_BUILD);
 }

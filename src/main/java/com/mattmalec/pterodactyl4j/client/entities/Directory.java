@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -21,48 +21,51 @@ import com.mattmalec.pterodactyl4j.client.managers.CompressAction;
 import com.mattmalec.pterodactyl4j.client.managers.DeleteAction;
 import com.mattmalec.pterodactyl4j.client.managers.RenameAction;
 import com.mattmalec.pterodactyl4j.client.managers.UploadFileAction;
-
 import java.util.List;
 import java.util.Optional;
 
 public interface Directory extends GenericFile {
 
-    List<GenericFile> getFiles();
+	List<GenericFile> getFiles();
 
-    default Optional<GenericFile> getGenericFileByName(String name, boolean caseSensitive) {
-        return getFiles().stream()
-                .filter(f -> caseSensitive ? f.getName().equals(name) : f.getName().equalsIgnoreCase(name))
-                .findFirst();
-    }
+	default Optional<GenericFile> getGenericFileByName(String name, boolean caseSensitive) {
+		return getFiles().stream()
+				.filter(f ->
+						caseSensitive ? f.getName().equals(name) : f.getName().equalsIgnoreCase(name))
+				.findFirst();
+	}
 
-    default Optional<File> getFileByName(String name, boolean caseSensitive) {
-        return getGenericFileByName(name, caseSensitive).map(f -> (File) f);
-    }
+	default Optional<File> getFileByName(String name, boolean caseSensitive) {
+		return getGenericFileByName(name, caseSensitive).map(f -> (File) f);
+	}
 
-    default Optional<File> getFileByName(String name) {
-        return getFileByName(name, false);
-    }
+	default Optional<File> getFileByName(String name) {
+		return getFileByName(name, false);
+	}
 
-    default Optional<Directory> getDirectoryByName(String name, boolean caseSensitive) {
-        return getGenericFileByName(name, caseSensitive).map(d -> (Directory) d);
+	default Optional<Directory> getDirectoryByName(String name, boolean caseSensitive) {
+		return getGenericFileByName(name, caseSensitive).map(d -> (Directory) d);
+	}
 
-    }
+	default Optional<Directory> getDirectoryByName(String name) {
+		return getDirectoryByName(name, false);
+	}
 
-    default Optional<Directory> getDirectoryByName(String name) {
-        return getDirectoryByName(name, false);
-    }
+	PteroAction<Void> createFolder(String folder);
 
-    PteroAction<Void> createFolder(String folder);
-    PteroAction<Void> createFile(String name, String content);
+	PteroAction<Void> createFile(String name, String content);
 
-    PteroAction<Directory> into(Directory directory);
-    PteroAction<Directory> back();
+	PteroAction<Directory> into(Directory directory);
 
-    UploadFileAction upload();
-    DeleteAction deleteFiles();
+	PteroAction<Directory> back();
 
-    RenameAction rename();
-    CompressAction compress();
-    PteroAction<Void> decompress(File compressedFile);
+	UploadFileAction upload();
 
+	DeleteAction deleteFiles();
+
+	RenameAction rename();
+
+	CompressAction compress();
+
+	PteroAction<Void> decompress(File compressedFile);
 }

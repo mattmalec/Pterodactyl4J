@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -18,39 +18,45 @@ package com.mattmalec.pterodactyl4j.client.entities;
 
 import com.mattmalec.pterodactyl4j.DataType;
 import com.mattmalec.pterodactyl4j.PteroAction;
-
 import java.nio.file.attribute.PosixFilePermission;
 import java.time.OffsetDateTime;
 import java.util.EnumSet;
 
 public interface GenericFile {
 
-    String getName();
-    String getPath();
+	String getName();
 
-    long getSizeBytes();
-    default double getSize(DataType dataType) {
-        return getSizeBytes() / (double) dataType.getByteValue();
-    }
+	String getPath();
 
-    default String getSizeFormatted(DataType dataType) {
-        return String.format("%.2f %s", getSize(dataType), dataType.name());
-    }
+	long getSizeBytes();
 
-    GenericFile.Permission getPermissions();
-    boolean isFile();
-    boolean isSymlink();
-    String getMimeType();
-    OffsetDateTime getCreationDate();
-    OffsetDateTime getModifedDate();
+	default double getSize(DataType dataType) {
+		return getSizeBytes() / (double) dataType.getByteValue();
+	}
 
-    PteroAction<Void> rename(String name);
-    PteroAction<Void> delete();
+	default String getSizeFormatted(DataType dataType) {
+		return String.format("%.2f %s", getSize(dataType), dataType.name());
+	}
 
+	GenericFile.Permission getPermissions();
 
-    interface Permission {
-        int getBits();
-        EnumSet<PosixFilePermission> getPosixPermissions();
-    }
+	boolean isFile();
 
+	boolean isSymlink();
+
+	String getMimeType();
+
+	OffsetDateTime getCreationDate();
+
+	OffsetDateTime getModifedDate();
+
+	PteroAction<Void> rename(String name);
+
+	PteroAction<Void> delete();
+
+	interface Permission {
+		int getBits();
+
+		EnumSet<PosixFilePermission> getPosixPermissions();
+	}
 }

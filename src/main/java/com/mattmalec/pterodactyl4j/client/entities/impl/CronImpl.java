@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@
 package com.mattmalec.pterodactyl4j.client.entities.impl;
 
 import com.mattmalec.pterodactyl4j.client.entities.Cron;
-import com.mattmalec.pterodactyl4j.utils.Checks;
 import org.json.JSONObject;
 
 public class CronImpl implements Cron {
@@ -61,7 +60,8 @@ public class CronImpl implements Cron {
 	public static Cron ofExpression(String expression) {
 		String[] exp = expression.split("\\s+");
 		if (exp.length != 5)
-			throw new IllegalArgumentException("P4J Cron Expression must have 5 elements (minute, hour, day of month, month, day of week)");
+			throw new IllegalArgumentException(
+					"P4J Cron Expression must have 5 elements (minute, hour, day of month, month, day of week)");
 
 		JSONObject cron = new JSONObject();
 		cron.put("minute", exp[0])

@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -24,12 +24,14 @@ import com.mattmalec.pterodactyl4j.client.ws.events.StatusUpdateEvent;
 
 public class StatusHandler extends ClientSocketHandler {
 
-    public StatusHandler(PteroClientImpl client, ClientServer server, WebSocketManager manager) {
-        super(client, server, manager);
-    }
+	public StatusHandler(PteroClientImpl client, ClientServer server, WebSocketManager manager) {
+		super(client, server, manager);
+	}
 
-    @Override
-    public void handleInternally(String content) {
-        getManager().getEventManager().handle(new StatusUpdateEvent(getClient(), getServer(), getManager(), UtilizationState.of(content)));
-    }
+	@Override
+	public void handleInternally(String content) {
+		getManager()
+				.getEventManager()
+				.handle(new StatusUpdateEvent(getClient(), getServer(), getManager(), UtilizationState.of(content)));
+	}
 }

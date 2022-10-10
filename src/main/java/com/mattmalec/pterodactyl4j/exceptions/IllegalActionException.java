@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -18,19 +18,19 @@ package com.mattmalec.pterodactyl4j.exceptions;
 
 public class IllegalActionException extends PteroException {
 
-    public IllegalActionException(String message) {
-        super(message);
-    }
+	public IllegalActionException(String message) {
+		super(message);
+	}
 
-// Save this for later
-//
-//    public IllegalActionException(String text, JSONObject json) {
-//        String message = text + "\n\n";
-//        for(Object o : json.getJSONArray("errors")) {
-//            JSONObject obj = new JSONObject(o.toString());
-//            message += "\t- " + obj.getString("detail") + "\n";
-//        }
-//        throw new IllegalActionException(message);
-//    }
+	// Save this for later
+	//
+	//    public IllegalActionException(String text, JSONObject json) {
+	//        String message = text + "\n\n";
+	//        for(Object o : json.getJSONArray("errors")) {
+	//            JSONObject obj = new JSONObject(o.toString());
+	//            message += "\t- " + obj.getString("detail") + "\n";
+	//        }
+	//        throw new IllegalActionException(message);
+	//    }
 
 }

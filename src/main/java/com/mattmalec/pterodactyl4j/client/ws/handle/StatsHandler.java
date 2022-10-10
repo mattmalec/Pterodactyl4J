@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -24,13 +24,13 @@ import org.json.JSONObject;
 
 public class StatsHandler extends ClientSocketHandler {
 
-    public StatsHandler(PteroClientImpl client, ClientServer server, WebSocketManager manager) {
-        super(client, server, manager);
-    }
+	public StatsHandler(PteroClientImpl client, ClientServer server, WebSocketManager manager) {
+		super(client, server, manager);
+	}
 
-    @Override
-    public void handleInternally(String content) {
-        JSONObject json = new JSONObject(content);
-        getManager().getEventManager().handle(new StatsUpdateEvent(getClient(), getServer(), getManager(), json));
-    }
+	@Override
+	public void handleInternally(String content) {
+		JSONObject json = new JSONObject(content);
+		getManager().getEventManager().handle(new StatsUpdateEvent(getClient(), getServer(), getManager(), json));
+	}
 }

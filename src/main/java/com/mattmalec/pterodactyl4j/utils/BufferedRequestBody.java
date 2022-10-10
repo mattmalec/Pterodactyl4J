@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 
 package com.mattmalec.pterodactyl4j.utils;
 
+import java.io.IOException;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okio.BufferedSink;
@@ -23,34 +24,32 @@ import okio.BufferedSource;
 import okio.Okio;
 import okio.Source;
 
-import java.io.IOException;
-
 // thank you jda
 public final class BufferedRequestBody extends RequestBody {
-    private final Source source;
-    private final MediaType type;
-    private byte[] data;
+	private final Source source;
+	private final MediaType type;
+	private byte[] data;
 
-    public BufferedRequestBody(Source source, MediaType type) {
-        this.source = source;
-        this.type = type;
-    }
+	public BufferedRequestBody(Source source, MediaType type) {
+		this.source = source;
+		this.type = type;
+	}
 
-    @Override
-    public MediaType contentType() {
-        return type;
-    }
+	@Override
+	public MediaType contentType() {
+		return type;
+	}
 
-    @Override
-    public void writeTo(BufferedSink sink) throws IOException {
-        if (data != null) {
-            sink.write(data);
-            return;
-        }
+	@Override
+	public void writeTo(BufferedSink sink) throws IOException {
+		if (data != null) {
+			sink.write(data);
+			return;
+		}
 
-        try (BufferedSource s = Okio.buffer(source)) {
-            data = s.readByteArray();
-            sink.write(data);
-        }
-    }
+		try (BufferedSource s = Okio.buffer(source)) {
+			data = s.readByteArray();
+			sink.write(data);
+		}
+	}
 }

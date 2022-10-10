@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -27,76 +27,77 @@ import com.mattmalec.pterodactyl4j.utils.AwaitableClientListener;
 
 public class WebSocketManager {
 
-    private final PteroClientImpl api;
-    private final WebSocketClient client;
-    private final IClientListenerManager eventManager;
+	private final PteroClientImpl api;
+	private final WebSocketClient client;
+	private final IClientListenerManager eventManager;
 
-    public WebSocketManager(PteroClientImpl api, ClientServer server, IClientListenerManager eventManager, boolean freshServer) {
-        this.api = api;
-        this.eventManager = eventManager;
-        this.client = new WebSocketClient(api, server, freshServer, this);
-        connect();
-    }
+	public WebSocketManager(
+			PteroClientImpl api, ClientServer server, IClientListenerManager eventManager, boolean freshServer) {
+		this.api = api;
+		this.eventManager = eventManager;
+		this.client = new WebSocketClient(api, server, freshServer, this);
+		connect();
+	}
 
-    public IClientListenerManager getEventManager() {
-        return eventManager;
-    }
+	public IClientListenerManager getEventManager() {
+		return eventManager;
+	}
 
-    private void connect() {
-        Thread thread = new Thread(client, "P4J-ClientWS");
-        thread.start();
-    }
+	private void connect() {
+		Thread thread = new Thread(client, "P4J-ClientWS");
+		thread.start();
+	}
 
-    public void reconnect() {
-        if (client.isConnected()) {
-            AwaitableClientListener listener =
-                    AwaitableClientListener.create(DisconnectedEvent.class, api.getP4J().getSupplierPool());
+	public void reconnect() {
+		if (client.isConnected()) {
+			AwaitableClientListener listener = AwaitableClientListener.create(
+					DisconnectedEvent.class, api.getP4J().getSupplierPool());
 
-            eventManager.register(listener);
+			eventManager.register(listener);
 
-            client.shutdown();
+			client.shutdown();
 
-            listener.await(ignored -> {
-                eventManager.unregister(listener);
-                connect();
-            });
+			listener.await(ignored -> {
+				eventManager.unregister(listener);
+				connect();
+			});
 
-        } else connect();
-    }
+		} else connect();
+	}
 
-    public void shutdown() {
-        client.shutdown();
-    }
+	public void shutdown() {
+		client.shutdown();
+	}
 
-    public void authenticate() {
-        client.sendAuthenticate();
-    }
+	public void authenticate() {
+		client.sendAuthenticate();
+	}
 
-    public void authenticate(String token) {
-        client.sendAuthenticate(token);
-    }
+	public void authenticate(String token) {
+		client.sendAuthenticate(token);
+	}
 
-    public void request(RequestAction action) {
-        client.send(WebSocketAction.create(action.data, null));
-    }
+	public void request(RequestAction action) {
+		client.send(WebSocketAction.create(action.data, null));
+	}
 
-    public void setPower(PowerAction power) {
-        client.send(WebSocketAction.create(WebSocketAction.SET_STATE, power.name().toLowerCase()));
-    }
+	public void setPower(PowerAction power) {
+		client.send(
+				WebSocketAction.create(WebSocketAction.SET_STATE, power.name().toLowerCase()));
+	}
 
-    public void sendCommand(String command) {
-        client.send(WebSocketAction.create(WebSocketAction.SEND_COMMAND, command));
-    }
+	public void sendCommand(String command) {
+		client.send(WebSocketAction.create(WebSocketAction.SEND_COMMAND, command));
+	}
 
-    public enum RequestAction {
-        LOGS(WebSocketAction.SEND_LOGS),
-        STATS(WebSocketAction.SEND_STATS);
+	public enum RequestAction {
+		LOGS(WebSocketAction.SEND_LOGS),
+		STATS(WebSocketAction.SEND_STATS);
 
-        public final String data;
+		public final String data;
 
-        RequestAction(String data) {
-            this.data = data;
-        }
-    }
-
+		RequestAction(String data) {
+			this.data = data;
+		}
+	}
 }

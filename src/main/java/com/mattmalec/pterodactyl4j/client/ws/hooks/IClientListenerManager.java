@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -17,16 +17,15 @@
 package com.mattmalec.pterodactyl4j.client.ws.hooks;
 
 import com.mattmalec.pterodactyl4j.client.ws.events.Event;
-
 import java.util.List;
 
 public interface IClientListenerManager {
 
-    void register(Object listener);
+	void register(Object listener);
 
-    void unregister(Object listener);
+	void unregister(Object listener);
 
-    List<Object> getRegisteredListeners();
+	List<Object> getRegisteredListeners();
 
-    void handle(Event event);
+	void handle(Event event);
 }

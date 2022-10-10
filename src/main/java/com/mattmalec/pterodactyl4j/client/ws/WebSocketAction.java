@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -21,19 +21,17 @@ import org.json.JSONObject;
 
 public final class WebSocketAction {
 
-    public static final String AUTH = "auth";
-    public static final String SET_STATE = "set state";
-    public static final String SEND_LOGS = "send logs";
-    public static final String SEND_COMMAND = "send command";
-    public static final String SEND_STATS = "send stats";
+	public static final String AUTH = "auth";
+	public static final String SET_STATE = "set state";
+	public static final String SEND_LOGS = "send logs";
+	public static final String SEND_COMMAND = "send command";
+	public static final String SEND_STATS = "send stats";
 
-    public static String create(String event, String argument) {
-        JSONObject returnable = new JSONObject();
-        JSONArray args = new JSONArray();
-        args.put(argument);
-        returnable.put("event", event)
-                .put("args", args);
-        return returnable.toString();
-    }
-
+	public static String create(String event, String argument) {
+		JSONObject returnable = new JSONObject();
+		JSONArray args = new JSONArray();
+		args.put(argument);
+		returnable.put("event", event).put("args", args);
+		return returnable.toString();
+	}
 }

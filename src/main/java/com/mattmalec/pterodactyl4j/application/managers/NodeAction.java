@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -23,22 +23,46 @@ import com.mattmalec.pterodactyl4j.application.entities.Node;
 public interface NodeAction extends PteroAction<Node> {
 
 	NodeAction setName(String name);
-	NodeAction setLocation(Location location);
-	NodeAction setPublic(boolean isPublic);
-	NodeAction setFQDN(String fqdn);
-	NodeAction setBehindProxy(boolean isBehindProxy);
-	NodeAction setDaemonBase(String daemonBase);
-	NodeAction setMemory(String memory);
-	default NodeAction setMemory(long memory) { return setMemory(Long.toUnsignedString(memory)); }
-	NodeAction setMemoryOverallocate(String memoryOverallocate);
-	default NodeAction setMemoryOverallocate(long memoryOverallocate) { return setMemoryOverallocate(Long.toUnsignedString(memoryOverallocate)); }
-	NodeAction setDiskSpace(String diskSpace);
-	default NodeAction setDiskSpace(long diskSpace) { return setDiskSpace(Long.toUnsignedString(diskSpace)); }
-	NodeAction setDiskSpaceOverallocate(String diskSpaceOverallocate);
-	default NodeAction setDiskSpaceOverallocate(long diskSpaceOverallocate) { return setDiskSpaceOverallocate(Long.toUnsignedString(diskSpaceOverallocate)); }
-	NodeAction setDaemonSFTPPort(String port);
-	NodeAction setDaemonListenPort(String port);
-	NodeAction setThrottle(boolean throttle);
-	NodeAction setScheme(boolean secure);
 
+	NodeAction setLocation(Location location);
+
+	NodeAction setPublic(boolean isPublic);
+
+	NodeAction setFQDN(String fqdn);
+
+	NodeAction setBehindProxy(boolean isBehindProxy);
+
+	NodeAction setDaemonBase(String daemonBase);
+
+	NodeAction setMemory(String memory);
+
+	default NodeAction setMemory(long memory) {
+		return setMemory(Long.toUnsignedString(memory));
+	}
+
+	NodeAction setMemoryOverallocate(String memoryOverallocate);
+
+	default NodeAction setMemoryOverallocate(long memoryOverallocate) {
+		return setMemoryOverallocate(Long.toUnsignedString(memoryOverallocate));
+	}
+
+	NodeAction setDiskSpace(String diskSpace);
+
+	default NodeAction setDiskSpace(long diskSpace) {
+		return setDiskSpace(Long.toUnsignedString(diskSpace));
+	}
+
+	NodeAction setDiskSpaceOverallocate(String diskSpaceOverallocate);
+
+	default NodeAction setDiskSpaceOverallocate(long diskSpaceOverallocate) {
+		return setDiskSpaceOverallocate(Long.toUnsignedString(diskSpaceOverallocate));
+	}
+
+	NodeAction setDaemonSFTPPort(String port);
+
+	NodeAction setDaemonListenPort(String port);
+
+	NodeAction setThrottle(boolean throttle);
+
+	NodeAction setScheme(boolean secure);
 }
