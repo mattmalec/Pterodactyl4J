@@ -34,10 +34,13 @@ public class CompressActionImpl extends PteroActionImpl<File> implements Compres
 
     private final List<GenericFile> files;
 
-    public CompressActionImpl(ClientServer server, PteroClientImpl impl) {
-        super(impl.getP4J(), Route.Files.COMPRESS_FILES.compile(server.getIdentifier()));
-        this.files = new ArrayList<>();
-    }
+	public CompressActionImpl(ClientServer server, PteroClientImpl impl) {
+		super(
+				impl.getP4J(),
+				Route.Files.COMPRESS_FILES.compile(server.getIdentifier()),
+				(response, request) -> new FileImpl(response.getObject(), "/", server));
+		this.files = new ArrayList<>();
+	}
 
     @Override
     public CompressAction addFile(GenericFile file) {
