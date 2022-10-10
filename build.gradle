@@ -1,10 +1,11 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 
 plugins {
-    id 'signing'
-    id 'java-library'
-    id 'maven-publish'
-    id 'com.github.johnrengelman.shadow' version '7.1.2'
+	id 'signing'
+	id 'java-library'
+	id 'maven-publish'
+	id 'com.github.johnrengelman.shadow' version '7.1.2'
+	id 'com.diffplug.spotless' version '6.11.0'
 }
 
 sourceCompatibility = targetCompatibility = 1.8
@@ -13,166 +14,202 @@ def versionObject = new Version(major: 2, minor: "BETA")
 version "$versionObject"
 
 repositories {
-    mavenCentral()
+	mavenCentral()
 }
 
 dependencies {
-    implementation 'com.squareup.okhttp3:okhttp:3.13.0'
-    implementation 'org.json:json:20160810'
-    implementation 'org.slf4j:slf4j-api:1.7.32'
-    implementation 'org.jetbrains:annotations:23.0.0'
+	implementation 'com.squareup.okhttp3:okhttp:3.13.0'
+	implementation 'org.json:json:20160810'
+	implementation 'org.slf4j:slf4j-api:1.7.32'
+	implementation 'org.jetbrains:annotations:23.0.0'
 }
 
 javadoc {
-    failOnError = false
-    options {
-        memberLevel = JavadocMemberLevel.PUBLIC
-        encoding = "UTF-8"
-    }
-    if (options instanceof StandardJavadocDocletOptions) {
-        StandardJavadocDocletOptions opt = options
-        opt.author()
-        opt.tags("incubating:a:Incubating:")
-        opt.links(
-                "https://docs.oracle.com/javase/8/docs/api/",
-                "https://javadoc.io/doc/com.squareup.okhttp3/okhttp/3.13.0/")
-        if (JavaVersion.current().isJava9Compatible()) {
-            opt.addBooleanOption("html5", true)
-            opt.addStringOption("-release", "8")
-        }
-        if (JavaVersion.current().isJava11Compatible()) {
-            opt.addBooleanOption("-no-module-directories", true)
-        }
-    }
+	failOnError = false
+	options {
+		memberLevel = JavadocMemberLevel.PUBLIC
+		encoding = "UTF-8"
+	}
+	if (options instanceof StandardJavadocDocletOptions) {
+		StandardJavadocDocletOptions opt = options
+		opt.author()
+		opt.tags("incubating:a:Incubating:")
+		opt.links(
+				"https://docs.oracle.com/javase/8/docs/api/",
+				"https://javadoc.io/doc/com.squareup.okhttp3/okhttp/3.13.0/")
+		if (JavaVersion.current().isJava9Compatible()) {
+			opt.addBooleanOption("html5", true)
+			opt.addStringOption("-release", "8")
+		}
+		if (JavaVersion.current().isJava11Compatible()) {
+			opt.addBooleanOption("-no-module-directories", true)
+		}
+	}
 
-    exclude("com/mattmalec/pterodactyl4j/utils/Checks.java",
-            "com/mattmalec/pterodactyl4j/utils/ExceptionUtils.java",
-            "com/mattmalec/pterodactyl4j/utils/LockUtils.java",
-            "com/mattmalec/pterodactyl4j/utils/NamedThreadFactory.java",
+	exclude("com/mattmalec/pterodactyl4j/utils/Checks.java",
+			"com/mattmalec/pterodactyl4j/utils/ExceptionUtils.java",
+			"com/mattmalec/pterodactyl4j/utils/LockUtils.java",
+			"com/mattmalec/pterodactyl4j/utils/NamedThreadFactory.java",
 
-            "com/mattmalec/pterodactyl4j/entities/impl",
-            "com/mattmalec/pterodactyl4j/application/entities/impl",
-            "com/mattmalec/pterodactyl4j/client/entities/impl",
+			"com/mattmalec/pterodactyl4j/entities/impl",
+			"com/mattmalec/pterodactyl4j/application/entities/impl",
+			"com/mattmalec/pterodactyl4j/client/entities/impl",
 
-            "com/mattmalec/pterodactyl4j/client/ws/handle",
-            "com/mattmalec/pterodactyl4j/client/ws/WebSocketClient.java",
-            "com/mattmalec/pterodactyl4j/client/ws/WebSocketAction.java")
+			"com/mattmalec/pterodactyl4j/client/ws/handle",
+			"com/mattmalec/pterodactyl4j/client/ws/WebSocketClient.java",
+			"com/mattmalec/pterodactyl4j/client/ws/WebSocketAction.java")
 }
 
 task sourcesForRelease(type: Copy) {
-    from('src/main/java') {
-        include '**/P4JInfo.java'
-        filter(ReplaceTokens, tokens: [
-                MAJOR: versionObject.major,
-                MINOR: versionObject.minor,
-                BUILD: versionObject.build
-        ])
-    }
-    into 'build/filteredSrc'
-    includeEmptyDirs = false
+	from('src/main/java') {
+		include '**/P4JInfo.java'
+		filter(ReplaceTokens, tokens: [
+				MAJOR: versionObject.major,
+				MINOR: versionObject.minor,
+				BUILD: versionObject.build
+		])
+	}
+	into 'build/filteredSrc'
+	includeEmptyDirs = false
 }
 
 task generateJavaSources(type: SourceTask) {
-    def javaSources = sourceSets.main.java.filter {
-        it.name != 'P4JInfo.java'
-    }
-    source = javaSources + sourcesForRelease.destinationDir
-    dependsOn sourcesForRelease
+	def javaSources = sourceSets.main.java.filter {
+		it.name != 'P4JInfo.java'
+	}
+	source = javaSources + sourcesForRelease.destinationDir
+	dependsOn sourcesForRelease
 }
 
 shadowJar.archiveClassifier.set('withDependencies')
 
 task sourcesJar(type: Jar) {
-    archiveClassifier.set('sources')
-    from ('src/main/java') {
-        exclude '**/P4JInfo.java'
-    }
-    from sourcesForRelease.destinationDir
-    dependsOn sourcesForRelease
+	archiveClassifier.set('sources')
+	from ('src/main/java') {
+		exclude '**/P4JInfo.java'
+	}
+	from sourcesForRelease.destinationDir
+	dependsOn sourcesForRelease
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
-    archiveClassifier.set('javadoc')
-    from javadoc.destinationDir
+	archiveClassifier.set('javadoc')
+	from javadoc.destinationDir
 }
 
 build {
-    dependsOn jar
-    dependsOn javadocJar
-    dependsOn sourcesJar
-    dependsOn shadowJar
+	dependsOn jar
+	dependsOn javadocJar
+	dependsOn sourcesJar
+	dependsOn shadowJar
 
-    jar.mustRunAfter clean
-    shadowJar.mustRunAfter sourcesJar
+	jar.mustRunAfter clean
+	shadowJar.mustRunAfter sourcesJar
 }
 
 compileJava {
-    source = generateJavaSources.source
-    dependsOn generateJavaSources
+	source = generateJavaSources.source
+	dependsOn generateJavaSources
 }
 
 tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
-    options.incremental = true
-    options.compilerArgs += ["-Xlint:deprecation", "-Xlint:unchecked"]
+	options.encoding = 'UTF-8'
+	options.incremental = true
+	options.compilerArgs += ["-Xlint:deprecation", "-Xlint:unchecked"]
+}
+
+spotless {
+	format 'misc', {
+		target '*.gradle', '*.md', '.gitignore'
+		trimTrailingWhitespace()
+		indentWithTabs()
+		endWithNewline()
+	}
+	java {
+		ratchetFrom 'origin/develop'
+
+		target 'src/main/java/**/*.java'
+
+		formatAnnotations()
+		palantirJavaFormat()
+		indentWithTabs()
+		endWithNewline()
+
+		licenseHeader '/*\n' +
+				' *    Copyright $YEAR Matt Malec, and the Pterodactyl4J contributors\n' +
+				' *\n' +
+				' *    Licensed under the Apache License, Version 2.0 (the "License");\n' +
+				' *    you may not use this file except in compliance with the License.\n' +
+				' *    You may obtain a copy of the License at\n' +
+				' *\n' +
+				' *        http://www.apache.org/licenses/LICENSE-2.0\n' +
+				' *\n' +
+				' *    Unless required by applicable law or agreed to in writing, software\n' +
+				' *    distributed under the License is distributed on an "AS IS" BASIS,\n' +
+				' *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n' +
+				' *    See the License for the specific language governing permissions and\n' +
+				' *    limitations under the License.\n' +
+				' */\n\n'
+
+	}
 }
 
 class Version {
-    String major, minor
-    def build = System.getenv('BUILD_NUMBER') ?: 'DEV'
+	String major, minor
+	def build = System.getenv('BUILD_NUMBER') ?: 'DEV'
 
-    String toString() {
-        return "$major.${minor}_$build"
-    }
+	String toString() {
+		return "$major.${minor}_$build"
+	}
 }
 
 publishing {
-    publications {
-        mavenJava(MavenPublication) {
+	publications {
+		mavenJava(MavenPublication) {
 
-            version = version
-            artifactId = 'Pterodactyl4J'
-            groupId = 'com.mattmalec'
+			version = version
+			artifactId = 'Pterodactyl4J'
+			groupId = 'com.mattmalec'
 
-            from components.java
+			from components.java
 
-            artifact sourcesJar
-            artifact javadocJar
+			artifact sourcesJar
+			artifact javadocJar
 
-            pom {
-                name = project.name
-                description = 'Java wrapper for the API of Pterodactyl'
-                url = 'https://github.com/mattmalec/Pterodactyl4J'
-                licenses {
-                    license {
-                        name = 'The Apache Software License, Version 2.0'
-                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                    }
-                }
-                developers {
-                    developer {
-                        id = 'mattmalec'
-                        name = 'Matt Malec'
-                        email = 'matt@mattmalec.com'
-                    }
-                }
-                scm {
-                    connection = 'scm:git:https://github.com/mattmalec/Pterodactyl4J'
-                    developerConnection = 'scm:git:ssh://github.com/mattmalec/Pterodactyl4J'
-                    url = 'https://github.com/mattmalec/Pterodactyl4J'
-                }
-            }
+			pom {
+				name = project.name
+				description = 'Java wrapper for the API of Pterodactyl'
+				url = 'https://github.com/mattmalec/Pterodactyl4J'
+				licenses {
+					license {
+						name = 'The Apache Software License, Version 2.0'
+						url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+					}
+				}
+				developers {
+					developer {
+						id = 'mattmalec'
+						name = 'Matt Malec'
+						email = 'matt@mattmalec.com'
+					}
+				}
+				scm {
+					connection = 'scm:git:https://github.com/mattmalec/Pterodactyl4J'
+					developerConnection = 'scm:git:ssh://github.com/mattmalec/Pterodactyl4J'
+					url = 'https://github.com/mattmalec/Pterodactyl4J'
+				}
+			}
 
-            repositories {
-                maven {
-                    name 'Jenkins'
-                    url  'https://repo.mattmalec.com/repository/releases'
-                    credentials {
-                        username = System.getenv('jenkinsUsername')
-                        password = System.getenv('jenkinsPassword')
-                    }
-                }
-            }
-        }
-    }
+			repositories {
+				maven {
+					name 'Jenkins'
+					url  'https://repo.mattmalec.com/repository/releases'
+					credentials {
+						username = System.getenv('jenkinsUsername')
+						password = System.getenv('jenkinsPassword')
+					}
+				}
+			}
+		}
+	}
 }
