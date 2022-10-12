@@ -74,7 +74,7 @@ public class ApplicationEggImpl implements ApplicationEgg {
 
 	@Override
 	public String getDescription() {
-		return json.getString("description");
+		return json.optString("description", null);
 	}
 
 	@Override
