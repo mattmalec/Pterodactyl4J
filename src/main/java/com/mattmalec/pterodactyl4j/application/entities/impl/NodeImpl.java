@@ -58,8 +58,7 @@ public class NodeImpl implements Node {
 
 	@Override
 	public String getDescription() {
-		Object description = json.get("description");
-		return description instanceof String ? (String) description : "";
+		return json.optString("description", null);
 	}
 
 	@Override
