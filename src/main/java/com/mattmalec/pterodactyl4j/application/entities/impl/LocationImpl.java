@@ -49,7 +49,7 @@ public class LocationImpl implements Location {
 
 	@Override
 	public String getDescription() {
-		return json.getString("long");
+		return json.optString("long", null);
 	}
 
 	@Override
