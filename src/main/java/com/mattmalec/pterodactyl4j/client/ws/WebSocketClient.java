@@ -135,6 +135,9 @@ public class WebSocketClient extends WebSocketListener implements Runnable {
 
 	private void handleEvent(String event, String args) {
 		ClientSocketHandler handler = getHandler(event);
+		if (handler == null) {
+			return; // Don't even bother trying to handle an event which we don't know
+		}
 
 		if (freshServer)
 			client.retrieveServerByIdentifier(server.getIdentifier())
