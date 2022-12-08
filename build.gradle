@@ -19,7 +19,7 @@ repositories {
 
 dependencies {
 	implementation 'com.squareup.okhttp3:okhttp:3.13.0'
-	implementation 'org.json:json:20160810'
+	implementation 'org.json:json:20220924'
 	implementation 'org.slf4j:slf4j-api:1.7.32'
 	implementation 'org.jetbrains:annotations:23.0.0'
 }
