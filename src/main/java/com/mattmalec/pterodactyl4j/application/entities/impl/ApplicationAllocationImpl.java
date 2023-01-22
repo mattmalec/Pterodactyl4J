@@ -42,7 +42,7 @@ public class ApplicationAllocationImpl implements ApplicationAllocation {
 
 	@Override
 	public String getAlias() {
-		return json.getString("alias");
+		return json.optString("alias", null);
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class ApplicationAllocationImpl implements ApplicationAllocation {
 
 	@Override
 	public String getNotes() {
-		return json.getString("notes");
+		return json.optString("notes", null);
 	}
 
 	@Override
