@@ -39,7 +39,7 @@ public class ClientAllocationImpl implements ClientAllocation {
 
 	@Override
 	public String getAlias() {
-		return json.getString("ip_alias");
+		return json.optString("ip_alias", null);
 	}
 
 	@Override
@@ -54,7 +54,7 @@ public class ClientAllocationImpl implements ClientAllocation {
 
 	@Override
 	public String getNotes() {
-		return json.getString("notes");
+		return json.optString("notes", null);
 	}
 
 	@Override
