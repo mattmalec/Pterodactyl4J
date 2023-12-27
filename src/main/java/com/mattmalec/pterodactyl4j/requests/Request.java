@@ -70,11 +70,12 @@ public class Request<T> {
 			onFailure(new RateLimitedException(route, response.getRetryAfter()));
 		} else
 			switch (response.getCode()) {
-				case 403:
-					onFailure(new LoginException(
+				case 401:
+                case 403:
+                    onFailure(new LoginException(
 							"The provided token is either incorrect or does not have access to process this request."));
 					break;
-				case 404:
+                case 404:
 					onFailure(new NotFoundException("The requested entity was not found."));
 					break;
 				case 422:
