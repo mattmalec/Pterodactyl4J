@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2023 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -40,6 +40,7 @@ public abstract class AbstractNodeAction extends PteroActionImpl<Node> implement
 	protected String daemonListenPort;
 	protected Boolean throttle;
 	protected Boolean secure;
+	protected Boolean hasMaintanceMode;
 
 	public AbstractNodeAction(PteroApplicationImpl impl, Route.CompiledRoute route) {
 		super(impl.getP4J(), route, (response, request) -> new NodeImpl(response.getObject(), impl));
@@ -126,6 +127,12 @@ public abstract class AbstractNodeAction extends PteroActionImpl<Node> implement
 	@Override
 	public NodeAction setScheme(boolean secure) {
 		this.secure = secure;
+		return this;
+	}
+
+	@Override
+	public NodeAction setMaintanceMode(boolean hasMaintanceMode) {
+		this.hasMaintanceMode = hasMaintanceMode;
 		return this;
 	}
 }
