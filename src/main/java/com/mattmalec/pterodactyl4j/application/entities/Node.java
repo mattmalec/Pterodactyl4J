@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2024 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -42,7 +42,16 @@ public interface Node extends ISnowflake {
 
 	boolean isBehindProxy();
 
-	boolean hasMaintanceMode();
+	boolean isInMaintenanceMode();
+
+	/**
+	 * @deprecated Use {@link #isInMaintenanceMode()} instead
+	 * @return {@code true} if the node is in maintenance mode
+	 */
+	@Deprecated
+	default boolean hasMaintanceMode() {
+		return isInMaintenanceMode();
+	}
 
 	default String getMemory() {
 		return Long.toUnsignedString(getMemoryLong());

@@ -66,5 +66,5 @@ public interface NodeAction extends PteroAction<Node> {
 
 	NodeAction setScheme(boolean secure);
 
-	NodeAction setMaintanceMode(boolean isInMaintenanceMode);
+	NodeAction setMaintenanceMode(boolean maintenanceMode);
 }

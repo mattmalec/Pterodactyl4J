@@ -40,7 +40,7 @@ public abstract class AbstractNodeAction extends PteroActionImpl<Node> implement
 	protected String daemonListenPort;
 	protected Boolean throttle;
 	protected Boolean secure;
-	protected Boolean isInMaintenanceMode;
+	protected Boolean maintenanceMode;
 
 	public AbstractNodeAction(PteroApplicationImpl impl, Route.CompiledRoute route) {
 		super(impl.getP4J(), route, (response, request) -> new NodeImpl(response.getObject(), impl));
@@ -131,8 +131,8 @@ public abstract class AbstractNodeAction extends PteroActionImpl<Node> implement
 	}
 
 	@Override
-	public NodeAction setMaintanceMode(boolean isInMaintenanceMode) {
-		this.isInMaintenanceMode = isInMaintenanceMode;
+	public NodeAction setMaintenanceMode(boolean maintenanceMode) {
+		this.maintenanceMode = maintenanceMode;
 		return this;
 	}
 }

@@ -65,9 +65,7 @@ public class EditNodeImpl extends AbstractNodeAction {
 				throttle == null ? new JSONObject().put("enabled", false) : new JSONObject().put("enabled", throttle));
 		json.put(
 				"maintenance_mode",
-				isInMaintenanceMode == null
-						? (node.hasMaintanceMode() ? "1" : "0")
-						: (isInMaintenanceMode ? "1" : "0"));
+				maintenanceMode == null ? (node.isInMaintenanceMode() ? "1" : "0") : (maintenanceMode ? "1" : "0"));
 
 		return getRequestBody(json);
 	}

@@ -55,7 +55,7 @@ public class CreateNodeImpl extends AbstractNodeAction {
 		json.put("daemon_listen", daemonListenPort);
 		json.put("daemon_sftp", daemonSFTPPort);
 		json.put("throttle", new JSONObject().put("enabled", throttle));
-		json.put("maintenance_mode", isInMaintenanceMode ? "1" : "0");
+		json.put("maintenance_mode", maintenanceMode ? "1" : "0");
 		return getRequestBody(json);
 	}
 }
