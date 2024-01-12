@@ -152,11 +152,12 @@ public class RateLimiter implements Runnable {
 			try {
 				rateLimit = requester.execute(request);
 				if (rateLimit != null) break;
-				iterator.remove();
 			} catch (Exception ex) {
 				RATELIMIT_LOG.error("Encountered exception trying to execute request");
 				ex.printStackTrace();
 				break;
+			} finally {
+				iterator.remove();
 			}
 		}
 		backoff();
