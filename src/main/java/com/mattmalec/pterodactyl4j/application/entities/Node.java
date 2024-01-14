@@ -45,8 +45,9 @@ public interface Node extends ISnowflake {
 	boolean isInMaintenanceMode();
 
 	/**
-	 * @deprecated Use {@link #isInMaintenanceMode()} instead
 	 * @return {@code true} if the node is in maintenance mode
+	 *
+	 * @deprecated For spelling mistake only. Use {@link #isInMaintenanceMode()} instead
 	 */
 	@Deprecated
 	default boolean hasMaintanceMode() {
