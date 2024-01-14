@@ -1,5 +1,5 @@
 /*
- *    Copyright 2021-2022 Matt Malec, and the Pterodactyl4J contributors
+ *    Copyright 2021-2024 Matt Malec, and the Pterodactyl4J contributors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -55,6 +55,7 @@ public class CreateNodeImpl extends AbstractNodeAction {
 		json.put("daemon_listen", daemonListenPort);
 		json.put("daemon_sftp", daemonSFTPPort);
 		json.put("throttle", new JSONObject().put("enabled", throttle));
+		json.put("maintenance_mode", maintenanceMode ? "1" : "0");
 		return getRequestBody(json);
 	}
 }
