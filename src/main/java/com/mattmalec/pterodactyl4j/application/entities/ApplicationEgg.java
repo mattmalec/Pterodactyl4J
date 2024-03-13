@@ -74,6 +74,8 @@ public interface ApplicationEgg extends Egg, ISnowflake {
 	 */
 	String getDockerImage();
 
+	List<DockerImage> getDockerImages();
+
 	/**
 	 * The stop command for the ApplicationEgg
 	 * <br>This is ran when a user executes {@link ClientServer#stop()} or hits the <code>Stop</code> button on the panel

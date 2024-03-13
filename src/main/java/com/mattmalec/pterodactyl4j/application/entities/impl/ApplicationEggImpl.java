@@ -19,6 +19,7 @@ package com.mattmalec.pterodactyl4j.application.entities.impl;
 import com.mattmalec.pterodactyl4j.EnvironmentValue;
 import com.mattmalec.pterodactyl4j.PteroAction;
 import com.mattmalec.pterodactyl4j.application.entities.ApplicationEgg;
+import com.mattmalec.pterodactyl4j.application.entities.DockerImage;
 import com.mattmalec.pterodactyl4j.application.entities.Nest;
 import com.mattmalec.pterodactyl4j.application.entities.Script;
 import com.mattmalec.pterodactyl4j.requests.CompletedPteroAction;
@@ -80,6 +81,16 @@ public class ApplicationEggImpl implements ApplicationEgg {
 	@Override
 	public String getDockerImage() {
 		return json.getString("docker_image");
+	}
+
+	@Override
+	public List<DockerImage> getDockerImages() {
+		JSONObject images = json.getJSONObject("docker_images");
+		List<DockerImage> dockerImages = new ArrayList<>();
+		for (String key : images.keySet()) {
+			dockerImages.add(new DockerImageImpl(key, images.getString(key)));
+		}
+		return dockerImages;
 	}
 
 	@Override
